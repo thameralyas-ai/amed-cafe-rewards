@@ -181,6 +181,54 @@ body.rtl section h3 { letter-spacing: 0; font-size: .9rem; }
 .install { display: grid; gap: 6px; justify-items: start; }
 .installbtn { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 16px; font-weight: 700; cursor: pointer; }
 .install small { color: var(--muted); }
+/* Loyalty card (B + C): colours come from the member's level via --lc-* */
+.lc { position: relative; overflow: hidden; border-radius: 26px; background: var(--lc-bg); color: var(--lc-text); padding: 22px 20px 18px; display: grid; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.lc > * { position: relative; }
+.lc-sun { position: absolute !important; width: 420px; height: 420px; inset-inline-end: -150px; top: 300px; opacity: .045; pointer-events: none; }
+.lc-light .lc-sun { opacity: .05; }
+.lc-frame { position: absolute !important; inset: 9px; border: 1px solid #B8C0C8; border-radius: 19px; pointer-events: none; }
+.lc-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.lc-logo { width: 118px; height: auto; display: block; }
+.lc-badge { border: 1px solid var(--lc-accent); color: var(--lc-accent); border-radius: 999px; padding: 5px 11px; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+body.rtl .lc-badge { letter-spacing: 0; font-size: .78rem; }
+.lc-greet { display: grid; gap: 2px; }
+.lc-hi { color: var(--lc-muted); font-size: .95rem; }
+.lc-h { font-family: var(--f-display); font-size: 2.6rem; line-height: 1.05; }
+body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
+.lc-acc { color: var(--lc-accent); }
+.lc-until { color: var(--lc-soft); font-size: .95rem; }
+.lc-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.lc-tabs:empty { display: none; }
+.lc-tab { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--lc-border); background: transparent; color: var(--lc-text); font: inherit; font-weight: 600; cursor: pointer; }
+.lc-tab[aria-pressed="true"] { background: var(--lc-accent); border-color: var(--lc-accent); color: var(--lc-on); font-weight: 700; }
+.lc-hero { display: flex; align-items: flex-end; justify-content: center; gap: 16px; min-height: 300px; }
+.lc-rail { position: relative; display: flex; flex-direction: column-reverse; justify-content: space-between; align-items: center; width: 42px; height: 300px; flex: none; }
+.lc-rail::before, .lc-rail::after { content: ""; position: absolute; left: 20px; width: 2px; bottom: 14px; }
+.lc-rail::before { top: 22px; background: var(--lc-rail); }
+.lc-rail::after { height: var(--fill); background: var(--lc-accent); }
+.lc-node { position: relative; z-index: 1; width: 28px; height: 28px; border-radius: 50%; box-sizing: border-box; border: 2px solid var(--lc-border); background: var(--lc-bg); color: var(--lc-dim); display: grid; place-items: center; font: 600 12px var(--f-mono); }
+.lc-node.on { background: var(--lc-accent); border-color: var(--lc-accent); color: var(--lc-on); font-weight: 700; }
+.lc-free { position: relative; z-index: 1; width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--lc-accent); background: var(--lc-bg); color: var(--lc-accent); display: grid; place-items: center; font: 800 9px "Figtree", sans-serif; letter-spacing: .06em; box-shadow: 0 0 0 6px rgba(var(--lc-glow), .12), 0 0 26px rgba(var(--lc-glow), .4); box-sizing: border-box; }
+.lc-free.lit { background: var(--lc-accent); color: var(--lc-on); }
+.lc-art { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.lc-art .cup { width: min(236px, 58vw); height: auto; display: block; }
+.lc-photo { height: 300px; width: auto; max-width: 100%; display: block; }
+.lc-num { font-family: "Gloock", Georgia, serif; font-size: 3rem; line-height: 1; color: var(--lc-accent); white-space: nowrap; }
+.lc-ready { background: var(--lc-accent); color: var(--lc-on); font-weight: 700; padding: 11px 13px; border-radius: 13px; }
+.lc-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lc-stats div { display: grid; min-width: 0; }
+.lc-stats b { font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: 1.5rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.lc-stats span { font-size: .78rem; color: var(--lc-muted); }
+.lc-next { margin: 0; font-size: .86rem; color: var(--lc-soft); }
+.lc-qr { display: flex; align-items: center; gap: 14px; border: 1px solid var(--lc-border); border-radius: 18px; padding: 12px 14px; background: var(--lc-panel); }
+.lc-qrimg { background: #fff; border-radius: 10px; padding: 4px; flex: none; }
+.lc-qrimg img, .lc-qrimg canvas { width: 76px !important; height: 76px !important; display: block; }
+.lc-qrtxt { display: grid; gap: 3px; min-width: 0; }
+.lc-qrtxt span { font-size: .84rem; color: var(--lc-soft); }
+.lc-qrtxt small { font-size: .76rem; color: var(--lc-muted); }
+.lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
+@media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
+
 footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
 footer p { margin: 0; }
 </style>
@@ -275,7 +323,7 @@ footer p { margin: 0; }
       needPhone: "Enter your full phone number.", needPin: "Enter your 4-digit PIN.", loading: "The cards are still loading. Try again in a moment.", noLoad: "The cards couldn't load. Check your internet connection and reload the page.", noCrypto: "This browser can't check cards. Try opening the link in Chrome or Safari.",
       hello: "Here's your card", visits: "Visits", thisYear: "This year", lastVisit: "Last visit", never: "Not yet", today: "Today", yesterday: "Yesterday", daysAgo: "{n} days ago",
       levelIs: "{level} member", toNext: "{n} more visits to {level}", perk: "Your perk: {perk}",
-      rule: "Buy {n}, {nth} free", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} free rewards: {reward}! Say your number at the counter.", useBy: " Use it by {date}.",
+      rule: "Buy {n}, the {nth} is on us", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} rewards waiting: {reward}. Say your number at the counter.", useBy: " Use it by {date}.",
       stamped: "Stamps so far", collected: "Rewards collected",
       qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", again: "Check another number",
       nfTitle: "We couldn't find this card", nfText: "Check your phone number and PIN. They must match what you gave at the counter. If you joined today, your card may take a few hours to appear here. Not a member yet? Ask our staff to sign you up on your next visit.",
@@ -286,17 +334,17 @@ footer p { margin: 0; }
       updated: "Cards last updated {date} at {time}. A stamp from the last few hours may not show yet.",
     },
     ar: {
-      tag: "مكافآت الولاء", heroA: "اشترِ {n}، و", heroB: "الـ{nth} علينا.", heroSub: "احصل على ختم مع كل طلب {list}. تحقّق من بطاقتك أدناه لترى كم بقي على مكافأتك المجانية القادمة.", or: " أو ",
+      tag: "مكافآت الولاء", heroA: "اشترِ {n}، و", heroB: "ال{nth} علينا.", heroSub: "احصل على ختم مع كل طلب {list}. تحقّق من بطاقتك أدناه لترى كم بقي على مكافأتك المجانية القادمة.", or: " أو ",
       checkTitle: "تحقّق من بطاقتك", phone: "رقم الهاتف", pin: "الرمز السري", show: "اعرض بطاقتي",
       pinHelp: "رمزك السري المكوّن من 4 أرقام موجود في رسالة الترحيب على واتساب. نسيته؟ اسأل عند الكاونتر.",
       needPhone: "أدخل رقم هاتفك كاملاً.", needPin: "أدخل الرمز السري المكوّن من 4 أرقام.", loading: "البطاقات قيد التحميل. حاول بعد لحظة.", noLoad: "تعذّر تحميل البطاقات. تحقّق من اتصالك بالإنترنت وأعد تحميل الصفحة.", noCrypto: "هذا المتصفح لا يدعم التحقق. جرّب فتح الرابط في Chrome أو Safari.",
       hello: "هذه بطاقتك", visits: "الزيارات", thisYear: "هذا العام", lastVisit: "آخر زيارة", never: "لا يوجد بعد", today: "اليوم", yesterday: "أمس", daysAgo: "قبل {n} أيام",
       levelIs: "عضو {level}", toNext: "باقي {n} زيارات للوصول إلى {level}", perk: "ميزتك: {perk}",
-      rule: "اشترِ {n}، والـ{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت مجانية: {reward}! أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
+      rule: "اشترِ {n} واحصل على ال{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت بانتظارك: {reward}. أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
       stamped: "الأختام حتى الآن", collected: "المكافآت المستلمة",
       qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", again: "تحقّق من رقم آخر",
       nfTitle: "لم نجد هذه البطاقة", nfText: "تحقّق من رقم هاتفك والرمز السري. يجب أن يطابقا ما أعطيته عند الكاونتر. إذا انضممت اليوم فقد تحتاج بطاقتك بضع ساعات لتظهر هنا. لست عضواً بعد؟ اطلب من فريقنا تسجيلك في زيارتك القادمة.",
-      howTitle: "كيف يعمل", s1t: "انضم عند الكاونتر", s1d: "أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.", s2t: "اجمع ختماً مع كل طلب", s2d: "كل مشروب أو أركيلة يضيف ختماً إلى بطاقته.", s3t: "الـ{nth} مجاناً", s3d: "عندما تكتمل بطاقتك، أعطِ رقمك عند الكاونتر واستمتع بمكافأتك.",
+      howTitle: "كيف يعمل", s1t: "انضم عند الكاونتر", s1d: "أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.", s2t: "اجمع ختماً مع كل طلب", s2d: "كل مشروب أو أركيلة يضيف ختماً إلى بطاقته.", s3t: "ال{nth} مجاناً", s3d: "عندما تكتمل بطاقتك، أعطِ رقمك عند الكاونتر واستمتع بمكافأتك.",
       cardsTitle: "بطاقات المكافآت", plusFree: "{n} + 1 مجاناً", collect: "اجمع {n} أختام واحصل على {reward}.",
       levelsTitle: "مستويات VIP", levelRow: "بعد {n} زيارة",
       privacy: "نستخدم رقم هاتفك فقط لبطاقة الولاء، ولإرسال رسائل واتساب عن مكافآتك إذا وافقت على ذلك.",
@@ -309,7 +357,7 @@ footer p { margin: 0; }
       needPhone: "ژمارا مۆبایلا خۆ ب تەمامی بنڤیسە.", needPin: "ژمارا نهێنی یا 4 ژمارە بنڤیسە.", loading: "کارت د هێنە بارکرن. پشتی کێمەکێ دووبارە هەول بدە.", noLoad: "کارت بار نەبوون. ئینتەرنێتا خۆ بپشکنە و پەڕێ نوو بکە.", noCrypto: "ئەڤ وێبگەڕە نەشێت کارتێ بپشکنیت. د Chrome یان Safari دا ڤەکە.",
       hello: "ئەڤە کارتا تەیە", visits: "سەرەدان", thisYear: "ئەڤ سالە", lastVisit: "دووماهیک سەرەدان", never: "هێشتا نە", today: "ئەڤرۆ", yesterday: "دوهی", daysAgo: "{n} رۆژ بەری نوکە",
       levelIs: "ئەندامێ {level}", toNext: "{n} سەرەدانێن دی بۆ {level}", perk: "تایبەتمەندیا تە: {perk}",
-      rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلاتێن بێ بەرامبەر بۆ تە هەنە: {reward}! ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
+      rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلات ل هیڤیا تە نە: {reward}. ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
       stamped: "مۆر هەتا نوکە", collected: "خەلاتێن وەرگرتی",
       qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", again: "ژمارەکا دی بپشکنە",
       nfTitle: "مە ئەڤ کارتە نەدیت", nfText: "ژمارا مۆبایلێ و ژمارا نهێنی بپشکنە. دڤێت وەک وان بن یێن تە ل کاونتەری داین. ئەگەر تو ئەڤرۆ بوویە ئەندام، دبیت چەند دەمژمێر بڤێن هەتا کارتا تە ل ڤێرە دیار دبیت. هێشتا نە ئەندامی؟ ل سەرەدانا دی ژ ستافێ مە بخوازە تە تۆمار بکەن.",
@@ -320,12 +368,18 @@ footer p { margin: 0; }
       updated: "دووماهیک نووکرنا کارتان {date} دەمژمێر {time}. دبیت مۆرێن چەند دەمژمێرێن دووماهیێ هێشتا دیار نەبن.",
       rulesTitle: "باشە بزانی", rLimit: "هەتا {n} مۆرێن {card} د رۆژەکێ دا.", rExpiry: "خەلاتێن بێ بەرامبەر دڤێت د ماوێ {n} رۆژان دا بێنە بکارئینان.", rRef: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو {n} مۆرێن زێدە وەردگری.", rBday: "دیاریا رۆژبوونێ: {reward} د حەفتیا رۆژبوونا تە دا. رۆژبوونا خۆ ل کاونتەری بێژە.", rPin: "ژمارا خۆ یا نهێنی بۆ خۆ بهێلە. ستاف دشێن یەکا نوو بدەنە تە.",
       offersTitle: "پێشکێشی و بۆنە", xStamps: "×{m} مۆر", everyDay: "هەمی رۆژ",
+      hi: "سلاڤ {name}،", toGoTpl: "{n} ماینە", until: "بۆ {reward}",
+      nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
+      lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
       shareBtn: "ل ئینستاگرامێ پارڤە بکە", shareReady: "{reward} یا من ل ئامەد کافێ ئامادەیە!", shareProgress: "{s} ژ {n} مۆران ل ئامەد کافێ", shareSub: "{n} بکڕە، یا {nth} بێ بەرامبەرە", shareSaved: "وێنە هاتە پاشەکەفتکرن. ل ئینستاگرامێ بەلاڤ بکە و مە تاگ بکە!",
     },
   };
   Object.assign(T.en, {
+    hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
+    nmSilver: "Silver", nmGold: "Gold", nmPlatinum: "Platinum",
+    lvMember: "Member", lvSilver: "Silver member", lvGold: "Gold member", lvPlatinum: "Platinum member", lvGeneric: "{level} member",
     forgot: "Forgot your PIN?", forgotMsg: "Hi Amed Cafe, I forgot my loyalty card PIN. My phone number is: ", joinBtn: "Join on WhatsApp", joinMsg: "Hi Amed Cafe! I'd like to join the loyalty card. My name is: ",
     install: "Add to home screen", iosTip: "On iPhone: tap Share, then “Add to Home Screen”.",
     rulesTitle: "Good to know", rLimit: "Up to {n} {card} stamps per day.", rExpiry: "Free rewards must be used within {n} days.", rRef: "Invite a friend: when they join, you get {n} bonus stamp(s).", rBday: "Birthday gift: a {reward} in your birthday week. Tell us your birthday at the counter.", rPin: "Keep your PIN private. Staff can give you a new one.",
@@ -333,14 +387,17 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
+    nmSilver: "المستوى الفضي", nmGold: "المستوى الذهبي", nmPlatinum: "المستوى البلاتيني",
+    lvMember: "عضو", lvSilver: "عضو فضي", lvGold: "عضو ذهبي", lvPlatinum: "عضو بلاتيني", lvGeneric: "عضو {level}",
     forgot: "نسيت الرمز السري؟", forgotMsg: "مرحباً Amed Cafe، نسيت الرمز السري لبطاقة الولاء. رقم هاتفي: ", joinBtn: "انضم عبر واتساب", joinMsg: "مرحباً Amed Cafe! أود الانضمام إلى بطاقة الولاء. اسمي: ",
     install: "أضف إلى الشاشة الرئيسية", iosTip: "على iPhone: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».",
     rulesTitle: "معلومات مهمة", rLimit: "حتى {n} أختام {card} في اليوم.", rExpiry: "يجب استخدام المكافآت المجانية خلال {n} يوماً.", rRef: "ادعُ صديقاً: عندما ينضم تحصل على {n} ختم إضافي.", rBday: "هدية عيد الميلاد: {reward} في أسبوع عيد ميلادك. أخبرنا بتاريخ ميلادك عند الكاونتر.", rPin: "احتفظ برمزك السري لنفسك. يمكن للفريق إعطاؤك رمزاً جديداً.",
     offersTitle: "العروض والفعاليات", xStamps: "×{m} أختام", everyDay: "كل يوم",
-    shareBtn: "شارك على إنستغرام", shareReady: "{reward} جاهز لي في Amed Cafe!", shareProgress: "{s} من {n} أختام في Amed Cafe", shareSub: "اشترِ {n}، والـ{nth} مجاناً", shareSaved: "تم حفظ الصورة. انشرها على إنستغرام وأشِر إلينا!",
+    shareBtn: "شارك على إنستغرام", shareReady: "{reward} جاهز لي في Amed Cafe!", shareProgress: "{s} من {n} أختام في Amed Cafe", shareSub: "اشترِ {n} واحصل على ال{nth} مجاناً", shareSaved: "تم حفظ الصورة. انشرها على إنستغرام وأشِر إلينا!",
   });
   const ORD = { ar: { 8: "ثامن", 6: "سادس", 7: "سابع", 9: "تاسع", 10: "عاشر", 11: "حادي عشر" } };
-  const LOC = { en: undefined, ar: "ar-IQ", ku: "ckb-IQ" };
+  const LOC = { en: undefined, ar: "ar-IQ-u-nu-latn", ku: "ckb-IQ" };
   const KU_M = ["کانوونا دووێ", "شوبات", "ئادار", "نیسان", "گولان", "حزیران", "تیرمەه", "ئاب", "ئەیلوول", "تشرینا ئێکێ", "تشرینا دووێ", "کانوونا ئێکێ"];
   const KU_D = ["یەکشەمبی", "دووشەمبی", "سێشەمبی", "چارشەمبی", "پێنجشەمبی", "ئەینی", "شەمبی"];
   function dfmt(d, o) {
@@ -391,7 +448,7 @@ footer p { margin: 0; }
     }
     const lv = (DATA && DATA.levels) || [];
     $("levelsSec").hidden = !lv.length; const lb = $("levels"); lb.textContent = "";
-    for (const l of [...lv].sort((a, b) => a.visits - b.visits)) lb.append(el("div", {}, el("b", { text: l.name }), el("span", { text: tr("levelRow", { n: l.visits }) + (l.perk ? " · " + l.perk : "") })));
+    for (const l of [...lv].sort((a, b) => a.visits - b.visits)) lb.append(el("div", {}, el("b", { text: lvName(l) }), el("span", { text: tr("levelRow", { n: l.visits }) + (lvPerk(l) ? " · " + lvPerk(l) : "") })));
     const ol = $("offerList"); ol.textContent = "";
     const DN = (i) => dfmt(new Date(2024, 0, 7 + i), { weekday: "short" });
     for (const ev of (DATA && DATA.events) || []) {
@@ -435,51 +492,87 @@ footer p { margin: 0; }
     return [...new Uint8Array(bits)].map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
+  /* ---------- the loyalty card: one card per level (copper → silver → gold → platinum) ---------- */
+  const THEMES = {
+    member:   { bg: "#1A1512", text: "#EFE4DA", accent: "#C98F6B", muted: "#8F8279", soft: "#BBAA9C", rail: "#2E2622", border: "#3F3530", dim: "#6F625A", panel: "#211B17", well: "#231D19", hi: "#E8C1A6", on: "#1A1512", glow: "201,143,107", logo: "logo-copper.png", photo: "shisha-copper.png", frame: "0" },
+    silver:   { bg: "#161A1F", text: "#E9EDF1", accent: "#C3CBD3", muted: "#8A939C", soft: "#B3BCC5", rail: "#2A3038", border: "#39414A", dim: "#67707A", panel: "#1C2128", well: "#1E242B", hi: "#F2F5F8", on: "#161A1F", glow: "195,203,211", logo: "logo-silver.png", photo: "shisha-silver.png", frame: "0" },
+    gold:     { bg: "#14171A", text: "#EDE6D8", accent: "#D6AA5E", muted: "#8C877C", soft: "#B9B2A4", rail: "#2C3034", border: "#3A3D40", dim: "#6E6A62", panel: "#1B1F22", well: "#1D2125", hi: "#F1D9A8", on: "#14171A", glow: "214,170,94", logo: "logo-gold.png", photo: "shisha-gold.png", frame: "0" },
+    platinum: { bg: "#EEF0F2", text: "#15181C", accent: "#5E6873", muted: "#646C75", soft: "#454D56", rail: "#D3D8DE", border: "#C3CAD1", dim: "#7F8892", panel: "#FFFFFF", well: "#E3E7EB", hi: "#FFFFFF", on: "#FFFFFF", glow: "94,104,115", logo: "logo.png", photo: "shisha-silver.png", frame: "1px" },
+  };
+  const lvName = (l) => { const n = (l && l.name) || ""; return /plat/i.test(n) ? tr("nmPlatinum") : /gold/i.test(n) ? tr("nmGold") : /silver/i.test(n) ? tr("nmSilver") : n; };
+  const lvPerk = (l) => (l && ((lang !== "en" && l["perk_" + lang]) || l.perk)) || "";
+  function levelInfo(v) {
+    const lv = [...((DATA && DATA.levels) || [])].sort((a, b) => a.visits - b.visits);
+    let cur = null, idx = -1; lv.forEach((l, i) => { if (v >= l.visits) { cur = l; idx = i; } });
+    const next = lv.find((l) => v < l.visits) || null;
+    let tier = "member";
+    if (cur) { const n = (cur.name || "").toLowerCase(); tier = /plat/.test(n) ? "platinum" : /gold/.test(n) ? "gold" : /silver/.test(n) ? "silver" : ["silver", "gold", "platinum"][Math.min(idx, 2)]; }
+    const label = !cur ? tr("lvMember") : tier === "silver" && /silver/i.test(cur.name) ? tr("lvSilver") : tier === "gold" && /gold/i.test(cur.name) ? tr("lvGold") : tier === "platinum" && /plat/i.test(cur.name) ? tr("lvPlatinum") : tr("lvGeneric", { level: cur.name });
+    return { cur, next, tier, label };
+  }
+  const SUN = "150,10 164,59 191,16 190,67 229,34 213,83 259,63 230,104 280,99 240,130 290,140 242,157 286,181 236,184 271,220 222,207 245,253 202,226 211,276 177,238 171,288 150,242 129,288 123,238 89,276 98,226 55,253 78,207 29,220 64,184 14,181 58,157 10,140 60,130 20,99 70,104 41,63 87,83 71,34 110,67 109,16 136,59";
+  let activeProg = null;
+  const isShisha = (p) => /shisha|hookah|nargil|argil/i.test(p.name);
+  function cupSVG(stamps, target, numColor) {
+    const top = 44, bottom = 250, y = Math.round(bottom - (bottom - top) * (Math.min(stamps, target) / target));
+    return '<svg class="cup" viewBox="0 0 240 266" role="img" aria-label="' + stamps + '/' + target + '"><defs><clipPath id="cupClip"><path d="M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z"/></clipPath></defs>'
+      + '<path d="M92 8c-8 9 8 14 0 24M120 4c-8 9 8 14 0 24M148 8c-8 9 8 14 0 24" fill="none" stroke="var(--lc-accent)" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>'
+      + '<path d="M184 84h14a30 30 0 0 1 0 60h-22" fill="none" stroke="var(--lc-accent)" stroke-width="9" stroke-linecap="round"/>'
+      + '<g clip-path="url(#cupClip)"><rect width="240" height="266" fill="var(--lc-well)"/><rect y="' + y + '" width="240" height="266" fill="var(--lc-accent)"/>'
+      + (stamps > 0 ? '<rect y="' + y + '" width="240" height="7" fill="var(--lc-hi)"/>' : '') + '</g>'
+      + '<path d="M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z" fill="none" stroke="var(--lc-accent)" stroke-width="7" stroke-linejoin="round"/>'
+      + '<ellipse cx="110" cy="259" rx="104" ry="6" fill="var(--lc-accent)" fill-opacity=".6"/>'
+      + '<text x="108" y="168" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="56" fill="' + numColor + '" direction="ltr">' + stamps + '/' + target + '</text></svg>';
+  }
   function showCards(entry, scroll = true) {
     lastEntry = entry;
     const r = $("result"); r.textContent = ""; r.hidden = false;
-    r.append(el("p", { class: "hello", text: tr("hello") }));
-    const year = String(new Date().getFullYear());
-    const sum = el("div", { class: "summary" },
-      el("div", { class: "facts" },
-        el("div", {}, el("span", { text: tr("visits") }), el("b", { text: String(entry.v || 0) })),
-        el("div", {}, el("span", { text: tr("thisYear") }), el("b", { text: String((entry.yv || {})[year] || 0) })),
-        el("div", {}, el("span", { text: tr("lastVisit") }), el("b", { text: ago(entry.lv), style: "font-size:1.05rem" }))));
-    const levels = [...((DATA && DATA.levels) || [])].sort((a, b) => a.visits - b.visits);
-    if (levels.length) {
-      let cur = null; for (const l of levels) if ((entry.v || 0) >= l.visits) cur = l;
-      const next = levels.find((l) => (entry.v || 0) < l.visits);
-      const vip = el("div", { class: "vip" });
-      if (cur) vip.append(el("span", { class: "badge", text: tr("levelIs", { level: cur.name }) }));
-      if (next) vip.append(el("small", { text: tr("toNext", { n: next.visits - (entry.v || 0), level: next.name }) }));
-      sum.append(vip);
-      if (next) { const base = cur ? cur.visits : 0, pct = Math.max(4, Math.min(100, ((entry.v || 0) - base) / (next.visits - base) * 100)); const m = el("div", { class: "meter" }); const i = el("i"); i.style.width = pct + "%"; m.append(i); sum.append(m); }
-      if (cur && cur.perk) sum.append(el("small", { text: tr("perk", { perk: cur.perk }), style: "color:var(--muted)" }));
-    }
-    r.append(sum);
-    for (const p of DATA.programs.filter((q) => entry.p && entry.p[q.id])) {
-      const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
-      const s = Math.min(stamps, p.target), left = p.target - s;
-      const grid = el("div", { class: "stamps" });
-      const cols = p.target + 1 <= 6 ? p.target + 1 : (p.target + 1) % 4 === 0 ? 4 : 5;
-      grid.style.gridTemplateColumns = "repeat(" + cols + ", minmax(0,1fr))";
-      for (let i = 0; i < p.target; i++) { const d = el("div", { class: "slot" }); if (i < s) { d.classList.add("on"); d.innerHTML = iconFor(p); d.style.transform = "rotate(" + (((i * 37) % 23) - 11) + "deg)"; } else d.textContent = i + 1; grid.append(d); }
-      grid.append(el("div", { class: "slot reward" + (rewards > 0 ? " lit" : ""), text: "FREE" }));
-      const c = el("article", { class: "card" },
-        el("div", { class: "head" }, el("h2", { text: pname(p) }), el("span", { class: "rule", text: tr("rule", { n: p.target, nth: ordinal(p.target + 1) }) })),
-        grid,
-        el("div", { class: "line" }, el("strong", { text: tr("more", { n: left }) }), tr("toGo", { reward: preward(p), s, n: p.target })));
-      if (rewards > 0) c.append(el("span", { class: "ready", text: (rewards > 1 ? tr("readyN", { k: rewards, reward: preward(p) }) : tr("ready1", { reward: preward(p) })) + (exp ? tr("useBy", { date: fmtDate(exp) }) : "") }));
-      c.append(el("div", { class: "tally" }, el("div", {}, el("b", { text: String(total) }), tr("stamped")), el("div", {}, el("b", { text: String(redeemed) }), tr("collected"))));
-      r.append(c);
-    }
+    const progs = DATA.programs.filter((q) => entry.p && entry.p[q.id]);
+    if (!progs.length) { showNotFound(); return; }
+    if (!activeProg || !progs.some((q) => q.id === activeProg)) activeProg = (progs.find((q) => entry.p[q.id][1] > 0) || progs[0]).id;
+    const p = progs.find((q) => q.id === activeProg);
+    const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
+    const T0 = p.target, s = Math.min(stamps, T0), left = T0 - s;
+    const L = levelInfo(entry.v || 0), th = THEMES[L.tier];
+    const card = el("article", { class: "lc" + (L.tier === "platinum" ? " lc-light" : "") });
+    for (const [k, v] of Object.entries({ bg: th.bg, text: th.text, accent: th.accent, muted: th.muted, soft: th.soft, rail: th.rail, border: th.border, dim: th.dim, panel: th.panel, well: th.well, hi: th.hi, on: th.on })) card.style.setProperty("--lc-" + k, v);
+    card.style.setProperty("--lc-glow", th.glow);
+    card.innerHTML = '<svg class="lc-sun" viewBox="0 0 300 300" aria-hidden="true"><polygon points="' + SUN + '" fill="var(--lc-accent)"/><circle cx="150" cy="150" r="70" fill="var(--lc-accent)"/></svg>' + (th.frame !== "0" ? '<div class="lc-frame" aria-hidden="true"></div>' : "");
+    // header
+    const head = el("div", { class: "lc-head" }, el("img", { src: th.logo, alt: "Amed Cafe", class: "lc-logo" }), el("span", { class: "lc-badge", text: L.label }));
+    // greeting + headline
+    const shisha = isShisha(p);
+    const word = lang === "en" ? (shisha ? (left === 1 ? "puffToGo" : "puffsToGo") : p.id === "drinks" ? (left === 1 ? "sipToGo" : "sipsToGo") : "moreToGo") : "toGoTpl";
+    const tpl = tr(word), parts = tpl.split("{n}");
+    const h = el("div", { class: "lc-h" }); h.append(parts[0] || "", el("span", { class: "lc-acc", text: String(left) }), parts[1] || "");
+    const greet = el("div", { class: "lc-greet" }, entry.fn ? el("span", { class: "lc-hi", text: tr("hi", { name: entry.fn }) }) : null, h, el("span", { class: "lc-until", text: tr("until", { reward: preward(p) }) }));
+    // tabs
+    const tabs = el("div", { class: "lc-tabs" });
+    if (progs.length > 1) for (const q of progs) tabs.append(el("button", { type: "button", class: "lc-tab", "aria-pressed": String(q.id === p.id), text: pname(q), onclick: () => { activeProg = q.id; showCards(entry, false); } }));
+    // hero: rail + cup or shisha photo
+    const rail = el("div", { class: "lc-rail" });
+    rail.style.setProperty("--fill", Math.round((s / T0) * 84) + "%");
+    for (let i = 1; i <= T0; i++) rail.append(el("span", { class: "lc-node" + (i <= s ? " on" : ""), text: String(i) }));
+    rail.append(el("span", { class: "lc-free" + (rewards > 0 ? " lit" : ""), text: "FREE" }));
+    const art = el("div", { class: "lc-art" });
+    if (shisha) art.append(el("span", { class: "lc-num", dir: "ltr", text: s + "/" + T0 }), el("img", { src: th.photo, alt: pname(p) + " " + s + "/" + T0, class: "lc-photo" }));
+    else art.innerHTML = cupSVG(s, T0, s >= Math.ceil(T0 / 2) + 1 ? "var(--lc-on)" : "var(--lc-accent)");
+    const hero = el("div", { class: "lc-hero" }, rail, art);
+    card.append(head, greet, tabs, hero);
+    if (rewards > 0) card.append(el("div", { class: "lc-ready", text: (rewards > 1 ? tr("readyN", { k: rewards, reward: preward(p) }) : tr("ready1", { reward: preward(p) })) + (exp ? tr("useBy", { date: fmtDate(exp) }) : "") }));
+    const stats = el("div", { class: "lc-stats" });
+    for (const [n, k] of [[entry.v || 0, "visits"], [redeemed, "collected"], [total, "stamped"]]) stats.append(el("div", {}, el("b", { text: String(n) }), el("span", { text: tr(k) })));
+    card.append(stats);
+    if (L.next) card.append(el("p", { class: "lc-next", text: tr("toNext", { n: L.next.visits - (entry.v || 0), level: lvName(L.next) }) + (lvPerk(L.cur) ? " · " + tr("perk", { perk: lvPerk(L.cur) }) : "") }));
+    else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
     if (entry.code) {
-      const q = el("div", { class: "qr" });
-      r.append(el("div", { class: "myqr" }, q, el("div", { class: "txt" }, el("b", { text: tr("qrTitle") }), el("code", { text: entry.code }), el("p", { text: tr("qrText") }))));
-      try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 120, height: 120, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
+      const q = el("div", { class: "lc-qrimg" });
+      card.append(el("div", { class: "lc-qr" }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
+      try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
+    r.append(card);
     r.append(el("button", { type: "button", class: "share", text: tr("shareBtn"), onclick: () => shareImage(entry) }));
-    r.append(el("button", { type: "button", class: "again", text: tr("again"), onclick: () => { lastEntry = null; r.hidden = true; $("phone").value = ""; $("pin").value = ""; $("phone").focus(); } }));
+    r.append(el("button", { type: "button", class: "again", text: tr("again"), onclick: () => { lastEntry = null; activeProg = null; r.hidden = true; $("phone").value = ""; $("pin").value = ""; $("phone").focus(); } }));
     if (scroll) r.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   }
 
@@ -492,17 +585,17 @@ footer p { margin: 0; }
     lines.push(line); lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh)); return lines.length * lh;
   }
   async function shareImage(entry) {
-    const W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    const th = THEMES[levelInfo(entry.v || 0).tier], W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
     try { await document.fonts.ready; } catch (_) {}
     const rtl = lang !== "en", font = rtl ? '"Noto Sans Arabic"' : '"Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
-    ctx.fillStyle = "#1F4B3A"; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = "rgba(243,239,230,.12)"; ctx.lineWidth = 60; ctx.beginPath(); ctx.arc(W - 40, 80, 260, 0, Math.PI * 2); ctx.stroke();
-    const logo = await loadLogo();
-    if (logo) { const lw = 560, lh = lw * logo.height / logo.width, off = document.createElement("canvas"); off.width = lw; off.height = lh; const o = off.getContext("2d"); o.drawImage(logo, 0, 0, lw, lh); o.globalCompositeOperation = "source-in"; o.fillStyle = "#F3EFE6"; o.fillRect(0, 0, lw, lh); ctx.drawImage(off, (W - lw) / 2, 110); }
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = "rgba(" + th.glow + ",.14)"; ctx.lineWidth = 60; ctx.beginPath(); ctx.arc(W - 40, 80, 260, 0, Math.PI * 2); ctx.stroke();
+    const logo = await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = th.logo; });
+    if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 110, lw, lh); }
     const progs = DATA.programs.filter((q) => entry.p && entry.p[q.id]);
     const p = progs.find((q) => entry.p[q.id][1] > 0) || progs.slice().sort((a, b) => entry.p[b.id][0] / b.target - entry.p[a.id][0] / a.target)[0];
     const [stamps, rewards] = entry.p[p.id], s = Math.min(stamps, p.target);
-    ctx.direction = rtl ? "rtl" : "ltr"; ctx.textAlign = "center"; ctx.fillStyle = "#F3EFE6";
+    ctx.direction = rtl ? "rtl" : "ltr"; ctx.textAlign = "center"; ctx.fillStyle = th.text;
     ctx.font = (rtl ? "800 " : "400 ") + "78px " + font;
     const head = rewards > 0 ? tr("shareReady", { reward: preward(p) }) : tr("shareProgress", { s, n: p.target });
     const used = wrapText(ctx, head, W / 2, 520, 900, 96);
@@ -510,13 +603,13 @@ footer p { margin: 0; }
     for (let i = 0; i < n; i++) {
       const cx = x0 + (i % cols) * (r * 2 + gap), cy = y0 + Math.floor(i / cols) * (r * 2 + gap);
       ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      if (i === p.target) { ctx.fillStyle = rewards > 0 ? "#F3EFE6" : "rgba(0,0,0,0)"; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = "#D9A15B"; ctx.stroke(); ctx.fillStyle = rewards > 0 ? "#1F4B3A" : "#D9A15B"; ctx.font = "800 30px " + body; ctx.direction = "ltr"; ctx.fillText("FREE", cx, cy + 11); ctx.direction = rtl ? "rtl" : "ltr"; }
-      else if (i < s) { ctx.fillStyle = "#D9A15B"; ctx.fill(); ctx.fillStyle = "#3A2412"; ctx.font = "700 54px " + body; ctx.fillText("★", cx, cy + 19); }
-      else { ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(243,239,230,.35)"; ctx.stroke(); ctx.setLineDash([]); }
+      if (i === p.target) { ctx.fillStyle = rewards > 0 ? th.text : "rgba(0,0,0,0)"; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = th.accent; ctx.stroke(); ctx.fillStyle = rewards > 0 ? th.bg : th.accent; ctx.font = "800 30px " + body; ctx.direction = "ltr"; ctx.fillText("FREE", cx, cy + 11); ctx.direction = rtl ? "rtl" : "ltr"; }
+      else if (i < s) { ctx.fillStyle = th.accent; ctx.fill(); ctx.fillStyle = th.on; ctx.font = "700 54px " + body; ctx.fillText("★", cx, cy + 19); }
+      else { ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(" + th.glow + ",.45)"; ctx.stroke(); ctx.setLineDash([]); }
     }
-    ctx.fillStyle = "#D9A15B"; ctx.font = "700 44px " + body;
+    ctx.fillStyle = th.accent; ctx.font = "700 44px " + body;
     ctx.fillText(tr("shareSub", { n: p.target, nth: ordinal(p.target + 1) }), W / 2, H - 170);
-    ctx.fillStyle = "rgba(243,239,230,.75)"; ctx.font = "500 34px " + body; ctx.direction = "ltr";
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr";
     ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, H - 100);
     const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
     const file = new File([blob], "amed-cafe-card.png", { type: "image/png" });
