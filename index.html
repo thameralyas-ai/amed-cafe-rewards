@@ -241,14 +241,15 @@ body[data-level] .lc { border: 1px solid var(--line); }
 body.rtl .welcome h2 { font-weight: 800; }
 .welcome p { margin: 0; color: var(--muted); }
 .signout { justify-self: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 10px 22px; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
-.st-ov { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.6); display: grid; place-items: center; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); overflow-y: auto; }
-.st-box { background: var(--surface); color: var(--ink); border-radius: 22px; padding: 20px; width: 100%; max-width: 380px; display: grid; gap: 12px; text-align: center; }
+.st-ov { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.6); display: grid; place-items: start center; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); overflow-y: auto; }
+.st-box { background: var(--surface); color: var(--ink); border-radius: 22px; padding: 18px 20px; width: 100%; max-width: 380px; display: grid; gap: 10px; text-align: center; margin: auto 0; }
 .st-box h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.15; }
 body.rtl .st-box h2 { font-weight: 800; }
 .st-box p { margin: 0; color: var(--muted); }
-.st-img { width: 58%; max-width: 100%; margin: 0 auto; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.25); display: block; }
+.st-img { width: 42%; max-width: 100%; margin: 0 auto; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.25); display: block; }
 .st-share { border: 0; border-radius: 14px; min-height: 52px; font: inherit; font-weight: 800; color: #fff; cursor: pointer; background: linear-gradient(90deg, #833AB4, #E1306C 60%, #F77737); }
 .st-later { border: 0; background: none; color: var(--muted); font: inherit; font-weight: 700; min-height: 44px; cursor: pointer; }
+.st-note { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
 .st-tip { font-size: .9rem; color: var(--ink) !important; background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
 footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
 footer p { margin: 0; }
@@ -396,6 +397,7 @@ footer p { margin: 0; }
       storyHead: "{reward} بۆ من ئامادەیە!", storyAt: "ل Amed Cafe", storyTitle: "{reward} یا تە ئامادەیە!", storyAsk: "ڤێ مزگینیێ ل سەر ستۆریا ئینستاگرامێ پارڤە بکە و مە تاگ بکە.", storyShare: "ل سەر ستۆریا ئینستاگرامێ پارڤە بکە", storyLater: "نوکە نە", storySave: "تبلا خۆ ل سەر وێنەی بهێلە و د وێنەیێن خۆ دا پاشەکەفت بکە، پاشان بۆ ستۆریا ئینستاگرامێ زێدە بکە.",
       lvlHead: "بووم {level}!", lvlTitle: "تو بوویە {level}!", visitsN: "{n} سەرەدان", twMember: "ئەندام", twSilver: "زیڤین", twGold: "زێڕین", twPlatinum: "پلاتینی",
       toNextOr: "{n} سەرەدانێن دی یان {s} مۆرێن دی بۆ {level}", levelRowOr: "پشتی {n} سەرەدانان یان {s} مۆران",
+      iconTip: "شیرەت: بۆ وەرگرتنا ئایکۆنا {level} یا نوو، Amed Cafe ژ شاشا سەرەکی لابە و دووبارە زێدە بکە.",
       welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
@@ -403,6 +405,7 @@ footer p { margin: 0; }
     },
   };
   Object.assign(T.en, {
+    iconTip: "Tip: to get your new {level} icon, remove Amed Cafe from your home screen and add it again.",
     toNextOr: "{n} more visits or {s} more stamps to {level}", levelRowOr: "after {n} visits or {s} stamps",
     lvlHead: "I'm now a {level}!", lvlTitle: "You're now a {level}!", visitsN: "{n} visits", twMember: "Member", twSilver: "Silver", twGold: "Gold", twPlatinum: "Platinum",
     storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
@@ -417,6 +420,7 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    iconTip: "نصيحة: لتحصل على أيقونة {level} الجديدة، احذف Amed Cafe من الشاشة الرئيسية ثم أضفه مجدداً.",
     toNextOr: "باقي {n} زيارة أو {s} ختم للوصول إلى {level}", levelRowOr: "بعد {n} زيارة أو {s} ختم",
     lvlHead: "أصبحت {level}!", lvlTitle: "أصبحت الآن {level}!", visitsN: "{n} زيارة", twMember: "عضو", twSilver: "فضي", twGold: "ذهبي", twPlatinum: "بلاتيني",
     storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
@@ -677,7 +681,7 @@ footer p { margin: 0; }
     const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
     return { file: new File([blob], "amed-cafe-level.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
   }
-  function storyPopup(story, key, title, alt) {
+  function storyPopup(story, key, title, alt, note) {
     return new Promise((resolve) => {
       const done = () => { try { localStorage.setItem(key, "1"); } catch (_) {} ov.remove(); resolve(); };
       const tip = el("p", { class: "st-tip", hidden: "", text: tr("storySave") });
@@ -687,7 +691,8 @@ footer p { margin: 0; }
       } });
       const ov = el("div", { class: "st-ov", role: "dialog", "aria-modal": "true", "aria-label": title },
         el("div", { class: "st-box" }, el("h2", { text: title }), el("p", { text: tr("storyAsk") }), el("img", { src: story.url, alt: alt, class: "st-img" }), tip, shareBtn,
-          el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done })));
+          el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done }),
+          note ? el("p", { class: "st-note", text: note }) : null));
       document.body.append(ov); shareBtn.focus();
     });
   }
@@ -696,7 +701,8 @@ footer p { margin: 0; }
     const key = "amed-lvlstory-" + (entry.code || "x") + "-" + L.tier;
     try { if (localStorage.getItem(key)) return; } catch (_) {}
     const story = await makeLevelStory(entry, L);
-    await storyPopup(story, key, tr("lvlTitle", { level: L.label }), tr("lvlHead", { level: L.label }));
+    const nm = { silver: "nmSilver", gold: "nmGold", platinum: "nmPlatinum" }[L.tier];
+    await storyPopup(story, key, tr("lvlTitle", { level: L.label }), tr("lvlHead", { level: L.label }), tr("iconTip", { level: tr(nm) }));
   }
 
   let storyShown = false;
