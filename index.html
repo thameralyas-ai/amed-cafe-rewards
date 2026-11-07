@@ -230,6 +230,11 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 @media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
 
 .ver { font-size: .7rem; opacity: .6; }
+.welcome { display: grid; gap: 4px; }
+.welcome h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(1.9rem, 8vw, 2.4rem); line-height: 1.1; text-wrap: balance; }
+body.rtl .welcome h2 { font-weight: 800; }
+.welcome p { margin: 0; color: var(--muted); }
+.signout { justify-self: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 10px 22px; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
 footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
 footer p { margin: 0; }
 </style>
@@ -245,7 +250,7 @@ footer p { margin: 0; }
     </div>
   </header>
 
-  <div class="hero">
+  <div class="hero" id="heroBox">
     <p class="tag" data-t="tag"></p>
     <h1 id="heroTitle"></h1>
     <p id="heroSub"></p>
@@ -267,7 +272,7 @@ footer p { margin: 0; }
 
   <div class="result" id="result" hidden></div>
 
-  <section>
+  <section id="howSec">
     <h3 data-t="howTitle"></h3>
     <ol class="steps">
       <li><span class="n">1</span><div><b data-t="s1t"></b><span data-t="s1d"></span><a class="wabtn" id="joinBtn" href="#" target="_blank" rel="noopener" hidden data-t="joinBtn"></a></div></li>
@@ -276,7 +281,7 @@ footer p { margin: 0; }
     </ol>
   </section>
 
-  <section>
+  <section id="cardsSec">
     <h3 data-t="cardsTitle"></h3>
     <div class="offers" id="offers"></div>
   </section>
@@ -373,12 +378,14 @@ footer p { margin: 0; }
       hi: "سلاڤ {name}،", toGoTpl: "{n} ماینە", until: "بۆ {reward}",
       nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
       lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
+      welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
       shareBtn: "ل ئینستاگرامێ پارڤە بکە", shareReady: "{reward} یا من ل ئامەد کافێ ئامادەیە!", shareProgress: "{s} ژ {n} مۆران ل ئامەد کافێ", shareSub: "{n} بکڕە، یا {nth} بێ بەرامبەرە", shareSaved: "وێنە هاتە پاشەکەفتکرن. ل ئینستاگرامێ بەلاڤ بکە و مە تاگ بکە!",
     },
   };
   Object.assign(T.en, {
+    welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
     hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
     nmSilver: "Silver", nmGold: "Gold", nmPlatinum: "Platinum",
     lvMember: "Member", lvSilver: "Silver member", lvGold: "Gold member", lvPlatinum: "Platinum member", lvGeneric: "{level} member",
@@ -389,6 +396,7 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
     hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
     nmSilver: "المستوى الفضي", nmGold: "المستوى الذهبي", nmPlatinum: "المستوى البلاتيني",
     lvMember: "عضو", lvSilver: "عضو فضي", lvGold: "عضو ذهبي", lvPlatinum: "عضو بلاتيني", lvGeneric: "عضو {level}",
@@ -536,6 +544,8 @@ footer p { margin: 0; }
     const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
     const T0 = p.target, s = Math.min(stamps, T0), left = T0 - s;
     const L = levelInfo(entry.v || 0), th = THEMES[L.tier];
+    setSignedIn(true);
+    r.append(el("div", { class: "welcome" }, el("h2", { text: entry.fn ? tr("welcomeName", { name: entry.fn }) : tr("welcomeNoName") }), el("p", { text: tr("welcomeSub") })));
     const card = el("article", { class: "lc" + (L.tier === "platinum" ? " lc-light" : "") });
     for (const [k, v] of Object.entries({ bg: th.bg, text: th.text, accent: th.accent, muted: th.muted, soft: th.soft, rail: th.rail, border: th.border, dim: th.dim, panel: th.panel, well: th.well, hi: th.hi, on: th.on })) card.style.setProperty("--lc-" + k, v);
     card.style.setProperty("--lc-glow", th.glow);
@@ -547,7 +557,7 @@ footer p { margin: 0; }
     const word = lang === "en" ? (shisha ? (left === 1 ? "puffToGo" : "puffsToGo") : p.id === "drinks" ? (left === 1 ? "sipToGo" : "sipsToGo") : "moreToGo") : "toGoTpl";
     const tpl = tr(word), parts = tpl.split("{n}");
     const h = el("div", { class: "lc-h" }); h.append(parts[0] || "", el("span", { class: "lc-acc", text: String(left) }), parts[1] || "");
-    const greet = el("div", { class: "lc-greet" }, entry.fn ? el("span", { class: "lc-hi", text: tr("hi", { name: entry.fn }) }) : null, h, el("span", { class: "lc-until", text: tr("until", { reward: preward(p) }) }));
+    const greet = el("div", { class: "lc-greet" }, h, el("span", { class: "lc-until", text: tr("until", { reward: preward(p) }) }));
     // tabs
     const tabs = el("div", { class: "lc-tabs" });
     if (progs.length > 1) for (const q of progs) tabs.append(el("button", { type: "button", class: "lc-tab", "aria-pressed": String(q.id === p.id), text: pname(q), onclick: () => { activeProg = q.id; showCards(entry, false); } }));
@@ -574,8 +584,15 @@ footer p { margin: 0; }
     }
     r.append(card);
     r.append(el("button", { type: "button", class: "share", text: tr("shareBtn"), onclick: () => shareImage(entry) }));
-    r.append(el("button", { type: "button", class: "again", text: tr("again"), onclick: () => { lastEntry = null; activeProg = null; r.hidden = true; $("phone").value = ""; $("pin").value = ""; $("phone").focus(); } }));
-    if (scroll) r.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
+    if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+  // Signed in: hide the sign-in parts; the phone remembers the card (not the PIN) until Sign out.
+  function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
+  function signOut() {
+    try { localStorage.removeItem("amed-session"); } catch (_) {}
+    lastEntry = null; activeProg = null; $("result").hidden = true; $("result").textContent = "";
+    $("phone").value = ""; $("pin").value = ""; setSignedIn(false); window.scrollTo({ top: 0 });
   }
 
   // Instagram-ready image (1080×1350) of the customer's card, shared or saved from the browser.
@@ -634,7 +651,10 @@ footer p { margin: 0; }
     if (d.length < 6) return fail("needPhone");
     if (pin.length !== 4) return fail("needPin");
     if (!loaded) return fail("loading");
-    try { const entry = DATA.cards[await hash(d, pin)]; entry ? showCards(entry) : showNotFound(); }
+    try {
+      const key = await hash(d, pin), entry = DATA.cards[key];
+      if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); } else showNotFound();
+    }
     catch (_) { fail("noCrypto"); }
   });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => setLang(b.dataset.lang));
@@ -654,7 +674,11 @@ footer p { margin: 0; }
   window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
 
   fetch("data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
-    .then((d) => { DATA = d; loaded = true; renderStatic(); })
+    .then((d) => {
+      DATA = d; loaded = true; renderStatic();
+      let key = null; try { key = localStorage.getItem("amed-session"); } catch (_) {}
+      if (key && DATA.cards[key]) showCards(DATA.cards[key], false);
+    })
     .catch(() => { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; });
 })();
 </script>
