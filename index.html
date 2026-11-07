@@ -728,7 +728,16 @@ footer p { margin: 0; }
   // Signed in: the whole page takes the member's level style (colours, logo, panels); Sign out restores the normal page.
   const PAGE_BG = { member: "#120E0C", silver: "#0F1216", gold: "#0F1214", platinum: "#E2E6EA" };
   const PAGE_VARS = ["--bg", "--surface", "--ink", "--muted", "--line", "--accent", "--accent-ink", "--accent-soft", "--stamp", "--stamp-ink", "--card", "--card-ink", "--card-dim", "--logo-filter"];
+  // Browser-tab and home-screen icon follow the level (default icon before sign-in).
+  function setIcons(tier) {
+    const sfx = tier ? "-" + tier : "";
+    const set = (sel, href) => { const l = document.querySelector(sel); if (l) l.setAttribute("href", href); };
+    set('link[rel="icon"]', "icon" + sfx + "-192.png");
+    set('link[rel="apple-touch-icon"]', "icon" + sfx + "-180.png");
+    set('link[rel="manifest"]', "manifest" + sfx + ".webmanifest");
+  }
   function applyPageTheme(tier) {
+    setIcons(tier);
     const th = THEMES[tier], st = document.documentElement.style;
     const v = { "--bg": PAGE_BG[tier], "--surface": th.panel, "--ink": th.text, "--muted": tier === "platinum" ? "#4C545D" : th.muted, "--line": th.border, "--accent": th.accent, "--accent-ink": th.on,
       "--accent-soft": "rgba(" + th.glow + ",.16)", "--stamp": th.accent, "--stamp-ink": th.on, "--card": th.bg, "--card-ink": th.text, "--card-dim": "rgba(" + th.glow + ",.3)", "--logo-filter": "none" };
@@ -739,6 +748,7 @@ footer p { margin: 0; }
     const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = PAGE_BG[tier];
   }
   function clearPageTheme() {
+    setIcons(null);
     const st = document.documentElement.style; for (const k of PAGE_VARS) st.removeProperty(k); st.colorScheme = "";
     delete document.body.dataset.level;
     const logo = document.querySelector(".brand .logo"); if (logo) logo.src = "logo.png";
