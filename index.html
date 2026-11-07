@@ -353,7 +353,7 @@ footer p { margin: 0; }
   }
 
   function renderStatic() {
-    const progs = DATA ? DATA.programs : [{ id: "drinks", name: "Drinks", target: 7, reward: "free drink", name_ar: "المشروبات", reward_ar: "مشروب مجاني", name_ku: "خواردنەوە", reward_ku: "خواردنەوەیەکی بێبەرامبەر" }];
+    const progs = DATA ? DATA.programs : [{ id: "drinks", name: "Drinks", target: 7, reward: "free drink", name_ar: "المشروبات", reward_ar: "مشروب مجاني", name_ku: "ڤەخوارن", reward_ku: "ڤەخوارنەکا بەلاش" }];
     const t = progs[0].target, same = progs.every((p) => p.target === t);
     const h = $("heroTitle"); h.textContent = "";
     h.append(tr("heroA", { n: t }), el("em", { text: tr("heroB", { nth: ordinal(t + 1) }) }));
