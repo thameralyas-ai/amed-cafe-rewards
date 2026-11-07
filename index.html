@@ -394,6 +394,7 @@ footer p { margin: 0; }
       nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
       lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
       storyHead: "{reward} بۆ من ئامادەیە!", storyAt: "ل Amed Cafe", storyTitle: "{reward} یا تە ئامادەیە!", storyAsk: "ڤێ مزگینیێ ل سەر ستۆریا ئینستاگرامێ پارڤە بکە و مە تاگ بکە.", storyShare: "ل سەر ستۆریا ئینستاگرامێ پارڤە بکە", storyLater: "نوکە نە", storySave: "تبلا خۆ ل سەر وێنەی بهێلە و د وێنەیێن خۆ دا پاشەکەفت بکە، پاشان بۆ ستۆریا ئینستاگرامێ زێدە بکە.",
+      lvlHead: "بووم {level}!", lvlTitle: "تو بوویە {level}!", visitsN: "{n} سەرەدان", twMember: "ئەندام", twSilver: "زیڤین", twGold: "زێڕین", twPlatinum: "پلاتینی",
       welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
@@ -401,6 +402,7 @@ footer p { margin: 0; }
     },
   };
   Object.assign(T.en, {
+    lvlHead: "I'm now a {level}!", lvlTitle: "You're now a {level}!", visitsN: "{n} visits", twMember: "Member", twSilver: "Silver", twGold: "Gold", twPlatinum: "Platinum",
     storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
     welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
     hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
@@ -413,6 +415,7 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    lvlHead: "أصبحت {level}!", lvlTitle: "أصبحت الآن {level}!", visitsN: "{n} زيارة", twMember: "عضو", twSilver: "فضي", twGold: "ذهبي", twPlatinum: "بلاتيني",
     storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
     welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
     hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
@@ -601,7 +604,7 @@ footer p { margin: 0; }
       try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
-    setTimeout(() => maybeStory(entry), 700);
+    if (!storyShown) { storyShown = true; setTimeout(async () => { await maybeLevelStory(entry); storyShown = false; maybeStory(entry); }, 700); }
     r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
     if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
@@ -642,6 +645,55 @@ footer p { margin: 0; }
     const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
     return { file: new File([blob], "amed-cafe-story.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
   }
+  /* ---------- Instagram story pop-up for a new membership level (once per level) ---------- */
+  const TIER_WORD = { member: "twMember", silver: "twSilver", gold: "twGold", platinum: "twPlatinum" };
+  async function makeLevelStory(entry, L) {
+    const th = THEMES[L.tier], W = 1080, H = 1920;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    try { await document.fonts.ready; } catch (_) {}
+    const rtl = lang !== "en", disp = rtl ? '800 88px "Noto Sans Arabic"' : '400 100px "Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    ctx.save(); ctx.globalAlpha = .06; ctx.fillStyle = th.accent; ctx.translate(540, 1080); ctx.scale(3.6, 3.6); ctx.translate(-150, -150);
+    const pts = SUN.split(" ").map((q) => q.split(",").map(Number)); ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.fill(); ctx.restore();
+    const logo = await loadImg(th.logo); if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 150, lw, lh); }
+    ctx.textAlign = "center"; ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.text; ctx.font = disp;
+    const lines = []; let line = ""; for (const w of tr("lvlHead", { level: L.label }).split(" ")) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > 900 && line) { lines.push(line); line = w; } else line = t; } lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l, W / 2, 560 + i * 112));
+    // the medal
+    const cy = 1110, R = 290;
+    ctx.save(); ctx.shadowColor = "rgba(" + th.glow + ",.55)"; ctx.shadowBlur = 80;
+    ctx.beginPath(); ctx.arc(W / 2, cy, R, 0, Math.PI * 2); ctx.fillStyle = th.accent; ctx.fill(); ctx.restore();
+    ctx.beginPath(); ctx.arc(W / 2, cy, R - 34, 0, Math.PI * 2); ctx.lineWidth = 6; ctx.strokeStyle = th.on; ctx.globalAlpha = .35; ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.fillStyle = th.on; ctx.font = rtl ? '800 110px "Noto Sans Arabic"' : '400 120px "Gloock", Georgia, serif';
+    ctx.fillText(tr(TIER_WORD[L.tier]), W / 2, cy + 20);
+    ctx.font = "700 40px " + body; ctx.fillText(tr("visitsN", { n: entry.v || 0 }), W / 2, cy + 110);
+    ctx.fillStyle = th.accent; ctx.font = "700 46px " + body; ctx.fillText(tr("storyAt"), W / 2, 1640);
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr"; ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, 1710);
+    const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
+    return { file: new File([blob], "amed-cafe-level.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
+  }
+  function storyPopup(story, key, title, alt) {
+    return new Promise((resolve) => {
+      const done = () => { try { localStorage.setItem(key, "1"); } catch (_) {} ov.remove(); resolve(); };
+      const tip = el("p", { class: "st-tip", hidden: "", text: tr("storySave") });
+      const shareBtn = el("button", { type: "button", class: "st-share", text: tr("storyShare"), onclick: () => {
+        try { if (navigator.canShare && navigator.canShare({ files: [story.file] })) { navigator.share({ files: [story.file] }).then(done).catch((e) => { if (!e || e.name !== "AbortError") tip.hidden = false; }); return; } } catch (_) {}
+        tip.hidden = false;
+      } });
+      const ov = el("div", { class: "st-ov", role: "dialog", "aria-modal": "true", "aria-label": title },
+        el("div", { class: "st-box" }, el("h2", { text: title }), el("p", { text: tr("storyAsk") }), el("img", { src: story.url, alt: alt, class: "st-img" }), tip, shareBtn,
+          el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done })));
+      document.body.append(ov); shareBtn.focus();
+    });
+  }
+  async function maybeLevelStory(entry) {
+    const L = levelInfo(entry.v || 0); if (L.tier === "member") return;
+    const key = "amed-lvlstory-" + (entry.code || "x") + "-" + L.tier;
+    try { if (localStorage.getItem(key)) return; } catch (_) {}
+    const story = await makeLevelStory(entry, L);
+    await storyPopup(story, key, tr("lvlTitle", { level: L.label }), tr("lvlHead", { level: L.label }));
+  }
+
   let storyShown = false;
   async function maybeStory(entry) {
     if (storyShown || !entry || !entry.p) return;
