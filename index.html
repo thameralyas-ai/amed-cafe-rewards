@@ -589,7 +589,7 @@ footer p { margin: 0; }
       try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
-    r.append(el("button", { type: "button", class: "share", text: tr("shareBtn"), onclick: () => shareImage(entry) }));
+    // Instagram share button hidden for now (iPhone blocks the share sheet after drawing the image).
     r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
     if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
