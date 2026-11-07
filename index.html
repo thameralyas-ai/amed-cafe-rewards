@@ -229,6 +229,7 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 .lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
 @media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
 
+.ver { font-size: .7rem; opacity: .6; }
 footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
 footer p { margin: 0; }
 </style>
@@ -303,6 +304,7 @@ footer p { margin: 0; }
   <footer>
     <p data-t="privacy"></p>
     <p id="foot"></p>
+    <p class="ver">Card design v2 · lounge</p>
   </footer>
 </main>
 
@@ -643,7 +645,7 @@ footer p { margin: 0; }
   $("installBtn").addEventListener("click", async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); try { await deferredPrompt.userChoice; } catch (_) {} deferredPrompt = null; $("installBox").hidden = true; });
   const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
   if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone && location.hostname.endsWith("github.io")) { $("installBox").hidden = false; $("iosTip").hidden = false; }
-  if ("serviceWorker" in navigator && location.hostname.endsWith("github.io")) { try { navigator.serviceWorker.register("sw.js").catch(() => {}); } catch (_) {} }
+  if ("serviceWorker" in navigator && location.hostname.endsWith("github.io")) { try { navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((r) => r.update()).catch(() => {}); } catch (_) {} }
 
   let start = (location.hash || "").replace("#", "");
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
