@@ -12,28 +12,31 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Amed Cafe">
-<meta name="theme-color" content="#1F4B3A">
+<meta name="theme-color" content="#F3EADF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C120D" media="(prefers-color-scheme: dark)">
 <title>Amed Cafe Rewards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <style>
 /* Layout: one column for a phone in the hand — brand + language, "check your card", the result, then how it works. */
+/* Coffee palette: Latte in light mode, Espresso in dark mode */
 :root {
   --logo-filter: none;
-  --bg: #EDF0EB;
-  --surface: #FFFFFF;
-  --ink: #1C231E;
-  --muted: #5B675E;
-  --line: #D3DAD2;
-  --accent: #1F5C45;
+  --bg: #F3EADF;
+  --surface: #FFFCF8;
+  --ink: #2B1A12;
+  --muted: #6B5446;
+  --line: #E3D4C3;
+  --accent: #6F4E37;
   --accent-ink: #FFFFFF;
-  --accent-soft: #DCEAE2;
-  --card: #1F4B3A;
-  --card-ink: #F3EFE6;
-  --card-dim: rgba(243,239,230,.28);
-  --stamp: #D9A15B;
-  --stamp-ink: #3A2412;
+  --accent-soft: #EADBC8;
+  --hl: #8B5A3C;
+  --card: #2A1A12;
+  --card-ink: #F5EDE3;
+  --card-dim: rgba(245,237,227,.28);
+  --stamp: #A9784F;
+  --stamp-ink: #FFFFFF;
   --danger: #A3342C;
   --f-display: "Gloock", "Georgia", "Times New Roman", serif;
   --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -41,18 +44,18 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111612; --surface: #1A201C; --ink: #E6EBE5; --muted: #98A59B; --line: #2C3530;
-    --accent: #62B48E; --accent-ink: #0C1912; --accent-soft: #1F3329;
-    --card: #1C3A2E; --card-ink: #F1ECE1; --card-dim: rgba(241,236,225,.22);
-    --stamp: #E0AC69; --stamp-ink: #2E1C0E; --danger: #E3786E; --logo-filter: invert(1);
+    --bg: #1C120D; --surface: #2A1C15; --ink: #F3E9DC; --muted: #C4B09C; --line: #3F2D23;
+    --accent: #D4A373; --accent-ink: #1C120D; --accent-soft: #3A281E; --hl: #E3B27D;
+    --card: #2A1C15; --card-ink: #F3E9DC; --card-dim: rgba(243,233,220,.22);
+    --stamp: #C08552; --stamp-ink: #1C120D; --danger: #E3786E; --logo-filter: invert(1);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111612; --surface: #1A201C; --ink: #E6EBE5; --muted: #98A59B; --line: #2C3530;
-  --accent: #62B48E; --accent-ink: #0C1912; --accent-soft: #1F3329;
-  --card: #1C3A2E; --card-ink: #F1ECE1; --card-dim: rgba(241,236,225,.22);
-  --stamp: #E0AC69; --stamp-ink: #2E1C0E; --danger: #E3786E; --logo-filter: invert(1);
+  --bg: #1C120D; --surface: #2A1C15; --ink: #F3E9DC; --muted: #C4B09C; --line: #3F2D23;
+  --accent: #D4A373; --accent-ink: #1C120D; --accent-soft: #3A281E; --hl: #E3B27D;
+  --card: #2A1C15; --card-ink: #F3E9DC; --card-dim: rgba(243,233,220,.22);
+  --stamp: #C08552; --stamp-ink: #1C120D; --danger: #E3786E; --logo-filter: invert(1);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +85,7 @@ button, input { font: inherit; color: inherit; }
 .hero .tag { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin: 0 0 8px; }
 body.rtl .hero .tag { letter-spacing: 0; }
 .hero h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2.1rem, 9vw, 3.1rem); line-height: 1.08; margin: 0 0 10px; text-wrap: balance; }
-.hero h1 em { font-style: normal; color: var(--stamp); }
+.hero h1 em { font-style: normal; color: var(--hl); }
 .hero p { margin: 0; color: var(--muted); max-width: 46ch; }
 
 .check { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 10px; }
@@ -607,7 +610,7 @@ footer p { margin: 0; }
     const st = document.documentElement.style; for (const k of PAGE_VARS) st.removeProperty(k); st.colorScheme = "";
     delete document.body.dataset.level;
     const logo = document.querySelector(".brand .logo"); if (logo) logo.src = "logo.png";
-    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#1F4B3A";
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = matchMedia("(prefers-color-scheme: dark)").matches ? "#1C120D" : "#F3EADF";
   }
   // Signed in: hide the sign-in parts; the phone remembers the card (not the PIN) until Sign out.
   function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
