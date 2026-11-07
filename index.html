@@ -230,6 +230,9 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 @media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
 
 .ver { font-size: .7rem; opacity: .6; }
+body { transition: background-color .35s ease, color .35s ease; }
+@media (prefers-reduced-motion: reduce) { body { transition: none; } }
+body[data-level] .lc { border: 1px solid var(--line); }
 .welcome { display: grid; gap: 4px; }
 .welcome h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(1.9rem, 8vw, 2.4rem); line-height: 1.1; text-wrap: balance; }
 body.rtl .welcome h2 { font-weight: 800; }
@@ -373,7 +376,7 @@ footer p { margin: 0; }
       levelsTitle: "ئاستێن VIP", levelRow: "پشتی {n} سەرەدانان",
       privacy: "ئەم ژمارا مۆبایلا تە تنێ بۆ کارتا دلسۆزیێ بکاردئینین، و ئەگەر تو رازی بووی، بۆ هنارتنا نامەیێن واتسئاپێ دەربارەی خەلاتێن تە.",
       updated: "دووماهیک نووکرنا کارتان {date} دەمژمێر {time}. دبیت مۆرێن چەند دەمژمێرێن دووماهیێ هێشتا دیار نەبن.",
-      rulesTitle: "باشە بزانی", rLimit: "هەتا {n} مۆرێن {card} د رۆژەکێ دا.", rExpiry: "خەلاتێن بێ بەرامبەر دڤێت د ماوێ {n} رۆژان دا بێنە بکارئینان.", rRef: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو {n} مۆرێن زێدە وەردگری.", rBday: "دیاریا رۆژبوونێ: {reward} د حەفتیا رۆژبوونا تە دا. رۆژبوونا خۆ ل کاونتەری بێژە.", rPin: "ژمارا خۆ یا نهێنی بۆ خۆ بهێلە. ستاف دشێن یەکا نوو بدەنە تە.",
+      rulesTitle: "باشە بزانی", rLimit: "هەتا {n} مۆرێن {card} د رۆژەکێ دا.", rExpiry: "خەلاتێن بێ بەرامبەر دڤێت د ماوێ {n} رۆژان دا بێنە بکارئینان.", rRef: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو {n} مۆرێن زێدە وەردگری.", rRef1: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو مۆرەکێ زێدە وەردگری.", rBday: "دیاریا رۆژبوونێ: {reward} د حەفتیا رۆژبوونا تە دا. رۆژبوونا خۆ ل کاونتەری بێژە.", rPin: "ژمارا خۆ یا نهێنی بۆ خۆ بهێلە. ستاف دشێن یەکا نوو بدەنە تە.",
       offersTitle: "پێشکێشی و بۆنە", xStamps: "×{m} مۆر", everyDay: "هەمی رۆژ",
       hi: "سلاڤ {name}،", toGoTpl: "{n} ماینە", until: "بۆ {reward}",
       nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
@@ -391,7 +394,7 @@ footer p { margin: 0; }
     lvMember: "Member", lvSilver: "Silver member", lvGold: "Gold member", lvPlatinum: "Platinum member", lvGeneric: "{level} member",
     forgot: "Forgot your PIN?", forgotMsg: "Hi Amed Cafe, I forgot my loyalty card PIN. My phone number is: ", joinBtn: "Join on WhatsApp", joinMsg: "Hi Amed Cafe! I'd like to join the loyalty card. My name is: ",
     install: "Add to home screen", iosTip: "On iPhone: tap Share, then “Add to Home Screen”.",
-    rulesTitle: "Good to know", rLimit: "Up to {n} {card} stamps per day.", rExpiry: "Free rewards must be used within {n} days.", rRef: "Invite a friend: when they join, you get {n} bonus stamp(s).", rBday: "Birthday gift: a {reward} in your birthday week. Tell us your birthday at the counter.", rPin: "Keep your PIN private. Staff can give you a new one.",
+    rulesTitle: "Good to know", rLimit: "Up to {n} stamps a day on your {card} card.", rExpiry: "Free rewards must be used within {n} days.", rRef: "Invite a friend: when they join, you get {n} bonus stamps.", rRef1: "Invite a friend: when they join, you get a bonus stamp.", rBday: "Birthday gift: a {reward} in your birthday week. Tell us your birthday at the counter.", rPin: "Keep your PIN private. Staff can give you a new one.",
     offersTitle: "Offers & events", xStamps: "×{m} stamps", everyDay: "Every day",
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
@@ -402,7 +405,7 @@ footer p { margin: 0; }
     lvMember: "عضو", lvSilver: "عضو فضي", lvGold: "عضو ذهبي", lvPlatinum: "عضو بلاتيني", lvGeneric: "عضو {level}",
     forgot: "نسيت الرمز السري؟", forgotMsg: "مرحباً Amed Cafe، نسيت الرمز السري لبطاقة الولاء. رقم هاتفي: ", joinBtn: "انضم عبر واتساب", joinMsg: "مرحباً Amed Cafe! أود الانضمام إلى بطاقة الولاء. اسمي: ",
     install: "أضف إلى الشاشة الرئيسية", iosTip: "على iPhone: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».",
-    rulesTitle: "معلومات مهمة", rLimit: "حتى {n} أختام {card} في اليوم.", rExpiry: "يجب استخدام المكافآت المجانية خلال {n} يوماً.", rRef: "ادعُ صديقاً: عندما ينضم تحصل على {n} ختم إضافي.", rBday: "هدية عيد الميلاد: {reward} في أسبوع عيد ميلادك. أخبرنا بتاريخ ميلادك عند الكاونتر.", rPin: "احتفظ برمزك السري لنفسك. يمكن للفريق إعطاؤك رمزاً جديداً.",
+    rulesTitle: "معلومات مهمة", rLimit: "حتى {n} أختام {card} في اليوم.", rExpiry: "يجب استخدام المكافآت المجانية خلال {n} يوماً.", rRef: "ادعُ صديقاً: عندما ينضم تحصل على {n} ختم إضافي.", rRef1: "ادعُ صديقاً: عندما ينضم تحصل على ختم إضافي.", rBday: "هدية عيد الميلاد: {reward} في أسبوع عيد ميلادك. أخبرنا بتاريخ ميلادك عند الكاونتر.", rPin: "احتفظ برمزك السري لنفسك. يمكن للفريق إعطاؤك رمزاً جديداً.",
     offersTitle: "العروض والفعاليات", xStamps: "×{m} أختام", everyDay: "كل يوم",
     shareBtn: "شارك على إنستغرام", shareReady: "{reward} جاهز لي في Amed Cafe!", shareProgress: "{s} من {n} أختام في Amed Cafe", shareSub: "اشترِ {n} واحصل على ال{nth} مجاناً", shareSaved: "تم حفظ الصورة. انشرها على إنستغرام وأشِر إلينا!",
   });
@@ -477,7 +480,7 @@ footer p { margin: 0; }
     if (R) {
       for (const p of DATA.programs) if (R.limits && R.limits[p.id] > 0) rl.append(el("li", { text: tr("rLimit", { n: R.limits[p.id], card: lang === "en" ? p.name.toLowerCase() : pname(p) }) }));
       if (R.expiryDays > 0) rl.append(el("li", { text: tr("rExpiry", { n: R.expiryDays }) }));
-      if (R.referral && R.referral.enabled) rl.append(el("li", { text: tr("rRef", { n: R.referral.bonus || 1 }) }));
+      if (R.referral && R.referral.enabled) rl.append(el("li", { text: (R.referral.bonus || 1) === 1 ? tr("rRef1") : tr("rRef", { n: R.referral.bonus }) }));
       if (R.birthday && R.birthday.enabled) { const bp = DATA.programs.find((p) => p.id === R.birthday.program) || DATA.programs[0]; rl.append(el("li", { text: tr("rBday", { reward: preward(bp) }) })); }
       rl.append(el("li", { text: tr("rPin") }));
     }
@@ -544,7 +547,7 @@ footer p { margin: 0; }
     const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
     const T0 = p.target, s = Math.min(stamps, T0), left = T0 - s;
     const L = levelInfo(entry.v || 0), th = THEMES[L.tier];
-    setSignedIn(true);
+    setSignedIn(true); applyPageTheme(L.tier);
     r.append(el("div", { class: "welcome" }, el("h2", { text: entry.fn ? tr("welcomeName", { name: entry.fn }) : tr("welcomeNoName") }), el("p", { text: tr("welcomeSub") })));
     const card = el("article", { class: "lc" + (L.tier === "platinum" ? " lc-light" : "") });
     for (const [k, v] of Object.entries({ bg: th.bg, text: th.text, accent: th.accent, muted: th.muted, soft: th.soft, rail: th.rail, border: th.border, dim: th.dim, panel: th.panel, well: th.well, hi: th.hi, on: th.on })) card.style.setProperty("--lc-" + k, v);
@@ -587,12 +590,31 @@ footer p { margin: 0; }
     r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
     if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
+  // Signed in: the whole page takes the member's level style (colours, logo, panels); Sign out restores the normal page.
+  const PAGE_BG = { member: "#120E0C", silver: "#0F1216", gold: "#0F1214", platinum: "#E2E6EA" };
+  const PAGE_VARS = ["--bg", "--surface", "--ink", "--muted", "--line", "--accent", "--accent-ink", "--accent-soft", "--stamp", "--stamp-ink", "--card", "--card-ink", "--card-dim", "--logo-filter"];
+  function applyPageTheme(tier) {
+    const th = THEMES[tier], st = document.documentElement.style;
+    const v = { "--bg": PAGE_BG[tier], "--surface": th.panel, "--ink": th.text, "--muted": tier === "platinum" ? "#4C545D" : th.muted, "--line": th.border, "--accent": th.accent, "--accent-ink": th.on,
+      "--accent-soft": "rgba(" + th.glow + ",.16)", "--stamp": th.accent, "--stamp-ink": th.on, "--card": th.bg, "--card-ink": th.text, "--card-dim": "rgba(" + th.glow + ",.3)", "--logo-filter": "none" };
+    for (const [k, val] of Object.entries(v)) st.setProperty(k, val);
+    st.colorScheme = tier === "platinum" ? "light" : "dark";
+    document.body.dataset.level = tier;
+    const logo = document.querySelector(".brand .logo"); if (logo) logo.src = th.logo;
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = PAGE_BG[tier];
+  }
+  function clearPageTheme() {
+    const st = document.documentElement.style; for (const k of PAGE_VARS) st.removeProperty(k); st.colorScheme = "";
+    delete document.body.dataset.level;
+    const logo = document.querySelector(".brand .logo"); if (logo) logo.src = "logo.png";
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#1F4B3A";
+  }
   // Signed in: hide the sign-in parts; the phone remembers the card (not the PIN) until Sign out.
   function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
   function signOut() {
     try { localStorage.removeItem("amed-session"); } catch (_) {}
     lastEntry = null; activeProg = null; $("result").hidden = true; $("result").textContent = "";
-    $("phone").value = ""; $("pin").value = ""; setSignedIn(false); window.scrollTo({ top: 0 });
+    $("phone").value = ""; $("pin").value = ""; setSignedIn(false); clearPageTheme(); window.scrollTo({ top: 0 });
   }
 
   // Instagram-ready image (1080×1350) of the customer's card, shared or saved from the browser.
