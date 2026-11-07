@@ -395,6 +395,7 @@ footer p { margin: 0; }
       lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
       storyHead: "{reward} بۆ من ئامادەیە!", storyAt: "ل Amed Cafe", storyTitle: "{reward} یا تە ئامادەیە!", storyAsk: "ڤێ مزگینیێ ل سەر ستۆریا ئینستاگرامێ پارڤە بکە و مە تاگ بکە.", storyShare: "ل سەر ستۆریا ئینستاگرامێ پارڤە بکە", storyLater: "نوکە نە", storySave: "تبلا خۆ ل سەر وێنەی بهێلە و د وێنەیێن خۆ دا پاشەکەفت بکە، پاشان بۆ ستۆریا ئینستاگرامێ زێدە بکە.",
       lvlHead: "بووم {level}!", lvlTitle: "تو بوویە {level}!", visitsN: "{n} سەرەدان", twMember: "ئەندام", twSilver: "زیڤین", twGold: "زێڕین", twPlatinum: "پلاتینی",
+      toNextOr: "{n} سەرەدانێن دی یان {s} مۆرێن دی بۆ {level}", levelRowOr: "پشتی {n} سەرەدانان یان {s} مۆران",
       welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
@@ -402,6 +403,7 @@ footer p { margin: 0; }
     },
   };
   Object.assign(T.en, {
+    toNextOr: "{n} more visits or {s} more stamps to {level}", levelRowOr: "after {n} visits or {s} stamps",
     lvlHead: "I'm now a {level}!", lvlTitle: "You're now a {level}!", visitsN: "{n} visits", twMember: "Member", twSilver: "Silver", twGold: "Gold", twPlatinum: "Platinum",
     storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
     welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
@@ -415,6 +417,7 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    toNextOr: "باقي {n} زيارة أو {s} ختم للوصول إلى {level}", levelRowOr: "بعد {n} زيارة أو {s} ختم",
     lvlHead: "أصبحت {level}!", lvlTitle: "أصبحت الآن {level}!", visitsN: "{n} زيارة", twMember: "عضو", twSilver: "فضي", twGold: "ذهبي", twPlatinum: "بلاتيني",
     storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
     welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
@@ -479,7 +482,7 @@ footer p { margin: 0; }
     }
     const lv = (DATA && DATA.levels) || [];
     $("levelsSec").hidden = !lv.length; const lb = $("levels"); lb.textContent = "";
-    for (const l of [...lv].sort((a, b) => a.visits - b.visits)) lb.append(el("div", {}, el("b", { text: lvName(l) }), el("span", { text: tr("levelRow", { n: l.visits }) + (lvPerk(l) ? " · " + lvPerk(l) : "") })));
+    for (const l of [...lv].sort((a, b) => a.visits - b.visits)) lb.append(el("div", {}, el("b", { text: lvName(l) }), el("span", { text: (Number(l.stamps) > 0 ? tr("levelRowOr", { n: l.visits, s: l.stamps }) : tr("levelRow", { n: l.visits })) + (lvPerk(l) ? " · " + lvPerk(l) : "") })));
     const ol = $("offerList"); ol.textContent = "";
     const DN = (i) => dfmt(new Date(2024, 0, 7 + i), { weekday: "short" });
     for (const ev of (DATA && DATA.events) || []) {
@@ -532,10 +535,12 @@ footer p { margin: 0; }
   };
   const lvName = (l) => { const n = (l && l.name) || ""; return /plat/i.test(n) ? tr("nmPlatinum") : /gold/i.test(n) ? tr("nmGold") : /silver/i.test(n) ? tr("nmSilver") : n; };
   const lvPerk = (l) => (DATA && DATA.showPerks && l && ((lang !== "en" && l["perk_" + lang]) || l.perk)) || "";
-  function levelInfo(v) {
+  const stampsOf = (entry) => Object.values((entry && entry.p) || {}).reduce((n, a) => n + (a[3] || 0), 0);
+  function levelInfo(v, st = 0) {
     const lv = [...((DATA && DATA.levels) || [])].sort((a, b) => a.visits - b.visits);
-    let cur = null, idx = -1; lv.forEach((l, i) => { if (v >= l.visits) { cur = l; idx = i; } });
-    const next = lv.find((l) => v < l.visits) || null;
+    const hit = (l) => v >= l.visits || (Number(l.stamps) > 0 && st >= Number(l.stamps));
+    let cur = null, idx = -1; lv.forEach((l, i) => { if (hit(l)) { cur = l; idx = i; } });
+    const next = lv.slice(idx + 1).find((l) => !hit(l)) || null;
     let tier = "member";
     if (cur) { const n = (cur.name || "").toLowerCase(); tier = /plat/.test(n) ? "platinum" : /gold/.test(n) ? "gold" : /silver/.test(n) ? "silver" : ["silver", "gold", "platinum"][Math.min(idx, 2)]; }
     const label = !cur ? tr("lvMember") : tier === "silver" && /silver/i.test(cur.name) ? tr("lvSilver") : tier === "gold" && /gold/i.test(cur.name) ? tr("lvGold") : tier === "platinum" && /plat/i.test(cur.name) ? tr("lvPlatinum") : tr("lvGeneric", { level: cur.name });
@@ -564,7 +569,7 @@ footer p { margin: 0; }
     const p = progs.find((q) => q.id === activeProg);
     const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
     const T0 = p.target, s = Math.min(stamps, T0), left = T0 - s;
-    const L = levelInfo(entry.v || 0), th = THEMES[L.tier];
+    const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier];
     setSignedIn(true); applyPageTheme(L.tier);
     r.append(el("div", { class: "welcome" }, el("h2", { text: entry.fn ? tr("welcomeName", { name: entry.fn }) : tr("welcomeNoName") }), el("p", { text: tr("welcomeSub") })));
     const card = el("article", { class: "lc" + (L.tier === "platinum" ? " lc-light" : "") });
@@ -596,7 +601,7 @@ footer p { margin: 0; }
     const stats = el("div", { class: "lc-stats" });
     for (const [n, k] of [[entry.v || 0, "visits"], [redeemed, "collected"], [total, "stamped"]]) stats.append(el("div", {}, el("b", { text: String(n) }), el("span", { text: tr(k) })));
     card.append(stats);
-    if (L.next) card.append(el("p", { class: "lc-next", text: tr("toNext", { n: L.next.visits - (entry.v || 0), level: lvName(L.next) }) + (lvPerk(L.cur) ? " · " + tr("perk", { perk: lvPerk(L.cur) }) : "") }));
+    if (L.next) card.append(el("p", { class: "lc-next", text: (Number(L.next.stamps) > 0 ? tr("toNextOr", { n: L.next.visits - (entry.v || 0), s: Math.max(0, Number(L.next.stamps) - stampsOf(entry)), level: lvName(L.next) }) : tr("toNext", { n: L.next.visits - (entry.v || 0), level: lvName(L.next) })) + (lvPerk(L.cur) ? " · " + tr("perk", { perk: lvPerk(L.cur) }) : "") }));
     else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
     if (entry.code) {
       const q = el("div", { class: "lc-qrimg" });
@@ -611,7 +616,7 @@ footer p { margin: 0; }
   /* ---------- Instagram story pop-up: only when a free reward is ready, once per reward ---------- */
   const loadImg = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
   async function makeStory(entry, p) {
-    const L = levelInfo(entry.v || 0), th = THEMES[L.tier], W = 1080, H = 1920;
+    const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier], W = 1080, H = 1920;
     const cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
     try { await document.fonts.ready; } catch (_) {}
     const rtl = lang !== "en", disp = rtl ? '800 92px "Noto Sans Arabic"' : '400 104px "Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
@@ -687,7 +692,7 @@ footer p { margin: 0; }
     });
   }
   async function maybeLevelStory(entry) {
-    const L = levelInfo(entry.v || 0); if (L.tier === "member") return;
+    const L = levelInfo(entry.v || 0, stampsOf(entry)); if (L.tier === "member") return;
     const key = "amed-lvlstory-" + (entry.code || "x") + "-" + L.tier;
     try { if (localStorage.getItem(key)) return; } catch (_) {}
     const story = await makeLevelStory(entry, L);
@@ -756,7 +761,7 @@ footer p { margin: 0; }
     lines.push(line); lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh)); return lines.length * lh;
   }
   async function shareImage(entry) {
-    const th = THEMES[levelInfo(entry.v || 0).tier], W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    const th = THEMES[levelInfo(entry.v || 0, stampsOf(entry)).tier], W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
     try { await document.fonts.ready; } catch (_) {}
     const rtl = lang !== "en", font = rtl ? '"Noto Sans Arabic"' : '"Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
     ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
