@@ -241,6 +241,15 @@ body[data-level] .lc { border: 1px solid var(--line); }
 body.rtl .welcome h2 { font-weight: 800; }
 .welcome p { margin: 0; color: var(--muted); }
 .signout { justify-self: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 10px 22px; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
+.st-ov { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.6); display: grid; place-items: center; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); overflow-y: auto; }
+.st-box { background: var(--surface); color: var(--ink); border-radius: 22px; padding: 20px; width: 100%; max-width: 380px; display: grid; gap: 12px; text-align: center; }
+.st-box h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.15; }
+body.rtl .st-box h2 { font-weight: 800; }
+.st-box p { margin: 0; color: var(--muted); }
+.st-img { width: 58%; max-width: 100%; margin: 0 auto; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.25); display: block; }
+.st-share { border: 0; border-radius: 14px; min-height: 52px; font: inherit; font-weight: 800; color: #fff; cursor: pointer; background: linear-gradient(90deg, #833AB4, #E1306C 60%, #F77737); }
+.st-later { border: 0; background: none; color: var(--muted); font: inherit; font-weight: 700; min-height: 44px; cursor: pointer; }
+.st-tip { font-size: .9rem; color: var(--ink) !important; background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
 footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
 footer p { margin: 0; }
 </style>
@@ -384,6 +393,7 @@ footer p { margin: 0; }
       hi: "سلاڤ {name}،", toGoTpl: "{n} ماینە", until: "بۆ {reward}",
       nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
       lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
+      storyHead: "{reward} بۆ من ئامادەیە!", storyAt: "ل Amed Cafe", storyTitle: "{reward} یا تە ئامادەیە!", storyAsk: "ڤێ مزگینیێ ل سەر ستۆریا ئینستاگرامێ پارڤە بکە و مە تاگ بکە.", storyShare: "ل سەر ستۆریا ئینستاگرامێ پارڤە بکە", storyLater: "نوکە نە", storySave: "تبلا خۆ ل سەر وێنەی بهێلە و د وێنەیێن خۆ دا پاشەکەفت بکە، پاشان بۆ ستۆریا ئینستاگرامێ زێدە بکە.",
       welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
@@ -391,6 +401,7 @@ footer p { margin: 0; }
     },
   };
   Object.assign(T.en, {
+    storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
     welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
     hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
     nmSilver: "Silver", nmGold: "Gold", nmPlatinum: "Platinum",
@@ -402,6 +413,7 @@ footer p { margin: 0; }
     shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
   });
   Object.assign(T.ar, {
+    storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
     welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
     hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
     nmSilver: "المستوى الفضي", nmGold: "المستوى الذهبي", nmPlatinum: "المستوى البلاتيني",
@@ -589,10 +601,73 @@ footer p { margin: 0; }
       try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
-    // Instagram share button hidden for now (iPhone blocks the share sheet after drawing the image).
+    setTimeout(() => maybeStory(entry), 700);
     r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
     if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
+  /* ---------- Instagram story pop-up: only when a free reward is ready, once per reward ---------- */
+  const loadImg = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  async function makeStory(entry, p) {
+    const L = levelInfo(entry.v || 0), th = THEMES[L.tier], W = 1080, H = 1920;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    try { await document.fonts.ready; } catch (_) {}
+    const rtl = lang !== "en", disp = rtl ? '800 92px "Noto Sans Arabic"' : '400 104px "Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    // faint Kurdistan sun
+    ctx.save(); ctx.globalAlpha = .06; ctx.fillStyle = th.accent; ctx.translate(560, 1180); ctx.scale(3.4, 3.4); ctx.translate(-150, -150);
+    const pts = SUN.split(" ").map((q) => q.split(",").map(Number)); ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(150, 150, 70, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    const logo = await loadImg(th.logo); if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 150, lw, lh); }
+    ctx.textAlign = "center"; ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.text; ctx.font = disp;
+    const lines = []; let line = ""; for (const w of tr("storyHead", { reward: preward(p) }).split(" ")) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > 900 && line) { lines.push(line); line = w; } else line = t; } lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l, W / 2, 560 + i * 118));
+    const top = 560 + lines.length * 118 + 40;
+    if (isShisha(p)) { const ph = await loadImg(th.photo); if (ph) { const h = 760, w = h * ph.width / ph.height; ctx.drawImage(ph, (W - w) / 2, top, w, h); } }
+    else {
+      ctx.save(); ctx.translate(W / 2 - 115 * 2.4, top + 40); ctx.scale(2.4, 2.4);
+      const body2 = new Path2D("M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z");
+      ctx.strokeStyle = th.accent; ctx.lineCap = "round"; ctx.globalAlpha = .45; ctx.lineWidth = 4; ctx.stroke(new Path2D("M92 8c-8 9 8 14 0 24M120 4c-8 9 8 14 0 24M148 8c-8 9 8 14 0 24")); ctx.globalAlpha = 1;
+      ctx.lineWidth = 9; ctx.stroke(new Path2D("M184 84h14a30 30 0 0 1 0 60h-22"));
+      ctx.fillStyle = th.accent; ctx.fill(body2); ctx.fillStyle = th.hi; ctx.fillRect(43, 44, 143, 7);
+      ctx.lineWidth = 7; ctx.lineJoin = "round"; ctx.stroke(body2); ctx.restore();
+    }
+    // a full row of stamps ending in a lit FREE
+    const n = p.target + 1, r = 34, gap = 22, gw = n * r * 2 + (n - 1) * gap, y = 1660; ctx.direction = "ltr";
+    for (let i = 0; i < n; i++) {
+      const cx = (W - gw) / 2 + r + i * (2 * r + gap); ctx.beginPath(); ctx.arc(cx, y, r, 0, Math.PI * 2); ctx.fillStyle = th.accent; ctx.fill();
+      if (i === n - 1) { ctx.fillStyle = th.on; ctx.font = '800 20px "Figtree", sans-serif'; ctx.fillText("FREE", cx, y + 7); }
+    }
+    ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.accent; ctx.font = "700 46px " + body; ctx.fillText(tr("storyAt"), W / 2, 1790);
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr"; ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, 1860);
+    const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
+    return { file: new File([blob], "amed-cafe-story.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
+  }
+  let storyShown = false;
+  async function maybeStory(entry) {
+    if (storyShown || !entry || !entry.p) return;
+    const p = DATA.programs.find((q) => entry.p[q.id] && entry.p[q.id][1] > 0); if (!p) return;
+    const key = "amed-story-" + (entry.code || "x") + "-" + p.id + "-" + entry.p[p.id][2] + "-" + entry.p[p.id][1];
+    try { if (localStorage.getItem(key)) return; } catch (_) {}
+    storyShown = true;
+    const story = await makeStory(entry, p);
+    const done = () => { try { localStorage.setItem(key, "1"); } catch (_) {} ov.remove(); };
+    const tip = el("p", { class: "st-tip", hidden: "" , text: tr("storySave") });
+    const shareBtn = el("button", { type: "button", class: "st-share", text: tr("storyShare"), onclick: () => {
+      try {
+        if (navigator.canShare && navigator.canShare({ files: [story.file] })) { navigator.share({ files: [story.file] }).then(done).catch((e) => { if (!e || e.name !== "AbortError") tip.hidden = false; }); return; }
+      } catch (_) {}
+      tip.hidden = false;
+    } });
+    const ov = el("div", { class: "st-ov", role: "dialog", "aria-modal": "true", "aria-label": tr("storyTitle", { reward: preward(p) }) },
+      el("div", { class: "st-box" },
+        el("h2", { text: tr("storyTitle", { reward: preward(p) }) }),
+        el("p", { text: tr("storyAsk") }),
+        el("img", { src: story.url, alt: tr("storyHead", { reward: preward(p) }), class: "st-img" }),
+        tip, shareBtn,
+        el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done })));
+    document.body.append(ov); shareBtn.focus();
+  }
+
   // Signed in: the whole page takes the member's level style (colours, logo, panels); Sign out restores the normal page.
   const PAGE_BG = { member: "#120E0C", silver: "#0F1216", gold: "#0F1214", platinum: "#E2E6EA" };
   const PAGE_VARS = ["--bg", "--surface", "--ink", "--muted", "--line", "--accent", "--accent-ink", "--accent-soft", "--stamp", "--stamp-ink", "--card", "--card-ink", "--card-dim", "--logo-filter"];
@@ -616,7 +691,7 @@ footer p { margin: 0; }
   function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
   function signOut() {
     try { localStorage.removeItem("amed-session"); } catch (_) {}
-    lastEntry = null; activeProg = null; $("result").hidden = true; $("result").textContent = "";
+    lastEntry = null; activeProg = null; storyShown = false; $("result").hidden = true; $("result").textContent = "";
     $("phone").value = ""; $("pin").value = ""; setSignedIn(false); clearPageTheme(); window.scrollTo({ top: 0 });
   }
 
