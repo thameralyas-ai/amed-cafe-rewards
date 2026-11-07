@@ -500,7 +500,7 @@ footer p { margin: 0; }
     platinum: { bg: "#EEF0F2", text: "#15181C", accent: "#5E6873", muted: "#646C75", soft: "#454D56", rail: "#D3D8DE", border: "#C3CAD1", dim: "#7F8892", panel: "#FFFFFF", well: "#E3E7EB", hi: "#FFFFFF", on: "#FFFFFF", glow: "94,104,115", logo: "logo.png", photo: "shisha-silver.png", frame: "1px" },
   };
   const lvName = (l) => { const n = (l && l.name) || ""; return /plat/i.test(n) ? tr("nmPlatinum") : /gold/i.test(n) ? tr("nmGold") : /silver/i.test(n) ? tr("nmSilver") : n; };
-  const lvPerk = (l) => (l && ((lang !== "en" && l["perk_" + lang]) || l.perk)) || "";
+  const lvPerk = (l) => (DATA && DATA.showPerks && l && ((lang !== "en" && l["perk_" + lang]) || l.perk)) || "";
   function levelInfo(v) {
     const lv = [...((DATA && DATA.levels) || [])].sort((a, b) => a.visits - b.visits);
     let cur = null, idx = -1; lv.forEach((l, i) => { if (v >= l.visits) { cur = l; idx = i; } });
