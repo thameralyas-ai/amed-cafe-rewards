@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amed Cafe Staff Guide</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: one readable column — logo + language flags, numbered steps (a real sequence), then the rules. */
+:root { --bg: #EDF0EB; --surface: #FFFFFF; --ink: #1C231E; --muted: #5B675E; --line: #D3DAD2; --accent: #1F5C45; --accent-ink: #FFFFFF; --accent-soft: #DCEAE2; --stamp: #D9A15B; --logo-filter: none;
+  --f-display: "Gloock", Georgia, serif; --f-body: "Figtree", system-ui, sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111612; --surface: #1A201C; --ink: #E6EBE5; --muted: #98A59B; --line: #2C3530; --accent: #62B48E; --accent-ink: #0C1912; --accent-soft: #1F3329; --stamp: #E0AC69; --logo-filter: invert(1); color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #111612; --surface: #1A201C; --ink: #E6EBE5; --muted: #98A59B; --line: #2C3530; --accent: #62B48E; --accent-ink: #0C1912; --accent-soft: #1F3329; --stamp: #E0AC69; --logo-filter: invert(1); color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+body.rtl { --f-body: "Noto Sans Arabic", system-ui, sans-serif; --f-display: "Noto Sans Arabic", serif; }
+main { max-width: 720px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+header img { width: min(200px, 50vw); height: auto; filter: var(--logo-filter); }
+.langs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 3px; }
+.langs button { border: 0; background: none; border-radius: 99px; padding: 5px 11px 5px 7px; font: inherit; font-weight: 700; font-size: .85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; color: inherit; font-family: "Figtree", "Noto Sans Arabic", sans-serif; min-height: 36px; }
+.langs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.langs .flag { width: 27px; height: 18px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.15); display: block; }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2rem, 7vw, 2.8rem); line-height: 1.1; margin: 0; }
+body.rtl h1 { font-weight: 800; }
+.sub { color: var(--muted); margin: 6px 0 0; }
+ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: s; }
+ol.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 12px; counter-increment: s; break-inside: avoid; }
+ol.steps li::before { content: counter(s); width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 800; font-family: "Figtree", sans-serif; }
+ol.steps b { display: block; font-size: 1.05rem; }
+ol.steps p { margin: 2px 0 0; color: var(--muted); }
+h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 8px; }
+body.rtl h2 { letter-spacing: 0; font-size: .95rem; }
+ul.rules { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+ul.rules li { background: var(--surface); border-inline-start: 4px solid var(--stamp); border-radius: 10px; padding: 10px 14px; }
+.printbtn { justify-self: start; border: 1px solid var(--line); background: var(--surface); color: inherit; border-radius: 10px; padding: 10px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+@media print { body { background: #fff; color: #000; padding: 0; } .langs, .printbtn { display: none !important; } ol.steps li, ul.rules li { border-color: #bbb; } header img { filter: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="logo.png" alt="Amed Cafe" width="640" height="289">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg><span>بادینی</span></button>
+      <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg><span>العربية</span></button>
+      <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg><span>English</span></button>
+    </div>
+  </header>
+  <div><h1 id="title"></h1><p class="sub" id="sub"></p></div>
+  <ol class="steps" id="steps"></ol>
+  <section><h2 id="rulesT"></h2><ul class="rules" id="rules"></ul></section>
+  <button type="button" class="printbtn" id="printBtn"></button>
+</main>
+<script>
+(() => {
+  const G = {"en": {"dir": "ltr", "title": "Staff guide", "sub": "How to use the Amed Cafe loyalty tool at the counter.", "print": "Print this guide", "steps": [["Join the staff tool", "Open the staff tool link from your WhatsApp invitation and sign in to Claude with the email you gave the owner. Type your staff code (for example AMED-K7P2) and tap Join. Choose your language with the flags at the top."], ["Find the customer", "Type the customer's phone number, name or member code in the search box and press Enter. If they show their QR code from their phone, their card opens directly."], ["Add stamps", "Tap the big green button for what they bought: +1 Drinks or +1 Shisha. For several items use +2 or +3. During an offer, extra stamps are added automatically. If the button is grey, the customer reached today's limit."], ["Give a free reward", "When a card is full the FREE circle lights up. Give the drink or shisha, then tap Give reward. Birthday gifts appear as a separate button during the customer's birthday week."], ["Fix a mistake", "Tap Undo last right away. It removes the last stamp or reward on the card you are looking at."], ["Register a new customer", "Tap New member. Enter name and phone number, tick Drinks and/or Shisha, choose their message language, add their birthday if they want, and ask for WhatsApp consent. If the number is already registered, a message tells you and you can open their card. Then send the Welcome message on WhatsApp: it contains their PIN and the link to their card."], ["Messages and follow-ups", "The Follow-ups tab lists birthdays, waiting and expiring rewards, and customers who have not come for a while. Tap WhatsApp, check the message and press send, then tap Mark contacted. After a reward, ask for a rating and save it."], ["Change customer details", "Open Edit or remove member to change name, cards, language, birthday or phone number, or to make a new PIN if they forgot it."], ["Counter mode and no internet", "Counter mode shows big buttons and goes back to the search after 45 seconds. If the internet drops, keep working: a yellow bar shows how many changes are saved on the tablet, and they are sent automatically."]], "rulesT": "Rules", "rules": ["Only stamp what the customer paid for.", "Never share your staff code or let someone else use your account.", "Stamps outside opening hours (8:00 AM to 1:00 AM) need a second tap and are reported to the owner.", "If something looks wrong, ask the owner before you undo or change anything."]}, "ar": {"dir": "rtl", "title": "دليل الفريق", "sub": "طريقة استخدام أداة الولاء في Amed Cafe عند الكاونتر.", "print": "اطبع هذا الدليل", "steps": [["الانضمام إلى أداة الفريق", "افتح رابط أداة الفريق من دعوة واتساب وسجّل الدخول إلى Claude بالبريد الإلكتروني الذي أعطيته لصاحب المقهى. اكتب رمز الفريق (مثلاً AMED-K7P2) واضغط انضم. اختر لغتك من الأعلام في الأعلى."], ["ابحث عن الزبون", "اكتب رقم هاتف الزبون أو اسمه أو رمز العضو في مربع البحث واضغط Enter. إذا أظهر رمز QR من هاتفه تُفتح بطاقته مباشرة."], ["إضافة الأختام", "اضغط الزر الأخضر الكبير لما اشتراه: +1 مشروبات أو +1 أركيلة. لعدة أصناف استخدم +2 أو +3. أثناء العروض تُضاف الأختام الإضافية تلقائياً. إذا كان الزر رمادياً فقد بلغ الزبون حد اليوم."], ["إعطاء مكافأة مجانية", "عندما تمتلئ البطاقة تضيء دائرة FREE. قدّم المشروب أو الأركيلة ثم اضغط «أعطِ». هدية عيد الميلاد تظهر كزر منفصل في أسبوع عيد ميلاد الزبون."], ["تصحيح خطأ", "اضغط «تراجع عن الأخير» فوراً. يحذف آخر ختم أو مكافأة على البطاقة المفتوحة."], ["تسجيل زبون جديد", "اضغط «عضو جديد». أدخل الاسم ورقم الهاتف، واختر المشروبات و/أو الأركيلة، ولغة الرسائل، وتاريخ الميلاد إن أراد، واطلب موافقته على واتساب. إذا كان الرقم مسجلاً تظهر رسالة ويمكنك فتح بطاقته. ثم أرسل رسالة الترحيب على واتساب: فيها الرمز السري ورابط بطاقته."], ["الرسائل والمتابعات", "تبويب «المتابعات» يعرض أعياد الميلاد والمكافآت المنتظرة والتي ستنتهي والزبائن الغائبين. اضغط واتساب وراجع الرسالة وأرسلها، ثم اضغط «تم التواصل». بعد المكافأة اطلب تقييماً واحفظه."], ["تعديل بيانات الزبون", "افتح «تعديل أو حذف العضو» لتغيير الاسم أو البطاقات أو اللغة أو تاريخ الميلاد أو رقم الهاتف، أو لإنشاء رمز سري جديد إذا نسيه."], ["وضع الكاونتر وانقطاع الإنترنت", "وضع الكاونتر يعرض أزراراً كبيرة ويعود إلى البحث بعد 45 ثانية. إذا انقطع الإنترنت تابع العمل: يظهر شريط أصفر بعدد التغييرات المحفوظة على الجهاز وتُرسل تلقائياً."]], "rulesT": "القواعد", "rules": ["اختم فقط ما دفعه الزبون.", "لا تشارك رمز الفريق ولا تسمح لأحد باستخدام حسابك.", "الأختام خارج ساعات العمل (8:00 صباحاً حتى 1:00 بعد منتصف الليل) تحتاج ضغطة ثانية وتظهر لصاحب المقهى.", "إذا بدا شيء خاطئاً اسأل صاحب المقهى قبل التراجع أو التعديل."]}, "ku": {"dir": "rtl", "title": "رێبەرێ ستافی", "sub": "چاوا تووڵا دلسۆزیێ یا Amed Cafe ل کاونتەری بکاربینی.", "print": "ڤی رێبەری چاپ بکە", "steps": [["ببە ئەندامێ تووڵا ستافی", "لینکا تووڵا ستافی ژ داخوازا واتسئاپێ ڤەکە و ب وێ ئیمەیلێ بچە ناڤ Claude یا تە دایە خودانی. کۆدێ ستافی بنڤیسە (بۆ نموونە AMED-K7P2) و ل سەر «بەشدار ببە» بدە. زمانێ خۆ ب ئالایێن سەرێ هەلبژێرە."], ["کڕیاری ببینە", "ژمارا مۆبایلێ، ناڤ یان کۆدێ ئەندامی د خانەیا گەڕیانێ دا بنڤیسە و Enter بکە. ئەگەر کۆدێ QR ژ مۆبایلا خۆ نیشان بدەت، کارتا وی راستەوخۆ ڤەدبیت."], ["مۆران زێدە بکە", "ل سەر دوگمەیا کەسک یا مەزن بدە بۆ وێ تشتێ کڕی: ‎+1 ڤەخوارن یان ‎+1 نێرگەلە. بۆ چەند تشتان ‎+2 یان ‎+3 بکاربینە. د دەمێ پێشکێشیان دا مۆرێن زێدە ب خۆ دهێنە زێدەکرن. ئەگەر دوگمە بۆز بیت، کڕیار گەهشتیە سنوورێ ئەڤرۆ."], ["خەلاتا بێ بەرامبەر بدە", "دەمێ کارت تژی دبیت بازنێ FREE رۆهن دبیت. ڤەخوارن یان نێرگەلێ بدە، پاشان ل سەر «بدە» بدە. دیاریا رۆژبوونێ وەک دوگمەیەکا جودا د حەفتیا رۆژبوونا کڕیاری دا دیار دبیت."], ["خەلەتیێ راست بکە", "یەکسەر ل سەر «دووماهیکێ ڤەگەڕینە» بدە. دووماهیک مۆر یان خەلات ل سەر وێ کارتێ یا ڤەکری لادبەت."], ["کڕیارەکێ نوو تۆمار بکە", "ل سەر «ئەندامێ نوو» بدە. ناڤ و ژمارا مۆبایلێ بنڤیسە، ڤەخوارن و/یان نێرگەلە هەلبژێرە، زمانێ نامەیان، رۆژبوون ئەگەر بڤێت، و رەزامەندیا واتسئاپێ بخوازە. ئەگەر ژمارە بەری نوکە هاتبیتە تۆمارکرن، نامەیەک دیار دبیت و تو دشێی کارتا وی ڤەکەی. پاشان نامەیا خێرهاتنێ ل سەر واتسئاپێ بهنێرە: ژمارا نهێنی و لینکا کارتا وی تێدایە."], ["نامە و دویڤچوون", "تابا «دویڤچوون» رۆژبوون، خەلاتێن ل هیڤیێ و یێن ب دووماهی دهێن، و کڕیارێن ماوەیەکێ نەهاتین نیشان ددەت. ل سەر واتسئاپ بدە، نامێ بپشکنە و بهنێرە، پاشان «پەیوەندی هاتە کرن» بدە. پشتی خەلاتێ داخوازا هەلسەنگاندنێ بکە و پاشەکەفت بکە."], ["زانیاریێن کڕیاری بگوهۆڕە", "«دەستکاری یان ژێبرنا ئەندامی» ڤەکە بۆ گوهۆڕینا ناڤ، کارتان، زمانی، رۆژبوونێ یان ژمارا مۆبایلێ، یان بۆ چێکرنا ژمارەکا نهێنی یا نوو ئەگەر ژبیرا وی چووبیت."], ["شێوازێ کاونتەری و نەبوونا ئینتەرنێتێ", "شێوازێ کاونتەری دوگمەیێن مەزن نیشان ددەت و پشتی 45 چرکەیان دزڤریت بۆ گەڕیانێ. ئەگەر ئینتەرنێت قوت ببیت، کارێ خۆ بەردەوام بکە: شریتەکێ زەر ژمارا گوهۆڕینێن ل سەر ئامیری پاشەکەفتکری نیشان ددەت و ئەو ب خۆ دهێنە هنارتن."]], "rulesT": "یاسا", "rules": ["تنێ وی تشتی مۆر بکە یێ کڕیاری پارە دای.", "کۆدێ خۆ یێ ستافی پارڤە نەکە و نەهێلە کەسەکێ دی هەژمارا تە بکاربینیت.", "مۆرێن دەرڤەی دەمێن کاری (8:00 سپێدێ هەتا 1:00 پشتی نیڤا شەڤێ) پێدڤی ب دووبارە دانێ نە و بۆ خودانی دهێنە نیشاندان.", "ئەگەر تشتەک خەلەت دیار بوو، بەری ڤەگەڕاندن یان گوهۆڕینێ ژ خودانی بپرسە."]}};
+  const $ = (id) => document.getElementById(id);
+  function show(l) {
+    const g = G[l] || G.ku; l = G[l] ? l : "ku";
+    document.documentElement.lang = l === "ku" ? "ckb" : l; document.documentElement.dir = g.dir; document.body.classList.toggle("rtl", g.dir === "rtl");
+    document.title = "Amed Cafe – " + g.title;
+    $("title").textContent = g.title; $("sub").textContent = g.sub; $("rulesT").textContent = g.rulesT; $("printBtn").textContent = g.print;
+    const ol = $("steps"); ol.textContent = "";
+    for (const [h, p] of g.steps) { const li = document.createElement("li"), d = document.createElement("div"), b = document.createElement("b"), pp = document.createElement("p"); b.textContent = h; pp.textContent = p; d.append(b, pp); li.append(d); ol.append(li); }
+    const ul = $("rules"); ul.textContent = ""; for (const r of g.rules) { const li = document.createElement("li"); li.textContent = r; ul.append(li); }
+    document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === l));
+    try { localStorage.setItem("amed-guide-lang", l); } catch (_) {}
+  }
+  document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => { history.replaceState(null, "", "#" + b.dataset.lang); show(b.dataset.lang); }));
+  $("printBtn").addEventListener("click", () => window.print());
+  let start = location.hash.slice(1); if (!G[start]) { try { start = localStorage.getItem("amed-guide-lang") || "ku"; } catch (_) { start = "ku"; } }
+  show(start);
+  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+})();
+</script>
+</body>
+</html>
