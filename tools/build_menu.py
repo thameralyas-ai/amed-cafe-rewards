@@ -1,4 +1,5 @@
 import json, sys
+# Amed Cafe no longer serves food: drinks and shisha only.
 # (en, ar, ku) names; price; optional options [(en,ar,ku,price)]; optional note (en,ar,ku)
 SINGLE_DOUBLE=[("Single","سنگل","تەک",1500),("Double","دبل","دەبل",3000)]
 C=[
@@ -98,36 +99,9 @@ C=[
   (("Head change","تبديل حجر","گوهۆڕینا سەری"),5000),
   (("Half kilo of tobacco","نصف كيلو معسل","نیڤ کیلۆ مەعسەل"),20000),
   (("1 kilo of tobacco","كيلو معسل","کیلۆیەک مەعسەل"),40000)]),
- ("pizza",("Pizza","بيتزا","پیتزا"),None,[
-  (("Margherita","مارغريتا","مارگەریتا"),5000),
-  (("Vegetable","خضار","کەسکاتی"),6000),
-  (("Mushroom","فطر","کڤارک"),6000),
-  (("Chicken","دجاج","مریشک"),7000),
-  (("Meat","لحم","گۆشت"),8000),
-  (("Pepperoni (sujuk)","سجق","سۆسج"),8000),
-  (("Tuna","تونا","تونا"),8000),
-  (("Four seasons","الفصول الأربعة","چار وەرز"),8000),
-  (("Mexican","مكسيكي","مەکسیکی"),8000),
-  (("Amed mix","Amed مشكل","ئامەد تێکەل"),8000)]),
- ("pasta",("Pasta","باستا","پاستا"),None,[
-  (("Chicken Alfredo","ألفريدو دجاج","ئەلفرێدۆ مریشک"),7750),
-  (("Lasagna","لازانيا","لەزانیا"),7750)]),
- ("meals",("Meals","وجبات","ژەم"),None,[
-  (("Döner box","دونر بوكس","دۆنەر بۆکس"),5000,None,("Cola on the house","مشروب غازي ضيافة","کۆلا دیاریە")),
-  (("Chicken escalope","سكالوب دجاج","سکالۆپا مریشکێ"),7750)]),
- ("oven",("From the oven","الفرن","فڕن"),None,[
-  (("Oven-roasted chicken","دجاج مشوي بالفرن","مریشکا فڕنی"),12000,None,("Serves 4","يكفي 4 أشخاص","بۆ 4 کەسان")),
-  (("Oven-grilled fish (2 kg)","سمك بالفرن (2 كيلو)","ماسیێ فڕنی (2 کیلۆ)"),30000,None,("With vegetables, serves 4","مع الخضار، يكفي 4 أشخاص","دگەل زەرزەواتان، بۆ 4 کەسان"))]),
- ("starters",("Starters & soup","مقبلات وشوربة","دلڤەکەر و شۆربە"),None,[
-  (("Eastern salad","سلطة شرقية","زەلەتا رۆژهەلاتی"),2250),
-  (("Lentil soup","شوربة عدس","شۆربا نیسکێ"),2750),
-  (("French fries","أصابع بطاطا","فینگەر"),3750),
-  (("Cheese fries","فينگر بالجبنة","فینگەر ب پەنیر"),3750)]),
- ("offers",("Offers","عروض","ئۆفەر"),None,[
-  (("Breakfast + shisha","فطور + أركيلة","تێشت + نێرگەلە"),5000)]),
 ]
 L=("en","ar","ku")
-out={"note":"Amed Cafe menu, prices in IQD. Source: menu.instalacarte.com (English section's prices and availability), Arabic and Badini names from the site's Arabic and Kurdish sections.","sample":False,"categories":[]}
+out={"note":"Amed Cafe menu (drinks and shisha; no food), prices in IQD. Source: menu.instalacarte.com (English section's prices and availability), Arabic and Badini names from the site's Arabic and Kurdish sections.","sample":False,"categories":[]}
 for cid,cn,photo,items in C:
     cat={"id":cid,"name":dict(zip(L,cn))}
     if photo: cat["photo"]=photo
