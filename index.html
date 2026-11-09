@@ -837,8 +837,8 @@ footer p { margin: 0; }
   window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; $("installBox").hidden = false; $("installBtn").hidden = false; });
   $("installBtn").addEventListener("click", async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); try { await deferredPrompt.userChoice; } catch (_) {} deferredPrompt = null; $("installBox").hidden = true; });
   const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
-  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone && location.hostname.endsWith("github.io")) { $("installBox").hidden = false; $("iosTip").hidden = false; }
-  if ("serviceWorker" in navigator && location.hostname.endsWith("github.io")) { try { navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((r) => r.update()).catch(() => {}); } catch (_) {} }
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone && /(github\.io|amedcaferest\.com)$/.test(location.hostname)) { $("installBox").hidden = false; $("iosTip").hidden = false; }
+  if ("serviceWorker" in navigator && /(github\.io|amedcaferest\.com)$/.test(location.hostname)) { try { navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((r) => r.update()).catch(() => {}); } catch (_) {} }
 
   let start = (location.hash || "").replace("#", "");
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
