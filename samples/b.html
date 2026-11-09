@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amed Cafe — Sample B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1C120D;--surface:#2A1C15;--ink:#F3E9DC;--muted:#C4B09C;--gold:#D4A373;--gold2:#E3B27D;--line:#3F2D23}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:300 16px/1.55 Jost,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600}
+.wrap{max-width:560px;margin:0 auto;padding:0 20px}
+header{position:absolute;top:0;left:0;right:0;z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{width:92px;height:42px;background:url(../logo-gold.png) left center/contain no-repeat}
+.flags{display:flex;gap:6px}.fl{border:0;background:none;padding:3px;border-radius:5px;opacity:.5}.fl.on{opacity:1;box-shadow:0 0 0 1.5px var(--gold)}
+.flag{width:26px;height:17px;display:block;border-radius:3px}
+.hero{position:relative;min-height:640px;padding-top:96px;text-align:center;background:radial-gradient(70% 45% at 50% 62%,#6F4E3788,transparent 70%),radial-gradient(120% 60% at 50% 0%,#2E1E15,var(--bg))}
+.kicker{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font-size:46px;line-height:1.02;margin:12px 0 10px;font-weight:500}
+.hero h1 i{color:var(--gold2)}
+.hero p{color:var(--muted);max-width:28ch;margin:0 auto}
+.trio{position:relative;height:290px;margin-top:22px}
+.trio img{position:absolute;bottom:0;filter:drop-shadow(0 20px 22px #000a)}
+.trio .c{height:230px;left:calc(50% - 150px);transform:rotate(-6deg)}
+.trio .s{height:230px;right:calc(50% - 150px);transform:rotate(6deg)}
+.trio .g{height:280px;left:50%;transform:translateX(-50%);z-index:2}
+.floor{position:absolute;bottom:-6px;left:10%;right:10%;height:30px;background:radial-gradient(closest-side,#000a,transparent)}
+.cta{display:flex;flex-direction:column;gap:10px;margin:26px auto 0;max-width:320px}
+.btn{display:block;padding:15px;border-radius:99px;text-decoration:none;font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:13px}
+.btn.pri{background:linear-gradient(135deg,#E3B27D,#B98552);color:#1C120D}.btn.sec{border:1px solid #D4A37366;color:var(--gold2)}
+.status{display:flex;justify-content:center;gap:18px;margin:26px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.status b{color:var(--ink);font-weight:500}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#6FCF8A;margin-right:6px;box-shadow:0 0 8px #6FCF8A}
+section{padding:46px 0 0}
+.head{text-align:center;margin-bottom:20px}.head .kicker{display:block}.head h2{font-size:36px;font-weight:500;margin-top:4px}
+.orn{display:block;width:60px;height:1px;background:var(--gold);margin:10px auto 0;position:relative}.orn:after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;background:var(--gold);transform:translateX(-50%) rotate(45deg)}
+.scroller{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:4px 20px 10px;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.mc{flex:0 0 72%;scroll-snap-align:center;background:linear-gradient(180deg,#2E1F17,#241812);border:1px solid var(--line);border-radius:22px;padding:20px}
+.mc h3{font-size:26px;color:var(--gold2);font-weight:500;margin-bottom:8px}
+.li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #3F2D2399;font-size:15px}.li:last-child{border:0}.li span:last-child{color:var(--gold2);font-weight:400}
+.mc .shot{height:120px;display:grid;place-items:center;margin-bottom:6px}.mc .shot img{height:120px;filter:drop-shadow(0 10px 12px #000a)}
+.note{text-align:center;font-size:12px;color:var(--muted);margin-top:6px}
+.reward{position:relative;border:1px solid #D4A37355;border-radius:24px;padding:26px 22px;text-align:center;background:radial-gradient(80% 60% at 50% 0%,#6F4E3744,transparent)}
+.reward .big{font-family:"Cormorant Garamond",serif;font-size:64px;line-height:1;color:var(--gold2)}
+.reward p{color:var(--muted);margin-top:6px}
+.stamps{display:flex;justify-content:center;gap:7px;margin:18px 0}
+.stamps i{width:26px;height:26px;border-radius:50%;border:1px solid #D4A37388}.stamps i.on{background:var(--gold)}.stamps i.free{background:none;border:1.5px dashed var(--gold2);position:relative}
+.stamps i.free:after{content:"★";position:absolute;inset:0;display:grid;place-items:center;color:var(--gold2);font-size:13px;font-style:normal}
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.tiers span{padding:7px 0;border-radius:8px;background:#ffffff0d}
+.tiers span:nth-child(2){color:#D9D9D9}.tiers span:nth-child(3){color:var(--gold2)}.tiers span:nth-child(4){color:#B9C7D6}
+.tl{border-left:1px solid var(--gold);margin-left:8px;padding-left:20px}
+.ev{position:relative;padding-bottom:22px}.ev:before{content:"";position:absolute;left:-25px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.ev small{color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-size:11px}.ev h3{font-size:24px;font-weight:500}.ev p{color:var(--muted);font-size:14px}
+.gal{display:grid;grid-template-columns:2fr 1fr;grid-auto-rows:110px;gap:8px}
+.ph{border-radius:14px;border:1px dashed #D4A37355;background:linear-gradient(135deg,#2A1C15,#33231a);display:grid;place-items:center;color:#C4B09C99;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+.ph.big{grid-row:span 2}
+.info{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:8px 20px}
+.r{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}.r:last-child{border:0}.r span{color:var(--muted);font-size:14px}.r b{font-weight:400}
+.r a{color:var(--gold2);text-decoration:none}
+footer{text-align:center;padding:40px 0 50px;color:var(--muted);font-size:13px}
+footer .logo{margin:0 auto 10px;width:120px;height:54px;background-position:center}
+.sample{background:#D4A373;color:#1C120D;font-size:12px;text-align:center;padding:6px;position:relative;z-index:6}
+</style></head><body>
+<div class="sample">SAMPLE B · “Espresso &amp; Gold” · placeholder content</div>
+<div style="position:relative">
+<header><div class="wrap"><div class="logo" aria-label="Amed Cafe"></div><div class="flags"></div></div></header>
+<div class="hero"><div class="wrap">
+  <div class="kicker">Coffee · Shisha · Comfort</div>
+  <h1>An evening at <i>Amed</i></h1>
+  <p>Slow coffee, smooth shisha and good company — every day until 1 AM.</p>
+  <div class="trio"><img class="c" src="../shisha-copper.png" alt=""><img class="s" src="../shisha-silver.png" alt=""><img class="g" src="../shisha-gold.png" alt="Amed Cafe shishas"><div class="floor"></div></div>
+  <div class="cta"><a class="btn pri" href="#">My loyalty card</a><a class="btn sec" href="#menu">Explore the menu</a></div>
+  <div class="status"><span><i class="dot"></i><b>Open now</b></span><span>8:00 AM – 1:00 AM</span></div>
+</div></div>
+</div>
+<main class="wrap">
+  <section id="menu"><div class="head"><span class="kicker">The menu</span><h2>Crafted for you</h2><i class="orn"></i></div>
+    <div class="scroller">
+      <div class="mc"><h3>Coffee</h3><div class="li"><span>Espresso</span><span>2,500</span></div><div class="li"><span>Turkish coffee</span><span>2,500</span></div><div class="li"><span>Cappuccino</span><span>3,500</span></div><div class="li"><span>Spanish latte</span><span>4,000</span></div></div>
+      <div class="mc"><div class="shot"><img src="../shisha-gold.png" alt=""></div><h3>Shisha</h3><div class="li"><span>Double apple</span><span>6,000</span></div><div class="li"><span>Lemon mint</span><span>6,000</span></div><div class="li"><span>Amed special</span><span>7,000</span></div></div>
+      <div class="mc"><h3>Cold drinks</h3><div class="li"><span>Lemon mint</span><span>3,000</span></div><div class="li"><span>Iced mocha</span><span>4,000</span></div><div class="li"><span>Fresh orange</span><span>3,000</span></div></div>
+    </div>
+    <p class="note">Swipe for more · prices in IQD · sample items</p>
+  </section>
+
+  <section><div class="head"><span class="kicker">Amed rewards</span><h2>Every 8th is on us</h2><i class="orn"></i></div>
+    <div class="reward"><div class="big">7 + 1</div><p>Buy seven drinks or seven shishas — the eighth is free. Separate cards, one phone number.</p>
+      <div class="stamps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="free"></i></div>
+      <div class="tiers"><span>Member</span><span>Silver</span><span>Gold</span><span>Platinum</span></div>
+    </div>
+  </section>
+
+  <section><div class="head"><span class="kicker">Upcoming</span><h2>Events &amp; offers</h2><i class="orn"></i></div>
+    <div class="tl"><div class="ev"><small>Fri · 14 Nov</small><h3>Live oud evening</h3><p>Sample event — real events appear here automatically.</p></div>
+    <div class="ev"><small>Every Thursday</small><h3>Double stamps</h3><p>Sample offer.</p></div></div>
+  </section>
+
+  <section><div class="head"><span class="kicker">Gallery</span><h2>The space</h2><i class="orn"></i></div>
+    <div class="gal"><div class="ph big">Photo coming soon</div><div class="ph">Photo</div><div class="ph">Photo</div></div>
+  </section>
+
+  <section><div class="head"><span class="kicker">Visit</span><h2>Find us</h2><i class="orn"></i></div>
+    <div class="info"><div class="r"><span>Hours</span><b>Daily · 8:00 AM – 1:00 AM</b></div><div class="r"><span>Location</span><a href="#">Open in Maps →</a></div><div class="r"><span>WhatsApp</span><a href="#">To come</a></div><div class="r"><span>Instagram</span><a href="#">To come</a></div><div class="r"><span>Review us</span><a href="#">Google ★★★★★</a></div></div>
+  </section>
+</main>
+<footer><div class="logo"></div>your comfort space</footer>
+<script src="flags.js"></script>
+</body></html>

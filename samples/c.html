@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amed Cafe — Sample C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#FBF4EA;--latte:#EADBC8;--caramel:#C08552;--mocha:#6F4E37;--esp:#2B1A12;--cinn:#A9563A;--mint:#DCE8D5}
+*{box-sizing:border-box;margin:0}
+body{background:var(--cream);color:var(--esp);font:16px/1.45 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{width:90px;height:40px;background:var(--esp);-webkit-mask:url(../logo.png) left center/contain no-repeat;mask:url(../logo.png) left center/contain no-repeat}
+.flags{display:flex;gap:4px;background:#fff;padding:4px;border-radius:12px;box-shadow:0 2px 0 #2B1A1214}.fl{border:0;background:none;padding:3px;border-radius:8px;opacity:.5}.fl.on{opacity:1;background:var(--latte)}
+.flag{width:24px;height:16px;display:block;border-radius:3px}
+.hero{background:var(--caramel);border-radius:30px;padding:26px 22px 0;color:#fff;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:#D79A66;right:-90px;bottom:-110px}
+.pill{display:inline-block;background:#fff;color:var(--esp);font-weight:700;font-size:13px;padding:6px 12px;border-radius:99px}
+.pill i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2E9A4E;margin-right:6px}
+.hero h1{font-size:50px;line-height:.95;font-weight:800;letter-spacing:-.03em;margin:16px 0 0;position:relative}
+.hero h1 span{color:var(--esp)}
+.hero .row{display:flex;align-items:flex-end;position:relative}
+.hero p{flex:1;font-size:15px;padding-bottom:26px;opacity:.95}
+.hero img{height:230px;margin-right:-6px;filter:drop-shadow(0 14px 14px #2B1A1255)}
+.big-cta{display:flex;gap:10px;margin:12px 0 0}
+.big-cta a{flex:1;text-decoration:none;border-radius:22px;padding:16px;font-weight:700;font-size:17px;display:flex;flex-direction:column;gap:20px}
+.big-cta a small{font-weight:500;font-size:13px;opacity:.75}
+.big-cta .card{background:var(--esp);color:#fff}.big-cta .menu{background:var(--latte);color:var(--esp)}
+.arrow{width:34px;height:34px;border-radius:50%;background:#ffffff22;display:grid;place-items:center}.menu .arrow{background:#2B1A1214}
+section{padding:34px 0 0}
+h2{font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.chips{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto}.chips span{white-space:nowrap;padding:9px 16px;border-radius:99px;font-weight:700;font-size:14px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--latte)}.chips span.on{background:var(--esp);color:#fff;box-shadow:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:#fff;border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 0 #2B1A1210}
+.tile .img{height:84px;border-radius:14px;margin-bottom:8px;display:grid;place-items:center;font-size:11px;font-weight:600;color:#6F4E3799}
+.tile b{font-size:16px}.tile small{color:#6F4E37;font-size:13px}
+.tile .price{margin-top:6px;align-self:flex-start;background:var(--latte);font-weight:800;padding:4px 10px;border-radius:99px;font-size:14px}
+.c1{background:#F2E1CB}.c2{background:var(--mint)}.c3{background:#F6D9C9}.c4{background:#E9E0F0}
+.note{font-size:12px;color:#6F4E37;margin-top:10px}
+.reward{background:var(--esp);color:#fff;border-radius:30px;padding:24px 22px;position:relative;overflow:hidden}
+.reward h2{color:#fff;font-size:34px;line-height:1}.reward h2 em{font-style:normal;color:#E3B27D}
+.reward p{opacity:.8;font-size:15px}
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}
+.st span{aspect-ratio:1;border-radius:16px;background:#ffffff14;display:grid;place-items:center;font-weight:800;font-size:18px;color:#ffffff55}
+.st span.on{background:var(--caramel);color:#fff}.st span.f{background:#E3B27D;color:var(--esp);font-size:12px}
+.lv{display:flex;gap:6px;flex-wrap:wrap}.lv span{font-size:12px;font-weight:700;padding:6px 11px;border-radius:99px;background:#ffffff1a}
+.events{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+.ev{flex:0 0 78%;border-radius:24px;padding:18px;color:var(--esp)}
+.ev .d{display:inline-block;font-weight:800;font-size:13px;background:#fff;padding:5px 10px;border-radius:99px}
+.ev h3{font-size:24px;font-weight:800;margin:26px 0 2px;letter-spacing:-.01em}.ev p{font-size:14px;opacity:.75}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ph{aspect-ratio:3/4;border-radius:18px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#6F4E3799;text-align:center}
+.visit{background:#fff;border-radius:30px;padding:20px}
+.hours{display:flex;align-items:center;gap:14px;padding-bottom:16px;border-bottom:1.5px dashed var(--latte)}
+.hours .clock{width:56px;height:56px;border-radius:18px;background:var(--mint);display:grid;place-items:center;font-size:26px}
+.hours b{font-size:22px;font-weight:800;display:block;line-height:1.1}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.btns a{text-decoration:none;color:var(--esp);background:var(--cream);border-radius:16px;padding:14px;font-weight:700;font-size:15px}
+.btns a small{display:block;font-weight:500;font-size:12px;color:#6F4E37}
+footer{text-align:center;padding:36px 0 40px;font-size:13px;color:#6F4E37}
+.sample{background:var(--esp);color:#fff;font-size:12px;text-align:center;padding:6px}
+</style></head><body>
+<div class="sample">SAMPLE C · “Caramel Pop” · placeholder content</div>
+<header><div class="wrap"><div class="logo" aria-label="Amed Cafe"></div><div class="flags"></div></div></header>
+<main class="wrap">
+  <div class="hero">
+    <span class="pill"><i></i>Open · 8 AM – 1 AM</span>
+    <h1>Coffee.<br>Shisha.<br><span>Comfort.</span></h1>
+    <div class="row"><p>Your comfort space — come as you are, stay as long as you like.</p><img src="../shisha-copper.png" alt="Amed Cafe shisha"></div>
+  </div>
+  <div class="big-cta">
+    <a class="card" href="#"><span class="arrow">→</span><span>My card<br><small>Stamps &amp; rewards</small></span></a>
+    <a class="menu" href="#menu"><span class="arrow">→</span><span>Menu<br><small>Drinks &amp; shisha</small></span></a>
+  </div>
+
+  <section id="menu"><h2>What's good today</h2>
+    <div class="chips"><span class="on">Hot drinks</span><span>Cold drinks</span><span>Shisha</span><span>Sweets</span></div>
+    <div class="grid">
+      <div class="tile"><div class="img c1">photo soon</div><b>Spanish latte</b><small>Hot or iced</small><span class="price">4,000</span></div>
+      <div class="tile"><div class="img c2">photo soon</div><b>Turkish coffee</b><small>With cardamom</small><span class="price">2,500</span></div>
+      <div class="tile"><div class="img c3">photo soon</div><b>Cappuccino</b><small>Double shot</small><span class="price">3,500</span></div>
+      <div class="tile"><div class="img c4">photo soon</div><b>Karak tea</b><small>Spiced milk tea</small><span class="price">2,000</span></div>
+    </div>
+    <p class="note">Prices in IQD · sample items until the real menu arrives</p>
+  </section>
+
+  <section><div class="reward"><h2>Buy 7,<br><em>get the 8th free</em></h2><p>Separate cards for drinks and shisha. Just give your phone number at the counter.</p>
+    <div class="st"><span class="on">1</span><span class="on">2</span><span class="on">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span class="f">FREE</span></div>
+    <div class="lv"><span>Member</span><span>Silver</span><span>Gold</span><span>Platinum</span></div></div>
+  </section>
+
+  <section><h2>Coming up</h2>
+    <div class="events">
+      <div class="ev" style="background:var(--mint)"><span class="d">Fri 14 Nov</span><h3>Match night</h3><p>Sample event</p></div>
+      <div class="ev" style="background:#F6D9C9"><span class="d">Thursdays</span><h3>Double stamps</h3><p>Sample offer</p></div>
+    </div>
+  </section>
+
+  <section><h2>Inside Amed</h2>
+    <div class="gal"><div class="ph c1">photo<br>soon</div><div class="ph c3">photo<br>soon</div><div class="ph c2">photo<br>soon</div></div>
+  </section>
+
+  <section><h2>Come visit</h2>
+    <div class="visit"><div class="hours"><div class="clock">☕</div><div><b>8:00 AM – 1:00 AM</b>Open every day</div></div>
+      <div class="btns"><a href="#">Directions<small>Google Maps · soon</small></a><a href="#">WhatsApp<small>Number soon</small></a><a href="#">Instagram<small>@ soon</small></a><a href="#">Call us<small>Number soon</small></a></div></div>
+  </section>
+</main>
+<footer>Amed Cafe · your comfort space · ★ Review us on Google</footer>
+<script src="flags.js"></script>
+</body></html>

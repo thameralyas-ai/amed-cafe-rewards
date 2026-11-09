@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amed Cafe — Sample A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3EADF;--surface:#FFFCF8;--ink:#2B1A12;--muted:#6B5446;--accent:#6F4E37;--soft:#EADBC8;--line:#E3D4C3;--hl:#8B5A3C;--stamp:#C08552}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{display:block;width:96px;height:44px;background:var(--ink);-webkit-mask:url(../logo.png) left center/contain no-repeat;mask:url(../logo.png) left center/contain no-repeat}
+.flags{display:flex;gap:6px}.fl{border:0;background:none;padding:3px;border-radius:5px;opacity:.55}.fl.on{opacity:1;box-shadow:0 0 0 2px var(--accent)}
+.flag{width:26px;height:17px;display:block;border-radius:3px}
+.hero{padding:30px 0 10px;text-align:center}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#2E6B3F;background:#E2EEDD;padding:5px 12px;border-radius:99px}
+.badge i{width:8px;height:8px;border-radius:50%;background:#2E9A4E;box-shadow:0 0 0 3px #2E9A4E33}
+.hero h1{font-size:40px;line-height:1.08;margin:16px 0 10px}
+.hero h1 em{font-style:italic;color:var(--hl)}
+.hero p{color:var(--muted);max-width:30ch;margin:0 auto}
+.arch{position:relative;margin:26px auto 0;width:260px;height:300px;border-radius:130px 130px 24px 24px;background:radial-gradient(120% 80% at 50% 20%,#FFF6EA,#E7D3BC);overflow:hidden;box-shadow:0 20px 40px -20px #6F4E3766}
+.arch img{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);height:290px}
+.arch .tag{position:absolute;left:12px;top:44%;background:var(--surface);border-radius:14px;padding:8px 12px;font-size:13px;box-shadow:0 8px 20px -10px #0004;text-align:left}
+.arch .tag b{display:block;font-family:Fraunces,serif;font-size:17px}
+.cta{display:flex;gap:10px;justify-content:center;margin:24px 0 8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:14px;font-weight:600;text-decoration:none;font-size:15px}
+.btn.pri{background:var(--accent);color:#fff}.btn.sec{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+section{padding:38px 0 6px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--hl);font-weight:600}
+h2{font-size:30px;margin:4px 0 16px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tabs span{padding:8px 16px;border-radius:99px;font-size:14px;font-weight:600;background:var(--soft);color:var(--muted)}.tabs span.on{background:var(--ink);color:var(--bg)}
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:6px 18px}
+.item{display:flex;align-items:baseline;gap:10px;padding:13px 0;border-bottom:1px dashed var(--line)}.item:last-child{border:0}
+.item b{font-weight:600}.item small{display:block;color:var(--muted);font-size:13px}
+.item .dots{flex:1}.item .p{font-family:Fraunces,serif;font-size:17px;white-space:nowrap}
+.note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+.reward{background:var(--accent);color:#F5EDE3;border-radius:22px;padding:22px}
+.reward h3{font-size:24px;margin-bottom:4px}.reward p{opacity:.85;font-size:15px}
+.cups{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:18px 0 6px}
+.cups span{aspect-ratio:1;border-radius:50%;border:2px solid #F5EDE399;display:grid;place-items:center;font-size:11px;font-weight:600}
+.cups span.f{background:#E3B27D;border-color:#E3B27D;color:#2B1A12}
+.levels{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}.levels span{font-size:12px;padding:5px 10px;border-radius:99px;background:#FFFFFF1F}
+.event{display:flex;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
+.date{flex:none;width:56px;text-align:center;background:var(--soft);border-radius:12px;padding:6px 0}.date b{display:block;font-family:Fraunces,serif;font-size:22px;line-height:1.1}.date small{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.event h3{font-size:18px}.event p{font-size:14px;color:var(--muted)}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ph{border-radius:16px;background:repeating-linear-gradient(135deg,#E7D6C2 0 10px,#EFE2D2 10px 20px);display:grid;place-items:center;color:var(--muted);font-size:12px;font-weight:600;aspect-ratio:1;text-align:center}
+.ph.tall{grid-row:span 2;aspect-ratio:auto}
+.visit{background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.map{height:150px;background:linear-gradient(0deg,#0000,#0000),repeating-linear-gradient(0deg,#E9DCCB 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#E9DCCB 0 1px,transparent 1px 28px),#F6EEE3;display:grid;place-items:center;font-size:13px;color:var(--muted);font-weight:600}
+.rows{padding:6px 18px}.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}.row:last-child{border:0}.row span{color:var(--muted)}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.contact a{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 6px;text-align:center;text-decoration:none;color:var(--ink);font-size:13px;font-weight:600}
+.contact svg{width:24px;height:24px;display:block;margin:0 auto 6px;color:var(--accent)}
+footer{text-align:center;padding:40px 0 110px;color:var(--muted);font-size:13px}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);padding:14px 22px;border-radius:99px;font-weight:600;text-decoration:none;box-shadow:0 12px 30px -8px #2B1A1288;display:flex;gap:8px;align-items:center;z-index:9}
+.sample{background:#2B1A12;color:#F3E9DC;font-size:12px;text-align:center;padding:6px}
+</style></head><body>
+<div class="sample">SAMPLE A · “Latte Morning” · placeholder content</div>
+<header><div class="wrap"><a class="logo" href="#" aria-label="Amed Cafe"></a><div class="flags"></div></div></header>
+<main class="wrap">
+  <div class="hero">
+    <span class="badge"><i></i>Open now · until 1:00 AM</span>
+    <h1>Your <em>comfort</em> space for coffee &amp; shisha</h1>
+    <p>Specialty coffee, fresh drinks and premium shisha — every day from 8 AM.</p>
+    <div class="arch"><img src="../shisha-gold.png" alt="Amed Cafe gold shisha"><div class="tag"><b>6,000 IQD</b>Premium shisha</div></div>
+    <div class="cta"><a class="btn pri" href="#menu">See the menu</a><a class="btn sec" href="#">My card</a></div>
+  </div>
+
+  <section id="menu"><div class="eyebrow">Menu</div><h2>Made with care</h2>
+    <div class="tabs"><span class="on">Drinks</span><span>Shisha</span><span>Sweets</span></div>
+    <div class="menu">
+      <div class="item"><div><b>Turkish coffee</b><small>Cardamom, served with water</small></div><i class="dots"></i><span class="p">2,500</span></div>
+      <div class="item"><div><b>Cappuccino</b><small>Double shot, silky milk</small></div><i class="dots"></i><span class="p">3,500</span></div>
+      <div class="item"><div><b>Spanish latte</b><small>Hot or iced</small></div><i class="dots"></i><span class="p">4,000</span></div>
+      <div class="item"><div><b>Karak tea</b><small>Spiced milk tea</small></div><i class="dots"></i><span class="p">2,000</span></div>
+      <div class="item"><div><b>Lemon mint</b><small>Fresh, blended</small></div><i class="dots"></i><span class="p">3,000</span></div>
+    </div>
+    <p class="note">Prices in IQD · sample items, real menu coming soon</p>
+  </section>
+
+  <section><div class="eyebrow">Rewards</div><h2>Buy 7, the 8th is on us</h2>
+    <div class="reward"><h3>Amed loyalty card</h3><p>Separate cards for drinks and shisha. Collect a stamp with every order — your 8th is bê beramber (free).</p>
+      <div class="cups"><span>✓</span><span>✓</span><span>✓</span><span>✓</span><span>5</span><span>6</span><span>7</span><span class="f">8</span></div>
+      <div class="levels"><span>Member</span><span>Silver</span><span>Gold</span><span>Platinum</span></div>
+    </div>
+  </section>
+
+  <section><div class="eyebrow">What's on</div><h2>Events &amp; offers</h2>
+    <div class="event"><div class="date"><small>Nov</small><b>14</b></div><div><h3>Football night</h3><p>Big match on the big screen · sample event</p></div></div>
+    <div class="event"><div class="date"><small>Nov</small><b>20</b></div><div><h3>Double stamps Thursday</h3><p>Every drink counts twice · sample offer</p></div></div>
+  </section>
+
+  <section><div class="eyebrow">Gallery</div><h2>Inside Amed</h2>
+    <div class="gal"><div class="ph tall">Photo<br>coming soon</div><div class="ph">Photo<br>coming soon</div><div class="ph">Photo<br>coming soon</div></div>
+  </section>
+
+  <section><div class="eyebrow">Visit</div><h2>Find us</h2>
+    <div class="visit"><div class="map">📍 Google Maps — location to come</div>
+      <div class="rows"><div class="row"><span>Every day</span><b>8:00 AM – 1:00 AM</b></div><div class="row"><span>Address</span><b>Address to come</b></div></div></div>
+    <div class="contact">
+      <a href="#"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6-.4.4c-.1.1-.2.3-.1.5.2.3.8 1.2 1.6 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.2Z"/></svg>WhatsApp</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>Call</a>
+    </div>
+  </section>
+</main>
+<footer>© Amed Cafe · your comfort space<br>Leave us a Google review ★</footer>
+<a class="fab" href="#">☕ My card</a>
+<script src="flags.js"></script>
+</body></html>
