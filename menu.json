@@ -1,50 +1,1256 @@
 {
-  "note": "SAMPLE MENU (placeholder). Replace with Amed Cafe's real menu. Prices in IQD. Each name has en, ar and ku (Badini).",
-  "sample": true,
-  "categories": [
+ "note": "Amed Cafe menu, prices in IQD. Source: menu.instalacarte.com (English section's prices and availability), Arabic and Badini names from the site's Arabic and Kurdish sections.",
+ "sample": false,
+ "categories": [
+  {
+   "id": "coffee",
+   "name": {
+    "en": "Coffee",
+    "ar": "قهوة",
+    "ku": "قەهوە"
+   },
+   "items": [
     {
-      "id": "hot",
-      "name": { "en": "Hot drinks", "ar": "مشروبات ساخنة", "ku": "ڤەخوارنێن گەرم" },
-      "items": [
-        { "name": { "en": "Espresso", "ar": "إسبريسو", "ku": "ئێسپرێسۆ" }, "price": 2500 },
-        { "name": { "en": "Turkish coffee", "ar": "قهوة تركية", "ku": "قەهوا تورکی" }, "price": 2500 },
-        { "name": { "en": "Cappuccino", "ar": "كابتشينو", "ku": "کاپوچینۆ" }, "price": 3500 },
-        { "name": { "en": "Spanish latte", "ar": "سبانش لاتيه", "ku": "سپانش لاتێ" }, "price": 4000 },
-        { "name": { "en": "Karak tea", "ar": "شاي كرك", "ku": "چایا کەرەک" }, "price": 2000 },
-        { "name": { "en": "Tea", "ar": "شاي", "ku": "چای" }, "price": 1000 }
-      ]
+     "name": {
+      "en": "Turkish coffee",
+      "ar": "قهوة تركية",
+      "ku": "قەهوا تورکی"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Single",
+        "ar": "سنگل",
+        "ku": "تەک"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "Double",
+        "ar": "دبل",
+        "ku": "دەبل"
+       },
+       "price": 3000
+      }
+     ]
     },
     {
-      "id": "cold",
-      "name": { "en": "Cold drinks", "ar": "مشروبات باردة", "ku": "ڤەخوارنێن سار" },
-      "items": [
-        { "name": { "en": "Iced latte", "ar": "آيس لاتيه", "ku": "ئایس لاتێ" }, "price": 4000 },
-        { "name": { "en": "Iced mocha", "ar": "آيس موكا", "ku": "ئایس مۆکا" }, "price": 4000 },
-        { "name": { "en": "Lemon mint", "ar": "ليمون ونعناع", "ku": "لیمۆن و پونگ" }, "price": 3000 },
-        { "name": { "en": "Fresh orange juice", "ar": "عصير برتقال طازج", "ku": "ئاڤا پرتەقالێ یا تازە" }, "price": 3000 },
-        { "name": { "en": "Mojito", "ar": "موهيتو", "ku": "مۆهیتۆ" }, "price": 3500 }
-      ]
+     "name": {
+      "en": "Kurdish coffee (kezwan)",
+      "ar": "قهوة بطم",
+      "ku": "قەهوا کەزوانێ"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Single",
+        "ar": "سنگل",
+        "ku": "تەک"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "Double",
+        "ar": "دبل",
+        "ku": "دەبل"
+       },
+       "price": 3000
+      }
+     ]
     },
     {
-      "id": "shisha",
-      "name": { "en": "Shisha", "ar": "أركيلة", "ku": "نێرگەلە" },
-      "photo": "shisha-gold.png",
-      "items": [
-        { "name": { "en": "Double apple", "ar": "تفاحتين", "ku": "دوو سێڤ" }, "price": 6000 },
-        { "name": { "en": "Lemon mint", "ar": "ليمون ونعناع", "ku": "لیمۆن و پونگ" }, "price": 6000 },
-        { "name": { "en": "Grape mint", "ar": "عنب ونعناع", "ku": "تری و پونگ" }, "price": 6000 },
-        { "name": { "en": "Blueberry", "ar": "توت أزرق", "ku": "بلوبێری" }, "price": 6500 },
-        { "name": { "en": "Amed special mix", "ar": "خلطة Amed الخاصة", "ku": "تێکەلا تایبەت یا Amed" }, "price": 7000 }
-      ]
+     "name": {
+      "en": "Espresso",
+      "ar": "اسبريسو",
+      "ku": "ئێسپرێسۆ"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Single",
+        "ar": "سنگل",
+        "ku": "تەک"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "Double",
+        "ar": "دبل",
+        "ku": "دەبل"
+       },
+       "price": 3000
+      }
+     ]
     },
     {
-      "id": "sweets",
-      "name": { "en": "Sweets", "ar": "حلويات", "ku": "شرینی" },
-      "items": [
-        { "name": { "en": "Cheesecake", "ar": "تشيز كيك", "ku": "چیزکەیک" }, "price": 4000 },
-        { "name": { "en": "Brownie", "ar": "براوني", "ku": "براونی" }, "price": 3500 },
-        { "name": { "en": "Kunafa", "ar": "كنافة", "ku": "کونافە" }, "price": 4000 }
-      ]
+     "name": {
+      "en": "Americano",
+      "ar": "امريكانو",
+      "ku": "ئەمریکانۆ"
+     },
+     "price": 3000
     }
-  ]
+   ]
+  },
+  {
+   "id": "hot",
+   "name": {
+    "en": "Hot drinks",
+    "ar": "مشروبات ساخنة",
+    "ku": "ڤەخوارنێن گەرم"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Cappuccino",
+      "ar": "كابتشينو",
+      "ku": "کاپوچینۆ"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Nescafé",
+      "ar": "نسكافيه",
+      "ku": "نسکافێ"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Regular",
+        "ar": "عادي",
+        "ku": "نورمال"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "With milk",
+        "ar": "بالحليب",
+        "ku": "ب شیر"
+       },
+       "price": 2000
+      }
+     ]
+    },
+    {
+     "name": {
+      "en": "Plain milk",
+      "ar": "حليب سادة",
+      "ku": "شیرێ سادە"
+     },
+     "price": 1000
+    },
+    {
+     "name": {
+      "en": "Honey milk",
+      "ar": "حليب بالعسل",
+      "ku": "شیرێ ب هنگڤین"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
+      "en": "Hot chocolate",
+      "ar": "شوكولاتة ساخنة",
+      "ku": "چکلێتا گەرم"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Sahlab",
+      "ar": "سحلب",
+      "ku": "سەحلەب"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Ginger, lemon & honey",
+      "ar": "زنجبيل بالليمون والعسل",
+      "ku": "زەنجەبیل و لەیمون و هنگڤین"
+     },
+     "price": 2000
+    }
+   ]
+  },
+  {
+   "id": "latte",
+   "name": {
+    "en": "Latte",
+    "ar": "لاتيه",
+    "ku": "لاتێ"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Classic latte",
+      "ar": "لاتيه كلاسيك",
+      "ku": "لاتێ کلاسیک"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Caramel latte",
+      "ar": "لاتيه كراميل",
+      "ku": "لاتێ کەرامێل"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Vanilla latte",
+      "ar": "لاتيه فانيلا",
+      "ku": "لاتێ ڤانێلا"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Cookies latte",
+      "ar": "لاتيه كوكيز",
+      "ku": "لاتێ کوکیز"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Chocolate latte",
+      "ar": "لاتيه شوكولا",
+      "ku": "لاتێ شکولاتا"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Dark chocolate latte",
+      "ar": "لاتيه شوكولا غامق",
+      "ku": "لاتێ دارک"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Amed latte",
+      "ar": "لاتيه Amed",
+      "ku": "لاتێ ئامەد"
+     },
+     "price": 3000
+    }
+   ]
+  },
+  {
+   "id": "iced-coffee",
+   "name": {
+    "en": "Iced coffee",
+    "ar": "قهوة مثلجة",
+    "ku": "ئایس کافێ"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Classic",
+      "ar": "كلاسيك",
+      "ku": "کلاسیک"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
+      "en": "Spanish latte",
+      "ar": "لاتيه إسباني",
+      "ku": "لاتێ ئیسپانی"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Caramel",
+      "ar": "كراميل",
+      "ku": "کەرامێل مەکیاتۆ"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Mocha",
+      "ar": "موكا",
+      "ku": "مۆکا"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Vanilla",
+      "ar": "فانيلا",
+      "ku": "ڤانێلا"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "White chocolate",
+      "ar": "شوكولا بيضاء",
+      "ku": "شکولاتا سپی"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Amed iced coffee",
+      "ar": "Amed",
+      "ku": "ئامەد"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Iced Americano",
+      "ar": "امريكانو",
+      "ku": "ئەمریکانۆ"
+     },
+     "price": 3000
+    }
+   ]
+  },
+  {
+   "id": "tea",
+   "name": {
+    "en": "Tea",
+    "ar": "شاي",
+    "ku": "چای"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Iraqi tea",
+      "ar": "شاي عراقي",
+      "ku": "چایا عێراقی"
+     },
+     "price": 500
+    },
+    {
+     "name": {
+      "en": "Green tea",
+      "ar": "شاي أخضر",
+      "ku": "چایا کەسک"
+     },
+     "price": 1000
+    },
+    {
+     "name": {
+      "en": "Flavoured tea",
+      "ar": "شاي بنكهات",
+      "ku": "چایا ب تام"
+     },
+     "price": 1000,
+     "options": [
+      {
+       "name": {
+        "en": "Blueberry",
+        "ar": "توت",
+        "ku": "توو"
+       },
+       "price": 1000
+      },
+      {
+       "name": {
+        "en": "Lemon & mint",
+        "ar": "ليمون ونعناع",
+        "ku": "لەیمون و نەعناع"
+       },
+       "price": 1000
+      },
+      {
+       "name": {
+        "en": "Peach",
+        "ar": "خوخ",
+        "ku": "خۆخ"
+       },
+       "price": 1000
+      }
+     ]
+    },
+    {
+     "name": {
+      "en": "Iced tea",
+      "ar": "شاي مثلج",
+      "ku": "چایا تەزی"
+     },
+     "price": 3000,
+     "options": [
+      {
+       "name": {
+        "en": "Blueberry",
+        "ar": "توت",
+        "ku": "توو"
+       },
+       "price": 3000
+      },
+      {
+       "name": {
+        "en": "Peach",
+        "ar": "خوخ",
+        "ku": "خۆخ"
+       },
+       "price": 3000
+      },
+      {
+       "name": {
+        "en": "Lemon & mint",
+        "ar": "ليمون ونعناع",
+        "ku": "لەیمون و نەعناع"
+       },
+       "price": 3000
+      },
+      {
+       "name": {
+        "en": "Lemon",
+        "ar": "ليمون",
+        "ku": "لەیمون"
+       },
+       "price": 3000
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "juices",
+   "name": {
+    "en": "Fresh juices",
+    "ar": "عصائر طبيعية",
+    "ku": "شەربەتێن سروشتی"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Lemon & mint (Bolo)",
+      "ar": "ليمون ونعناع (بولو)",
+      "ku": "لەیمون و نەعناع (بولو)"
+     },
+     "price": 3500
+    },
+    {
+     "name": {
+      "en": "Orange",
+      "ar": "برتقال",
+      "ku": "پرتەقال"
+     },
+     "price": 3500
+    },
+    {
+     "name": {
+      "en": "Lemon",
+      "ar": "ليمون",
+      "ku": "لەیمون"
+     },
+     "price": 3500
+    },
+    {
+     "name": {
+      "en": "Orange & lemon",
+      "ar": "برتقال وليمون",
+      "ku": "پرتەقال و لەیمون"
+     },
+     "price": 3500
+    },
+    {
+     "name": {
+      "en": "Pomegranate",
+      "ar": "رمان",
+      "ku": "هنار"
+     },
+     "price": 3500
+    }
+   ]
+  },
+  {
+   "id": "mojito",
+   "name": {
+    "en": "Mojito",
+    "ar": "موهيتو",
+    "ku": "مۆهیتۆ"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Classic mojito",
+      "ar": "موهيتو كلاسيك",
+      "ku": "مۆهیتۆ کلاسیک"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
+      "en": "Strawberry mojito",
+      "ar": "موهيتو فراولة",
+      "ku": "مۆهیتۆیا فراولایێ"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Red mojito",
+      "ar": "موهيتو ريد",
+      "ku": "مۆهیتۆ رێد"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Kiwi mojito",
+      "ar": "موهيتو كيوي",
+      "ku": "مۆهیتۆ کیڤی"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Vimto",
+      "ar": "فيمتو",
+      "ku": "ڤیمتۆ"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Lemon & mint mojito (special)",
+      "ar": "موهيتو ليمون ونعناع خاص",
+      "ku": "مۆهیتۆیا لەیمون و نەعناعێ تایبەت"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Amed mojito",
+      "ar": "موهيتو Amed",
+      "ku": "مۆهیتۆ ئامەد"
+     },
+     "price": 3000
+    }
+   ]
+  },
+  {
+   "id": "smoothie",
+   "name": {
+    "en": "Smoothie",
+    "ar": "سموذي",
+    "ku": "سمووزی"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Strawberry",
+      "ar": "فراولة",
+      "ku": "فراولا"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Blueberry",
+      "ar": "بلوبيري",
+      "ku": "بلوبێری"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Mango",
+      "ar": "مانجو",
+      "ku": "مانگۆ"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Chocolate",
+      "ar": "شوكولا",
+      "ku": "شکولاتا"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Caramel",
+      "ar": "كراميل",
+      "ku": "کەرامێل"
+     },
+     "price": 2500
+    },
+    {
+     "name": {
+      "en": "Pistachio",
+      "ar": "فستق",
+      "ku": "فستق"
+     },
+     "price": 3000
+    }
+   ]
+  },
+  {
+   "id": "milkshake",
+   "name": {
+    "en": "Milkshake",
+    "ar": "ميلك شيك",
+    "ku": "میلک شەیک"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Chocolate",
+      "ar": "شوكولا",
+      "ku": "شکولاتا"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Banana",
+      "ar": "موز",
+      "ku": "مۆز"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Caramel",
+      "ar": "كراميل",
+      "ku": "کەرامێل"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Oreo",
+      "ar": "أوريو",
+      "ku": "ئۆریۆ"
+     },
+     "price": 3500
+    },
+    {
+     "name": {
+      "en": "Lotus",
+      "ar": "لوتس",
+      "ku": "لۆتۆس"
+     },
+     "price": 4000
+    },
+    {
+     "name": {
+      "en": "Amed milkshake",
+      "ar": "ميلك شيك Amed",
+      "ku": "میلک شەیکا ئامەد"
+     },
+     "price": 4000
+    }
+   ]
+  },
+  {
+   "id": "cocktail",
+   "name": {
+    "en": "Cocktails",
+    "ar": "كوكتيل",
+    "ku": "کۆکتێل"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Banana milk cocktail",
+      "ar": "كوكتيل حليب وموز",
+      "ku": "کۆکتێلا شیر و مۆزێ"
+     },
+     "price": 3000
+    },
+    {
+     "name": {
+      "en": "Amed cocktail",
+      "ar": "كوكتيل Amed",
+      "ku": "کۆکتێلا ئامەد"
+     },
+     "price": 3500,
+     "options": [
+      {
+       "name": {
+        "en": "Special",
+        "ar": "خاص",
+        "ku": "تایبەت"
+       },
+       "price": 3500
+      },
+      {
+       "name": {
+        "en": "Royal",
+        "ar": "ملكي",
+        "ku": "شاهانە"
+       },
+       "price": 3500
+      },
+      {
+       "name": {
+        "en": "Legendary",
+        "ar": "أسطوري",
+        "ku": "ئەفسانە"
+       },
+       "price": 3500
+      }
+     ]
+    },
+    {
+     "name": {
+      "en": "Piña colada",
+      "ar": "بينا كولادا",
+      "ku": "پینا کۆلادا"
+     },
+     "price": 5000
+    }
+   ]
+  },
+  {
+   "id": "cold",
+   "name": {
+    "en": "Soft drinks",
+    "ar": "مشروبات باردة",
+    "ku": "ڤەخوارنێن سار"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Water",
+      "ar": "ماء",
+      "ku": "ئاڤ"
+     },
+     "price": 250
+    },
+    {
+     "name": {
+      "en": "Coca-Cola",
+      "ar": "كوكا كولا",
+      "ku": "کۆکا کۆلا"
+     },
+     "price": 1000
+    },
+    {
+     "name": {
+      "en": "Sprite",
+      "ar": "سبرايت",
+      "ku": "سپرایت"
+     },
+     "price": 1000
+    },
+    {
+     "name": {
+      "en": "Gazoz",
+      "ar": "گازوز",
+      "ku": "گازوز"
+     },
+     "price": 1000
+    },
+    {
+     "name": {
+      "en": "Soda",
+      "ar": "صودا",
+      "ku": "سۆدا"
+     },
+     "price": 1000,
+     "options": [
+      {
+       "name": {
+        "en": "Plain",
+        "ar": "سادة",
+        "ku": "سادە"
+       },
+       "price": 1000
+      },
+      {
+       "name": {
+        "en": "Lemon",
+        "ar": "ليمون",
+        "ku": "لەیمون"
+       },
+       "price": 1500
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "energy",
+   "name": {
+    "en": "Energy drinks",
+    "ar": "مشروبات الطاقة",
+    "ku": "ڤەخوارنێن بهێزکەر"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Tiger",
+      "ar": "تايجر",
+      "ku": "تایگەر"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Regular",
+        "ar": "عادي",
+        "ku": "نورمال"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "Mexican",
+        "ar": "مكسيكي",
+        "ku": "مەکسیکی"
+       },
+       "price": 2000
+      }
+     ]
+    },
+    {
+     "name": {
+      "en": "Blink",
+      "ar": "بلنك",
+      "ku": "بلینک"
+     },
+     "price": 1500
+    },
+    {
+     "name": {
+      "en": "Smart",
+      "ar": "سمارت",
+      "ku": "سمارت"
+     },
+     "price": 1500
+    },
+    {
+     "name": {
+      "en": "Smart Zero",
+      "ar": "سمارت زيرو",
+      "ku": "سمارت زیرۆ"
+     },
+     "price": 1500
+    },
+    {
+     "name": {
+      "en": "White Tiger",
+      "ar": "وايت تايجر",
+      "ku": "وایت تایگەر"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
+      "en": "Red Bull",
+      "ar": "ريد بول",
+      "ku": "رێد بوڵ"
+     },
+     "price": 2500,
+     "options": [
+      {
+       "name": {
+        "en": "Regular",
+        "ar": "عادي",
+        "ku": "نورمال"
+       },
+       "price": 2500
+      },
+      {
+       "name": {
+        "en": "Mexican",
+        "ar": "مكسيكي",
+        "ku": "مەکسیکی"
+       },
+       "price": 3000
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "shisha",
+   "name": {
+    "en": "Shisha",
+    "ar": "أركيلة",
+    "ku": "نێرگەلە"
+   },
+   "photo": "shisha-gold.png",
+   "items": [
+    {
+     "name": {
+      "en": "Gum & mint",
+      "ar": "علك ونعناع",
+      "ku": "علک و نەعناع"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Lemon & mint",
+      "ar": "ليمون ونعناع",
+      "ku": "لەیمون و نەعناع"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Double apple",
+      "ar": "تفاحتين",
+      "ku": "دوو سێڤ"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Grape & mint",
+      "ar": "عنب ونعناع",
+      "ku": "تری و نەعناع"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Baghdadi mix",
+      "ar": "خلطة بغدادية",
+      "ku": "تێکەلا بەغدادی"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Royal mix",
+      "ar": "خلطة رويال",
+      "ku": "تێکەلا رۆیال"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "English mix",
+      "ar": "خلطة إنجليزية",
+      "ku": "تێکەلا ئینگلیزی"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Legendary mix",
+      "ar": "خلطة أسطورية",
+      "ku": "تێکەلا ئەفسانە"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Grape mix",
+      "ar": "خلطة عنب",
+      "ku": "تێکەلا تری"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Gum & melon mix",
+      "ar": "خلطة علك وشمام",
+      "ku": "تێکەلا علک و شمامێ"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Fresh",
+      "ar": "فريش",
+      "ku": "فرێش"
+     },
+     "price": 9000
+    },
+    {
+     "name": {
+      "en": "Natural",
+      "ar": "طبيعية",
+      "ku": "سروشتی"
+     },
+     "price": 12000
+    },
+    {
+     "name": {
+      "en": "Head change",
+      "ar": "تبديل حجر",
+      "ku": "گوهۆڕینا سەری"
+     },
+     "price": 5000
+    },
+    {
+     "name": {
+      "en": "Half kilo of tobacco",
+      "ar": "نصف كيلو معسل",
+      "ku": "نیڤ کیلۆ مەعسەل"
+     },
+     "price": 20000
+    },
+    {
+     "name": {
+      "en": "1 kilo of tobacco",
+      "ar": "كيلو معسل",
+      "ku": "کیلۆیەک مەعسەل"
+     },
+     "price": 40000
+    }
+   ]
+  },
+  {
+   "id": "pizza",
+   "name": {
+    "en": "Pizza",
+    "ar": "بيتزا",
+    "ku": "پیتزا"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Margherita",
+      "ar": "مارغريتا",
+      "ku": "مارگەریتا"
+     },
+     "price": 5000
+    },
+    {
+     "name": {
+      "en": "Vegetable",
+      "ar": "خضار",
+      "ku": "کەسکاتی"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Mushroom",
+      "ar": "فطر",
+      "ku": "کڤارک"
+     },
+     "price": 6000
+    },
+    {
+     "name": {
+      "en": "Chicken",
+      "ar": "دجاج",
+      "ku": "مریشک"
+     },
+     "price": 7000
+    },
+    {
+     "name": {
+      "en": "Meat",
+      "ar": "لحم",
+      "ku": "گۆشت"
+     },
+     "price": 8000
+    },
+    {
+     "name": {
+      "en": "Pepperoni (sujuk)",
+      "ar": "سجق",
+      "ku": "سۆسج"
+     },
+     "price": 8000
+    },
+    {
+     "name": {
+      "en": "Tuna",
+      "ar": "تونا",
+      "ku": "تونا"
+     },
+     "price": 8000
+    },
+    {
+     "name": {
+      "en": "Four seasons",
+      "ar": "الفصول الأربعة",
+      "ku": "چار وەرز"
+     },
+     "price": 8000
+    },
+    {
+     "name": {
+      "en": "Mexican",
+      "ar": "مكسيكي",
+      "ku": "مەکسیکی"
+     },
+     "price": 8000
+    },
+    {
+     "name": {
+      "en": "Amed mix",
+      "ar": "Amed مشكل",
+      "ku": "ئامەد تێکەل"
+     },
+     "price": 8000
+    }
+   ]
+  },
+  {
+   "id": "pasta",
+   "name": {
+    "en": "Pasta",
+    "ar": "باستا",
+    "ku": "پاستا"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Chicken Alfredo",
+      "ar": "ألفريدو دجاج",
+      "ku": "ئەلفرێدۆ مریشک"
+     },
+     "price": 7750
+    },
+    {
+     "name": {
+      "en": "Lasagna",
+      "ar": "لازانيا",
+      "ku": "لەزانیا"
+     },
+     "price": 7750
+    }
+   ]
+  },
+  {
+   "id": "meals",
+   "name": {
+    "en": "Meals",
+    "ar": "وجبات",
+    "ku": "ژەم"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Döner box",
+      "ar": "دونر بوكس",
+      "ku": "دۆنەر بۆکس"
+     },
+     "price": 5000,
+     "note": {
+      "en": "Cola on the house",
+      "ar": "مشروب غازي ضيافة",
+      "ku": "کۆلا دیاریە"
+     }
+    },
+    {
+     "name": {
+      "en": "Chicken escalope",
+      "ar": "سكالوب دجاج",
+      "ku": "سکالۆپا مریشکێ"
+     },
+     "price": 7750
+    }
+   ]
+  },
+  {
+   "id": "oven",
+   "name": {
+    "en": "From the oven",
+    "ar": "الفرن",
+    "ku": "فڕن"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Oven-roasted chicken",
+      "ar": "دجاج مشوي بالفرن",
+      "ku": "مریشکا فڕنی"
+     },
+     "price": 12000,
+     "note": {
+      "en": "Serves 4",
+      "ar": "يكفي 4 أشخاص",
+      "ku": "بۆ 4 کەسان"
+     }
+    },
+    {
+     "name": {
+      "en": "Oven-grilled fish (2 kg)",
+      "ar": "سمك بالفرن (2 كيلو)",
+      "ku": "ماسیێ فڕنی (2 کیلۆ)"
+     },
+     "price": 30000,
+     "note": {
+      "en": "With vegetables, serves 4",
+      "ar": "مع الخضار، يكفي 4 أشخاص",
+      "ku": "دگەل زەرزەواتان، بۆ 4 کەسان"
+     }
+    }
+   ]
+  },
+  {
+   "id": "starters",
+   "name": {
+    "en": "Starters & soup",
+    "ar": "مقبلات وشوربة",
+    "ku": "دلڤەکەر و شۆربە"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Eastern salad",
+      "ar": "سلطة شرقية",
+      "ku": "زەلەتا رۆژهەلاتی"
+     },
+     "price": 2250
+    },
+    {
+     "name": {
+      "en": "Lentil soup",
+      "ar": "شوربة عدس",
+      "ku": "شۆربا نیسکێ"
+     },
+     "price": 2750
+    },
+    {
+     "name": {
+      "en": "French fries",
+      "ar": "أصابع بطاطا",
+      "ku": "فینگەر"
+     },
+     "price": 3750
+    },
+    {
+     "name": {
+      "en": "Cheese fries",
+      "ar": "فينگر بالجبنة",
+      "ku": "فینگەر ب پەنیر"
+     },
+     "price": 3750
+    }
+   ]
+  },
+  {
+   "id": "offers",
+   "name": {
+    "en": "Offers",
+    "ar": "عروض",
+    "ku": "ئۆفەر"
+   },
+   "items": [
+    {
+     "name": {
+      "en": "Breakfast + shisha",
+      "ar": "فطور + أركيلة",
+      "ku": "تێشت + نێرگەلە"
+     },
+     "price": 5000
+    }
+   ]
+  }
+ ]
 }

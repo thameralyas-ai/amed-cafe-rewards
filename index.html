@@ -85,7 +85,7 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs button { font: inherit; font-size: 13px; white-space: nowrap; flex: none; color: var(--muted); background: #ffffff0a; border: 1px solid var(--line); padding: 7px 12px; border-radius: 99px; cursor: pointer; }
 .tabs button[aria-selected="true"] { color: #1C120D; background: var(--gold); border-color: var(--gold); font-weight: 500; }
-.scroller { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 4px 20px 10px; scrollbar-width: none; }
+.scroller { display: flex; align-items: flex-start; gap: 14px; overflow-x: auto; overflow-y: hidden; transition: height .25s ease; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 4px 20px 10px; scrollbar-width: none; }
 .scroller::-webkit-scrollbar { display: none; }
 .mc { flex: 0 0 82%; scroll-snap-align: center; background: linear-gradient(180deg, #2E1F17, #241812); border: 1px solid var(--line); border-radius: 22px; padding: 20px; }
 .mc h3 { font-size: 28px; color: var(--gold2); margin-bottom: 6px; }
@@ -96,6 +96,7 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .li:last-child { border: 0; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
 .li .p small { font-size: 11px; color: var(--muted); margin-inline-start: 3px; }
+.li .sub { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
 
 /* Rewards */
 .rewards { display: grid; gap: 14px; }
@@ -156,7 +157,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .status { justify-content: flex-start; border: 0; padding: 0; margin: 26px 0 0; }
   .trio { height: 420px; max-width: 460px; } .trio .g { height: 410px; } .trio .c, .trio .s { height: 330px; }
   .tabs { display: none; }
-  .scroller { display: grid; grid-template-columns: repeat(4, 1fr); overflow: visible; margin: 0; padding: 0; }
+  .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
+  .mc { break-inside: avoid; margin-bottom: 14px; }
   .swipe { display: none; }
   .rewards { grid-template-columns: 1fr 1fr; align-items: start; }
   .gal { grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 180px; }
@@ -339,22 +341,40 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     $("openTxt").textContent = o ? tr("open") : tr("closed");
   }
 
+  // Scroll a horizontal row so that child is centred (works left-to-right and right-to-left).
+  function centerIn(row, child) {
+    const r = row.getBoundingClientRect(), c = child.getBoundingClientRect();
+    row.scrollBy({ left: (c.left + c.width / 2) - (r.left + r.width / 2), behavior: "smooth" });
+  }
+
+  // On phones the menu is a swipe row: fit its height to the card in view so short cards leave no gap.
+  function fitMenu() {
+    const sc = $("scroller"), card = sc.children[activeCat];
+    sc.style.height = card && getComputedStyle(sc).display === "flex" ? card.offsetHeight + 14 + "px" : "";
+  }
+
   function renderMenu() {
     const tabs = $("tabs"), sc = $("scroller");
     tabs.textContent = ""; sc.textContent = "";
     if (!MENU) return;
     MENU.categories.forEach((c, i) => {
       tabs.append(el("button", { type: "button", role: "tab", "aria-selected": String(i === activeCat), onclick: () => {
-        activeCat = i; for (const b of tabs.children) b.setAttribute("aria-selected", String(b === tabs.children[i]));
-        const card = sc.children[i]; sc.scrollTo({ left: card.offsetLeft - sc.offsetLeft - (sc.clientWidth - card.clientWidth) / 2, behavior: "smooth" });
+        activeCat = i; fitMenu(); for (const b of tabs.children) b.setAttribute("aria-selected", String(b === tabs.children[i]));
+        centerIn(sc, sc.children[i]);
       } }, pick(c.name)));
       const card = el("div", { class: "mc" });
       if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: c.photo, alt: "", loading: "lazy" })));
       card.append(el("h3", { text: pick(c.name) }));
-      for (const it of c.items) card.append(el("div", { class: "li" }, el("span", { text: pick(it.name) }), el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
+      for (const it of c.items) {
+        const opts = it.options || [];
+        const same = opts.every((o) => o.price === opts[0].price);
+        const sub = [opts.length ? opts.map((o) => pick(o.name) + (same ? "" : " " + num(o.price))).join(" · ") : "", pick(it.note)].filter(Boolean).join(" — ");
+        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), sub ? el("small", { class: "sub", text: sub }) : null), el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
+      }
       sc.append(card);
     });
     $("menuNote").textContent = MENU.sample ? tr("sampleNote") : tr("menuNote");
+    activeCat = Math.min(activeCat, MENU.categories.length - 1); fitMenu();
   }
 
   function renderRewards() {
@@ -436,11 +456,17 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("scroller").addEventListener("scroll", () => {
-    const sc = $("scroller"), mid = sc.scrollLeft + sc.clientWidth / 2;
+    const sc = $("scroller"), r = sc.getBoundingClientRect(), mid = r.left + r.width / 2;
     let best = 0, bd = 1e9;
-    [...sc.children].forEach((c, i) => { const d = Math.abs(c.offsetLeft - sc.offsetLeft + c.clientWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
-    if (best !== activeCat) { activeCat = best; [...$("tabs").children].forEach((b, i) => b.setAttribute("aria-selected", String(i === best))); }
+    [...sc.children].forEach((c, i) => { const cr = c.getBoundingClientRect(), d = Math.abs(cr.left + cr.width / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    if (best !== activeCat) {
+      activeCat = best; const tabs = $("tabs");
+      [...tabs.children].forEach((b, i) => b.setAttribute("aria-selected", String(i === best)));
+      if (tabs.children[best]) centerIn(tabs, tabs.children[best]);
+      fitMenu();
+    }
   }, { passive: true });
+  window.addEventListener("resize", fitMenu);
   $("yr").textContent = new Date().getFullYear();
 
   let start = (location.hash || "").replace("#", "");
