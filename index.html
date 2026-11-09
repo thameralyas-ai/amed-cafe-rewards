@@ -79,7 +79,8 @@ header { z-index: 6; }
 /* Sections fade up as they scroll into view */
 .js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .rv.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .js .rv { opacity: 1; transform: none; } }
+/* Reduce Motion: still animated (Thamir asked), but calmer: no spotlight sweep or button pulse, slower ring, fade without sliding */
+@media (prefers-reduced-motion: reduce) { .beam { animation: none; } .btn.pri { animation: none; } .ring::after { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
 .hero h1 { font-size: 46px; line-height: 1.05; margin: 12px 0 10px; }
 .rtl .hero h1 { font-size: 38px; line-height: 1.35; }
 .hero h1 i { color: var(--gold2); font-family: "Cormorant Garamond", Georgia, serif; }
@@ -505,9 +506,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     T[lang].words.forEach((w, i) => sw.append(el("b", { class: i ? "" : "on", text: w })));
     h.append(tr("h1a"), el("br"), sw);
     clearInterval(swapTimer);
-    if (REDUCED) return;
     const bs = [...sw.children]; let i = 0;
-    swapTimer = setInterval(() => { const a = bs[i]; a.classList.remove("on"); a.classList.add("out"); setTimeout(() => a.classList.remove("out"), 700); i = (i + 1) % bs.length; bs[i].classList.add("on"); }, 2200);
+    swapTimer = setInterval(() => { const a = bs[i]; a.classList.remove("on"); a.classList.add("out"); setTimeout(() => a.classList.remove("out"), 700); i = (i + 1) % bs.length; bs[i].classList.add("on"); }, REDUCED ? 3200 : 2200);
   }
 
   // Stage: the three shishas circle slowly; the one in front is large and bright. Pauses when off screen.
@@ -528,10 +528,10 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
         const n = $("sname"); n.style.opacity = 0; setTimeout(() => { n.textContent = T[lang].shishas[f]; n.style.opacity = 1; }, 200);
       }
     };
-    if (REDUCED) { place(0); return; }
+    const PERIOD = REDUCED ? 18000 : 9000; // one full turn; calmer with Reduce Motion
     new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(st);
     (function tick(now) {
-      if (!visible || document.hidden) paused += now - last; else place(((now - t0 - paused) / 9000) * Math.PI * 2);
+      if (!visible || document.hidden) paused += now - last; else place(((now - t0 - paused) / PERIOD) * Math.PI * 2);
       last = now; requestAnimationFrame(tick);
     })(t0);
   }
