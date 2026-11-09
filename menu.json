@@ -1,0 +1,50 @@
+{
+  "note": "SAMPLE MENU (placeholder). Replace with Amed Cafe's real menu. Prices in IQD. Each name has en, ar and ku (Badini).",
+  "sample": true,
+  "categories": [
+    {
+      "id": "hot",
+      "name": { "en": "Hot drinks", "ar": "مشروبات ساخنة", "ku": "ڤەخوارنێن گەرم" },
+      "items": [
+        { "name": { "en": "Espresso", "ar": "إسبريسو", "ku": "ئێسپرێسۆ" }, "price": 2500 },
+        { "name": { "en": "Turkish coffee", "ar": "قهوة تركية", "ku": "قەهوا تورکی" }, "price": 2500 },
+        { "name": { "en": "Cappuccino", "ar": "كابتشينو", "ku": "کاپوچینۆ" }, "price": 3500 },
+        { "name": { "en": "Spanish latte", "ar": "سبانش لاتيه", "ku": "سپانش لاتێ" }, "price": 4000 },
+        { "name": { "en": "Karak tea", "ar": "شاي كرك", "ku": "چایا کەرەک" }, "price": 2000 },
+        { "name": { "en": "Tea", "ar": "شاي", "ku": "چای" }, "price": 1000 }
+      ]
+    },
+    {
+      "id": "cold",
+      "name": { "en": "Cold drinks", "ar": "مشروبات باردة", "ku": "ڤەخوارنێن سار" },
+      "items": [
+        { "name": { "en": "Iced latte", "ar": "آيس لاتيه", "ku": "ئایس لاتێ" }, "price": 4000 },
+        { "name": { "en": "Iced mocha", "ar": "آيس موكا", "ku": "ئایس مۆکا" }, "price": 4000 },
+        { "name": { "en": "Lemon mint", "ar": "ليمون ونعناع", "ku": "لیمۆن و پونگ" }, "price": 3000 },
+        { "name": { "en": "Fresh orange juice", "ar": "عصير برتقال طازج", "ku": "ئاڤا پرتەقالێ یا تازە" }, "price": 3000 },
+        { "name": { "en": "Mojito", "ar": "موهيتو", "ku": "مۆهیتۆ" }, "price": 3500 }
+      ]
+    },
+    {
+      "id": "shisha",
+      "name": { "en": "Shisha", "ar": "أركيلة", "ku": "نێرگەلە" },
+      "photo": "shisha-gold.png",
+      "items": [
+        { "name": { "en": "Double apple", "ar": "تفاحتين", "ku": "دوو سێڤ" }, "price": 6000 },
+        { "name": { "en": "Lemon mint", "ar": "ليمون ونعناع", "ku": "لیمۆن و پونگ" }, "price": 6000 },
+        { "name": { "en": "Grape mint", "ar": "عنب ونعناع", "ku": "تری و پونگ" }, "price": 6000 },
+        { "name": { "en": "Blueberry", "ar": "توت أزرق", "ku": "بلوبێری" }, "price": 6500 },
+        { "name": { "en": "Amed special mix", "ar": "خلطة Amed الخاصة", "ku": "تێکەلا تایبەت یا Amed" }, "price": 7000 }
+      ]
+    },
+    {
+      "id": "sweets",
+      "name": { "en": "Sweets", "ar": "حلويات", "ku": "شرینی" },
+      "items": [
+        { "name": { "en": "Cheesecake", "ar": "تشيز كيك", "ku": "چیزکەیک" }, "price": 4000 },
+        { "name": { "en": "Brownie", "ar": "براوني", "ku": "براونی" }, "price": 3500 },
+        { "name": { "en": "Kunafa", "ar": "كنافة", "ku": "کونافە" }, "price": 4000 }
+      ]
+    }
+  ]
+}

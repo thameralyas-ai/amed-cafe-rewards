@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Amed Cafe loyalty rewards: check your drink and shisha stamps.">
+<meta property="og:title" content="Amed Cafe Rewards">
+<meta property="og:description" content="Buy 7, and the 8th is on us. Check your loyalty card.">
+<meta property="og:image" content="icon-512.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Amed Cafe">
+<meta name="theme-color" content="#F3EADF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C120D" media="(prefers-color-scheme: dark)">
+<title>Amed Cafe Rewards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: one column for a phone in the hand — brand + language, "check your card", the result, then how it works. */
+/* Coffee palette: Latte in light mode, Espresso in dark mode */
+:root {
+  --logo-filter: none;
+  --bg: #F3EADF;
+  --surface: #FFFCF8;
+  --ink: #2B1A12;
+  --muted: #6B5446;
+  --line: #E3D4C3;
+  --accent: #6F4E37;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #EADBC8;
+  --hl: #8B5A3C;
+  --card: #2A1A12;
+  --card-ink: #F5EDE3;
+  --card-dim: rgba(245,237,227,.28);
+  --stamp: #A9784F;
+  --stamp-ink: #FFFFFF;
+  --danger: #A3342C;
+  --f-display: "Gloock", "Georgia", "Times New Roman", serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C120D; --surface: #2A1C15; --ink: #F3E9DC; --muted: #C4B09C; --line: #3F2D23;
+    --accent: #D4A373; --accent-ink: #1C120D; --accent-soft: #3A281E; --hl: #E3B27D;
+    --card: #2A1C15; --card-ink: #F3E9DC; --card-dim: rgba(243,233,220,.22);
+    --stamp: #C08552; --stamp-ink: #1C120D; --danger: #E3786E; --logo-filter: invert(1);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C120D; --surface: #2A1C15; --ink: #F3E9DC; --muted: #C4B09C; --line: #3F2D23;
+  --accent: #D4A373; --accent-ink: #1C120D; --accent-soft: #3A281E; --hl: #E3B27D;
+  --card: #2A1C15; --card-ink: #F3E9DC; --card-dim: rgba(243,233,220,.22);
+  --stamp: #C08552; --stamp-ink: #1C120D; --danger: #E3786E; --logo-filter: invert(1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+body.rtl { --f-body: "Noto Sans Arabic", system-ui, sans-serif; --f-display: "Noto Sans Arabic", serif; }
+body.rtl .hero h1, body.rtl .card h2, body.rtl .check .ttl, body.rtl .notfound h2, body.rtl .offer h4 { font-weight: 800; letter-spacing: 0; }
+main { max-width: 560px; margin: 0 auto; display: grid; gap: 26px; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand .logo { width: min(220px, 56vw); height: auto; display: block; filter: var(--logo-filter); }
+.langs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 3px; }
+.langs button { border: 0; background: none; border-radius: 99px; padding: 6px 12px; font-weight: 700; font-size: .85rem; cursor: pointer; min-height: 36px; font-family: "Figtree", "Noto Sans Arabic", sans-serif; }
+.langs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.langs button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px 5px 7px; transition: background .15s; }
+.langs button:hover:not([aria-pressed="true"]) { background: var(--accent-soft); }
+.langs .flag { width: 27px; height: 18px; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px rgba(0,0,0,.15); display: block; }
+.langs button[aria-pressed="true"] .flag { box-shadow: 0 0 0 2px var(--bg); }
+@media (max-width: 420px) { .langs button span { display: none; } .langs button { padding: 7px 10px; } .langs .flag { width: 33px; height: 22px; } }
+
+.hero .tag { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin: 0 0 8px; }
+body.rtl .hero .tag { letter-spacing: 0; }
+.hero h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2.1rem, 9vw, 3.1rem); line-height: 1.08; margin: 0 0 10px; text-wrap: balance; }
+.hero h1 em { font-style: normal; color: var(--hl); }
+.hero p { margin: 0; color: var(--muted); max-width: 46ch; }
+
+.check { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 10px; }
+.check .ttl { font-family: var(--f-display); font-weight: 400; font-size: 1.35rem; }
+.check label { font-weight: 600; font-size: .85rem; color: var(--muted); margin-bottom: -4px; }
+.check input { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 12px 14px; font-size: 1.15rem; font-family: var(--f-mono); letter-spacing: .03em; min-height: 52px; width: 100%; min-width: 0; direction: ltr; text-align: start; }
+body.rtl .check input { text-align: right; }
+.check input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.check .row { display: flex; gap: 8px; }
+.check .row input { flex: 1; }
+.check button { border: 0; background: var(--accent); color: var(--accent-ink); border-radius: 12px; padding: 0 18px; font-weight: 700; min-height: 52px; cursor: pointer; }
+.check button:hover { filter: brightness(1.08); }
+.check small { color: var(--muted); font-size: .84rem; }
+.err { color: var(--danger); margin: 0; font-size: .92rem; }
+
+.result { display: grid; gap: 14px; }
+.result .hello { font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; margin: 0; }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 12px; }
+.summary .facts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+.summary .facts div { display: grid; min-width: 0; }
+.summary .facts span { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+body.rtl .summary .facts span { letter-spacing: 0; }
+.summary .facts b { font-family: var(--f-display); font-weight: 400; font-size: 1.45rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+body.rtl .summary .facts b { font-weight: 700; }
+.vip { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.vip .badge { background: var(--ink); color: var(--bg); font-weight: 800; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; border-radius: 99px; }
+.meter { height: 8px; border-radius: 99px; background: var(--accent-soft); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.vip small { color: var(--muted); }
+
+.card { background: var(--card); color: var(--card-ink); border-radius: 18px; padding: 20px; position: relative; overflow: hidden; }
+.card::after { content: ""; position: absolute; right: -50px; top: -50px; width: 170px; height: 170px; border-radius: 50%; border: 12px solid var(--card-dim); opacity: .35; pointer-events: none; }
+.card .head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; position: relative; z-index: 1; }
+.card h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.5rem; margin: 0; }
+.card .rule { font-size: .74rem; opacity: .8; font-weight: 600; text-align: end; }
+.stamps { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin: 16px auto 14px; max-width: 340px; position: relative; z-index: 1; direction: ltr; }
+.slot { aspect-ratio: 1; max-width: 100%; border-radius: 50%; border: 2px dashed var(--card-dim); display: grid; place-items: center; font-family: var(--f-mono); font-size: .78rem; color: var(--card-dim); }
+.slot.on { border: 0; background: var(--stamp); color: var(--stamp-ink); }
+.slot.on svg { width: 56%; height: 56%; }
+.slot.reward { border-style: solid; border-color: var(--stamp); color: var(--stamp); font-family: var(--f-body); font-weight: 800; font-size: .7rem; text-align: center; }
+.slot.reward.lit { background: var(--card-ink); color: var(--card); border-color: var(--card-ink); }
+.card .line { position: relative; z-index: 1; }
+.card .line strong { font-size: 1.15rem; }
+.ready { display: block; margin-top: 10px; background: var(--stamp); color: var(--stamp-ink); font-weight: 700; padding: 10px 12px; border-radius: 12px; position: relative; z-index: 1; }
+.card .tally { display: flex; gap: 18px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--card-dim); position: relative; z-index: 1; font-size: .85rem; }
+.card .tally b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 1.4rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.myqr { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.myqr .qr { background: #fff; padding: 8px; border-radius: 10px; width: 136px; height: 136px; flex: none; }
+.myqr .qr img, .myqr .qr canvas { width: 120px !important; height: 120px !important; display: block; }
+.myqr div.txt { flex: 1 1 180px; min-width: 0; }
+.myqr b { display: block; font-size: 1.05rem; }
+.myqr code { font-family: var(--f-mono); font-size: 1.2rem; letter-spacing: .12em; }
+.myqr p { margin: 4px 0 0; color: var(--muted); font-size: .88rem; }
+.updated { color: var(--muted); font-size: .8rem; margin: 0; }
+.again { justify-self: start; border: 0; background: none; color: var(--accent); font-weight: 700; padding: 4px 0; cursor: pointer; }
+
+.notfound { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+.notfound h2 { font-family: var(--f-display); font-weight: 400; margin: 0 0 6px; font-size: 1.35rem; }
+.notfound p { margin: 0; color: var(--muted); }
+
+section h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 12px; }
+body.rtl section h3 { letter-spacing: 0; font-size: .9rem; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.steps li { display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 12px; align-items: start; }
+.steps .n { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-family: var(--f-display); font-size: 1.2rem; }
+.steps b { display: block; }
+.steps span { color: var(--muted); font-size: .94rem; }
+.offers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.offer { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 10px; }
+.offer .t { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.offer h4 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 1.3rem; }
+.offer .eq { font-weight: 700; color: var(--accent); font-size: .9rem; white-space: nowrap; }
+.strip { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; direction: ltr; }
+.strip i { width: 22px; height: 22px; border-radius: 50%; background: var(--stamp); color: var(--stamp-ink); display: grid; place-items: center; }
+.strip i svg { width: 14px; height: 14px; }
+.strip .plus { color: var(--muted); font-weight: 700; padding: 0 2px; }
+.strip .free { width: auto; padding: 0 8px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-style: normal; font-size: .68rem; font-weight: 800; letter-spacing: .06em; height: 22px; display: inline-grid; place-items: center; }
+.offer p { margin: 0; color: var(--muted); font-size: .9rem; }
+.levels { display: grid; gap: 8px; }
+.levels div { display: flex; justify-content: space-between; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; flex-wrap: wrap; }
+.levels b { font-weight: 800; }
+.levels span { color: var(--muted); font-size: .9rem; }
+.evts { display: grid; gap: 10px; }
+.evt { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; grid-template-columns: 58px minmax(0,1fr); gap: 12px; align-items: start; }
+.evt .when { background: var(--accent); color: var(--accent-ink); border-radius: 10px; text-align: center; padding: 6px 4px; font-weight: 800; line-height: 1.1; }
+.evt .when small { display: block; font-size: .68rem; font-weight: 700; opacity: .85; }
+.evt .when.offer { background: var(--stamp); color: var(--stamp-ink); font-size: 1.1rem; display: grid; place-items: center; min-height: 52px; }
+.evt b { display: block; }
+.evt span { color: var(--muted); font-size: .9rem; }
+.rules { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.rules li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: .94rem; }
+.share { justify-self: start; border: 0; background: linear-gradient(90deg, #833AB4, #E1306C 60%, #F77737); color: #fff; border-radius: 12px; padding: 12px 18px; font-weight: 800; cursor: pointer; min-height: 48px; }
+.linkbtn { color: var(--accent); font-weight: 700; font-size: .9rem; text-decoration: none; justify-self: start; }
+.linkbtn:hover { text-decoration: underline; }
+.wabtn { display: inline-flex; margin-top: 8px; background: #1F8A4C; color: #fff; border-radius: 10px; padding: 9px 14px; font-weight: 700; text-decoration: none; font-size: .92rem; }
+.install { display: grid; gap: 6px; justify-items: start; }
+.installbtn { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 16px; font-weight: 700; cursor: pointer; }
+.install small { color: var(--muted); }
+/* Loyalty card (B + C): colours come from the member's level via --lc-* */
+.lc { position: relative; overflow: hidden; border-radius: 26px; background: var(--lc-bg); color: var(--lc-text); padding: 22px 20px 18px; display: grid; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.lc > * { position: relative; }
+.lc-sun { position: absolute !important; width: 420px; height: 420px; inset-inline-end: -150px; top: 300px; opacity: .045; pointer-events: none; }
+.lc-light .lc-sun { opacity: .05; }
+.lc-frame { position: absolute !important; inset: 9px; border: 1px solid #B8C0C8; border-radius: 19px; pointer-events: none; }
+.lc-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.lc-logo { width: 118px; height: auto; display: block; }
+.lc-badge { border: 1px solid var(--lc-accent); color: var(--lc-accent); border-radius: 999px; padding: 5px 11px; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+body.rtl .lc-badge { letter-spacing: 0; font-size: .78rem; }
+.lc-greet { display: grid; gap: 2px; }
+.lc-hi { color: var(--lc-muted); font-size: .95rem; }
+.lc-h { font-family: var(--f-display); font-size: 2.6rem; line-height: 1.05; }
+body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
+.lc-acc { color: var(--lc-accent); }
+.lc-until { color: var(--lc-soft); font-size: .95rem; }
+.lc-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.lc-tabs:empty { display: none; }
+.lc-tab { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--lc-border); background: transparent; color: var(--lc-text); font: inherit; font-weight: 600; cursor: pointer; }
+.lc-tab[aria-pressed="true"] { background: var(--lc-accent); border-color: var(--lc-accent); color: var(--lc-on); font-weight: 700; }
+.lc-hero { display: flex; align-items: flex-end; justify-content: center; gap: 16px; min-height: 300px; }
+.lc-rail { position: relative; display: flex; flex-direction: column-reverse; justify-content: space-between; align-items: center; width: 42px; height: 300px; flex: none; }
+.lc-rail::before, .lc-rail::after { content: ""; position: absolute; left: 20px; width: 2px; bottom: 14px; }
+.lc-rail::before { top: 22px; background: var(--lc-rail); }
+.lc-rail::after { height: var(--fill); background: var(--lc-accent); }
+.lc-node { position: relative; z-index: 1; width: 28px; height: 28px; border-radius: 50%; box-sizing: border-box; border: 2px solid var(--lc-border); background: var(--lc-bg); color: var(--lc-dim); display: grid; place-items: center; font: 600 12px var(--f-mono); }
+.lc-node.on { background: var(--lc-accent); border-color: var(--lc-accent); color: var(--lc-on); font-weight: 700; }
+.lc-free { position: relative; z-index: 1; width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--lc-accent); background: var(--lc-bg); color: var(--lc-accent); display: grid; place-items: center; font: 800 9px "Figtree", sans-serif; letter-spacing: .06em; box-shadow: 0 0 0 6px rgba(var(--lc-glow), .12), 0 0 26px rgba(var(--lc-glow), .4); box-sizing: border-box; }
+.lc-free.lit { background: var(--lc-accent); color: var(--lc-on); }
+.lc-art { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.lc-art .cup { width: min(236px, 58vw); height: auto; display: block; }
+.lc-photo { height: 300px; width: auto; max-width: 100%; display: block; }
+.lc-num { font-family: "Gloock", Georgia, serif; font-size: 3rem; line-height: 1; color: var(--lc-accent); white-space: nowrap; }
+.lc-ready { background: var(--lc-accent); color: var(--lc-on); font-weight: 700; padding: 11px 13px; border-radius: 13px; }
+.lc-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lc-stats div { display: grid; min-width: 0; }
+.lc-stats b { font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: 1.5rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.lc-stats span { font-size: .78rem; color: var(--lc-muted); }
+.lc-next { margin: 0; font-size: .86rem; color: var(--lc-soft); }
+.lc-qr { display: flex; align-items: center; gap: 14px; border: 1px solid var(--lc-border); border-radius: 18px; padding: 12px 14px; background: var(--lc-panel); }
+.lc-qrimg { background: #fff; border-radius: 10px; padding: 4px; flex: none; }
+.lc-qrimg img, .lc-qrimg canvas { width: 76px !important; height: 76px !important; display: block; }
+.lc-qrtxt { display: grid; gap: 3px; min-width: 0; }
+.lc-qrtxt span { font-size: .84rem; color: var(--lc-soft); }
+.lc-qrtxt small { font-size: .76rem; color: var(--lc-muted); }
+.lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
+@media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
+
+.ver { font-size: .7rem; opacity: .6; }
+body { transition: background-color .35s ease, color .35s ease; }
+@media (prefers-reduced-motion: reduce) { body { transition: none; } }
+body[data-level] .lc { border: 1px solid var(--line); }
+.welcome { display: grid; gap: 4px; }
+.welcome h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(1.9rem, 8vw, 2.4rem); line-height: 1.1; text-wrap: balance; }
+body.rtl .welcome h2 { font-weight: 800; }
+.welcome p { margin: 0; color: var(--muted); }
+.signout { justify-self: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 10px 22px; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
+.st-ov { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.6); display: grid; place-items: start center; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); overflow-y: auto; }
+.st-box { background: var(--surface); color: var(--ink); border-radius: 22px; padding: 18px 20px; width: 100%; max-width: 380px; display: grid; gap: 10px; text-align: center; margin: auto 0; }
+.st-box h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.15; }
+body.rtl .st-box h2 { font-weight: 800; }
+.st-box p { margin: 0; color: var(--muted); }
+.st-img { width: 42%; max-width: 100%; margin: 0 auto; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.25); display: block; }
+.st-share { border: 0; border-radius: 14px; min-height: 52px; font: inherit; font-weight: 800; color: #fff; cursor: pointer; background: linear-gradient(90deg, #833AB4, #E1306C 60%, #F77737); }
+.st-later { border: 0; background: none; color: var(--muted); font: inherit; font-weight: 700; min-height: 44px; cursor: pointer; }
+.st-note { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.st-tip { font-size: .9rem; color: var(--ink) !important; background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
+footer { color: var(--muted); font-size: .82rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+footer p { margin: 0; }
+</style>
+</head>
+<body>
+<main id="app">
+  <header class="brand">
+    <img class="logo" src="../logo.png" alt="Amed Cafe, your comfort space" width="640" height="289">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg><span>بادینی</span></button>
+      <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg><span>العربية</span></button>
+      <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg><span>English</span></button>
+    </div>
+  </header>
+
+  <div class="hero" id="heroBox">
+    <p class="tag" data-t="tag"></p>
+    <h1 id="heroTitle"></h1>
+    <p id="heroSub"></p>
+  </div>
+
+  <form class="check" id="checkForm" novalidate>
+    <strong class="ttl" data-t="checkTitle"></strong>
+    <label for="phone" data-t="phone"></label>
+    <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0750 123 4567">
+    <label for="pin" data-t="pin"></label>
+    <div class="row">
+      <input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="••••">
+      <button type="submit" data-t="show"></button>
+    </div>
+    <small data-t="pinHelp"></small>
+    <a class="linkbtn" id="forgot" href="#" target="_blank" rel="noopener" hidden data-t="forgot"></a>
+    <p class="err" id="err" hidden></p>
+  </form>
+
+  <div class="result" id="result" hidden></div>
+
+  <section id="howSec">
+    <h3 data-t="howTitle"></h3>
+    <ol class="steps">
+      <li><span class="n">1</span><div><b data-t="s1t"></b><span data-t="s1d"></span><a class="wabtn" id="joinBtn" href="#" target="_blank" rel="noopener" hidden data-t="joinBtn"></a></div></li>
+      <li><span class="n">2</span><div><b data-t="s2t"></b><span data-t="s2d"></span></div></li>
+      <li><span class="n" id="stepN">8</span><div><b id="s3t"></b><span data-t="s3d"></span></div></li>
+    </ol>
+  </section>
+
+  <section id="cardsSec">
+    <h3 data-t="cardsTitle"></h3>
+    <div class="offers" id="offers"></div>
+  </section>
+
+  <section id="offersSec" hidden>
+    <h3 data-t="offersTitle"></h3>
+    <div class="evts" id="offerList"></div>
+  </section>
+
+  <section id="rulesSec" hidden>
+    <h3 data-t="rulesTitle"></h3>
+    <ul class="rules" id="rules"></ul>
+  </section>
+
+  <section id="levelsSec" hidden>
+    <h3 data-t="levelsTitle"></h3>
+    <div class="levels" id="levels"></div>
+  </section>
+
+  <div class="install" id="installBox" hidden>
+    <button type="button" class="installbtn" id="installBtn" hidden data-t="install"></button>
+    <small id="iosTip" hidden data-t="iosTip"></small>
+  </div>
+
+  <footer>
+    <p data-t="privacy"></p>
+    <p id="foot"></p>
+    <p class="ver">Card design v2 · lounge</p>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const CUP = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h12v4.5A5.5 5.5 0 0 1 10.5 19h-1A5.5 5.5 0 0 1 4 13.5z" fill="currentColor"/><path d="M16 10.5h1.6a2.4 2.4 0 0 1 0 4.8H16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c-1 1.3 1 2 0 3.3M11.5 3c-1 1.3 1 2 0 3.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  const SMOKE = '<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="11" cy="3.6" rx="6" ry="1.3" fill="currentColor"/><rect x="10.3" y="3.6" width="1.4" height="9.4" fill="currentColor"/><path d="M16.6 3.3 L19.4 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><rect x="9.1" y="12.4" width="3.8" height="2.4" rx=".4" fill="currentColor"/><path d="M9.8 14.8 C9.7 16.8 8.9 18.3 7.7 19.2 C6.7 19.9 6.8 21.7 7.9 22 H14.1 C15.2 21.7 15.3 19.9 14.3 19.2 C13.1 18.3 12.3 16.8 12.2 14.8 Z" fill="currentColor"/></svg>';
+  const PLATE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7" fill="currentColor"/><path d="M3 4v6M3 7h2M21 4c-2 1-2 5 0 6v10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  const iconFor = (p) => /shisha|hookah|nargil|argil/i.test(p.name) ? SMOKE : /food|meal|eat|dessert|cake/i.test(p.name) ? PLATE : CUP;
+
+  const T = {
+    en: {
+      tag: "Loyalty rewards", heroA: "Buy {n}, and the ", heroB: "{nth} is on us.", heroSub: "Get a stamp every time you order {list}. Check your card below to see how close you are to your next free one.", or: " or ",
+      checkTitle: "Check your card", phone: "Phone number", pin: "PIN", show: "Show my card",
+      pinHelp: "Your 4-digit PIN is in the WhatsApp welcome message we sent you. Forgot it? Ask at the counter.",
+      needPhone: "Enter your full phone number.", needPin: "Enter your 4-digit PIN.", loading: "The cards are still loading. Try again in a moment.", noLoad: "The cards couldn't load. Check your internet connection and reload the page.", noCrypto: "This browser can't check cards. Try opening the link in Chrome or Safari.",
+      hello: "Here's your card", visits: "Visits", thisYear: "This year", lastVisit: "Last visit", never: "Not yet", today: "Today", yesterday: "Yesterday", daysAgo: "{n} days ago",
+      levelIs: "{level} member", toNext: "{n} more visits to {level}", perk: "Your perk: {perk}",
+      rule: "Buy {n}, the {nth} is on us", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} rewards waiting: {reward}. Say your number at the counter.", useBy: " Use it by {date}.",
+      stamped: "Stamps so far", collected: "Rewards collected",
+      qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", again: "Check another number",
+      nfTitle: "We couldn't find this card", nfText: "Check your phone number and PIN. They must match what you gave at the counter. If you joined today, your card may take a few hours to appear here. Not a member yet? Ask our staff to sign you up on your next visit.",
+      howTitle: "How it works", s1t: "Join at the counter", s1d: "Give our staff your phone number. Joining is free and takes a few seconds.", s2t: "Collect a stamp with every order", s2d: "Each drink or shisha adds one stamp to its own card.", s3t: "Your {nth} one is free", s3d: "When your card is full, say your number at the counter and enjoy your reward.",
+      cardsTitle: "Our reward cards", plusFree: "{n} + 1 free", collect: "Collect {n} stamps and get a {reward}.",
+      levelsTitle: "VIP levels", levelRow: "after {n} visits",
+      privacy: "We only use your phone number for your loyalty card and, if you agreed, to send you WhatsApp messages about your rewards.",
+      updated: "Cards last updated {date} at {time}. A stamp from the last few hours may not show yet.",
+    },
+    ar: {
+      tag: "مكافآت الولاء", heroA: "اشترِ {n}، و", heroB: "ال{nth} علينا.", heroSub: "احصل على ختم مع كل طلب {list}. تحقّق من بطاقتك أدناه لترى كم بقي على مكافأتك المجانية القادمة.", or: " أو ",
+      checkTitle: "تحقّق من بطاقتك", phone: "رقم الهاتف", pin: "الرمز السري", show: "اعرض بطاقتي",
+      pinHelp: "رمزك السري المكوّن من 4 أرقام موجود في رسالة الترحيب على واتساب. نسيته؟ اسأل عند الكاونتر.",
+      needPhone: "أدخل رقم هاتفك كاملاً.", needPin: "أدخل الرمز السري المكوّن من 4 أرقام.", loading: "البطاقات قيد التحميل. حاول بعد لحظة.", noLoad: "تعذّر تحميل البطاقات. تحقّق من اتصالك بالإنترنت وأعد تحميل الصفحة.", noCrypto: "هذا المتصفح لا يدعم التحقق. جرّب فتح الرابط في Chrome أو Safari.",
+      hello: "هذه بطاقتك", visits: "الزيارات", thisYear: "هذا العام", lastVisit: "آخر زيارة", never: "لا يوجد بعد", today: "اليوم", yesterday: "أمس", daysAgo: "قبل {n} أيام",
+      levelIs: "عضو {level}", toNext: "باقي {n} زيارات للوصول إلى {level}", perk: "ميزتك: {perk}",
+      rule: "اشترِ {n} واحصل على ال{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت بانتظارك: {reward}. أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
+      stamped: "الأختام حتى الآن", collected: "المكافآت المستلمة",
+      qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", again: "تحقّق من رقم آخر",
+      nfTitle: "لم نجد هذه البطاقة", nfText: "تحقّق من رقم هاتفك والرمز السري. يجب أن يطابقا ما أعطيته عند الكاونتر. إذا انضممت اليوم فقد تحتاج بطاقتك بضع ساعات لتظهر هنا. لست عضواً بعد؟ اطلب من فريقنا تسجيلك في زيارتك القادمة.",
+      howTitle: "كيف يعمل", s1t: "انضم عند الكاونتر", s1d: "أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.", s2t: "اجمع ختماً مع كل طلب", s2d: "كل مشروب أو أركيلة يضيف ختماً إلى بطاقته.", s3t: "ال{nth} مجاناً", s3d: "عندما تكتمل بطاقتك، أعطِ رقمك عند الكاونتر واستمتع بمكافأتك.",
+      cardsTitle: "بطاقات المكافآت", plusFree: "{n} + 1 مجاناً", collect: "اجمع {n} أختام واحصل على {reward}.",
+      levelsTitle: "مستويات VIP", levelRow: "بعد {n} زيارة",
+      privacy: "نستخدم رقم هاتفك فقط لبطاقة الولاء، ولإرسال رسائل واتساب عن مكافآتك إذا وافقت على ذلك.",
+      updated: "آخر تحديث للبطاقات {date} الساعة {time}. قد لا يظهر ختم الساعات الأخيرة بعد.",
+    },
+    ku: {
+      tag: "خەلاتێن دلسۆزیێ", heroA: "{n} بکڕە، ", heroB: "یا {nth} ل سەر مەیە.", heroSub: "ل گەل هەر داخوازەکا {list} مۆرەکێ وەربگرە. ل خوارێ کارتا خۆ ببینە دا بزانی چەند ماینە بۆ یا بێ بەرامبەر یا دویڤدا.", or: " یان ",
+      checkTitle: "کارتا خۆ ببینە", phone: "ژمارا مۆبایلێ", pin: "ژمارا نهێنی", show: "کارتا من نیشان بدە",
+      pinHelp: "ژمارا تە یا نهێنی (4 ژمارە) د نامەیا خێرهاتنێ دا یە ل سەر واتسئاپێ. ژبیرا تە چوو؟ ل کاونتەری پسیار بکە.",
+      needPhone: "ژمارا مۆبایلا خۆ ب تەمامی بنڤیسە.", needPin: "ژمارا نهێنی یا 4 ژمارە بنڤیسە.", loading: "کارت د هێنە بارکرن. پشتی کێمەکێ دووبارە هەول بدە.", noLoad: "کارت بار نەبوون. ئینتەرنێتا خۆ بپشکنە و پەڕێ نوو بکە.", noCrypto: "ئەڤ وێبگەڕە نەشێت کارتێ بپشکنیت. د Chrome یان Safari دا ڤەکە.",
+      hello: "ئەڤە کارتا تەیە", visits: "سەرەدان", thisYear: "ئەڤ سالە", lastVisit: "دووماهیک سەرەدان", never: "هێشتا نە", today: "ئەڤرۆ", yesterday: "دوهی", daysAgo: "{n} رۆژ بەری نوکە",
+      levelIs: "ئەندامێ {level}", toNext: "{n} سەرەدانێن دی بۆ {level}", perk: "تایبەتمەندیا تە: {perk}",
+      rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلات ل هیڤیا تە نە: {reward}. ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
+      stamped: "مۆر هەتا نوکە", collected: "خەلاتێن وەرگرتی",
+      qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", again: "ژمارەکا دی بپشکنە",
+      nfTitle: "مە ئەڤ کارتە نەدیت", nfText: "ژمارا مۆبایلێ و ژمارا نهێنی بپشکنە. دڤێت وەک وان بن یێن تە ل کاونتەری داین. ئەگەر تو ئەڤرۆ بوویە ئەندام، دبیت چەند دەمژمێر بڤێن هەتا کارتا تە ل ڤێرە دیار دبیت. هێشتا نە ئەندامی؟ ل سەرەدانا دی ژ ستافێ مە بخوازە تە تۆمار بکەن.",
+      howTitle: "چاوا کار دکەت", s1t: "ل کاونتەری ببە ئەندام", s1d: "ژمارا مۆبایلا خۆ بدە ستافێ مە. ئەندامبوون بێ بەرامبەرە و چەند چرکەیان دڤێت.", s2t: "ل گەل هەر داخوازەکێ مۆرەکێ کۆم بکە", s2d: "هەر ڤەخوارنەک یان نێرگەلەک مۆرەکێ بۆ کارتا خۆ زێدە دکەت.", s3t: "یا {nth} بێ بەرامبەرە", s3d: "دەمێ کارتا تە تژی بوو، ژمارا خۆ ل کاونتەری بێژە و خۆشیێ ژ خەلاتا خۆ ببە.",
+      cardsTitle: "کارتێن خەلاتان", plusFree: "{n} + 1 بێ بەرامبەر", collect: "{n} مۆران کۆم بکە و {reward} وەربگرە.",
+      levelsTitle: "ئاستێن VIP", levelRow: "پشتی {n} سەرەدانان",
+      privacy: "ئەم ژمارا مۆبایلا تە تنێ بۆ کارتا دلسۆزیێ بکاردئینین، و ئەگەر تو رازی بووی، بۆ هنارتنا نامەیێن واتسئاپێ دەربارەی خەلاتێن تە.",
+      updated: "دووماهیک نووکرنا کارتان {date} دەمژمێر {time}. دبیت مۆرێن چەند دەمژمێرێن دووماهیێ هێشتا دیار نەبن.",
+      rulesTitle: "باشە بزانی", rLimit: "هەتا {n} مۆرێن {card} د رۆژەکێ دا.", rExpiry: "خەلاتێن بێ بەرامبەر دڤێت د ماوێ {n} رۆژان دا بێنە بکارئینان.", rRef: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو {n} مۆرێن زێدە وەردگری.", rRef1: "هەڤالەکێ بینە: دەمێ ئەو دبیتە ئەندام، تو مۆرەکێ زێدە وەردگری.", rBday: "دیاریا رۆژبوونێ: {reward} د حەفتیا رۆژبوونا تە دا. رۆژبوونا خۆ ل کاونتەری بێژە.", rPin: "ژمارا خۆ یا نهێنی بۆ خۆ بهێلە. ستاف دشێن یەکا نوو بدەنە تە.",
+      offersTitle: "پێشکێشی و بۆنە", xStamps: "×{m} مۆر", everyDay: "هەمی رۆژ",
+      hi: "سلاڤ {name}،", toGoTpl: "{n} ماینە", until: "بۆ {reward}",
+      nmSilver: "ئاستێ زیڤین", nmGold: "ئاستێ زێڕین", nmPlatinum: "ئاستێ پلاتینی",
+      lvMember: "ئەندام", lvSilver: "ئەندامێ زیڤین", lvGold: "ئەندامێ زێڕین", lvPlatinum: "ئەندامێ پلاتینی", lvGeneric: "ئەندامێ {level}",
+      storyHead: "{reward} بۆ من ئامادەیە!", storyAt: "ل Amed Cafe", storyTitle: "{reward} یا تە ئامادەیە!", storyAsk: "ڤێ مزگینیێ ل سەر ستۆریا ئینستاگرامێ پارڤە بکە و مە تاگ بکە.", storyShare: "ل سەر ستۆریا ئینستاگرامێ پارڤە بکە", storyLater: "نوکە نە", storySave: "تبلا خۆ ل سەر وێنەی بهێلە و د وێنەیێن خۆ دا پاشەکەفت بکە، پاشان بۆ ستۆریا ئینستاگرامێ زێدە بکە.",
+      lvlHead: "بووم {level}!", lvlTitle: "تو بوویە {level}!", visitsN: "{n} سەرەدان", twMember: "ئەندام", twSilver: "زیڤین", twGold: "زێڕین", twPlatinum: "پلاتینی",
+      toNextOr: "{n} سەرەدانێن دی یان {s} مۆرێن دی بۆ {level}", levelRowOr: "پشتی {n} سەرەدانان یان {s} مۆران",
+      iconTip: "شیرەت: بۆ وەرگرتنا ئایکۆنا {level} یا نوو، Amed Cafe ژ شاشا سەرەکی لابە و دووبارە زێدە بکە.",
+      welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
+      forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
+      install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
+      shareBtn: "ل ئینستاگرامێ پارڤە بکە", shareReady: "{reward} یا من ل ئامەد کافێ ئامادەیە!", shareProgress: "{s} ژ {n} مۆران ل ئامەد کافێ", shareSub: "{n} بکڕە، یا {nth} بێ بەرامبەرە", shareSaved: "وێنە هاتە پاشەکەفتکرن. ل ئینستاگرامێ بەلاڤ بکە و مە تاگ بکە!",
+    },
+  };
+  Object.assign(T.en, {
+    iconTip: "Tip: to get your new {level} icon, remove Amed Cafe from your home screen and add it again.",
+    toNextOr: "{n} more visits or {s} more stamps to {level}", levelRowOr: "after {n} visits or {s} stamps",
+    lvlHead: "I'm now a {level}!", lvlTitle: "You're now a {level}!", visitsN: "{n} visits", twMember: "Member", twSilver: "Silver", twGold: "Gold", twPlatinum: "Platinum",
+    storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
+    welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
+    hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
+    nmSilver: "Silver", nmGold: "Gold", nmPlatinum: "Platinum",
+    lvMember: "Member", lvSilver: "Silver member", lvGold: "Gold member", lvPlatinum: "Platinum member", lvGeneric: "{level} member",
+    forgot: "Forgot your PIN?", forgotMsg: "Hi Amed Cafe, I forgot my loyalty card PIN. My phone number is: ", joinBtn: "Join on WhatsApp", joinMsg: "Hi Amed Cafe! I'd like to join the loyalty card. My name is: ",
+    install: "Add to home screen", iosTip: "On iPhone: tap Share, then “Add to Home Screen”.",
+    rulesTitle: "Good to know", rLimit: "Up to {n} stamps a day on your {card} card.", rExpiry: "Free rewards must be used within {n} days.", rRef: "Invite a friend: when they join, you get {n} bonus stamps.", rRef1: "Invite a friend: when they join, you get a bonus stamp.", rBday: "Birthday gift: a {reward} in your birthday week. Tell us your birthday at the counter.", rPin: "Keep your PIN private. Staff can give you a new one.",
+    offersTitle: "Offers & events", xStamps: "×{m} stamps", everyDay: "Every day",
+    shareBtn: "Share on Instagram", shareReady: "My {reward} is ready at Amed Cafe!", shareProgress: "{s} of {n} stamps at Amed Cafe", shareSub: "Buy {n}, the {nth} is free", shareSaved: "Image saved. Post it on Instagram and tag us!",
+  });
+  Object.assign(T.ar, {
+    iconTip: "نصيحة: لتحصل على أيقونة {level} الجديدة، احذف Amed Cafe من الشاشة الرئيسية ثم أضفه مجدداً.",
+    toNextOr: "باقي {n} زيارة أو {s} ختم للوصول إلى {level}", levelRowOr: "بعد {n} زيارة أو {s} ختم",
+    lvlHead: "أصبحت {level}!", lvlTitle: "أصبحت الآن {level}!", visitsN: "{n} زيارة", twMember: "عضو", twSilver: "فضي", twGold: "ذهبي", twPlatinum: "بلاتيني",
+    storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
+    welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
+    hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
+    nmSilver: "المستوى الفضي", nmGold: "المستوى الذهبي", nmPlatinum: "المستوى البلاتيني",
+    lvMember: "عضو", lvSilver: "عضو فضي", lvGold: "عضو ذهبي", lvPlatinum: "عضو بلاتيني", lvGeneric: "عضو {level}",
+    forgot: "نسيت الرمز السري؟", forgotMsg: "مرحباً Amed Cafe، نسيت الرمز السري لبطاقة الولاء. رقم هاتفي: ", joinBtn: "انضم عبر واتساب", joinMsg: "مرحباً Amed Cafe! أود الانضمام إلى بطاقة الولاء. اسمي: ",
+    install: "أضف إلى الشاشة الرئيسية", iosTip: "على iPhone: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».",
+    rulesTitle: "معلومات مهمة", rLimit: "حتى {n} أختام {card} في اليوم.", rExpiry: "يجب استخدام المكافآت المجانية خلال {n} يوماً.", rRef: "ادعُ صديقاً: عندما ينضم تحصل على {n} ختم إضافي.", rRef1: "ادعُ صديقاً: عندما ينضم تحصل على ختم إضافي.", rBday: "هدية عيد الميلاد: {reward} في أسبوع عيد ميلادك. أخبرنا بتاريخ ميلادك عند الكاونتر.", rPin: "احتفظ برمزك السري لنفسك. يمكن للفريق إعطاؤك رمزاً جديداً.",
+    offersTitle: "العروض والفعاليات", xStamps: "×{m} أختام", everyDay: "كل يوم",
+    shareBtn: "شارك على إنستغرام", shareReady: "{reward} جاهز لي في Amed Cafe!", shareProgress: "{s} من {n} أختام في Amed Cafe", shareSub: "اشترِ {n} واحصل على ال{nth} مجاناً", shareSaved: "تم حفظ الصورة. انشرها على إنستغرام وأشِر إلينا!",
+  });
+  const ORD = { ar: { 8: "ثامن", 6: "سادس", 7: "سابع", 9: "تاسع", 10: "عاشر", 11: "حادي عشر" } };
+  const LOC = { en: undefined, ar: "ar-IQ-u-nu-latn", ku: "ckb-IQ" };
+  const KU_M = ["کانوونا دووێ", "شوبات", "ئادار", "نیسان", "گولان", "حزیران", "تیرمەه", "ئاب", "ئەیلوول", "تشرینا ئێکێ", "تشرینا دووێ", "کانوونا ئێکێ"];
+  const KU_D = ["یەکشەمبی", "دووشەمبی", "سێشەمبی", "چارشەمبی", "پێنجشەمبی", "ئەینی", "شەمبی"];
+  function dfmt(d, o) {
+    if (lang !== "ku") return d.toLocaleDateString(LOC[lang], o);
+    const parts = [];
+    if (o.weekday) parts.push(KU_D[d.getDay()]);
+    if (o.day) parts.push(d.getDate());
+    if (o.month) parts.push(KU_M[d.getMonth()]);
+    return parts.join(" ");
+  }
+
+  let lang = "ku", DATA = null, loaded = false, lastEntry = null;
+  const tr = (k, vars = {}) => String(T[lang][k] || T.en[k] || "").replace(/\{(\w+)\}/g, (m, v) => (v in vars ? vars[v] : m));
+  const ordinal = (n) => lang === "en" ? n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th") : lang === "ar" ? (ORD.ar[n] || String(n)) : n + "ەمین";
+  const pname = (p) => (lang !== "en" && p["name_" + lang]) || p.name;
+  const preward = (p) => (lang !== "en" && p["reward_" + lang]) || p.reward;
+  const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
+  const fmtDate = (t, o) => dfmt(new Date(t), o || { day: "numeric", month: "long" });
+  const ago = (t) => { if (!t) return tr("never"); const d0 = new Date(); d0.setHours(0, 0, 0, 0); if (t >= d0.getTime()) return tr("today"); if (t >= d0.getTime() - 864e5) return tr("yesterday"); return tr("daysAgo", { n: Math.ceil((d0.getTime() - t) / 864e5) }); };
+
+  function setLang(l) {
+    lang = T[l] ? l : "en";
+    document.documentElement.lang = lang === "ku" ? "ckb" : lang;
+    document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
+    document.body.classList.toggle("rtl", lang !== "en");
+    for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", b.dataset.lang === lang);
+    for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
+    try { localStorage.setItem("amed-lang", lang); } catch (_) {}
+    renderStatic();
+    if (lastEntry) showCards(lastEntry, false);
+    else if (!$("result").hidden) showNotFound();
+  }
+
+  function renderStatic() {
+    const progs = DATA ? DATA.programs : [{ id: "drinks", name: "Drinks", target: 7, reward: "free drink", name_ar: "المشروبات", reward_ar: "مشروب مجاني", name_ku: "ڤەخوارن", reward_ku: "ڤەخوارنەکا بێ بەرامبەر" }];
+    const t = progs[0].target, same = progs.every((p) => p.target === t);
+    const h = $("heroTitle"); h.textContent = "";
+    h.append(tr("heroA", { n: t }), el("em", { text: tr("heroB", { nth: ordinal(t + 1) }) }));
+    const names = progs.map((p) => lang === "en" ? p.name.toLowerCase() : pname(p));
+    $("heroSub").textContent = tr("heroSub", { list: names.length > 1 ? names.slice(0, -1).join("، ") + tr("or") + names.slice(-1) : names[0] });
+    $("stepN").textContent = same ? t + 1 : "★"; $("s3t").textContent = tr("s3t", { nth: ordinal(t + 1) });
+    const box = $("offers"); box.textContent = "";
+    for (const p of progs) {
+      const strip = el("div", { class: "strip", "aria-hidden": "true" });
+      for (let i = 0; i < p.target; i++) { const s = el("i"); s.innerHTML = iconFor(p); strip.append(s); }
+      strip.append(el("span", { class: "plus", text: "=" }), el("i", { class: "free", text: "FREE" }));
+      box.append(el("div", { class: "offer" }, el("div", { class: "t" }, el("h4", { text: pname(p) }), el("span", { class: "eq", text: tr("plusFree", { n: p.target }) })), strip, el("p", { text: tr("collect", { n: p.target, reward: preward(p) }) })));
+    }
+    const lv = (DATA && DATA.levels) || [];
+    $("levelsSec").hidden = !lv.length; const lb = $("levels"); lb.textContent = "";
+    for (const l of [...lv].sort((a, b) => a.visits - b.visits)) lb.append(el("div", {}, el("b", { text: lvName(l) }), el("span", { text: (Number(l.stamps) > 0 ? tr("levelRowOr", { n: l.visits, s: l.stamps }) : tr("levelRow", { n: l.visits })) + (lvPerk(l) ? " · " + lvPerk(l) : "") })));
+    const ol = $("offerList"); ol.textContent = "";
+    const DN = (i) => dfmt(new Date(2024, 0, 7 + i), { weekday: "short" });
+    for (const ev of (DATA && DATA.events) || []) {
+      const d = new Date(ev.date + "T12:00:00");
+      ol.append(el("div", { class: "evt" }, el("div", { class: "when" }, dfmt(d, { day: "numeric" }), el("small", { text: dfmt(d, { month: "short" }) })),
+        el("div", {}, el("b", { text: ev.title }), el("span", { text: [dfmt(d, { weekday: "long" }), ev.from ? ev.from + (ev.to ? "–" + ev.to : "") : "", ev.multiplier > 1 ? tr("xStamps", { m: ev.multiplier }) : ""].filter(Boolean).join(" · ") }), ev.details ? el("span", { text: ev.details, style: "display:block" }) : null)));
+    }
+    for (const o of (DATA && DATA.offers) || []) {
+      const days = o.days && o.days.length ? o.days.slice().sort().map(DN).join("، ") : tr("everyDay");
+      const cards = o.programs && o.programs.length ? DATA.programs.filter((p) => o.programs.includes(p.id)).map(pname).join(" + ") : "";
+      ol.append(el("div", { class: "evt" }, el("div", { class: "when offer", text: "×" + o.multiplier }),
+        el("div", {}, el("b", { text: o.name }), el("span", { text: [days, o.from && o.to ? o.from + "–" + o.to : "", cards, tr("xStamps", { m: o.multiplier })].filter(Boolean).join(" · ") }))));
+    }
+    $("offersSec").hidden = !ol.children.length;
+    const R = DATA && DATA.rules, rl = $("rules"); rl.textContent = "";
+    if (R) {
+      for (const p of DATA.programs) if (R.limits && R.limits[p.id] > 0) rl.append(el("li", { text: tr("rLimit", { n: R.limits[p.id], card: lang === "en" ? p.name.toLowerCase() : pname(p) }) }));
+      if (R.expiryDays > 0) rl.append(el("li", { text: tr("rExpiry", { n: R.expiryDays }) }));
+      if (R.referral && R.referral.enabled) rl.append(el("li", { text: (R.referral.bonus || 1) === 1 ? tr("rRef1") : tr("rRef", { n: R.referral.bonus }) }));
+      if (R.birthday && R.birthday.enabled) { const bp = DATA.programs.find((p) => p.id === R.birthday.program) || DATA.programs[0]; rl.append(el("li", { text: tr("rBday", { reward: preward(bp) }) })); }
+      rl.append(el("li", { text: tr("rPin") }));
+    }
+    $("rulesSec").hidden = !rl.children.length;
+    const wa = DATA && DATA.contact && DATA.contact.wa;
+    $("forgot").hidden = !wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + ($("phone").value || ""));
+    $("joinBtn").hidden = !(wa && DATA.contact.join); if (wa) $("joinBtn").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("joinMsg"));
+    if (DATA && DATA.updated) { const d = new Date(DATA.updated); $("foot").textContent = tr("updated", { date: fmtDate(DATA.updated, { day: "numeric", month: "short" }), time: d.toLocaleTimeString(lang === "ku" ? "en-GB" : LOC[lang], { hour: "2-digit", minute: "2-digit" }) }); }
+  }
+
+  function norm(raw) {
+    let d = String(raw || "").replace(/[٠-٩]/g, (c) => "٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g, (c) => "۰۱۲۳۴۵۶۷۸۹".indexOf(c)).replace(/\D/g, "");
+    if (d.startsWith("00")) d = d.slice(2);
+    const cc = (DATA && DATA.countryCode) || "964";
+    if (cc && d.startsWith(cc) && d.length > 10) d = d.slice(cc.length);
+    return d.replace(/^0+/, "");
+  }
+  async function hash(d, pin) {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode("amed-cafe:" + d), iterations: 100000 }, key, 128);
+    return [...new Uint8Array(bits)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  /* ---------- the loyalty card: one card per level (copper → silver → gold → platinum) ---------- */
+  const THEMES = {
+    member:   { bg: "#1A1512", text: "#EFE4DA", accent: "#C98F6B", muted: "#8F8279", soft: "#BBAA9C", rail: "#2E2622", border: "#3F3530", dim: "#6F625A", panel: "#211B17", well: "#231D19", hi: "#E8C1A6", on: "#1A1512", glow: "201,143,107", logo: "../logo-copper.png", photo: "../shisha-copper.png", frame: "0" },
+    silver:   { bg: "#161A1F", text: "#E9EDF1", accent: "#C3CBD3", muted: "#8A939C", soft: "#B3BCC5", rail: "#2A3038", border: "#39414A", dim: "#67707A", panel: "#1C2128", well: "#1E242B", hi: "#F2F5F8", on: "#161A1F", glow: "195,203,211", logo: "../logo-silver.png", photo: "../shisha-silver.png", frame: "0" },
+    gold:     { bg: "#14171A", text: "#EDE6D8", accent: "#D6AA5E", muted: "#8C877C", soft: "#B9B2A4", rail: "#2C3034", border: "#3A3D40", dim: "#6E6A62", panel: "#1B1F22", well: "#1D2125", hi: "#F1D9A8", on: "#14171A", glow: "214,170,94", logo: "../logo-gold.png", photo: "../shisha-gold.png", frame: "0" },
+    platinum: { bg: "#EEF0F2", text: "#15181C", accent: "#5E6873", muted: "#646C75", soft: "#454D56", rail: "#D3D8DE", border: "#C3CAD1", dim: "#7F8892", panel: "#FFFFFF", well: "#E3E7EB", hi: "#FFFFFF", on: "#FFFFFF", glow: "94,104,115", logo: "../logo.png", photo: "../shisha-silver.png", frame: "1px" },
+  };
+  const lvName = (l) => { const n = (l && l.name) || ""; return /plat/i.test(n) ? tr("nmPlatinum") : /gold/i.test(n) ? tr("nmGold") : /silver/i.test(n) ? tr("nmSilver") : n; };
+  const lvPerk = (l) => (DATA && DATA.showPerks && l && ((lang !== "en" && l["perk_" + lang]) || l.perk)) || "";
+  const stampsOf = (entry) => Object.values((entry && entry.p) || {}).reduce((n, a) => n + (a[3] || 0), 0);
+  function levelInfo(v, st = 0) {
+    const lv = [...((DATA && DATA.levels) || [])].sort((a, b) => a.visits - b.visits);
+    const hit = (l) => v >= l.visits || (Number(l.stamps) > 0 && st >= Number(l.stamps));
+    let cur = null, idx = -1; lv.forEach((l, i) => { if (hit(l)) { cur = l; idx = i; } });
+    const next = lv.slice(idx + 1).find((l) => !hit(l)) || null;
+    let tier = "member";
+    if (cur) { const n = (cur.name || "").toLowerCase(); tier = /plat/.test(n) ? "platinum" : /gold/.test(n) ? "gold" : /silver/.test(n) ? "silver" : ["silver", "gold", "platinum"][Math.min(idx, 2)]; }
+    const label = !cur ? tr("lvMember") : tier === "silver" && /silver/i.test(cur.name) ? tr("lvSilver") : tier === "gold" && /gold/i.test(cur.name) ? tr("lvGold") : tier === "platinum" && /plat/i.test(cur.name) ? tr("lvPlatinum") : tr("lvGeneric", { level: cur.name });
+    return { cur, next, tier, label };
+  }
+  const SUN = "150,10 164,59 191,16 190,67 229,34 213,83 259,63 230,104 280,99 240,130 290,140 242,157 286,181 236,184 271,220 222,207 245,253 202,226 211,276 177,238 171,288 150,242 129,288 123,238 89,276 98,226 55,253 78,207 29,220 64,184 14,181 58,157 10,140 60,130 20,99 70,104 41,63 87,83 71,34 110,67 109,16 136,59";
+  let activeProg = null;
+  const isShisha = (p) => /shisha|hookah|nargil|argil/i.test(p.name);
+  function cupSVG(stamps, target, numColor) {
+    const top = 44, bottom = 250, y = Math.round(bottom - (bottom - top) * (Math.min(stamps, target) / target));
+    return '<svg class="cup" viewBox="0 0 240 266" role="img" aria-label="' + stamps + '/' + target + '"><defs><clipPath id="cupClip"><path d="M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z"/></clipPath></defs>'
+      + '<path d="M92 8c-8 9 8 14 0 24M120 4c-8 9 8 14 0 24M148 8c-8 9 8 14 0 24" fill="none" stroke="var(--lc-accent)" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>'
+      + '<path d="M184 84h14a30 30 0 0 1 0 60h-22" fill="none" stroke="var(--lc-accent)" stroke-width="9" stroke-linecap="round"/>'
+      + '<g clip-path="url(#cupClip)"><rect width="240" height="266" fill="var(--lc-well)"/><rect y="' + y + '" width="240" height="266" fill="var(--lc-accent)"/>'
+      + (stamps > 0 ? '<rect y="' + y + '" width="240" height="7" fill="var(--lc-hi)"/>' : '') + '</g>'
+      + '<path d="M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z" fill="none" stroke="var(--lc-accent)" stroke-width="7" stroke-linejoin="round"/>'
+      + '<ellipse cx="110" cy="259" rx="104" ry="6" fill="var(--lc-accent)" fill-opacity=".6"/>'
+      + '<text x="108" y="168" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="56" fill="' + numColor + '" direction="ltr">' + stamps + '/' + target + '</text></svg>';
+  }
+  function showCards(entry, scroll = true) {
+    lastEntry = entry;
+    const r = $("result"); r.textContent = ""; r.hidden = false;
+    const progs = DATA.programs.filter((q) => entry.p && entry.p[q.id]);
+    if (!progs.length) { showNotFound(); return; }
+    if (!activeProg || !progs.some((q) => q.id === activeProg)) activeProg = (progs.find((q) => entry.p[q.id][1] > 0) || progs[0]).id;
+    const p = progs.find((q) => q.id === activeProg);
+    const [stamps = 0, rewards = 0, redeemed = 0, total = 0, exp = 0] = entry.p[p.id];
+    const T0 = p.target, s = Math.min(stamps, T0), left = T0 - s;
+    const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier];
+    setSignedIn(true); applyPageTheme(L.tier);
+    r.append(el("div", { class: "welcome" }, el("h2", { text: entry.fn ? tr("welcomeName", { name: entry.fn }) : tr("welcomeNoName") }), el("p", { text: tr("welcomeSub") })));
+    const card = el("article", { class: "lc" + (L.tier === "platinum" ? " lc-light" : "") });
+    for (const [k, v] of Object.entries({ bg: th.bg, text: th.text, accent: th.accent, muted: th.muted, soft: th.soft, rail: th.rail, border: th.border, dim: th.dim, panel: th.panel, well: th.well, hi: th.hi, on: th.on })) card.style.setProperty("--lc-" + k, v);
+    card.style.setProperty("--lc-glow", th.glow);
+    card.innerHTML = '<svg class="lc-sun" viewBox="0 0 300 300" aria-hidden="true"><polygon points="' + SUN + '" fill="var(--lc-accent)"/><circle cx="150" cy="150" r="70" fill="var(--lc-accent)"/></svg>' + (th.frame !== "0" ? '<div class="lc-frame" aria-hidden="true"></div>' : "");
+    // header
+    const head = el("div", { class: "lc-head" }, el("img", { src: th.logo, alt: "Amed Cafe", class: "lc-logo" }), el("span", { class: "lc-badge", text: L.label }));
+    // greeting + headline
+    const shisha = isShisha(p);
+    const word = lang === "en" ? (shisha ? (left === 1 ? "puffToGo" : "puffsToGo") : p.id === "drinks" ? (left === 1 ? "sipToGo" : "sipsToGo") : "moreToGo") : "toGoTpl";
+    const tpl = tr(word), parts = tpl.split("{n}");
+    const h = el("div", { class: "lc-h" }); h.append(parts[0] || "", el("span", { class: "lc-acc", text: String(left) }), parts[1] || "");
+    const greet = el("div", { class: "lc-greet" }, h, el("span", { class: "lc-until", text: tr("until", { reward: preward(p) }) }));
+    // tabs
+    const tabs = el("div", { class: "lc-tabs" });
+    if (progs.length > 1) for (const q of progs) tabs.append(el("button", { type: "button", class: "lc-tab", "aria-pressed": String(q.id === p.id), text: pname(q), onclick: () => { activeProg = q.id; showCards(entry, false); } }));
+    // hero: rail + cup or shisha photo
+    const rail = el("div", { class: "lc-rail" });
+    rail.style.setProperty("--fill", Math.round((s / T0) * 84) + "%");
+    for (let i = 1; i <= T0; i++) rail.append(el("span", { class: "lc-node" + (i <= s ? " on" : ""), text: String(i) }));
+    rail.append(el("span", { class: "lc-free" + (rewards > 0 ? " lit" : ""), text: "FREE" }));
+    const art = el("div", { class: "lc-art" });
+    if (shisha) art.append(el("span", { class: "lc-num", dir: "ltr", text: s + "/" + T0 }), el("img", { src: th.photo, alt: pname(p) + " " + s + "/" + T0, class: "lc-photo" }));
+    else art.innerHTML = cupSVG(s, T0, s >= Math.ceil(T0 / 2) + 1 ? "var(--lc-on)" : "var(--lc-accent)");
+    const hero = el("div", { class: "lc-hero" }, rail, art);
+    card.append(head, greet, tabs, hero);
+    if (rewards > 0) card.append(el("div", { class: "lc-ready", text: (rewards > 1 ? tr("readyN", { k: rewards, reward: preward(p) }) : tr("ready1", { reward: preward(p) })) + (exp ? tr("useBy", { date: fmtDate(exp) }) : "") }));
+    const stats = el("div", { class: "lc-stats" });
+    for (const [n, k] of [[entry.v || 0, "visits"], [redeemed, "collected"], [total, "stamped"]]) stats.append(el("div", {}, el("b", { text: String(n) }), el("span", { text: tr(k) })));
+    card.append(stats);
+    if (L.next) card.append(el("p", { class: "lc-next", text: (Number(L.next.stamps) > 0 ? tr("toNextOr", { n: L.next.visits - (entry.v || 0), s: Math.max(0, Number(L.next.stamps) - stampsOf(entry)), level: lvName(L.next) }) : tr("toNext", { n: L.next.visits - (entry.v || 0), level: lvName(L.next) })) + (lvPerk(L.cur) ? " · " + tr("perk", { perk: lvPerk(L.cur) }) : "") }));
+    else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
+    if (entry.code) {
+      const q = el("div", { class: "lc-qrimg" });
+      card.append(el("div", { class: "lc-qr" }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
+      try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
+    }
+    r.append(card);
+    if (!storyShown) { storyShown = true; setTimeout(async () => { await maybeLevelStory(entry); storyShown = false; maybeStory(entry); }, 700); }
+    r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
+    if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+  /* ---------- Instagram story pop-up: only when a free reward is ready, once per reward ---------- */
+  const loadImg = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  async function makeStory(entry, p) {
+    const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier], W = 1080, H = 1920;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    try { await document.fonts.ready; } catch (_) {}
+    const rtl = lang !== "en", disp = rtl ? '800 92px "Noto Sans Arabic"' : '400 104px "Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    // faint Kurdistan sun
+    ctx.save(); ctx.globalAlpha = .06; ctx.fillStyle = th.accent; ctx.translate(560, 1180); ctx.scale(3.4, 3.4); ctx.translate(-150, -150);
+    const pts = SUN.split(" ").map((q) => q.split(",").map(Number)); ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(150, 150, 70, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    const logo = await loadImg(th.logo); if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 150, lw, lh); }
+    ctx.textAlign = "center"; ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.text; ctx.font = disp;
+    const lines = []; let line = ""; for (const w of tr("storyHead", { reward: preward(p) }).split(" ")) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > 900 && line) { lines.push(line); line = w; } else line = t; } lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l, W / 2, 560 + i * 118));
+    const top = 560 + lines.length * 118 + 40;
+    if (isShisha(p)) { const ph = await loadImg(th.photo); if (ph) { const h = 760, w = h * ph.width / ph.height; ctx.drawImage(ph, (W - w) / 2, top, w, h); } }
+    else {
+      ctx.save(); ctx.translate(W / 2 - 115 * 2.4, top + 40); ctx.scale(2.4, 2.4);
+      const body2 = new Path2D("M30 44 H186 L173 232 Q171 250 153 250 H63 Q45 250 43 232 Z");
+      ctx.strokeStyle = th.accent; ctx.lineCap = "round"; ctx.globalAlpha = .45; ctx.lineWidth = 4; ctx.stroke(new Path2D("M92 8c-8 9 8 14 0 24M120 4c-8 9 8 14 0 24M148 8c-8 9 8 14 0 24")); ctx.globalAlpha = 1;
+      ctx.lineWidth = 9; ctx.stroke(new Path2D("M184 84h14a30 30 0 0 1 0 60h-22"));
+      ctx.fillStyle = th.accent; ctx.fill(body2); ctx.fillStyle = th.hi; ctx.fillRect(43, 44, 143, 7);
+      ctx.lineWidth = 7; ctx.lineJoin = "round"; ctx.stroke(body2); ctx.restore();
+    }
+    // a full row of stamps ending in a lit FREE
+    const n = p.target + 1, r = 34, gap = 22, gw = n * r * 2 + (n - 1) * gap, y = 1660; ctx.direction = "ltr";
+    for (let i = 0; i < n; i++) {
+      const cx = (W - gw) / 2 + r + i * (2 * r + gap); ctx.beginPath(); ctx.arc(cx, y, r, 0, Math.PI * 2); ctx.fillStyle = th.accent; ctx.fill();
+      if (i === n - 1) { ctx.fillStyle = th.on; ctx.font = '800 20px "Figtree", sans-serif'; ctx.fillText("FREE", cx, y + 7); }
+    }
+    ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.accent; ctx.font = "700 46px " + body; ctx.fillText(tr("storyAt"), W / 2, 1790);
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr"; ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, 1860);
+    const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
+    return { file: new File([blob], "amed-cafe-story.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
+  }
+  /* ---------- Instagram story pop-up for a new membership level (once per level) ---------- */
+  const TIER_WORD = { member: "twMember", silver: "twSilver", gold: "twGold", platinum: "twPlatinum" };
+  async function makeLevelStory(entry, L) {
+    const th = THEMES[L.tier], W = 1080, H = 1920;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    try { await document.fonts.ready; } catch (_) {}
+    const rtl = lang !== "en", disp = rtl ? '800 88px "Noto Sans Arabic"' : '400 100px "Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    ctx.save(); ctx.globalAlpha = .06; ctx.fillStyle = th.accent; ctx.translate(540, 1080); ctx.scale(3.6, 3.6); ctx.translate(-150, -150);
+    const pts = SUN.split(" ").map((q) => q.split(",").map(Number)); ctx.beginPath(); pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.fill(); ctx.restore();
+    const logo = await loadImg(th.logo); if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 150, lw, lh); }
+    ctx.textAlign = "center"; ctx.direction = rtl ? "rtl" : "ltr"; ctx.fillStyle = th.text; ctx.font = disp;
+    const lines = []; let line = ""; for (const w of tr("lvlHead", { level: L.label }).split(" ")) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > 900 && line) { lines.push(line); line = w; } else line = t; } lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l, W / 2, 560 + i * 112));
+    // the medal
+    const cy = 1110, R = 290;
+    ctx.save(); ctx.shadowColor = "rgba(" + th.glow + ",.55)"; ctx.shadowBlur = 80;
+    ctx.beginPath(); ctx.arc(W / 2, cy, R, 0, Math.PI * 2); ctx.fillStyle = th.accent; ctx.fill(); ctx.restore();
+    ctx.beginPath(); ctx.arc(W / 2, cy, R - 34, 0, Math.PI * 2); ctx.lineWidth = 6; ctx.strokeStyle = th.on; ctx.globalAlpha = .35; ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.fillStyle = th.on; ctx.font = rtl ? '800 110px "Noto Sans Arabic"' : '400 120px "Gloock", Georgia, serif';
+    ctx.fillText(tr(TIER_WORD[L.tier]), W / 2, cy + 20);
+    ctx.font = "700 40px " + body; ctx.fillText(tr("visitsN", { n: entry.v || 0 }), W / 2, cy + 110);
+    ctx.fillStyle = th.accent; ctx.font = "700 46px " + body; ctx.fillText(tr("storyAt"), W / 2, 1640);
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr"; ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, 1710);
+    const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
+    return { file: new File([blob], "amed-cafe-level.png", { type: "image/png" }), url: cv.toDataURL("image/png") };
+  }
+  function storyPopup(story, key, title, alt, note) {
+    return new Promise((resolve) => {
+      const done = () => { try { localStorage.setItem(key, "1"); } catch (_) {} ov.remove(); resolve(); };
+      const tip = el("p", { class: "st-tip", hidden: "", text: tr("storySave") });
+      const shareBtn = el("button", { type: "button", class: "st-share", text: tr("storyShare"), onclick: () => {
+        try { if (navigator.canShare && navigator.canShare({ files: [story.file] })) { navigator.share({ files: [story.file] }).then(done).catch((e) => { if (!e || e.name !== "AbortError") tip.hidden = false; }); return; } } catch (_) {}
+        tip.hidden = false;
+      } });
+      const ov = el("div", { class: "st-ov", role: "dialog", "aria-modal": "true", "aria-label": title },
+        el("div", { class: "st-box" }, el("h2", { text: title }), el("p", { text: tr("storyAsk") }), el("img", { src: story.url, alt: alt, class: "st-img" }), tip, shareBtn,
+          el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done }),
+          note ? el("p", { class: "st-note", text: note }) : null));
+      document.body.append(ov); shareBtn.focus();
+    });
+  }
+  async function maybeLevelStory(entry) {
+    const L = levelInfo(entry.v || 0, stampsOf(entry)); if (L.tier === "member") return;
+    const key = "amed-lvlstory-" + (entry.code || "x") + "-" + L.tier;
+    try { if (localStorage.getItem(key)) return; } catch (_) {}
+    const story = await makeLevelStory(entry, L);
+    const nm = { silver: "nmSilver", gold: "nmGold", platinum: "nmPlatinum" }[L.tier];
+    await storyPopup(story, key, tr("lvlTitle", { level: L.label }), tr("lvlHead", { level: L.label }), tr("iconTip", { level: tr(nm) }));
+  }
+
+  let storyShown = false;
+  async function maybeStory(entry) {
+    if (storyShown || !entry || !entry.p) return;
+    const p = DATA.programs.find((q) => entry.p[q.id] && entry.p[q.id][1] > 0); if (!p) return;
+    const key = "amed-story-" + (entry.code || "x") + "-" + p.id + "-" + entry.p[p.id][2] + "-" + entry.p[p.id][1];
+    try { if (localStorage.getItem(key)) return; } catch (_) {}
+    storyShown = true;
+    const story = await makeStory(entry, p);
+    const done = () => { try { localStorage.setItem(key, "1"); } catch (_) {} ov.remove(); };
+    const tip = el("p", { class: "st-tip", hidden: "" , text: tr("storySave") });
+    const shareBtn = el("button", { type: "button", class: "st-share", text: tr("storyShare"), onclick: () => {
+      try {
+        if (navigator.canShare && navigator.canShare({ files: [story.file] })) { navigator.share({ files: [story.file] }).then(done).catch((e) => { if (!e || e.name !== "AbortError") tip.hidden = false; }); return; }
+      } catch (_) {}
+      tip.hidden = false;
+    } });
+    const ov = el("div", { class: "st-ov", role: "dialog", "aria-modal": "true", "aria-label": tr("storyTitle", { reward: preward(p) }) },
+      el("div", { class: "st-box" },
+        el("h2", { text: tr("storyTitle", { reward: preward(p) }) }),
+        el("p", { text: tr("storyAsk") }),
+        el("img", { src: story.url, alt: tr("storyHead", { reward: preward(p) }), class: "st-img" }),
+        tip, shareBtn,
+        el("button", { type: "button", class: "st-later", text: tr("storyLater"), onclick: done })));
+    document.body.append(ov); shareBtn.focus();
+  }
+
+  // Signed in: the whole page takes the member's level style (colours, logo, panels); Sign out restores the normal page.
+  const PAGE_BG = { member: "#120E0C", silver: "#0F1216", gold: "#0F1214", platinum: "#E2E6EA" };
+  const PAGE_VARS = ["--bg", "--surface", "--ink", "--muted", "--line", "--accent", "--accent-ink", "--accent-soft", "--stamp", "--stamp-ink", "--card", "--card-ink", "--card-dim", "--logo-filter"];
+  // Browser-tab and home-screen icon follow the level (default icon before sign-in).
+  function setIcons(tier) {
+    const sfx = tier ? "-" + tier : "";
+    const set = (sel, href) => { const l = document.querySelector(sel); if (l) l.setAttribute("href", href); };
+    set('link[rel="icon"]', "icon" + sfx + "-192.png");
+    set('link[rel="apple-touch-icon"]', "icon" + sfx + "-180.png");
+    set('link[rel="manifest"]', "manifest" + sfx + ".webmanifest");
+  }
+  function applyPageTheme(tier) {
+    setIcons(tier);
+    const th = THEMES[tier], st = document.documentElement.style;
+    const v = { "--bg": PAGE_BG[tier], "--surface": th.panel, "--ink": th.text, "--muted": tier === "platinum" ? "#4C545D" : th.muted, "--line": th.border, "--accent": th.accent, "--accent-ink": th.on,
+      "--accent-soft": "rgba(" + th.glow + ",.16)", "--stamp": th.accent, "--stamp-ink": th.on, "--card": th.bg, "--card-ink": th.text, "--card-dim": "rgba(" + th.glow + ",.3)", "--logo-filter": "none" };
+    for (const [k, val] of Object.entries(v)) st.setProperty(k, val);
+    st.colorScheme = tier === "platinum" ? "light" : "dark";
+    document.body.dataset.level = tier;
+    const logo = document.querySelector(".brand .logo"); if (logo) logo.src = th.logo;
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = PAGE_BG[tier];
+  }
+  function clearPageTheme() {
+    setIcons(null);
+    const st = document.documentElement.style; for (const k of PAGE_VARS) st.removeProperty(k); st.colorScheme = "";
+    delete document.body.dataset.level;
+    const logo = document.querySelector(".brand .logo"); if (logo) logo.src = "../logo.png";
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = matchMedia("(prefers-color-scheme: dark)").matches ? "#1C120D" : "#F3EADF";
+  }
+  // Signed in: hide the sign-in parts; the phone remembers the card (not the PIN) until Sign out.
+  function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
+  function signOut() {
+    try { localStorage.removeItem("amed-session"); } catch (_) {}
+    lastEntry = null; activeProg = null; storyShown = false; $("result").hidden = true; $("result").textContent = "";
+    $("phone").value = ""; $("pin").value = ""; setSignedIn(false); clearPageTheme(); window.scrollTo({ top: 0 });
+  }
+
+  // Instagram-ready image (1080×1350) of the customer's card, shared or saved from the browser.
+  let logoImg = null;
+  const loadLogo = () => logoImg ? Promise.resolve(logoImg) : new Promise((res) => { const i = new Image(); i.onload = () => { logoImg = i; res(i); }; i.onerror = () => res(null); i.src = "../logo.png"; });
+  function wrapText(ctx, text, x, y, maxW, lh) {
+    const words = text.split(" "); let line = "", lines = [];
+    for (const w of words) { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; }
+    lines.push(line); lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh)); return lines.length * lh;
+  }
+  async function shareImage(entry) {
+    const th = THEMES[levelInfo(entry.v || 0, stampsOf(entry)).tier], W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    try { await document.fonts.ready; } catch (_) {}
+    const rtl = lang !== "en", font = rtl ? '"Noto Sans Arabic"' : '"Gloock", Georgia, serif', body = rtl ? '"Noto Sans Arabic"' : '"Figtree", sans-serif';
+    ctx.fillStyle = th.bg; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = "rgba(" + th.glow + ",.14)"; ctx.lineWidth = 60; ctx.beginPath(); ctx.arc(W - 40, 80, 260, 0, Math.PI * 2); ctx.stroke();
+    const logo = await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = th.logo; });
+    if (logo) { const lw = 560, lh = lw * logo.height / logo.width; ctx.drawImage(logo, (W - lw) / 2, 110, lw, lh); }
+    const progs = DATA.programs.filter((q) => entry.p && entry.p[q.id]);
+    const p = progs.find((q) => entry.p[q.id][1] > 0) || progs.slice().sort((a, b) => entry.p[b.id][0] / b.target - entry.p[a.id][0] / a.target)[0];
+    const [stamps, rewards] = entry.p[p.id], s = Math.min(stamps, p.target);
+    ctx.direction = rtl ? "rtl" : "ltr"; ctx.textAlign = "center"; ctx.fillStyle = th.text;
+    ctx.font = (rtl ? "800 " : "400 ") + "78px " + font;
+    const head = rewards > 0 ? tr("shareReady", { reward: preward(p) }) : tr("shareProgress", { s, n: p.target });
+    const used = wrapText(ctx, head, W / 2, 520, 900, 96);
+    const n = p.target + 1, cols = n <= 6 ? n : n % 4 === 0 ? 4 : 5, r = 62, gap = 34, gw = cols * r * 2 + (cols - 1) * gap, x0 = (W - gw) / 2 + r, y0 = 560 + used + 40;
+    for (let i = 0; i < n; i++) {
+      const cx = x0 + (i % cols) * (r * 2 + gap), cy = y0 + Math.floor(i / cols) * (r * 2 + gap);
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      if (i === p.target) { ctx.fillStyle = rewards > 0 ? th.text : "rgba(0,0,0,0)"; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = th.accent; ctx.stroke(); ctx.fillStyle = rewards > 0 ? th.bg : th.accent; ctx.font = "800 30px " + body; ctx.direction = "ltr"; ctx.fillText("FREE", cx, cy + 11); ctx.direction = rtl ? "rtl" : "ltr"; }
+      else if (i < s) { ctx.fillStyle = th.accent; ctx.fill(); ctx.fillStyle = th.on; ctx.font = "700 54px " + body; ctx.fillText("★", cx, cy + 19); }
+      else { ctx.setLineDash([10, 10]); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(" + th.glow + ",.45)"; ctx.stroke(); ctx.setLineDash([]); }
+    }
+    ctx.fillStyle = th.accent; ctx.font = "700 44px " + body;
+    ctx.fillText(tr("shareSub", { n: p.target, nth: ordinal(p.target + 1) }), W / 2, H - 170);
+    ctx.fillStyle = th.muted; ctx.font = "500 34px " + body; ctx.direction = "ltr";
+    ctx.fillText(location.host + location.pathname.replace(/\/$/, ""), W / 2, H - 100);
+    const blob = await new Promise((res) => cv.toBlob(res, "image/png"));
+    const file = new File([blob], "amed-cafe-card.png", { type: "image/png" });
+    try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Amed Cafe" }); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "amed-cafe-card.png"; document.body.append(a); a.click(); a.remove();
+    const err = $("err"); err.style.color = "var(--accent)"; err.textContent = tr("shareSaved"); err.hidden = false;
+  }
+
+  function showNotFound() {
+    lastEntry = null;
+    const r = $("result"); r.textContent = ""; r.hidden = false;
+    r.append(el("div", { class: "notfound" }, el("h2", { text: tr("nfTitle") }), el("p", { text: tr("nfText") })));
+  }
+
+  $("checkForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = $("err"), fail = (k) => { err.textContent = tr(k); err.hidden = false; };
+    err.hidden = true;
+    const d = norm($("phone").value), pin = norm("1" + $("pin").value).slice(1);
+    if (d.length < 6) return fail("needPhone");
+    if (pin.length !== 4) return fail("needPin");
+    if (!loaded) return fail("loading");
+    try {
+      const key = await hash(d, pin), entry = DATA.cards[key];
+      if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); } else showNotFound();
+    }
+    catch (_) { fail("noCrypto"); }
+  });
+  for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => setLang(b.dataset.lang));
+  $("phone").addEventListener("change", () => { const wa = DATA && DATA.contact && DATA.contact.wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + $("phone").value); });
+  // Add to home screen: Android shows an install button; iPhone shows a short tip. Works on the website, not inside claude.ai.
+  let deferredPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; $("installBox").hidden = false; $("installBtn").hidden = false; });
+  $("installBtn").addEventListener("click", async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); try { await deferredPrompt.userChoice; } catch (_) {} deferredPrompt = null; $("installBox").hidden = true; });
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone && /(github\.io|amedcaferest\.com)$/.test(location.hostname)) { $("installBox").hidden = false; $("iosTip").hidden = false; }
+  if ("serviceWorker" in navigator && /(github\.io|amedcaferest\.com)$/.test(location.hostname)) { try { navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((r) => r.update()).catch(() => {}); } catch (_) {} }
+
+  let start = (location.hash || "").replace("#", "");
+  if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
+  if (!T[start]) { const nl = (navigator.language || "").toLowerCase(); start = nl.startsWith("ar") ? "ar" : nl.startsWith("en") ? "en" : "ku"; }
+  setLang(start);
+  window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
+
+  fetch("../data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
+    .then((d) => {
+      DATA = d; loaded = true; renderStatic();
+      let key = null; try { key = localStorage.getItem("amed-session"); } catch (_) {}
+      if (key && DATA.cards[key]) showCards(DATA.cards[key], false);
+    })
+    .catch(() => { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; });
+})();
+</script>
+</body>
+</html>
