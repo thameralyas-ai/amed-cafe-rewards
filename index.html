@@ -153,9 +153,19 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .empty { text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 22px; }
 
 /* Gallery */
-.gal { display: grid; grid-template-columns: 2fr 1fr; grid-auto-rows: 120px; gap: 8px; }
-.ph { border-radius: 14px; border: 1px dashed #D4A37355; background: linear-gradient(135deg, #2A1C15, #33231A); display: grid; place-items: center; color: #C4B09CAA; font-size: 12px; text-align: center; padding: 8px; }
-.ph.big { grid-row: span 2; }
+/* Real photos and a short video of the cafe (media/space/). Wide photo on top, three tall tiles below. */
+.gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gi { position: relative; padding: 0; border: 1px solid #D4A37344; border-radius: 14px; overflow: hidden; background: #2A1C15; cursor: zoom-in; aspect-ratio: 9 / 16; display: block; width: 100%; }
+.gi.wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+.gi img, .gi video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+.gi:hover img, .gi:hover video { transform: scale(1.04); }
+.gi .play { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: #1C120DB3; border: 1px solid #FFE2B8AA; display: grid; place-items: center; }
+.gi .play::before { content: ""; margin-left: 4px; border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent #FFE2B8; }
+.lb { position: fixed; inset: 0; z-index: 50; background: #0B0705F2; display: none; align-items: center; justify-content: center; padding: calc(56px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom)); }
+.lb.on { display: flex; }
+.lb img, .lb video { max-width: 100%; max-height: 100%; border-radius: 12px; display: block; }
+.lb .x { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #D4A37399; background: #241812; color: var(--gold2); font-size: 24px; line-height: 1; cursor: pointer; }
+.rtl .lb .x { right: auto; left: 14px; }
 
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
@@ -193,7 +203,6 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .mc { break-inside: avoid; margin-bottom: 14px; }
   .swipe { display: none; }
   .rewards { grid-template-columns: 1fr 1fr; align-items: start; }
-  .gal { grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 180px; }
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .split section { padding-top: 56px; }
   .head h2 { font-size: 44px; }
@@ -312,7 +321,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
       lv: { Silver: "Silver", Gold: "Gold", Platinum: "Platinum" }, checkCard: "Check my card",
       evK: "Upcoming", evT: "Offers & events", evEmpty: "No events right now. New events and offers appear here automatically.", xStamps: "×{m} stamps", everyDay: "Every day",
-      galK: "Gallery", galT: "The space", photoSoon: "Photo coming soon",
+      galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", close: "Close",
       visK: "Visit", visT: "Find us", hours: "Hours", everyDayHours: "Every day · 8:00 AM – 1:00 AM", location: "Location", openMaps: "Open in Google Maps",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "Open in Snapchat", phone: "Phone", review: "Review us", reviewLink: "Write a Google review ★", soon: "Coming soon",
       tagline: "your comfort space",
@@ -326,7 +335,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
       lv: { Silver: "فضي", Gold: "ذهبي", Platinum: "بلاتيني" }, checkCard: "اعرض بطاقتي",
       evK: "قريباً", evT: "العروض والفعاليات", evEmpty: "لا توجد فعاليات حالياً. ستظهر الفعاليات والعروض الجديدة هنا تلقائياً.", xStamps: "×{m} أختام", everyDay: "كل يوم",
-      galK: "المعرض", galT: "المكان", photoSoon: "الصورة قريباً",
+      galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", close: "إغلاق",
       visK: "زورونا", visT: "موقعنا", hours: "أوقات العمل", everyDayHours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", location: "الموقع", openMaps: "افتح في خرائط Google",
       whatsapp: "واتساب", instagram: "إنستغرام", tiktok: "تيك توك", snapchat: "سناب شات", openSnap: "افتح في سناب شات", phone: "الهاتف", review: "قيّمنا", reviewLink: "اكتب تقييماً على Google ★", soon: "قريباً",
       tagline: "مكان راحتك",
@@ -340,7 +349,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
       lv: { Silver: "زیڤین", Gold: "زێڕین", Platinum: "پلاتینی" }, checkCard: "کارتا من نیشان بدە",
       evK: "دێ هێن", evT: "پێشکێشی و بۆنە", evEmpty: "نوکە چ بۆنە نینن. بۆنە و پێشکێشیێن نوو دێ ب خۆ ل ڤێرە دیار بن.", xStamps: "×{m} مۆر", everyDay: "هەمی رۆژ",
-      galK: "وێنە", galT: "جهێ مە", photoSoon: "وێنە ب زوویی",
+      galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", close: "گرتن",
       visK: "سەرەدان", visT: "سەرەدانا مە بکە", hours: "دەمژمێرێن کاری", everyDayHours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", location: "جه", openMaps: "ل Google Maps ڤەکە",
       whatsapp: "واتسئاپ", instagram: "ئینستاگرام", tiktok: "تیکتۆک", snapchat: "سناپچات", openSnap: "ل سناپچات ڤەکە", phone: "تەلەفۆن", review: "هەلسەنگاندن", reviewLink: "ل Google بنڤیسە ★", soon: "ب زوویی",
       tagline: "جهێ ئارامیا تە",
@@ -469,7 +478,48 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
   function renderGallery() {
     const g = $("gal"); g.textContent = "";
-    for (let i = 0; i < 5; i++) g.append(el("div", { class: "ph" + (i === 0 ? " big" : "") }, tr("photoSoon")));
+    const tiles = [
+      { src: "media/space/inside.jpg", alt: "gInside", wide: true },
+      { src: "media/space/shisha.jpg", alt: "gShisha" },
+      { video: "media/space/space.mp4", poster: "media/space/space-poster.jpg", alt: "gVideo" },
+      { src: "media/space/evening.jpg", alt: "gEvening" },
+    ];
+    for (const t of tiles) {
+      let media;
+      if (t.video) {
+        // Silent loop in the grid (iPhone needs muted + playsinline to autoplay); tap opens it with sound.
+        media = el("video", { muted: "", loop: "", playsinline: "", autoplay: "", preload: "none", poster: t.poster, "aria-hidden": "true" });
+        media.muted = true;
+        media.dataset.src = t.video;
+      } else media = el("img", { src: t.src, alt: tr(t.alt), loading: "lazy", decoding: "async" });
+      const b = el("button", { type: "button", class: "gi" + (t.wide ? " wide" : ""), "aria-label": tr(t.alt), onclick: () => openLb(t) }, media, t.video ? el("span", { class: "play" }) : null);
+      g.append(b);
+    }
+    const v = g.querySelector("video");
+    if (v && "IntersectionObserver" in window) {
+      new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (v.src) v.pause();
+      }), { rootMargin: "200px" }).observe(v);
+    } else if (v) v.src = v.dataset.src;
+  }
+
+  function openLb(t) {
+    let lb = $("lb");
+    if (!lb) {
+      lb = el("div", { id: "lb", class: "lb", role: "dialog", "aria-modal": "true", onclick: (e) => { if (e.target === lb) closeLb(); } });
+      document.body.append(lb);
+      addEventListener("keydown", (e) => { if (e.key === "Escape") closeLb(); });
+    }
+    lb.textContent = "";
+    lb.append(el("button", { type: "button", class: "x", "aria-label": tr("close"), onclick: closeLb }, "×"),
+      t.video ? el("video", { src: t.video, poster: t.poster, controls: "", autoplay: "", playsinline: "" }) : el("img", { src: t.src, alt: tr(t.alt) }));
+    lb.classList.add("on");
+    document.body.style.overflow = "hidden";
+    lb.querySelector(".x").focus();
+  }
+  function closeLb() {
+    const lb = $("lb"); if (!lb) return;
+    lb.classList.remove("on"); lb.textContent = ""; document.body.style.overflow = "";
   }
 
   function renderInfo() {

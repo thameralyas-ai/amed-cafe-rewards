@@ -9,7 +9,7 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - `tools/menu-source.json` is the raw copy of the menu taken from menu.instalacarte.com (9 Nov 2026). Amed Cafe no longer serves food, so only drinks and shisha are used. The site keeps separate English, Arabic and Kurdish menus whose prices and availability do not always match; the website uses the English section's prices and availability, with the Arabic and Kurdish names from the site.
 - Contact details (WhatsApp, Instagram, TikTok, Snapchat, phone, Google Maps link, address in 3 languages) are in the `CONTACT` block at the top of the script in `index.html`. WhatsApp, Instagram, TikTok and Snapchat show as a row of gold icons (an empty one is hidden); hours, location, phone and the Google review link are rows below it.
 - Offers and events come from `data.json` (`offers`, `events`), so whatever the staff add in the staff tool appears automatically.
-- Gallery tiles are placeholders until real photos arrive.
+- Gallery ("The space") uses Thamir's own photos and video in `media/space/`: `inside.jpg` (the indoor seating, daytime), `shisha.jpg` (Amed shisha promo photo), `evening.jpg` (the seating at night with hanging plants) and `space.mp4` (10-second vertical clip: sign, barista, Christmas decorations; `space-poster.jpg` is its still). The video plays silently on a loop in the grid; tapping any tile opens it full screen (the video with sound). Originals were resized for the web. Use these as the reference for what the cafe looks like.
 
 ## Loyalty card (`/card/`)
 - `card/index.html` is the customer card page (phone + PIN). Its footer links back to the website (`../?home`). It reads `../data.json` and the shared images (`../logo*.png`, `../shisha-*.png`).
