@@ -48,24 +48,48 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .flag { width: 28px; height: 19px; display: block; border-radius: 3px; }
 
 /* Hero */
-.hero { position: relative; padding: 100px 0 0; text-align: center;
-  background: radial-gradient(70% 40% at 50% 60%, #6F4E3788, transparent 70%), radial-gradient(120% 60% at 50% 0%, #2E1E15, var(--bg)); }
+.hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; background: radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
+/* Spotlight Stage (Thamir chose animated sample 2) */
+.beam { position: absolute; top: -10%; left: 50%; width: 520px; height: 120%; margin-left: -260px; transform-origin: 50% 0; pointer-events: none;
+  background: conic-gradient(from 160deg at 50% 0, transparent 0deg, #E3B27D14 10deg, #FFE7C42A 20deg, #E3B27D14 30deg, transparent 40deg); filter: blur(18px); mix-blend-mode: screen; animation: beam 7s ease-in-out infinite; }
+@keyframes beam { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+.hero .wrap { position: relative; }
+header { z-index: 6; }
+.intro { animation: rise 1s .15s both; }
+.swap { display: inline-block; position: relative; height: 1.15em; vertical-align: bottom; overflow: hidden; min-width: 4.6em; text-align: inherit; }
+.rtl .swap { height: 1.5em; }
+.swap b { position: absolute; left: 0; right: 0; font-weight: 500; font-style: italic; color: var(--gold2); transform: translateY(110%); opacity: 0; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .7s; }
+.rtl .swap b { font-style: normal; }
+.swap b.on { transform: none; opacity: 1; } .swap b.out { transform: translateY(-110%); opacity: 0; }
+.stage { position: relative; height: 330px; max-width: 360px; margin: 6px auto 0; animation: rise 1.2s .5s both; }
+.ring { position: absolute; left: 50%; bottom: 22px; width: 300px; height: 64px; margin-left: -150px; border-radius: 50%; border: 1px solid #D4A37388;
+  background: radial-gradient(closest-side, #D4A37333, transparent); box-shadow: 0 0 40px #D4A37333, inset 0 0 30px #D4A37322; }
+.ring::after { content: ""; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid transparent; border-top-color: #FFE2B8; filter: blur(1px); animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.stage img { position: absolute; left: 50%; bottom: 46px; height: 250px; width: auto; transform-origin: 50% 100%; will-change: transform, filter; }
+.dots { display: flex; justify-content: center; gap: 8px; margin-top: -4px; direction: ltr; }
+.dots i { width: 6px; height: 6px; border-radius: 3px; background: #D4A37355; transition: background .4s, width .4s; }
+.dots i.on { background: var(--gold2); width: 18px; }
+.sname { height: 22px; margin-top: 8px; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); transition: opacity .4s; }
+.rtl .sname { letter-spacing: 0; font-size: 14px; }
+.hero .t2 { animation: rise 1s .9s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.btn.pri { animation: glow 2.6s 2s infinite; }
+@keyframes glow { 50% { box-shadow: 0 0 0 8px #E3B27D00, 0 0 26px #E3B27D66; } }
+/* Sections fade up as they scroll into view */
+.js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+.js .rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .js .rv { opacity: 1; transform: none; } }
 .hero h1 { font-size: 46px; line-height: 1.05; margin: 12px 0 10px; }
 .rtl .hero h1 { font-size: 38px; line-height: 1.35; }
 .hero h1 i { color: var(--gold2); font-family: "Cormorant Garamond", Georgia, serif; }
 .hero p { color: var(--muted); max-width: 30ch; margin: 0 auto; }
-.trio { position: relative; height: 290px; max-width: 340px; margin: 22px auto 0; }
-.trio img { position: absolute; bottom: 0; filter: drop-shadow(0 20px 22px #000a); }
-.trio .c { height: 230px; left: 6px; transform: rotate(-6deg); }
-.trio .s { height: 230px; right: 6px; transform: rotate(6deg); }
-.trio .g { height: 280px; left: 50%; transform: translateX(-50%); z-index: 2; }
-.trio .floor { position: absolute; bottom: -6px; left: 10%; right: 10%; height: 30px; background: radial-gradient(closest-side, #000a, transparent); }
 .cta { display: flex; flex-direction: column; gap: 10px; margin: 26px auto 0; max-width: 340px; }
 .btn { display: block; padding: 15px; border-radius: 99px; text-decoration: none; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; text-align: center; }
 .rtl .btn { letter-spacing: 0; font-size: 15px; }
 .btn.pri { background: linear-gradient(135deg, #E3B27D, #B98552); color: #1C120D; }
 .btn.sec { border: 1px solid #D4A37366; color: var(--gold2); }
-.status { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 18px; margin: 26px auto 0; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted); max-width: 560px; }
+.status { font-size: 14px; color: var(--muted); }
 .status b { color: var(--ink); font-weight: 500; }
 .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #6FCF8A; margin-inline-end: 7px; box-shadow: 0 0 8px #6FCF8A; vertical-align: middle; }
 .dot.off { background: #E3786E; box-shadow: 0 0 8px #E3786E; }
@@ -161,8 +185,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .hero h1 { font-size: 68px; } .rtl .hero h1 { font-size: 54px; }
   .hero p { margin: 0; font-size: 18px; }
   .cta { flex-direction: row; margin: 30px 0 0; max-width: none; } .cta .btn { padding: 15px 28px; }
-  .status { justify-content: flex-start; border: 0; padding: 0; margin: 26px 0 0; }
-  .trio { height: 420px; max-width: 460px; } .trio .g { height: 410px; } .trio .c, .trio .s { height: 330px; }
+  .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; }
+  .beam { left: 72%; } .rtl .beam { left: 28%; }
   .tabs { display: none; }
   .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
   .mc { break-inside: avoid; margin-bottom: 14px; }
@@ -183,6 +207,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   <symbol id="sc" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.4c3.1 0 5.2 2.3 5.2 5.4v2.2c.5.2 1.2.1 1.8-.2.7-.3 1.3.5.7 1.1-.6.6-1.6.9-2.4 1.1.4 1.8 2.1 3.4 3.9 3.9.5.2.5.9 0 1.1-1 .4-2 .5-2.5.8-.2.4-.1 1.1-.6 1.2-.9.2-1.9-.3-3 .1-1.1.4-1.9 1.6-3.1 1.6s-2-1.2-3.1-1.6c-1.1-.4-2.1.1-3-.1-.5-.1-.4-.8-.6-1.2-.5-.3-1.5-.4-2.5-.8-.5-.2-.5-.9 0-1.1 1.8-.5 3.5-2.1 3.9-3.9-.8-.2-1.8-.5-2.4-1.1-.6-.6 0-1.4.7-1.1.6.3 1.3.4 1.8.2V7.8c0-3.1 2.1-5.4 5.2-5.4Z"/></symbol>
 </svg>
 <div class="hero" id="top">
+  <div class="beam" aria-hidden="true"></div>
   <header><div class="wrap">
     <a class="logo" href="#top" aria-label="Amed Cafe"></a>
     <div class="langs" role="group" aria-label="Language">
@@ -192,20 +217,22 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     </div>
   </div></header>
   <div class="wrap hg">
-    <div class="t1">
+    <div class="t1 intro">
       <div class="kicker" data-t="kicker"></div>
       <h1 id="h1"></h1>
-      <p data-t="sub"></p>
+      <p class="status"><i class="dot" id="dot"></i><b id="openTxt"></b><span id="hrs"> · <span data-t="hoursShort"></span></span></p>
     </div>
-    <div class="art"><div class="trio">
-      <img class="c" src="shisha-copper.png" alt="" width="228" height="472">
-      <img class="s" src="shisha-silver.png" alt="" width="236" height="471">
-      <img class="g" src="shisha-gold.png" alt="Amed Cafe shisha" width="204" height="408">
-      <div class="floor"></div>
-    </div></div>
+    <div class="art">
+      <div class="stage" id="stage"><div class="ring"></div>
+        <img src="shisha-gold.png" alt="Amed Cafe shisha" width="204" height="408">
+        <img src="shisha-copper.png" alt="" width="228" height="472">
+        <img src="shisha-silver.png" alt="" width="236" height="471">
+      </div>
+      <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      <div class="sname" id="sname"></div>
+    </div>
     <div class="t2">
       <div class="cta"><a class="btn pri" href="card/" id="cardBtn" data-t="myCard"></a><a class="btn sec" href="#menu" data-t="exploreMenu"></a></div>
-      <div class="status"><span><i class="dot" id="dot"></i><b id="openTxt"></b></span><span data-t="hoursShort"></span></div>
     </div>
   </div>
 </div>
@@ -276,7 +303,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
   const T = {
     en: {
-      kicker: "Coffee · Shisha · Comfort", h1a: "An evening at ", sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
+      kicker: "Amed Cafe · Duhok", h1a: "Your evening of", words: ["coffee", "shisha", "comfort"], shishas: ["Gold", "Copper", "Silver"], sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
       myCard: "My loyalty card", exploreMenu: "Explore the menu", open: "Open now", closed: "Closed · opens at 8:00 AM", hoursShort: "Every day · 8:00 AM – 1:00 AM",
       menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
       rewK: "Amed rewards", rewT: "Buy {n}, the {nth} is free", rewP: "Separate cards for drinks and shisha — just give your phone number at the counter. Free rewards are valid for {d} days.",
@@ -290,7 +317,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       tagline: "your comfort space",
     },
     ar: {
-      kicker: "قهوة · أركيلة · راحة", h1a: "أمسية في ", sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
+      kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
       myCard: "بطاقة الولاء الخاصة بي", exploreMenu: "تصفّح القائمة", open: "مفتوح الآن", closed: "مغلق · نفتح الساعة 8:00 صباحاً", hoursShort: "كل يوم · 8:00 صباحاً – 1:00 ليلاً",
       menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
       rewK: "مكافآت Amed", rewT: "اشترِ {n} واحصل على ال{nth} مجاناً", rewP: "بطاقتان منفصلتان للمشروبات والأركيلة — فقط أعطِ رقم هاتفك عند الكاونتر. المكافآت المجانية صالحة لمدة {d} يوماً.",
@@ -304,7 +331,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       tagline: "مكان راحتك",
     },
     ku: {
-      kicker: "قەهوە · نێرگەلە · ئارامی", h1a: "ئێڤارەک ل ", sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
+      kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
       myCard: "کارتا من", exploreMenu: "مێنیوێ ببینە", open: "نوکە ڤەکریە", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", hoursShort: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ",
       menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
       rewK: "خەلاتێن Amed", rewT: "{n} بکڕە، یا {nth} بێ بەرامبەرە", rewP: "کارتێن جودا بۆ ڤەخوارن و نێرگەلێ — تنێ ژمارا مۆبایلا خۆ ل کاونتەری بدە. خەلاتێن بێ بەرامبەر بۆ ماوێ {d} رۆژان دمینن.",
@@ -329,6 +356,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   const DEFAULT_LEVELS = [{ name: "Silver", visits: 50, stamps: 90 }, { name: "Gold", visits: 180 }, { name: "Platinum", visits: 360 }];
 
   let lang = "ku", DATA = null, MENU = null, activeCat = 0;
+  const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (id) => document.getElementById(id);
   const tr = (k, v = {}) => String(T[lang][k] ?? T.en[k] ?? "").replace(/\{(\w+)\}/g, (m, x) => (x in v ? v[x] : m));
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
@@ -355,6 +383,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     const o = isOpen();
     $("dot").classList.toggle("off", !o);
     $("openTxt").textContent = o ? tr("open") : tr("closed");
+    $("hrs").hidden = !o; // "Closed · opens at 8:00 AM" already says when
   }
 
   // Scroll a horizontal row so that child is centred (works left-to-right and right-to-left).
@@ -468,6 +497,45 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     row(tr("review"), link(CONTACT.review, tr("reviewLink")));
   }
 
+  // Headline: "Your evening of" + a word that changes every 2.2 s (coffee, shisha, comfort).
+  let swapTimer = null;
+  function buildHeadline() {
+    const h = $("h1"); h.textContent = "";
+    const sw = el("span", { class: "swap" });
+    T[lang].words.forEach((w, i) => sw.append(el("b", { class: i ? "" : "on", text: w })));
+    h.append(tr("h1a"), el("br"), sw);
+    clearInterval(swapTimer);
+    if (REDUCED) return;
+    const bs = [...sw.children]; let i = 0;
+    swapTimer = setInterval(() => { const a = bs[i]; a.classList.remove("on"); a.classList.add("out"); setTimeout(() => a.classList.remove("out"), 700); i = (i + 1) % bs.length; bs[i].classList.add("on"); }, 2200);
+  }
+
+  // Stage: the three shishas circle slowly; the one in front is large and bright. Pauses when off screen.
+  let frontShisha = 0;
+  function startStage() {
+    const st = $("stage"), im = [...st.querySelectorAll("img")], dots = [...document.querySelectorAll(".dots i")];
+    let visible = true, t0 = performance.now(), paused = 0, last = t0;
+    const place = (a) => {
+      im.forEach((img, k) => {
+        const th = a + k * (Math.PI * 2 / 3), z = (Math.cos(th) + 1) / 2, x = Math.sin(th) * (st.clientWidth > 400 ? 150 : 110);
+        img.style.transform = "translateX(calc(-50% + " + x.toFixed(1) + "px)) scale(" + (0.62 + 0.38 * z).toFixed(3) + ")";
+        img.style.zIndex = Math.round(z * 20);
+        img.style.filter = "brightness(" + (0.55 + 0.45 * z).toFixed(2) + ") blur(" + ((1 - z) * 2.2).toFixed(2) + "px) drop-shadow(0 18px 18px #000a)";
+      });
+      const f = im.map((_, k) => Math.cos(a + k * (Math.PI * 2 / 3))).reduce((b, v, k, arr) => v > arr[b] ? k : b, 0);
+      if (f !== frontShisha || !$("sname").textContent) {
+        frontShisha = f; dots.forEach((d, k) => d.classList.toggle("on", k === f));
+        const n = $("sname"); n.style.opacity = 0; setTimeout(() => { n.textContent = T[lang].shishas[f]; n.style.opacity = 1; }, 200);
+      }
+    };
+    if (REDUCED) { place(0); return; }
+    new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(st);
+    (function tick(now) {
+      if (!visible || document.hidden) paused += now - last; else place(((now - t0 - paused) / 9000) * Math.PI * 2);
+      last = now; requestAnimationFrame(tick);
+    })(t0);
+  }
+
   function setLang(l) {
     lang = T[l] ? l : "ku";
     document.documentElement.lang = lang === "ku" ? "ckb" : lang;
@@ -475,11 +543,17 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     document.body.classList.toggle("rtl", lang !== "en");
     for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
     for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
-    const h = $("h1"); h.textContent = ""; h.append(tr("h1a"), el("i", { text: "Amed" }));
+    buildHeadline();
+    if ($("sname").textContent) $("sname").textContent = T[lang].shishas[frontShisha];
     $("cardBtn").href = "card/#" + lang;
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
     renderStatus(); renderMenu(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
   }
+
+  // Scroll reveal for the sections below the hero
+  document.documentElement.classList.add("js");
+  const revealIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); } }), { threshold: 0.12 }) : null;
+  document.querySelectorAll("main .head, #scroller, .reward, #evList, #gal, #social, #info").forEach((n, i) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
 
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("scroller").addEventListener("scroll", () => {
@@ -502,6 +576,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   setLang(start);
   window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
   setInterval(renderStatus, 60000);
+  startStage();
 
   fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
