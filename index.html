@@ -157,6 +157,45 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .ph { border-radius: 14px; border: 1px dashed #D4A37355; background: linear-gradient(135deg, #2A1C15, #33231A); display: grid; place-items: center; color: #C4B09CAA; font-size: 12px; text-align: center; padding: 8px; }
 .ph.big { grid-row: span 2; }
 
+/* Coffee story: real coffee footage (Mixkit free licence) that plays as you scroll, at the top of the menu */
+.cstory { position: relative; height: 380svh; margin: 0 -20px 26px; }
+.cpin { position: sticky; top: 0; height: 100svh; overflow: hidden; background: #120B07; }
+.cpin canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cpin .shade { position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(#120B07 0%, #120B07CC 14%, transparent 42%, transparent 70%, #120B07AA 100%); }
+.cbar { position: absolute; left: 20px; right: 20px; top: 16px; height: 2px; background: #ffffff1f; border-radius: 2px; }
+.cbar i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, #B98552, #FFE2B8); border-radius: 2px; }
+.rtl .cbar i { margin-inline-start: 0; }
+.ccap { position: absolute; top: 38px; left: 20px; right: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity .5s, transform .5s; }
+.ccap.on { opacity: 1; transform: none; }
+.ccap .kicker { display: block; }
+.ccap h3 { font-family: var(--serif); font-weight: 500; font-size: 40px; line-height: 1.1; margin-top: 4px; text-shadow: 0 2px 18px #000; }
+.rtl .ccap h3 { font-size: 34px; }
+.ccap h3 i { color: var(--gold2); font-style: italic; } .rtl .ccap h3 i { font-style: normal; }
+.ccap p { color: #E9DCCB; max-width: 28ch; margin: 6px auto 0; font-size: 15px; text-shadow: 0 1px 10px #000; }
+.cchips { position: absolute; inset: 0; pointer-events: none; }
+.chip { position: absolute; padding: 7px 12px; border-radius: 12px; background: #F3E9DCF2; color: #2B1A12; font-size: 13px; line-height: 1.3; box-shadow: 0 10px 24px -10px #000c;
+  opacity: 0; transform: translateY(14px) scale(.9); transition: opacity .45s, transform .45s cubic-bezier(.2,.8,.2,1.3); white-space: nowrap; }
+.chip b { display: block; font-weight: 500; }
+.chip span { color: #8B5A3C; direction: ltr; unicode-bidi: isolate; }
+.chip.on { opacity: 1; transform: none; }
+.chip.c0 { left: 5%; top: 36%; } .chip.c1 { right: 5%; top: 30%; } .chip.c2 { left: 7%; top: 47%; } .chip.c3 { right: 7%; top: 42%; }
+.cfinal { position: absolute; left: 0; right: 0; bottom: max(18px, 3svh); text-align: center; opacity: 0; transition: opacity .5s; pointer-events: none; }
+.cfinal.on { opacity: 1; pointer-events: auto; }
+.cfinal a { display: inline-block; padding: 12px 22px; border-radius: 99px; border: 1px solid #D4A373AA; color: var(--gold2); text-decoration: none; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; background: #1C120DD9; }
+.rtl .cfinal a { letter-spacing: 0; font-size: 15px; }
+.ccredit { position: absolute; right: 10px; bottom: 4px; font-size: 9px; color: #ffffff55; }
+.rtl .ccredit { right: auto; left: 10px; }
+@media (min-width: 900px) {
+  .cstory { margin: 0 0 30px; }
+  .cpin { background: transparent; }
+  .cpin canvas, .cpin .shade, .cchips { left: 50%; width: min(56.25svh, 100%); margin-left: calc(min(56.25svh, 100%) / -2); border-radius: 22px; }
+  .ccap { left: 0; right: auto; width: calc(50% - 28.1svh - 30px); top: 34%; text-align: end; }
+  .rtl .ccap { left: auto; right: 0; }
+  .ccap h3 { font-size: 52px; }
+  .cbar { left: 50%; right: auto; width: min(56.25svh, 100%); margin-left: calc(min(56.25svh, 100%) / -2); top: 14px; }
+}
+
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -241,6 +280,18 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 <main class="wrap">
   <section id="menu">
     <div class="head"><span class="kicker" data-t="menuK"></span><h2 data-t="menuT"></h2><i class="orn"></i></div>
+    <div class="cstory" id="cstory">
+      <div class="cpin" id="cpin">
+        <canvas id="ccv" aria-hidden="true"></canvas><div class="shade"></div>
+        <div class="cbar"><i></i></div>
+        <div class="ccap" data-a="0" data-b=".34"><span class="kicker" data-t="cs1k"></span><h3><span data-t="cs1a"></span> <i data-t="cs1b"></i></h3><p data-t="cs1p"></p></div>
+        <div class="ccap" data-a=".34" data-b=".64"><span class="kicker" data-t="cs2k"></span><h3><span data-t="cs2a"></span> <i data-t="cs2b"></i></h3><p data-t="cs2p"></p></div>
+        <div class="ccap" data-a=".64" data-b="1.1"><span class="kicker" data-t="cs3k"></span><h3><span data-t="cs3a"></span> <i data-t="cs3b"></i></h3><p data-t="cs3p"></p></div>
+        <div class="cchips" id="cchips"></div>
+        <div class="cfinal"><a href="#tabs" id="csGo" data-t="csGo"></a></div>
+        <span class="ccredit">Video: Mixkit</span>
+      </div>
+    </div>
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="scroller" id="scroller"></div>
     <p class="note"><span class="swipe" data-t="swipe"></span><span id="menuNote"></span></p>
@@ -306,7 +357,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     en: {
       kicker: "Amed Cafe · Duhok", h1a: "Your evening of", words: ["coffee", "shisha", "comfort"], shishas: ["Gold", "Copper", "Silver"], sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
       myCard: "My loyalty card", exploreMenu: "Explore the menu", open: "Open now", closed: "Closed · opens at 8:00 AM", hoursShort: "Every day · 8:00 AM – 1:00 AM",
-      menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
+      menuK: "The menu", menuT: "Crafted for you", cs1k: "01 · Coffee", cs1a: "Fresh", cs1b: "beans", cs1p: "Roasted beans, ground fresh for every cup.", cs2k: "02 · Coffee", cs2a: "A slow", cs2b: "pour", cs2p: "Turkish, Kurdish or espresso — made the way you like it.", cs3k: "03 · Coffee", cs3a: "Your", cs3b: "cup", cs3p: "Every 8th drink is free with your Amed card.", csGo: "See the coffee menu", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
       rewK: "Amed rewards", rewT: "Buy {n}, the {nth} is free", rewP: "Separate cards for drinks and shisha — just give your phone number at the counter. Free rewards are valid for {d} days.",
       progRow: "Buy {n}, get a {reward}",
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
@@ -320,7 +371,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
       myCard: "بطاقة الولاء الخاصة بي", exploreMenu: "تصفّح القائمة", open: "مفتوح الآن", closed: "مغلق · نفتح الساعة 8:00 صباحاً", hoursShort: "كل يوم · 8:00 صباحاً – 1:00 ليلاً",
-      menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
+      menuK: "القائمة", menuT: "حُضّرت لك بعناية", cs1k: "01 · القهوة", cs1a: "حبوب", cs1b: "طازجة", cs1p: "حبوب محمّصة تُطحن طازجة لكل فنجان.", cs2k: "02 · القهوة", cs2a: "صبّة", cs2b: "على مهل", cs2p: "تركية، بطم أو إسبريسو — كما تحبها.", cs3k: "03 · القهوة", cs3a: "", cs3b: "فنجانك", cs3p: "كل مشروب ثامن مجاناً مع بطاقة Amed.", csGo: "اعرض قائمة القهوة", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
       rewK: "مكافآت Amed", rewT: "اشترِ {n} واحصل على ال{nth} مجاناً", rewP: "بطاقتان منفصلتان للمشروبات والأركيلة — فقط أعطِ رقم هاتفك عند الكاونتر. المكافآت المجانية صالحة لمدة {d} يوماً.",
       progRow: "اشترِ {n} واحصل على {reward}",
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
@@ -334,7 +385,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
       myCard: "کارتا من", exploreMenu: "مێنیوێ ببینە", open: "نوکە ڤەکریە", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", hoursShort: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ",
-      menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
+      menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", cs1k: "01 · قەهوە", cs1a: "دەنکێن", cs1b: "تازە", cs1p: "دەنکێن برژاندی، بۆ هەر فنجانەکێ تازە دهێنە هارین.", cs2k: "02 · قەهوە", cs2a: "ب هێدی", cs2b: "دهێتە تێکرن", cs2p: "تورکی، کەزوان یان ئێسپرێسۆ — وەکی تە دڤێت.", cs3k: "03 · قەهوە", cs3a: "", cs3b: "فنجانا تە", cs3p: "هەر ڤەخوارنا 8ەمین ب کارتا Amed بێ بەرامبەرە.", csGo: "مێنیوێ قەهوێ ببینە", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
       rewK: "خەلاتێن Amed", rewT: "{n} بکڕە، یا {nth} بێ بەرامبەرە", rewP: "کارتێن جودا بۆ ڤەخوارن و نێرگەلێ — تنێ ژمارا مۆبایلا خۆ ل کاونتەری بدە. خەلاتێن بێ بەرامبەر بۆ ماوێ {d} رۆژان دمینن.",
       progRow: "{n} بکڕە، {reward} وەربگرە",
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
@@ -399,6 +450,45 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     sc.style.height = card && getComputedStyle(sc).display === "flex" ? card.offsetHeight + 14 + "px" : "";
   }
 
+  // Coffee story: 120 frames of real coffee footage drawn on a canvas, chosen by scroll position.
+  const CS = { n: 120, img: [], loaded: 0, started: false, last: -1 };
+  function csLoad() {
+    if (CS.started) return; CS.started = true;
+    const order = [];
+    for (let step = 16; step >= 1; step = Math.floor(step / 2)) for (let i = 0; i < CS.n; i += step) if (!order.includes(i)) order.push(i); // coarse first, then fill in
+    order.forEach((i) => { const im = new Image(); im.decoding = "async"; im.onload = () => { CS.loaded++; if (CS.last < 0 || Math.abs(i - CS.want) < Math.abs(CS.last - CS.want)) csDraw(); }; im.src = "media/coffee/f" + String(i + 1).padStart(3, "0") + ".webp"; CS.img[i] = im; });
+  }
+  function csDraw() {
+    const cv = $("ccv"), want = CS.want || 0;
+    let i = want, d = 0; // nearest loaded frame
+    while (d < CS.n && !(CS.img[i] && CS.img[i].complete && CS.img[i].naturalWidth)) { d++; i = want + (d % 2 ? -Math.ceil(d / 2) : Math.ceil(d / 2)); if (i < 0 || i >= CS.n) i = want; }
+    const im = CS.img[i]; if (!im || !im.naturalWidth) return;
+    const dpr = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    const ctx = cv.getContext("2d"), sc = Math.max(cv.width / im.naturalWidth, cv.height / im.naturalHeight);
+    const dw = im.naturalWidth * sc, dh = im.naturalHeight * sc;
+    ctx.drawImage(im, (cv.width - dw) / 2, (cv.height - dh) / 2, dw, dh);
+    CS.last = i;
+  }
+  function csUpdate() {
+    const st = $("cstory"), pin = $("cpin"), r = st.getBoundingClientRect();
+    if (r.top < innerHeight * 2.5 && r.bottom > -innerHeight) csLoad();
+    const total = st.offsetHeight - innerHeight, p = Math.min(1, Math.max(0, -r.top / total));
+    pin.style.setProperty("--p", p.toFixed(4));
+    for (const c of pin.querySelectorAll(".ccap")) c.classList.toggle("on", p >= +c.dataset.a && p < +c.dataset.b);
+    [...$("cchips").children].forEach((c, i) => c.classList.toggle("on", p > .72 + i * .05));
+    pin.querySelector(".cfinal").classList.toggle("on", p > .92);
+    const want = Math.min(CS.n - 1, Math.round(p * (CS.n - 1)));
+    if (want !== CS.want || CS.last < 0) { CS.want = want; csDraw(); }
+  }
+  function renderChips() {
+    const box = $("cchips"); box.textContent = "";
+    const cat = MENU && MENU.categories.find((c) => c.id === "coffee");
+    if (!cat) return;
+    cat.items.slice(0, 4).forEach((it, i) => box.append(el("div", { class: "chip c" + i }, el("b", { text: pick(it.name) }), el("span", { text: num(it.price) + " " + tr("iqd") }))));
+    csUpdate();
+  }
+
   function renderMenu() {
     const tabs = $("tabs"), sc = $("scroller");
     tabs.textContent = ""; sc.textContent = "";
@@ -420,6 +510,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       sc.append(card);
     });
     $("menuNote").textContent = MENU.sample ? tr("sampleNote") : tr("menuNote");
+    renderChips();
     activeCat = Math.min(activeCat, MENU.categories.length - 1); fitMenu();
   }
 
@@ -568,6 +659,9 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     }
   }, { passive: true });
   window.addEventListener("resize", fitMenu);
+  addEventListener("scroll", csUpdate, { passive: true });
+  addEventListener("resize", () => { CS.last = -1; csUpdate(); });
+  $("csGo").addEventListener("click", (e) => { e.preventDefault(); activeCat = 0; const t = $("tabs").children[0]; if (t) t.click(); $("tabs").scrollIntoView({ behavior: "smooth", block: "start" }); });
   $("yr").textContent = new Date().getFullYear();
 
   let start = (location.hash || "").replace("#", "");
@@ -577,6 +671,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
   setInterval(renderStatus, 60000);
   startStage();
+  csUpdate();
 
   fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
