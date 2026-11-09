@@ -135,7 +135,7 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .r:last-child { border: 0; }
-.r > span { color: var(--muted); font-size: 14px; }
+.r > span { color: var(--muted); font-size: 14px; white-space: nowrap; }
 .r b { font-weight: 400; text-align: end; }
 .r a { color: var(--gold2); text-decoration: none; text-align: end; }
 .r .soon { color: #C4B09C88; font-size: 14px; }
@@ -247,11 +247,11 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 (() => {
   // ---- Cafe details: fill these in when Thamir sends them. Empty = shown as "coming soon". ----
   const CONTACT = {
-    whatsapp: "",   // international digits, e.g. "9647501234567" (falls back to the staff tool's cafe WhatsApp in data.json)
-    instagram: "",  // handle without @
-    phone: "",      // e.g. "+964 750 123 4567"
-    maps: "",       // Google Maps share link
-    address: { en: "", ar: "", ku: "" },
+    whatsapp: "9647502620262",   // international digits, e.g. "9647501234567" (falls back to the staff tool's cafe WhatsApp in data.json)
+    instagram: "amed.caferest",  // handle without @
+    phone: "0750 262 0262",      // shown as written; dialled as +964
+    maps: "https://maps.app.goo.gl/QWJCvuRBjmKmjnWs7",       // Google Maps share link
+    address: { en: "Sharya, Duhok", ar: "شاريا، دهوك", ku: "شاریا، دهۆک" },
     review: "https://g.page/r/Cfh40Ersi0aREAE/review",
   };
   const OPEN_H = 8, CLOSE_H = 1; // 8:00 AM to 1:00 AM, Asia/Baghdad
@@ -415,9 +415,9 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     row(tr("hours"), el("b", { text: tr("everyDayHours") }));
     const addr = pick(CONTACT.address);
     row(tr("location"), CONTACT.maps ? link(CONTACT.maps, addr || tr("openMaps")) : addr ? el("b", { text: addr }) : soon());
-    row(tr("whatsapp"), wa ? link("https://wa.me/" + wa, "+" + wa, true) : soon());
+    row(tr("whatsapp"), wa ? link("https://wa.me/" + wa, "+" + wa.replace(/^964(\d{3})(\d{3})(\d{4})$/, "964 $1 $2 $3"), true) : soon());
     row(tr("instagram"), CONTACT.instagram ? link("https://instagram.com/" + CONTACT.instagram, "@" + CONTACT.instagram, true) : soon());
-    row(tr("phone"), CONTACT.phone ? el("a", { href: "tel:" + CONTACT.phone.replace(/[^\d+]/g, ""), class: "ltr" }, CONTACT.phone) : soon());
+    row(tr("phone"), CONTACT.phone ? el("a", { href: "tel:" + CONTACT.phone.replace(/\D/g, "").replace(/^0/, "+964"), class: "ltr" }, CONTACT.phone) : soon());
     row(tr("review"), link(CONTACT.review, tr("reviewLink")));
   }
 

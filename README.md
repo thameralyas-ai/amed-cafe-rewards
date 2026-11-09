@@ -6,12 +6,12 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - `index.html` is the public website ("Espresso & Gold" design): menu, rewards, offers and events, gallery and visit/contact, in Badini Kurdish, Arabic and English (flag switcher; Badini and Arabic are right-to-left).
 - Visitors who have signed in to their loyalty card (localStorage `amed-session`) are sent straight to `/card/`, so old links, printed QR codes and old Home Screen icons keep opening the card. Add `?home` to the address to see the website anyway.
 - `menu.json` holds the menu (names in `en`/`ar`/`ku`, prices in IQD). It is a **sample** until the real menu arrives; set `"sample": false` when it is real.
-- Contact details (WhatsApp, Instagram, phone, Google Maps link, address) are in the `CONTACT` block at the top of the script in `index.html`. Empty values show as "coming soon". WhatsApp falls back to the cafe WhatsApp from the staff tool (`data.json` → `contact.wa`).
+- Contact details (WhatsApp, Instagram, phone, Google Maps link, address in 3 languages) are in the `CONTACT` block at the top of the script in `index.html`. Empty values show as "coming soon".
 - Offers and events come from `data.json` (`offers`, `events`), so whatever the staff add in the staff tool appears automatically.
 - Gallery tiles are placeholders until real photos arrive.
 
 ## Loyalty card (`/card/`)
-- `card/index.html` is the customer card page (phone + PIN). It reads `../data.json` and the shared images (`../logo*.png`, `../shisha-*.png`).
+- `card/index.html` is the customer card page (phone + PIN). Its footer links back to the website (`../?home`). It reads `../data.json` and the shared images (`../logo*.png`, `../shisha-*.png`).
 - `card/sw.js` (service worker, scope `/card/`), `card/manifest*.webmanifest` and `card/icon-*.png` belong to the card. The service worker and the iPhone "Add to Home Screen" tip only run on `amedcaferest.com` / `github.io`.
 - `sw.js` at the root is a retired worker that removes itself if an old copy is installed there.
 
