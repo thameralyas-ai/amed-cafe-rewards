@@ -49,11 +49,11 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .flag { width: 28px; height: 19px; display: block; border-radius: 3px; }
 
 /* Hero */
-.hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; background: radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
+/* Hero light: still gradients only. The moving spotlight beam and the Light Rays canvas were removed
+   because one of them drew a stray dotted line on iPhone. */
+.hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; --glow-x: 50%;
+  background: radial-gradient(38% 34% at var(--glow-x) 0%, #E3B27D2E, transparent 100%), radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
 /* Spotlight Stage (Thamir chose animated sample 2) */
-.beam { position: absolute; top: -10%; left: 50%; width: 520px; height: 120%; margin-left: -260px; transform-origin: 50% 0; pointer-events: none;
-  background: conic-gradient(from 160deg at 50% 0, transparent 0deg, #E3B27D14 10deg, #FFE7C42A 20deg, #E3B27D14 30deg, transparent 40deg); filter: blur(18px); mix-blend-mode: screen; animation: beam 7s ease-in-out infinite; }
-@keyframes beam { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
 .hero .wrap { position: relative; }
 header { z-index: 6; }
 .intro { animation: rise 1s .15s both; }
@@ -81,10 +81,8 @@ header { z-index: 6; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .btn.pri { animation: glow 2.6s 2s infinite; }
 @keyframes glow { 50% { box-shadow: 0 0 0 8px #E3B27D00, 0 0 26px #E3B27D66; } }
-/* Motion layer (js/motion.js): Lenis smooth scroll, Light Rays behind the hero, Star Border on the main button. */
+/* Motion layer (js/motion.js): Lenis smooth scroll and Star Border on the main button (Light Rays removed: stray line on iPhone). */
 html.lenis { scroll-behavior: auto; }
-.rays { position: absolute; inset: 0; pointer-events: none; }
-.hero.has-rays .beam { display: none; }
 .star-border { position: relative; isolation: isolate; }
 .star-border__light { position: absolute; top: -40px; left: -40px; width: calc(100% + 80px); height: calc(100% + 80px); pointer-events: none; z-index: -1; }
 .btn.pri.star-border { animation: none; }
@@ -93,7 +91,7 @@ html.lenis { scroll-behavior: auto; }
 .js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .rv.in { opacity: 1; transform: none; }
 /* Reduce Motion: still animated (Thamir asked), but calmer: no spotlight sweep or button pulse, slower ring, fade without sliding */
-@media (prefers-reduced-motion: reduce) { .beam { animation: none; } .btn.pri { animation: none; } .ring path { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
+@media (prefers-reduced-motion: reduce) { .btn.pri { animation: none; } .ring path { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
 .hero h1 { font-size: 46px; line-height: 1.05; margin: 12px 0 10px; }
 .rtl .hero h1 { font-size: 38px; line-height: 1.35; }
 .hero h1 i { color: var(--gold2); font-family: "Cormorant Garamond", Georgia, serif; }
@@ -260,7 +258,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .hero p { margin: 0; font-size: 18px; }
   .cta { flex-direction: row; margin: 30px 0 0; max-width: none; } .cta .btn { padding: 15px 28px; }
   .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; }
-  .beam { left: 72%; } .rtl .beam { left: 28%; }
+  .hero { --glow-x: 72%; } .rtl .hero { --glow-x: 28%; }
   .tabs { display: none; }
   .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
   .mc { break-inside: avoid; margin-bottom: 14px; }
@@ -280,8 +278,6 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   <symbol id="sc" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.4c3.1 0 5.2 2.3 5.2 5.4v2.2c.5.2 1.2.1 1.8-.2.7-.3 1.3.5.7 1.1-.6.6-1.6.9-2.4 1.1.4 1.8 2.1 3.4 3.9 3.9.5.2.5.9 0 1.1-1 .4-2 .5-2.5.8-.2.4-.1 1.1-.6 1.2-.9.2-1.9-.3-3 .1-1.1.4-1.9 1.6-3.1 1.6s-2-1.2-3.1-1.6c-1.1-.4-2.1.1-3-.1-.5-.1-.4-.8-.6-1.2-.5-.3-1.5-.4-2.5-.8-.5-.2-.5-.9 0-1.1 1.8-.5 3.5-2.1 3.9-3.9-.8-.2-1.8-.5-2.4-1.1-.6-.6 0-1.4.7-1.1.6.3 1.3.4 1.8.2V7.8c0-3.1 2.1-5.4 5.2-5.4Z"/></symbol>
 </svg>
 <div class="hero" id="top">
-  <div class="rays" id="rays" aria-hidden="true"></div>
-  <div class="beam" aria-hidden="true"></div>
   <header><div class="wrap">
     <a class="logo" href="#top" aria-label="Amed Cafe"></a>
     <div class="langs" role="group" aria-label="Language">
@@ -762,7 +758,6 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
     revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
   if (window.AmedMotion) {
-    if (AmedMotion.lightRays($("rays"), { anchorX: () => innerWidth >= 900 ? (document.body.classList.contains("rtl") ? 0.28 : 0.72) : 0.5 })) document.querySelector(".hero").classList.add("has-rays");
     AmedMotion.starBorder($("cardBtn"));
   }
 
