@@ -49,11 +49,11 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .flag { width: 28px; height: 19px; display: block; border-radius: 3px; }
 
 /* Hero */
-.hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; background: radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
+/* Hero light: still gradients only. The moving spotlight beam and the Light Rays canvas were removed
+   because one of them drew a stray dotted line on iPhone. */
+.hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; --glow-x: 50%;
+  background: radial-gradient(38% 34% at var(--glow-x) 0%, #E3B27D2E, transparent 100%), radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
 /* Spotlight Stage (Thamir chose animated sample 2) */
-.beam { position: absolute; top: -10%; left: 50%; width: 520px; height: 120%; margin-left: -260px; transform-origin: 50% 0; pointer-events: none;
-  background: conic-gradient(from 160deg at 50% 0, transparent 0deg, #E3B27D14 10deg, #FFE7C42A 20deg, #E3B27D14 30deg, transparent 40deg); filter: blur(18px); mix-blend-mode: screen; animation: beam 7s ease-in-out infinite; }
-@keyframes beam { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
 .hero .wrap { position: relative; }
 header { z-index: 6; }
 .intro { animation: rise 1s .15s both; }
@@ -81,10 +81,8 @@ header { z-index: 6; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .btn.pri { animation: glow 2.6s 2s infinite; }
 @keyframes glow { 50% { box-shadow: 0 0 0 8px #E3B27D00, 0 0 26px #E3B27D66; } }
-/* Motion layer (js/motion.js): Lenis smooth scroll, Light Rays behind the hero, Star Border on the main button. */
+/* Motion layer (js/motion.js): Lenis smooth scroll and Star Border on the main button (Light Rays removed: stray line on iPhone). */
 html.lenis { scroll-behavior: auto; }
-.rays { position: absolute; inset: 0; pointer-events: none; }
-.hero.has-rays .beam { display: none; }
 .star-border { position: relative; isolation: isolate; }
 .star-border__light { position: absolute; top: -40px; left: -40px; width: calc(100% + 80px); height: calc(100% + 80px); pointer-events: none; z-index: -1; }
 .btn.pri.star-border { animation: none; }
@@ -93,7 +91,7 @@ html.lenis { scroll-behavior: auto; }
 .js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .rv.in { opacity: 1; transform: none; }
 /* Reduce Motion: still animated (Thamir asked), but calmer: no spotlight sweep or button pulse, slower ring, fade without sliding */
-@media (prefers-reduced-motion: reduce) { .beam { animation: none; } .btn.pri { animation: none; } .ring path { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
+@media (prefers-reduced-motion: reduce) { .btn.pri { animation: none; } .ring path { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
 .hero h1 { font-size: 46px; line-height: 1.05; margin: 12px 0 10px; }
 .rtl .hero h1 { font-size: 38px; line-height: 1.35; }
 .hero h1 i { color: var(--gold2); font-family: "Cormorant Garamond", Georgia, serif; }
@@ -167,13 +165,27 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 
 /* Gallery */
 /* Real photos and a short video of the cafe (media/space/). Wide photo on top, three tall tiles below. */
-.gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.gi { position: relative; padding: 0; border: 1px solid #D4A37344; border-radius: 14px; overflow: hidden; background: #2A1C15; cursor: zoom-in; aspect-ratio: 9 / 16; display: block; width: 100%; }
-.gi.wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-.gi img, .gi video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
-.gi:hover img, .gi:hover video { transform: scale(1.04); }
-.gi .play { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: #1C120DB3; border: 1px solid #FFE2B8AA; display: grid; place-items: center; }
-.gi .play::before { content: ""; margin-left: 4px; border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent #FFE2B8; }
+/* "The space": Circular Carousel (js/carousel.js). Photos black and white; colour on hover (computer) or tap (phone). */
+.cc { position: relative; height: 380px; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; cursor: grab; outline: none; }
+.cc[data-dragging] { cursor: grabbing; }
+.cc:focus-visible { box-shadow: inset 0 0 0 1px #D4A37399; border-radius: 14px; }
+.cc-view { position: absolute; inset: 0; }
+.cc-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .45s; }
+.cc[data-ready] .cc-stage { opacity: 1; }
+.cc-camera, .cc-ring, .cc-card { width: 0; height: 0; transform-style: preserve-3d; }
+.cc-camera { position: relative; }
+.cc-ring, .cc-card { position: absolute; left: 0; top: 0; }
+.cc-face { position: absolute; overflow: hidden; border-radius: 14px; background: #2A1C15; backface-visibility: hidden; -webkit-backface-visibility: hidden; outline: 1px solid transparent; }
+.cc-face img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; -webkit-user-drag: none; filter: grayscale(1); transition: filter .45s; }
+.cc-card.on .cc-face img { filter: none; }
+@media (hover: hover) { .cc-card:hover .cc-face img { filter: none; } }
+.cc-shade, .cc-inner { position: absolute; inset: 0; pointer-events: none; }
+.cc-shade { background: #1C120D; opacity: var(--cc-depth, 0); }
+.cc-inner { background: #000; }
+.cc-play { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: #1C120DB3; border: 1px solid #FFE2B8AA; display: grid; place-items: center; pointer-events: none; }
+.cc-play::before { content: ""; margin-left: 4px; border-style: solid; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent #FFE2B8; }
+.cc-hint { text-align: center; color: var(--muted); font-size: 13px; margin-top: 6px; }
+@media (min-width: 900px) { .cc { height: 400px; } }
 .lb { position: fixed; inset: 0; z-index: 50; background: #0B0705F2; display: none; align-items: center; justify-content: center; padding: calc(56px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom)); }
 .lb.on { display: flex; }
 .lb img, .lb video { max-width: 100%; max-height: 100%; border-radius: 12px; display: block; }
@@ -260,7 +272,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .hero p { margin: 0; font-size: 18px; }
   .cta { flex-direction: row; margin: 30px 0 0; max-width: none; } .cta .btn { padding: 15px 28px; }
   .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; }
-  .beam { left: 72%; } .rtl .beam { left: 28%; }
+  .hero { --glow-x: 72%; } .rtl .hero { --glow-x: 28%; }
   .tabs { display: none; }
   .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
   .mc { break-inside: avoid; margin-bottom: 14px; }
@@ -280,8 +292,6 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   <symbol id="sc" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.4c3.1 0 5.2 2.3 5.2 5.4v2.2c.5.2 1.2.1 1.8-.2.7-.3 1.3.5.7 1.1-.6.6-1.6.9-2.4 1.1.4 1.8 2.1 3.4 3.9 3.9.5.2.5.9 0 1.1-1 .4-2 .5-2.5.8-.2.4-.1 1.1-.6 1.2-.9.2-1.9-.3-3 .1-1.1.4-1.9 1.6-3.1 1.6s-2-1.2-3.1-1.6c-1.1-.4-2.1.1-3-.1-.5-.1-.4-.8-.6-1.2-.5-.3-1.5-.4-2.5-.8-.5-.2-.5-.9 0-1.1 1.8-.5 3.5-2.1 3.9-3.9-.8-.2-1.8-.5-2.4-1.1-.6-.6 0-1.4.7-1.1.6.3 1.3.4 1.8.2V7.8c0-3.1 2.1-5.4 5.2-5.4Z"/></symbol>
 </svg>
 <div class="hero" id="top">
-  <div class="rays" id="rays" aria-hidden="true"></div>
-  <div class="beam" aria-hidden="true"></div>
   <header><div class="wrap">
     <a class="logo" href="#top" aria-label="Amed Cafe"></a>
     <div class="langs" role="group" aria-label="Language">
@@ -350,7 +360,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     </section>
     <section id="gallery">
       <div class="head"><span class="kicker" data-t="galK"></span><h2 data-t="galT"></h2><i class="orn"></i></div>
-      <div class="gal" id="gal"></div>
+      <div id="gal"></div>
+      <p class="cc-hint" id="galHint"></p>
     </section>
   </div>
 
@@ -371,6 +382,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script src="js/motion.js"></script>
+<script src="js/carousel.js"></script>
 <script>
 (() => {
   // ---- Cafe details: fill these in when Thamir sends them. Empty = shown as "coming soon". ----
@@ -396,7 +408,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
       lv: { Silver: "Silver", Gold: "Gold", Platinum: "Platinum" }, checkCard: "Check my card",
       evK: "Upcoming", evT: "Offers & events", evEmpty: "No events right now. New events and offers appear here automatically.", xStamps: "×{m} stamps", everyDay: "Every day",
-      galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", close: "Close",
+      galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", gSign: "The Amed Cafe sign", gBar: "Our bar", gDrink: "A drink served at Amed Cafe", gHintTouch: "Tap a photo to see it in colour, tap it again to open it", gHintMouse: "Point at a photo to see it in colour, click it to bring it forward", close: "Close",
       visK: "Visit", visT: "Find us", hours: "Hours", everyDayHours: "Every day · 8:00 AM – 1:00 AM", location: "Location", openMaps: "Open in Google Maps",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "Open in Snapchat", phone: "Phone", review: "Review us", reviewLink: "Write a Google review ★", soon: "Coming soon",
       tagline: "your comfort space",
@@ -410,7 +422,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
       lv: { Silver: "فضي", Gold: "ذهبي", Platinum: "بلاتيني" }, checkCard: "اعرض بطاقتي",
       evK: "قريباً", evT: "العروض والفعاليات", evEmpty: "لا توجد فعاليات حالياً. ستظهر الفعاليات والعروض الجديدة هنا تلقائياً.", xStamps: "×{m} أختام", everyDay: "كل يوم",
-      galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", close: "إغلاق",
+      galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", gSign: "لافتة Amed Cafe", gBar: "البار", gDrink: "مشروب يُقدَّم في Amed Cafe", gHintTouch: "اضغط على صورة لتظهر بالألوان، واضغط مرة أخرى لفتحها", gHintMouse: "مرّر الماوس فوق صورة لتظهر بالألوان، وانقر لتقديمها", close: "إغلاق",
       visK: "زورونا", visT: "موقعنا", hours: "أوقات العمل", everyDayHours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", location: "الموقع", openMaps: "افتح في خرائط Google",
       whatsapp: "واتساب", instagram: "إنستغرام", tiktok: "تيك توك", snapchat: "سناب شات", openSnap: "افتح في سناب شات", phone: "الهاتف", review: "قيّمنا", reviewLink: "اكتب تقييماً على Google ★", soon: "قريباً",
       tagline: "مكان راحتك",
@@ -424,7 +436,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
       lv: { Silver: "زیڤین", Gold: "زێڕین", Platinum: "پلاتینی" }, checkCard: "کارتا من نیشان بدە",
       evK: "دێ هێن", evT: "پێشکێشی و بۆنە", evEmpty: "نوکە چ بۆنە نینن. بۆنە و پێشکێشیێن نوو دێ ب خۆ ل ڤێرە دیار بن.", xStamps: "×{m} مۆر", everyDay: "هەمی رۆژ",
-      galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", close: "گرتن",
+      galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", gSign: "تابلۆیا Amed Cafe", gBar: "بارێ مە", gDrink: "ڤەخوارنەک ل Amed Cafe", gHintTouch: "ل سەر وێنەیەکێ بدە دا ب رەنگ دیار ببیت، جارەکا دی بدە دا ڤەبیت", gHintMouse: "ماوسێ ببە سەر وێنەیەکێ دا ب رەنگ دیار ببیت، کلیک بکە دا بهێتە پێشیێ", close: "گرتن",
       visK: "سەرەدان", visT: "سەرەدانا مە بکە", hours: "دەمژمێرێن کاری", everyDayHours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", location: "جه", openMaps: "ل Google Maps ڤەکە",
       whatsapp: "واتسئاپ", instagram: "ئینستاگرام", tiktok: "تیکتۆک", snapchat: "سناپچات", openSnap: "ل سناپچات ڤەکە", phone: "تەلەفۆن", review: "هەلسەنگاندن", reviewLink: "ل Google بنڤیسە ★", soon: "ب زوویی",
       tagline: "جهێ ئارامیا تە",
@@ -615,31 +627,32 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     box.append(tl.children.length ? tl : el("p", { class: "empty", text: tr("evEmpty") }));
   }
 
+  // "The space": a Circular Carousel of the cafe's own photos and video stills (built once; text follows the language).
+  const GALLERY = [
+    { src: "media/space/inside.jpg", alt: "gInside" },
+    { src: "media/space/sign.jpg", alt: "gSign" },
+    { src: "media/space/shisha.jpg", alt: "gShisha" },
+    { src: "media/space/space-poster.jpg", video: "media/space/space.mp4", poster: "media/space/space-poster.jpg", alt: "gVideo" },
+    { src: "media/space/evening.jpg", alt: "gEvening" },
+    { src: "media/space/bar.jpg", alt: "gBar" },
+    { src: "media/space/drink.jpg", alt: "gDrink" },
+  ];
+  let galBuilt = false;
   function renderGallery() {
-    const g = $("gal"); g.textContent = "";
-    const tiles = [
-      { src: "media/space/inside.jpg", alt: "gInside", wide: true },
-      { src: "media/space/shisha.jpg", alt: "gShisha" },
-      { video: "media/space/space.mp4", poster: "media/space/space-poster.jpg", alt: "gVideo" },
-      { src: "media/space/evening.jpg", alt: "gEvening" },
-    ];
-    for (const t of tiles) {
-      let media;
-      if (t.video) {
-        // Silent loop in the grid (iPhone needs muted + playsinline to autoplay); tap opens it with sound.
-        media = el("video", { muted: "", loop: "", playsinline: "", autoplay: "", preload: "none", poster: t.poster, "aria-hidden": "true" });
-        media.muted = true;
-        media.dataset.src = t.video;
-      } else media = el("img", { src: t.src, alt: tr(t.alt), loading: "lazy", decoding: "async" });
-      const b = el("button", { type: "button", class: "gi" + (t.wide ? " wide" : ""), "aria-label": tr(t.alt), onclick: () => openLb(t) }, media, t.video ? el("span", { class: "play" }) : null);
-      g.append(b);
+    const g = $("gal");
+    $("galHint").textContent = tr(matchMedia("(hover: hover)").matches ? "gHintMouse" : "gHintTouch");
+    if (galBuilt) { // language change: update the labels only
+      g.querySelectorAll(".cc-card").forEach((c, i) => { const t = tr(GALLERY[i].alt); c.setAttribute("aria-label", `${t}, ${i + 1} / ${GALLERY.length}`); c.querySelector(".cc-face img").alt = t; });
+      g.setAttribute("aria-label", tr("galT"));
+      return;
     }
-    const v = g.querySelector("video");
-    if (v && "IntersectionObserver" in window) {
-      new IntersectionObserver((es) => es.forEach((e) => {
-        if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (v.src) v.pause();
-      }), { rootMargin: "200px" }).observe(v);
-    } else if (v) v.src = v.dataset.src;
+    if (!window.circularCarousel) { g.textContent = ""; return; }
+    galBuilt = true;
+    const mobile = innerWidth < 600;
+    circularCarousel(g, GALLERY.map((it) => ({ ...it, alt: tr(it.alt) })), {
+      cardW: mobile ? 200 : 200, gap: mobile ? 20 : 26, sideOverflow: mobile ? 1.55 : 1.1, label: tr("galT"),
+      onOpen: (it, i) => openLb(GALLERY[i]),
+    });
   }
 
   function openLb(t) {
@@ -762,7 +775,6 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
     revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
   if (window.AmedMotion) {
-    if (AmedMotion.lightRays($("rays"), { anchorX: () => innerWidth >= 900 ? (document.body.classList.contains("rtl") ? 0.28 : 0.72) : 0.5 })) document.querySelector(".hero").classList.add("has-rays");
     AmedMotion.starBorder($("cardBtn"));
   }
 
