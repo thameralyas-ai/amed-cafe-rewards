@@ -65,8 +65,12 @@ header { z-index: 6; }
 .stage { position: relative; height: 330px; max-width: 360px; margin: 6px auto 0; animation: rise 1.2s .5s both; }
 .ring { position: absolute; left: 50%; bottom: 22px; width: 300px; height: 64px; margin-left: -150px; border-radius: 50%; border: 1px solid #D4A37388;
   background: radial-gradient(closest-side, #D4A37333, transparent); box-shadow: 0 0 40px #D4A37333, inset 0 0 30px #D4A37322; }
-.ring::after { content: ""; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid transparent; border-top-color: #FFE2B8; filter: blur(1px); animation: spin 4s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* The light running round the ring: a circle that turns and is then flattened to the ring's oval, so the light stays on the oval.
+   (It used to turn the oval itself, which stood up on its side: the stray gold curve and the dotted line down the middle.) */
+.ring { --d: 300px; --k: .2133; }
+.ring::after { content: ""; position: absolute; left: 50%; top: 50%; width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  border-radius: 50%; border: 3px solid transparent; border-top-color: #FFE2B8; filter: blur(.6px); transform: scaleY(var(--k)) rotate(0deg); animation: ringspin 4s linear infinite; }
+@keyframes ringspin { to { transform: scaleY(var(--k)) rotate(360deg); } }
 .stage img { position: absolute; left: 50%; bottom: 46px; height: 250px; width: auto; transform-origin: 50% 100%; will-change: transform, filter; }
 .dots { display: flex; justify-content: center; gap: 8px; margin-top: -4px; direction: ltr; }
 .dots i { width: 6px; height: 6px; border-radius: 3px; background: #D4A37355; transition: background .4s, width .4s; }
@@ -255,7 +259,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .hero h1 { font-size: 68px; } .rtl .hero h1 { font-size: 54px; }
   .hero p { margin: 0; font-size: 18px; }
   .cta { flex-direction: row; margin: 30px 0 0; max-width: none; } .cta .btn { padding: 15px 28px; }
-  .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; }
+  .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; --d: 400px; --k: .2; }
   .beam { left: 72%; } .rtl .beam { left: 28%; }
   .tabs { display: none; }
   .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
