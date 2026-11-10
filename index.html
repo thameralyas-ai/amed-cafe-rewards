@@ -65,12 +65,12 @@ header { z-index: 6; }
 .stage { position: relative; height: 330px; max-width: 360px; margin: 6px auto 0; animation: rise 1.2s .5s both; }
 .ring { position: absolute; left: 50%; bottom: 22px; width: 300px; height: 64px; margin-left: -150px; border-radius: 50%; border: 1px solid #D4A37388;
   background: radial-gradient(closest-side, #D4A37333, transparent); box-shadow: 0 0 40px #D4A37333, inset 0 0 30px #D4A37322; }
-/* The light running round the ring: a circle that turns and is then flattened to the ring's oval, so the light stays on the oval.
-   (It used to turn the oval itself, which stood up on its side: the stray gold curve and the dotted line down the middle.) */
-.ring { --d: 300px; --k: .2133; }
-.ring::after { content: ""; position: absolute; left: 50%; top: 50%; width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
-  border-radius: 50%; border: 3px solid transparent; border-top-color: #FFE2B8; filter: blur(.6px); transform: scaleY(var(--k)) rotate(0deg); animation: ringspin 4s linear infinite; }
-@keyframes ringspin { to { transform: scaleY(var(--k)) rotate(360deg); } }
+/* The light running round the ring: a short dash moving along an SVG oval drawn exactly on the ring.
+   No spinning shapes, no blur filter (those caused a stray line on iPhone). */
+.ring svg { position: absolute; left: -1px; top: -1px; width: calc(100% + 2px); height: calc(100% + 2px); overflow: visible; }
+.ring path { fill: none; stroke: #FFE2B8; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 14 86; animation: ringrun 4s linear infinite; }
+.ring path.halo { stroke-width: 6; opacity: .22; } .ring path.core { stroke-width: 1.6; }
+@keyframes ringrun { to { stroke-dashoffset: -100; } }
 .stage img { position: absolute; left: 50%; bottom: 46px; height: 250px; width: auto; transform-origin: 50% 100%; will-change: transform, filter; }
 .dots { display: flex; justify-content: center; gap: 8px; margin-top: -4px; direction: ltr; }
 .dots i { width: 6px; height: 6px; border-radius: 3px; background: #D4A37355; transition: background .4s, width .4s; }
@@ -93,7 +93,7 @@ html.lenis { scroll-behavior: auto; }
 .js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .rv.in { opacity: 1; transform: none; }
 /* Reduce Motion: still animated (Thamir asked), but calmer: no spotlight sweep or button pulse, slower ring, fade without sliding */
-@media (prefers-reduced-motion: reduce) { .beam { animation: none; } .btn.pri { animation: none; } .ring::after { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
+@media (prefers-reduced-motion: reduce) { .beam { animation: none; } .btn.pri { animation: none; } .ring path { animation-duration: 12s; } .js .rv, .intro, .stage, .hero .t2, .swap b { transform: none !important; } }
 .hero h1 { font-size: 46px; line-height: 1.05; margin: 12px 0 10px; }
 .rtl .hero h1 { font-size: 38px; line-height: 1.35; }
 .hero h1 i { color: var(--gold2); font-family: "Cormorant Garamond", Georgia, serif; }
@@ -259,7 +259,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .hero h1 { font-size: 68px; } .rtl .hero h1 { font-size: 54px; }
   .hero p { margin: 0; font-size: 18px; }
   .cta { flex-direction: row; margin: 30px 0 0; max-width: none; } .cta .btn { padding: 15px 28px; }
-  .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; --d: 400px; --k: .2; }
+  .stage { height: 460px; max-width: 480px; } .stage img { height: 360px; } .ring { width: 400px; height: 80px; margin-left: -200px; }
   .beam { left: 72%; } .rtl .beam { left: 28%; }
   .tabs { display: none; }
   .scroller { display: block; columns: 3; column-gap: 14px; overflow: visible; margin: 0; padding: 0; }
@@ -299,7 +299,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       <p class="status"><i class="dot" id="dot"></i><b id="openTxt"></b><span id="hrs"> · <span data-t="hoursShort"></span></span></p>
     </div>
     <div class="art">
-      <div class="stage" id="stage"><div class="ring"></div>
+      <div class="stage" id="stage"><div class="ring"><svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true"><path class="halo" pathLength="100" d="M1,32 A149,31 0 1,1 299,32 A149,31 0 1,1 1,32"/><path class="core" pathLength="100" d="M1,32 A149,31 0 1,1 299,32 A149,31 0 1,1 1,32"/></svg></div>
         <img src="shisha-gold.png" alt="Amed Cafe shisha" width="204" height="408">
         <img src="shisha-copper.png" alt="" width="228" height="472">
         <img src="shisha-silver.png" alt="" width="236" height="471">
