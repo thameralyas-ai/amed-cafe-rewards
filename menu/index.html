@@ -60,6 +60,18 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
 .li .p small { font-size: 11px; color: var(--muted); margin-inline-start: 3px; }
 .li .sub { display: block; font-size: 13px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
+.badge { display: inline-block; font-family: var(--sans); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: #1C120D; background: var(--gold); padding: 1px 8px; border-radius: 99px; vertical-align: middle; margin-inline-start: 6px; }
+.rtl .badge { letter-spacing: 0; font-size: 12px; }
+.cats a.on .badge { background: #1C120D; color: var(--gold2); }
+.mc .bn { display: block; width: calc(100% + 36px); margin: -16px -18px 12px; aspect-ratio: 20 / 7; object-fit: cover; border-radius: 20px 20px 0 0; }
+.mc .desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin: 2px 0 4px; }
+/* "New" teaser at the top: links down to the new category. */
+.nw { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 10px; border: 1px solid #D4A37388; border-radius: 18px; background: radial-gradient(circle at 0 50%, #3A281E, #241812); text-decoration: none; }
+.nw img { width: 96px; height: 56px; object-fit: cover; border-radius: 12px; flex: none; }
+.nw b { display: block; font-weight: 500; color: var(--gold2); font-size: 15px; }
+.nw div > span { color: var(--muted); font-size: 13px; }
+.nw::after { content: "›"; margin-inline-start: auto; color: var(--gold2); font-size: 26px; padding: 0 6px; }
+.rtl .nw::after { content: "‹"; }
 .note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 14px; }
 
 .promo { margin-top: 26px; text-align: center; border: 1px solid #D4A37366; border-radius: 20px; padding: 20px 18px; background: radial-gradient(circle at 50% 0, #3A281E, #241812); }
@@ -89,6 +101,7 @@ footer a { color: var(--gold2); text-decoration: none; }
 </header>
 <nav><div class="cats" id="cats"></div></nav>
 <main class="wrap">
+  <div id="newTop"></div>
   <div id="list"></div>
   <p class="note" data-t="note"></p>
   <div class="promo">
@@ -103,13 +116,13 @@ footer a { color: var(--gold2); text-decoration: none; }
 (() => {
   const T = {
     en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 8:00 AM", iqd: "IQD", note: "Prices in IQD",
-      promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
+      newT: "New", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
       hours: "Every day · 8:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
     ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 8:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
-      promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
+      newT: "جديد", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
       hours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
     ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
-      promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
+      newT: "نوو", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
       hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
   };
   const $ = (id) => document.getElementById(id);
@@ -126,12 +139,21 @@ footer a { color: var(--gold2); text-decoration: none; }
 
   function render() {
     const cats = $("cats"), list = $("list");
-    cats.textContent = ""; list.textContent = "";
+    cats.textContent = ""; list.textContent = ""; $("newTop").textContent = "";
     if (!MENU) return;
+    for (const c of MENU.categories.filter((c) => c.new)) {
+      $("newTop").append(el("a", { class: "nw", href: "#c-" + c.id, onclick: (e) => { e.preventDefault(); go("c-" + c.id); } },
+        c.banner ? el("img", { src: "../" + c.banner, alt: "" }) : null,
+        el("div", {}, el("b", {}, el("span", { class: "badge", text: tr("newT") }), " ", pick(c.name)), el("span", { text: tr("newSee") }))));
+    }
     for (const c of MENU.categories) {
       const id = "c-" + c.id;
-      cats.append(el("a", { href: "#" + id, "data-id": id }, pick(c.name)));
-      const card = el("div", { class: "mc" }, el("h2", { text: pick(c.name) }));
+      const badge = () => c.new ? el("span", { class: "badge", text: tr("newT") }) : null;
+      cats.append(el("a", { href: "#" + id, "data-id": id }, pick(c.name), badge()));
+      const card = el("div", { class: "mc" });
+      if (c.banner) card.append(el("img", { class: "bn", src: "../" + c.banner, alt: "", loading: "lazy" }));
+      card.append(el("h2", {}, pick(c.name), badge()));
+      if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
       if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: "../" + c.photo, alt: "", loading: "lazy" })));
       for (const it of c.items) {
         const opts = it.options || [];
@@ -161,8 +183,9 @@ footer a { color: var(--gold2); text-decoration: none; }
   $("cats").addEventListener("click", (e) => {
     const a = e.target.closest("a"); if (!a) return;
     e.preventDefault();
-    const s = $(a.dataset.id); scrollTo({ top: s.getBoundingClientRect().top + scrollY - 56, behavior: "smooth" });
+    go(a.dataset.id);
   });
+  function go(id) { const s = $(id); scrollTo({ top: s.getBoundingClientRect().top + scrollY - 56, behavior: "smooth" }); }
 
   function setLang(l) {
     lang = T[l] ? l : "ku";

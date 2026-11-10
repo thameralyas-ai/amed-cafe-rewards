@@ -44,6 +44,15 @@ C=[
   (("Lemon","ليمون","لەیمون"),3500),
   (("Orange & lemon","برتقال وليمون","پرتەقال و لەیمون"),3500),
   (("Pomegranate","رمان","هنار"),3500)]),
+ # New product (Nov 2026): Asary fruit syrup by Hala.eco, from Thamir's flyer. 9 flavours, 3 ways to serve.
+ ("asary",("Asary fruit drinks","عصاري","عەساری"),None,[
+  (("With mineral water","مع مياه معدنية","دگەل ئاڤا سروشتی"),1500),
+  (("With sparkling water","مع مياه غازية","دگەل ئاڤا گازی"),2000),
+  (("With milk","مع الحليب","دگەل شیری"),2500)],
+  {"new":True,"banner":"media/new/asary-bottles.jpg",
+   "desc":{"en":"Natural fruit syrup: 60% fruit, 75% less fructose sugar. Flavours: peach, lemon & lime, cherry, blackcurrant, cola, grape, elderflower & mint, mango, raspberry.",
+           "ar":"شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. النكهات: خوخ، ليمون و لايم، كرز، كشمش أسود، كولا، عنب، زهرة البيلسان والنعناع، مانجو، توت العليق.",
+           "ku":"شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تام: خۆخ، لیمون و لایم، گێلاس، کشمشا رەش، کۆلا، تری، گۆڵ بەیبوون و نعناع، مانگۆ، تووا سۆر."}}),
  ("mojito",("Mojito","موهيتو","مۆهیتۆ"),None,[
   (("Classic mojito","موهيتو كلاسيك","مۆهیتۆ کلاسیک"),2000),
   (("Strawberry mojito","موهيتو فراولة","مۆهیتۆیا فراولایێ"),2000),
@@ -102,9 +111,10 @@ C=[
 ]
 L=("en","ar","ku")
 out={"note":"Amed Cafe menu (drinks and shisha; no food), prices in IQD. Source: menu.instalacarte.com (English section's prices and availability), Arabic and Badini names from the site's Arabic and Kurdish sections.","sample":False,"categories":[]}
-for cid,cn,photo,items in C:
+for cid,cn,photo,items,*extra in C:
     cat={"id":cid,"name":dict(zip(L,cn))}
     if photo: cat["photo"]=photo
+    if extra: cat.update(extra[0])  # optional: new (badge), banner (wide photo), desc (en/ar/ku)
     cat["items"]=[]
     for it in items:
         names,price=it[0],it[1]; o={"name":dict(zip(L,names)),"price":price}

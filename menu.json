@@ -475,6 +475,47 @@
    ]
   },
   {
+   "id": "asary",
+   "name": {
+    "en": "Asary fruit drinks",
+    "ar": "عصاري",
+    "ku": "عەساری"
+   },
+   "new": true,
+   "banner": "media/new/asary-bottles.jpg",
+   "desc": {
+    "en": "Natural fruit syrup: 60% fruit, 75% less fructose sugar. Flavours: peach, lemon & lime, cherry, blackcurrant, cola, grape, elderflower & mint, mango, raspberry.",
+    "ar": "شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. النكهات: خوخ، ليمون و لايم، كرز، كشمش أسود، كولا، عنب، زهرة البيلسان والنعناع، مانجو، توت العليق.",
+    "ku": "شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تام: خۆخ، لیمون و لایم، گێلاس، کشمشا رەش، کۆلا، تری، گۆڵ بەیبوون و نعناع، مانگۆ، تووا سۆر."
+   },
+   "items": [
+    {
+     "name": {
+      "en": "With mineral water",
+      "ar": "مع مياه معدنية",
+      "ku": "دگەل ئاڤا سروشتی"
+     },
+     "price": 1500
+    },
+    {
+     "name": {
+      "en": "With sparkling water",
+      "ar": "مع مياه غازية",
+      "ku": "دگەل ئاڤا گازی"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
+      "en": "With milk",
+      "ar": "مع الحليب",
+      "ku": "دگەل شیری"
+     },
+     "price": 2500
+    }
+   ]
+  },
+  {
    "id": "mojito",
    "name": {
     "en": "Mojito",

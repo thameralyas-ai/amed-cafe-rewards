@@ -164,8 +164,26 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .lb { position: fixed; inset: 0; z-index: 50; background: #0B0705F2; display: none; align-items: center; justify-content: center; padding: calc(56px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom)); }
 .lb.on { display: flex; }
 .lb img, .lb video { max-width: 100%; max-height: 100%; border-radius: 12px; display: block; }
+.lb .lbs { max-height: 100%; overflow-y: auto; display: grid; gap: 12px; max-width: 560px; -webkit-overflow-scrolling: touch; }
+.lb .lbs img { max-height: none; width: 100%; }
 .lb .x { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #D4A37399; background: #241812; color: var(--gold2); font-size: 24px; line-height: 1; cursor: pointer; }
 .rtl .lb .x { right: auto; left: 14px; }
+
+/* New products: menu categories marked "new" in menu.json get a feature card above the menu. */
+.newp { display: grid; gap: 14px; }
+.np { background: linear-gradient(180deg, #2E1F17, #241812); border: 1px solid #D4A37366; border-radius: 22px; overflow: hidden; }
+.np .bn { display: block; width: 100%; aspect-ratio: 20 / 7; object-fit: cover; background: #F3E9DC; }
+.np .bd { padding: 16px 20px 20px; }
+.np h3 { font-size: 30px; line-height: 1.15; color: var(--gold2); } .rtl .np h3 { font-size: 25px; }
+.np p { color: var(--muted); font-size: 14.5px; margin: 6px 0 4px; }
+.np .pr { color: var(--ink); font-size: 15px; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+.np .acts { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.np .acts .btn { flex: 1 1 140px; padding: 12px; }
+.badge { display: inline-block; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: #1C120D; background: var(--gold); padding: 2px 8px; border-radius: 99px; vertical-align: middle; margin-inline-start: 6px; }
+.rtl .badge { letter-spacing: 0; font-size: 12px; }
+.mc .bn { display: block; width: calc(100% + 40px); margin: -20px -20px 12px; aspect-ratio: 20 / 7; object-fit: cover; border-radius: 22px 22px 0 0; }
+.mc .desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 4px; }
+.mc { scroll-margin-top: 20px; }
 
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
@@ -248,6 +266,11 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 </div>
 
 <main class="wrap">
+  <section id="new" hidden>
+    <div class="head"><span class="kicker" data-t="newK"></span><h2 data-t="newT"></h2><i class="orn"></i></div>
+    <div class="newp" id="newp"></div>
+  </section>
+
   <section id="menu">
     <div class="head"><span class="kicker" data-t="menuK"></span><h2 data-t="menuT"></h2><i class="orn"></i></div>
     <div class="tabs" id="tabs" role="tablist"></div>
@@ -315,7 +338,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     en: {
       kicker: "Amed Cafe · Duhok", h1a: "Your evening of", words: ["coffee", "shisha", "comfort"], shishas: ["Gold", "Copper", "Silver"], sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
       myCard: "My loyalty card", exploreMenu: "Explore the menu", open: "Open now", closed: "Closed · opens at 8:00 AM", hoursShort: "Every day · 8:00 AM – 1:00 AM",
-      menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
+      newK: "Just arrived", newT: "Our new products", newBadge: "New", seeMenu: "See in the menu", seeFlyer: "See the flyer", menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
       rewK: "Amed rewards", rewT: "Buy {n}, the {nth} is free", rewP: "Separate cards for drinks and shisha — just give your phone number at the counter. Free rewards are valid for {d} days.",
       progRow: "Buy {n}, get a {reward}",
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
@@ -329,7 +352,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
       myCard: "بطاقة الولاء الخاصة بي", exploreMenu: "تصفّح القائمة", open: "مفتوح الآن", closed: "مغلق · نفتح الساعة 8:00 صباحاً", hoursShort: "كل يوم · 8:00 صباحاً – 1:00 ليلاً",
-      menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
+      newK: "وصل حديثاً", newT: "منتجاتنا الجديدة", newBadge: "جديد", seeMenu: "اعرضه في القائمة", seeFlyer: "شاهد الإعلان", menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
       rewK: "مكافآت Amed", rewT: "اشترِ {n} واحصل على ال{nth} مجاناً", rewP: "بطاقتان منفصلتان للمشروبات والأركيلة — فقط أعطِ رقم هاتفك عند الكاونتر. المكافآت المجانية صالحة لمدة {d} يوماً.",
       progRow: "اشترِ {n} واحصل على {reward}",
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
@@ -343,7 +366,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
       myCard: "کارتا من", exploreMenu: "مێنیوێ ببینە", open: "نوکە ڤەکریە", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", hoursShort: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ",
-      menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
+      newK: "تازە گەهشتیە", newT: "بەرهەمێن مە یێن نوو", newBadge: "نوو", seeMenu: "د مێنیوێ دا ببینە", seeFlyer: "پۆستەرێ ببینە", menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
       rewK: "خەلاتێن Amed", rewT: "{n} بکڕە، یا {nth} بێ بەرامبەرە", rewP: "کارتێن جودا بۆ ڤەخوارن و نێرگەلێ — تنێ ژمارا مۆبایلا خۆ ل کاونتەری بدە. خەلاتێن بێ بەرامبەر بۆ ماوێ {d} رۆژان دمینن.",
       progRow: "{n} بکڕە، {reward} وەربگرە",
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
@@ -416,10 +439,12 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       tabs.append(el("button", { type: "button", role: "tab", "aria-selected": String(i === activeCat), onclick: () => {
         activeCat = i; fitMenu(); for (const b of tabs.children) b.setAttribute("aria-selected", String(b === tabs.children[i]));
         centerIn(sc, sc.children[i]);
-      } }, pick(c.name)));
-      const card = el("div", { class: "mc" });
+      } }, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
+      const card = el("div", { class: "mc", id: "mc-" + c.id });
+      if (c.banner) card.append(el("img", { class: "bn", src: c.banner, alt: "", loading: "lazy" }));
       if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: c.photo, alt: "", loading: "lazy" })));
-      card.append(el("h3", { text: pick(c.name) }));
+      card.append(el("h3", {}, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
+      if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
       for (const it of c.items) {
         const opts = it.options || [];
         const same = opts.every((o) => o.price === opts[0].price);
@@ -430,6 +455,29 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     });
     $("menuNote").textContent = MENU.sample ? tr("sampleNote") : tr("menuNote");
     activeCat = Math.min(activeCat, MENU.categories.length - 1); fitMenu();
+  }
+
+  // "Our new products": one feature card per menu category marked new, linking to it in the menu.
+  const FLYERS = { asary: ["media/new/asary-flyer-1.jpg", "media/new/asary-flyer-2.jpg"] };
+  function renderNew() {
+    const box = $("newp"); box.textContent = "";
+    const cats = MENU ? MENU.categories.filter((c) => c.new) : [];
+    $("new").hidden = !cats.length;
+    for (const c of cats) {
+      const ps = c.items.map((i) => i.price), lo = Math.min(...ps), hi = Math.max(...ps);
+      const acts = el("div", { class: "acts" }, el("a", { class: "btn pri", href: "#menu", text: tr("seeMenu"), onclick: (e) => { e.preventDefault(); goCat(c.id); } }));
+      if (FLYERS[c.id]) acts.append(el("a", { class: "btn sec", href: FLYERS[c.id][0], text: tr("seeFlyer"), onclick: (e) => { e.preventDefault(); openLb({ src: FLYERS[c.id][0], more: FLYERS[c.id], alt: "newT" }); } }));
+      box.append(el("div", { class: "np" },
+        c.banner ? el("img", { class: "bn", src: c.banner, alt: pick(c.name), loading: "lazy" }) : null,
+        el("div", { class: "bd" }, el("h3", { text: pick(c.name) }), c.desc ? el("p", { text: pick(c.desc) }) : null,
+          el("span", { class: "pr", text: num(lo) + (hi > lo ? " – " + num(hi) : "") + " " + tr("iqd") }), acts)));
+    }
+  }
+  function goCat(id) {
+    const i = MENU.categories.findIndex((c) => c.id === id);
+    const tab = $("tabs").children[i];
+    if (tab && getComputedStyle($("tabs")).display !== "none") { tab.click(); $("menu").scrollIntoView({ behavior: "smooth" }); }
+    else { const card = $("mc-" + id); if (card) card.scrollIntoView({ behavior: "smooth", block: "start" }); }
   }
 
   function renderRewards() {
@@ -512,7 +560,9 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     }
     lb.textContent = "";
     lb.append(el("button", { type: "button", class: "x", "aria-label": tr("close"), onclick: closeLb }, "×"),
-      t.video ? el("video", { src: t.video, poster: t.poster, controls: "", autoplay: "", playsinline: "" }) : el("img", { src: t.src, alt: tr(t.alt) }));
+      t.video ? el("video", { src: t.video, poster: t.poster, controls: "", autoplay: "", playsinline: "" })
+        : t.more ? el("div", { class: "lbs" }, ...t.more.map((src) => el("img", { src, alt: tr(t.alt) })))
+        : el("img", { src: t.src, alt: tr(t.alt) }));
     lb.classList.add("on");
     document.body.style.overflow = "hidden";
     lb.querySelector(".x").focus();
@@ -597,7 +647,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     if ($("sname").textContent) $("sname").textContent = T[lang].shishas[frontShisha];
     $("cardBtn").href = "card/#" + lang;
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
-    renderStatus(); renderMenu(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
+    renderStatus(); renderMenu(); renderNew(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
   }
 
   // Scroll reveal for the sections below the hero
@@ -628,7 +678,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   setInterval(renderStatus, 60000);
   startStage();
 
-  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); } }).catch(() => {});
+  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>
