@@ -656,64 +656,6 @@
    ]
   },
   {
-   "id": "smoothie",
-   "name": {
-    "en": "Smoothie",
-    "ar": "سموذي",
-    "ku": "سمووزی"
-   },
-   "items": [
-    {
-     "name": {
-      "en": "Strawberry",
-      "ar": "فراولة",
-      "ku": "فراولا"
-     },
-     "price": 2500
-    },
-    {
-     "name": {
-      "en": "Blueberry",
-      "ar": "بلوبيري",
-      "ku": "بلوبێری"
-     },
-     "price": 2500
-    },
-    {
-     "name": {
-      "en": "Mango",
-      "ar": "مانجو",
-      "ku": "مانگۆ"
-     },
-     "price": 2500
-    },
-    {
-     "name": {
-      "en": "Chocolate",
-      "ar": "شوكولا",
-      "ku": "شکولاتا"
-     },
-     "price": 2500
-    },
-    {
-     "name": {
-      "en": "Caramel",
-      "ar": "كراميل",
-      "ku": "کەرامێل"
-     },
-     "price": 2500
-    },
-    {
-     "name": {
-      "en": "Pistachio",
-      "ar": "فستق",
-      "ku": "فستق"
-     },
-     "price": 3000
-    }
-   ]
-  },
-  {
    "id": "milkshake",
    "name": {
     "en": "Milkshake",
