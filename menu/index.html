@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amed Cafe · Menu</title>
+<meta name="description" content="The Amed Cafe menu: coffee, drinks and shisha, with prices in IQD.">
+<meta property="og:title" content="Amed Cafe · Menu">
+<meta property="og:description" content="Coffee, drinks and shisha, with prices in IQD.">
+<meta property="og:image" content="https://amedcaferest.com/card/icon-512.png">
+<meta property="og:url" content="https://amedcaferest.com/menu/">
+<link rel="icon" href="../card/icon-192.png">
+<link rel="apple-touch-icon" href="../card/icon-180.png">
+<meta name="theme-color" content="#1C120D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Noto+Naskh+Arabic:wght@500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap">
+<style>
+/* QR menu page: the table QR codes open this. Same Espresso & Gold look as the website. */
+:root {
+  --bg: #1C120D; --surface: #2A1C15; --ink: #F3E9DC; --muted: #C4B09C; --gold: #D4A373; --gold2: #E3B27D; --line: #3F2D23;
+  --serif: "Cormorant Garamond", Georgia, serif; --sans: Jost, system-ui, sans-serif;
+  color-scheme: dark;
+}
+.rtl { --serif: "Noto Naskh Arabic", "Cormorant Garamond", serif; --sans: "Noto Sans Arabic", Jost, system-ui, sans-serif; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 300 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+h1, h2 { font-family: var(--serif); font-weight: 500; }
+a { color: inherit; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+
+header { padding: calc(14px + env(safe-area-inset-top)) 0 6px; }
+.top { display: flex; align-items: center; justify-content: space-between; }
+.logo { display: block; width: 92px; height: 42px; background: url(../logo-gold.png) center/contain no-repeat; }
+.langs { display: flex; gap: 6px; }
+.langs button { border: 0; background: none; padding: 4px; border-radius: 6px; opacity: .5; cursor: pointer; }
+.langs button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 1.5px var(--gold); }
+.flag { width: 28px; height: 19px; display: block; border-radius: 3px; }
+h1 { text-align: center; font-size: 40px; line-height: 1.1; margin-top: 14px; }
+.rtl h1 { font-size: 32px; }
+.status { text-align: center; color: var(--muted); font-size: 14px; margin-top: 4px; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7BC67E; margin-inline-end: 6px; vertical-align: 1px; box-shadow: 0 0 8px #7BC67E; }
+.dot.off { background: #C97B63; box-shadow: none; }
+
+/* Category bar: sticks to the top, scrolls sideways, highlights the section you are reading. */
+nav { position: sticky; top: 0; z-index: 5; background: #1C120DF2; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); margin-top: 14px; }
+.cats { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 10px 16px; max-width: 680px; margin: 0 auto; }
+.cats::-webkit-scrollbar { display: none; }
+.cats a { flex: none; padding: 7px 14px; border-radius: 99px; border: 1px solid #D4A37355; color: var(--muted); text-decoration: none; font-size: 14px; white-space: nowrap; }
+.cats a.on { background: var(--gold); border-color: var(--gold); color: #1C120D; font-weight: 500; }
+
+section { scroll-margin-top: 64px; padding-top: 22px; }
+.mc { background: linear-gradient(180deg, #2E1F17, #241812); border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px 8px; }
+.mc h2 { font-size: 28px; color: var(--gold2); line-height: 1.2; }
+.rtl .mc h2 { font-size: 23px; }
+.shot { display: grid; place-items: center; margin: 4px 0; }
+.shot img { height: 120px; filter: drop-shadow(0 10px 12px #000a); }
+.li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid #3F2D2399; font-size: 16px; }
+.li:last-child { border: 0; }
+.li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
+.li .p small { font-size: 11px; color: var(--muted); margin-inline-start: 3px; }
+.li .sub { display: block; font-size: 13px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
+.note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 14px; }
+
+.promo { margin-top: 26px; text-align: center; border: 1px solid #D4A37366; border-radius: 20px; padding: 20px 18px; background: radial-gradient(circle at 50% 0, #3A281E, #241812); }
+.promo b { display: block; font-family: var(--serif); font-weight: 500; font-size: 26px; color: var(--gold2); line-height: 1.25; }
+.rtl .promo b { font-size: 21px; }
+.promo p { color: var(--muted); font-size: 14px; margin: 6px 0 14px; }
+.btn { display: inline-block; padding: 11px 20px; border-radius: 99px; text-decoration: none; font-size: 14px; margin: 4px; }
+.btn.pri { background: var(--gold); color: #1C120D; font-weight: 500; }
+.btn.sec { border: 1px solid #D4A37399; color: var(--gold2); }
+footer { text-align: center; padding: 28px 0 calc(30px + env(safe-area-inset-bottom)); color: var(--muted); font-size: 13px; }
+footer a { color: var(--gold2); text-decoration: none; }
+.err { text-align: center; color: var(--muted); padding: 40px 0; }
+</style>
+</head>
+<body class="rtl">
+<header class="wrap">
+  <div class="top">
+    <a class="logo" href="../?home" aria-label="Amed Cafe"></a>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg></button>
+      <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg></button>
+      <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
+    </div>
+  </div>
+  <h1 data-t="title"></h1>
+  <p class="status"><span class="dot" id="dot"></span><span id="openTxt"></span></p>
+</header>
+<nav><div class="cats" id="cats"></div></nav>
+<main class="wrap">
+  <div id="list"></div>
+  <p class="note" data-t="note"></p>
+  <div class="promo">
+    <b id="promoT"></b>
+    <p data-t="promoP"></p>
+    <a class="btn pri" id="cardBtn" href="../card/" data-t="myCard"></a>
+    <a class="btn sec" href="https://g.page/r/Cfh40Ersi0aREAE/review" target="_blank" rel="noopener" data-t="review"></a>
+  </div>
+</main>
+<footer><a href="../?home" class="latin">amedcaferest.com</a> · <span data-t="hours"></span></footer>
+<script>
+(() => {
+  const T = {
+    en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 8:00 AM", iqd: "IQD", note: "Prices in IQD",
+      promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
+      hours: "Every day · 8:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
+    ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 8:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
+      promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
+      hours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
+    ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
+      promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
+      hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
+  };
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
+  const num = (n) => Number(n).toLocaleString("en-US");
+  let lang = "ku", MENU = null;
+  const tr = (k) => T[lang][k];
+  const pick = (o) => (o && (o[lang] || o.en)) || "";
+
+  function isOpen() {
+    const h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Baghdad", hour: "2-digit", hourCycle: "h23" }).format(new Date()));
+    return h >= 8 || h < 1;
+  }
+
+  function render() {
+    const cats = $("cats"), list = $("list");
+    cats.textContent = ""; list.textContent = "";
+    if (!MENU) return;
+    for (const c of MENU.categories) {
+      const id = "c-" + c.id;
+      cats.append(el("a", { href: "#" + id, "data-id": id }, pick(c.name)));
+      const card = el("div", { class: "mc" }, el("h2", { text: pick(c.name) }));
+      if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: "../" + c.photo, alt: "", loading: "lazy" })));
+      for (const it of c.items) {
+        const opts = it.options || [];
+        const same = opts.every((o) => o.price === opts[0].price);
+        const sub = [opts.length ? opts.map((o) => pick(o.name) + (same ? "" : " " + num(o.price))).join(" · ") : "", pick(it.note)].filter(Boolean).join(" — ");
+        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), sub ? el("small", { class: "sub", text: sub }) : null),
+          el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
+      }
+      list.append(el("section", { id }, card));
+    }
+    spy();
+  }
+
+  // Highlight the category being read and keep its button in view.
+  let cur = "";
+  function spy() {
+    const secs = document.querySelectorAll("#list section");
+    let id = secs[0] && secs[0].id;
+    for (const s of secs) if (s.getBoundingClientRect().top < 90) id = s.id;
+    if (id === cur) return; cur = id;
+    for (const a of $("cats").children) {
+      const on = a.dataset.id === id; a.classList.toggle("on", on);
+      if (on) { const r = $("cats").getBoundingClientRect(), b = a.getBoundingClientRect(); $("cats").scrollBy({ left: (b.left + b.width / 2) - (r.left + r.width / 2), behavior: "smooth" }); }
+    }
+  }
+  addEventListener("scroll", spy, { passive: true });
+  $("cats").addEventListener("click", (e) => {
+    const a = e.target.closest("a"); if (!a) return;
+    e.preventDefault();
+    const s = $(a.dataset.id); scrollTo({ top: s.getBoundingClientRect().top + scrollY - 56, behavior: "smooth" });
+  });
+
+  function setLang(l) {
+    lang = T[l] ? l : "ku";
+    document.documentElement.lang = lang === "ku" ? "ckb" : lang;
+    document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
+    document.body.classList.toggle("rtl", lang !== "en");
+    for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+    for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
+    $("promoT").textContent = tr("promoT");
+    const o = isOpen(); $("dot").classList.toggle("off", !o); $("openTxt").textContent = o ? tr("open") : tr("closed");
+    $("cardBtn").href = "../card/#" + lang;
+    try { localStorage.setItem("amed-lang", lang); } catch (_) {}
+    cur = ""; render();
+    if (!MENU && $("list").dataset.err) $("list").append(el("p", { class: "err", text: tr("err") }));
+  }
+  for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
+
+  let start = (location.hash || "").replace("#", "");
+  if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
+  if (!T[start]) { const nl = (navigator.language || "").toLowerCase(); start = nl.startsWith("ar") ? "ar" : nl.startsWith("en") ? "en" : "ku"; }
+  setLang(start);
+  fetch("../menu.json", { cache: "no-cache" }).then((r) => r.json()).then((m) => { MENU = m; render(); })
+    .catch(() => { $("list").dataset.err = "1"; $("list").append(el("p", { class: "err", text: tr("err") })); });
+})();
+</script>
+</body>
+</html>
