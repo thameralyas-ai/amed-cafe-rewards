@@ -703,11 +703,12 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
   // Stage: the three shishas circle slowly; the one in front is large and bright. Pauses when off screen.
   let frontShisha = 0, flavourIdx = -1;
-  // Under the stage: a shisha flavour from the menu each time a new shisha turns to the front
-  // (not heads, tobacco or the Fresh/Natural options). Falls back to the shisha names until the menu loads.
+  // Under the stage: the flavours these shishas are served with (Thamir: only English and Royal),
+  // taken from the menu so the names follow the language. Alternates each time a new shisha turns to the front.
+  const STAGE_FLAVOURS = ["English mix", "Royal mix"];
   function stageLabel() {
     const cat = MENU && MENU.categories.find((c) => c.id === "shisha");
-    const fl = cat ? cat.items.filter((it) => !/head|tobacco|fresh|natural/i.test(it.name.en)) : [];
+    const fl = cat ? STAGE_FLAVOURS.map((n) => cat.items.find((it) => it.name.en === n)).filter(Boolean) : [];
     if (!fl.length) return T[lang].shishas[frontShisha];
     return pick(fl[((flavourIdx % fl.length) + fl.length) % fl.length].name);
   }
