@@ -55,6 +55,15 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .rtl .mc h2 { font-size: 23px; }
 .shot { display: grid; place-items: center; margin: 4px 0; }
 .shot img { height: 120px; filter: drop-shadow(0 10px 12px #000a); }
+/* Shisha smoke (Thamir chose "Soft puffs"): puffs rise from the bowl at the top of the shisha photo. */
+.smoke-wrap { position: relative; display: inline-block; }
+.smoke-wrap { margin-top: 64px; }
+.smoke-wrap img { display: block; }
+.smoke { position: absolute; left: 35%; top: 2px; width: 0; height: 0; pointer-events: none; }
+.smoke i { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, #fffd 0%, #fff8 40%, #fff0 72%); filter: blur(2px); opacity: 0; animation: puff 4.2s linear infinite; }
+.smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
+@keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
 .li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid #3F2D2399; font-size: 16px; }
 .li:last-child { border: 0; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
@@ -131,6 +140,9 @@ footer a { color: var(--gold2); text-decoration: none; }
   };
   const $ = (id) => document.getElementById(id);
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
+  // Shisha photo gets rising smoke (see .smoke in the CSS).
+  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" });
+    return el("div", { class: "shot" }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, el("span", { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"))) : img); };
   const num = (n) => Number(n).toLocaleString("en-US");
   let lang = "ku", MENU = null;
   const tr = (k) => T[lang][k];
@@ -160,7 +172,7 @@ footer a { color: var(--gold2); text-decoration: none; }
       card.append(el("h2", {}, pick(c.name), badge()));
       if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
       if (c.flavours) card.append(flavours(c, "../"));
-      if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: "../" + c.photo, alt: "", loading: "lazy" })));
+      if (c.photo) card.append(shot(c, "../" + c.photo));
       for (const it of c.items) {
         const opts = it.options || [];
         const same = opts.every((o) => o.price === opts[0].price);

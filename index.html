@@ -128,8 +128,17 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .mc { flex: 0 0 82%; scroll-snap-align: center; background: linear-gradient(180deg, #2E1F17, #241812); border: 1px solid var(--line); border-radius: 22px; padding: 20px; }
 .mc h3 { font-size: 28px; color: var(--gold2); margin-bottom: 6px; }
 .rtl .mc h3 { font-size: 24px; }
-.mc .shot { height: 120px; display: grid; place-items: center; margin-bottom: 4px; }
+.mc .shot { min-height: 120px; display: grid; place-items: center; margin-bottom: 4px; }
 .mc .shot img { height: 120px; filter: drop-shadow(0 10px 12px #000a); }
+/* Shisha smoke (Thamir chose "Soft puffs"): puffs rise from the bowl at the top of the shisha photo. */
+.smoke-wrap { position: relative; display: inline-block; }
+.smoke-wrap { margin-top: 64px; }
+.smoke-wrap img { display: block; }
+.smoke { position: absolute; left: 35%; top: 2px; width: 0; height: 0; pointer-events: none; }
+.smoke i { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, #fffd 0%, #fff8 40%, #fff0 72%); filter: blur(2px); opacity: 0; animation: puff 4.2s linear infinite; }
+.smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
+@keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
 .li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #3F2D2399; font-size: 15px; }
 .li:last-child { border: 0; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
@@ -445,6 +454,9 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   const $ = (id) => document.getElementById(id);
   const tr = (k, v = {}) => String(T[lang][k] ?? T.en[k] ?? "").replace(/\{(\w+)\}/g, (m, x) => (x in v ? v[x] : m));
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
+  // Shisha photo gets rising smoke (see .smoke in the CSS).
+  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" });
+    return el("div", { class: "shot" }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, el("span", { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"))) : img); };
   const pick = (o) => (o && (o[lang] || o.en)) || "";
   const pname = (p) => (lang !== "en" && p["name_" + lang]) || p.name;
   const preward = (p) => (lang !== "en" && p["reward_" + lang]) || p.reward;
@@ -495,7 +507,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       } }, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
       const card = el("div", { class: "mc", id: "mc-" + c.id });
       if (c.banner) card.append(el("img", { class: "bn", src: c.banner, alt: "", loading: "lazy" }));
-      if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: c.photo, alt: "", loading: "lazy" })));
+      if (c.photo) card.append(shot(c, c.photo));
       card.append(el("h3", {}, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
       if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
       if (c.flavours) card.append(flavours(c));
