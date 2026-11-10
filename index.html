@@ -199,6 +199,33 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .mc .desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 4px; }
 .mc { scroll-margin-top: 20px; }
 
+/* ☰ navigation (Thamir chose option 3): a round button that stays at the top corner while scrolling,
+   opening a full-screen list. "Menu" opens the QR menu page (menu/). */
+.navbtn { position: fixed; z-index: 30; top: calc(12px + env(safe-area-inset-top)); right: max(16px, calc((100vw - 1080px) / 2 + 16px));
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid #D4A37399; background: #1C120DCC; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  display: grid; place-items: center; cursor: pointer; padding: 0; color: var(--gold2); }
+.rtl .navbtn { right: auto; left: max(16px, calc((100vw - 1080px) / 2 + 16px)); }
+.navbtn i, .navbtn i::before, .navbtn i::after { display: block; width: 18px; height: 1.5px; background: currentColor; border-radius: 2px; position: relative; transition: transform .3s, background .3s; }
+.navbtn i::before, .navbtn i::after { content: ""; position: absolute; left: 0; }
+.navbtn i::before { top: -6px; } .navbtn i::after { top: 6px; }
+.nav-open .navbtn i { background: transparent; }
+.nav-open .navbtn i::before { transform: translateY(6px) rotate(45deg); } .nav-open .navbtn i::after { transform: translateY(-6px) rotate(-45deg); }
+header .langs { margin-inline-end: 54px; }
+.navp { text-align: start; position: fixed; inset: 0; z-index: 25; background: radial-gradient(120% 70% at 50% 0%, #2A1B13, #1C120D 70%); overflow-y: auto;
+  padding: calc(80px + env(safe-area-inset-top)) 28px calc(30px + env(safe-area-inset-bottom)); opacity: 0; visibility: hidden; transition: opacity .35s, visibility 0s .35s; }
+.nav-open .navp { opacity: 1; visibility: visible; transition: opacity .35s; }
+.navp ul { list-style: none; padding: 0; max-width: 520px; margin: 0 auto; }
+.navp li { border-bottom: 1px solid var(--line); opacity: 0; transform: translateY(14px); transition: opacity .45s, transform .45s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * 45ms + 80ms); }
+.nav-open .navp li { opacity: 1; transform: none; }
+.navp a { display: flex; align-items: baseline; gap: 14px; padding: 15px 0; text-decoration: none; color: var(--ink); }
+.navp a b { font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.2; } .rtl .navp a b { font-size: 25px; }
+.navp a small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.navp a .n { font-family: "Cormorant Garamond", serif; color: var(--gold); font-size: 14px; min-width: 22px; }
+.navp li.hl b { color: var(--gold2); }
+.navp .card { border: 0; margin-top: 26px; } .navp .card a { justify-content: center; }
+.navp .hrs { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
+@media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
+
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -259,6 +286,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
     </div>
   </div></header>
+  <button type="button" class="navbtn" id="navBtn" aria-expanded="false" aria-controls="navP"><i></i></button>
+  <nav class="navp" id="navP" data-lenis-prevent aria-hidden="true"><ul id="navList"></ul></nav>
   <div class="wrap hg">
     <div class="t1 intro">
       <div class="kicker" data-t="kicker"></div>
@@ -357,7 +386,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     en: {
       kicker: "Amed Cafe · Duhok", h1a: "Your evening of", words: ["coffee", "shisha", "comfort"], shishas: ["Gold", "Copper", "Silver"], sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
       myCard: "My loyalty card", exploreMenu: "Explore the menu", open: "Open now", closed: "Closed · opens at 8:00 AM", hoursShort: "Every day · 8:00 AM – 1:00 AM",
-      newK: "Just arrived", newT: "Our new products", newBadge: "New", seeMenu: "See in the menu", seeFlyer: "See the flyer", menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
+      navOpen: "Open navigation", navClose: "Close navigation", navMenuSub: "Drinks & shisha, with prices", navCardSub: "Your stamps and rewards", newK: "Just arrived", newT: "Our new products", newBadge: "New", seeMenu: "See in the menu", seeFlyer: "See the flyer", menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
       rewK: "Amed rewards", rewT: "Buy {n}, the {nth} is free", rewP: "Separate cards for drinks and shisha — just give your phone number at the counter. Free rewards are valid for {d} days.",
       progRow: "Buy {n}, get a {reward}",
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
@@ -371,7 +400,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
       myCard: "بطاقة الولاء الخاصة بي", exploreMenu: "تصفّح القائمة", open: "مفتوح الآن", closed: "مغلق · نفتح الساعة 8:00 صباحاً", hoursShort: "كل يوم · 8:00 صباحاً – 1:00 ليلاً",
-      newK: "وصل حديثاً", newT: "منتجاتنا الجديدة", newBadge: "جديد", seeMenu: "اعرضه في القائمة", seeFlyer: "شاهد الإعلان", menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
+      navOpen: "فتح القائمة الرئيسية", navClose: "إغلاق القائمة الرئيسية", navMenuSub: "المشروبات والأركيلة مع الأسعار", navCardSub: "أختامك ومكافآتك", newK: "وصل حديثاً", newT: "منتجاتنا الجديدة", newBadge: "جديد", seeMenu: "اعرضه في القائمة", seeFlyer: "شاهد الإعلان", menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
       rewK: "مكافآت Amed", rewT: "اشترِ {n} واحصل على ال{nth} مجاناً", rewP: "بطاقتان منفصلتان للمشروبات والأركيلة — فقط أعطِ رقم هاتفك عند الكاونتر. المكافآت المجانية صالحة لمدة {d} يوماً.",
       progRow: "اشترِ {n} واحصل على {reward}",
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
@@ -385,7 +414,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
       myCard: "کارتا من", exploreMenu: "مێنیوێ ببینە", open: "نوکە ڤەکریە", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", hoursShort: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ",
-      newK: "تازە گەهشتیە", newT: "بەرهەمێن مە یێن نوو", newBadge: "نوو", seeMenu: "د مێنیوێ دا ببینە", seeFlyer: "پۆستەرێ ببینە", menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
+      navOpen: "ڤەکرنا لیستێ", navClose: "گرتنا لیستێ", navMenuSub: "ڤەخوارن و نێرگەلە، دگەل بهایان", navCardSub: "مۆر و خەلاتێن تە", newK: "تازە گەهشتیە", newT: "بەرهەمێن مە یێن نوو", newBadge: "نوو", seeMenu: "د مێنیوێ دا ببینە", seeFlyer: "پۆستەرێ ببینە", menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
       rewK: "خەلاتێن Amed", rewT: "{n} بکڕە، یا {nth} بێ بەرامبەرە", rewP: "کارتێن جودا بۆ ڤەخوارن و نێرگەلێ — تنێ ژمارا مۆبایلا خۆ ل کاونتەری بدە. خەلاتێن بێ بەرامبەر بۆ ماوێ {d} رۆژان دمینن.",
       progRow: "{n} بکڕە، {reward} وەربگرە",
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
@@ -499,6 +528,42 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     const tab = $("tabs").children[i];
     if (tab && getComputedStyle($("tabs")).display !== "none") { tab.click(); $("menu").scrollIntoView({ behavior: "smooth" }); }
     else { const card = $("mc-" + id); if (card) card.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  }
+
+  // ☰ navigation panel
+  function renderNav() {
+    const ul = $("navList"); ul.textContent = "";
+    const items = [
+      { href: "menu/#" + lang, t: tr("menuK"), sub: tr("navMenuSub"), hl: true },
+      $("new").hidden ? null : { id: "new", t: tr("newT") },
+      { id: "rewards", t: tr("rewK") },
+      { id: "events", t: tr("evT") },
+      { id: "gallery", t: tr("galT") },
+      { id: "visit", t: tr("visT") },
+    ].filter(Boolean);
+    items.forEach((it, i) => {
+      const a = el("a", { href: it.href || "#" + it.id }, el("span", { class: "n", text: String(i + 1).padStart(2, "0") }), el("span", {}, el("b", { text: it.t }), it.sub ? el("small", { text: it.sub }) : null));
+      if (it.id) a.addEventListener("click", (e) => { e.preventDefault(); navTo(it.id); });
+      const li = el("li", { class: it.hl ? "hl" : "" }, a); li.style.setProperty("--i", i); ul.append(li);
+    });
+    const card = el("li", { class: "card" }, el("a", { class: "btn pri", href: "card/#" + lang }, tr("myCard")));
+    card.style.setProperty("--i", items.length); ul.append(card);
+    const hrs = el("li", { class: "hrs card", text: tr("everyDayHours") }); hrs.style.setProperty("--i", items.length + 1); ul.append(hrs);
+    $("navBtn").setAttribute("aria-label", tr(document.body.classList.contains("nav-open") ? "navClose" : "navOpen"));
+  }
+  function setNav(open) {
+    document.body.classList.toggle("nav-open", open);
+    $("navBtn").setAttribute("aria-expanded", String(open));
+    $("navBtn").setAttribute("aria-label", tr(open ? "navClose" : "navOpen"));
+    $("navP").setAttribute("aria-hidden", String(!open));
+    document.documentElement.style.overflow = open ? "hidden" : "";
+    if (window.AmedMotion) open ? AmedMotion.stop() : AmedMotion.start();
+  }
+  function navTo(id) {
+    setNav(false);
+    const t = $(id); if (!t) return;
+    const L = window.AmedMotion && AmedMotion.lenis;
+    if (L) L.scrollTo(t, { duration: 1.2 }); else t.scrollIntoView({ behavior: "smooth" });
   }
 
   function renderRewards() {
@@ -673,7 +738,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     if ($("sname").textContent) $("sname").textContent = T[lang].shishas[frontShisha];
     $("cardBtn").href = "card/#" + lang;
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
-    renderStatus(); renderMenu(); renderNew(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
+    renderStatus(); renderMenu(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
   }
 
   // Scroll reveal for the sections below the hero
@@ -687,6 +752,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     AmedMotion.starBorder($("cardBtn"));
   }
 
+  $("navBtn").addEventListener("click", () => setNav(!document.body.classList.contains("nav-open")));
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("scroller").addEventListener("scroll", () => {
     const sc = $("scroller"), r = sc.getBoundingClientRect(), mid = r.left + r.width / 2;
@@ -710,7 +777,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   setInterval(renderStatus, 60000);
   startStage();
 
-  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); } }).catch(() => {});
+  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); renderNav(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>
