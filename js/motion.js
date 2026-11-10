@@ -99,7 +99,7 @@ void main() {
   vec2 coord = vec2(gl_FragCoord.x, uResolution.y - gl_FragCoord.y) / uScale;
   vec2 delta = coord - uSource; float distance = length(delta); vec2 dir = delta / max(distance, 1e-4);
   float cosAngle = dot(dir, uAim); float angle = cosAngle + uDistortion * sin(uTime * 2.0 + distance * 0.02) * 0.2;
-  float slope = fwidth(angle); float depth = distance / uReach;
+  float slope = 0.0; float depth = distance / uReach; // no fwidth(): screen-space derivatives can leave a line on iPhone GPUs
   float source = exp(-depth * depth * 9.0) * 0.9 + exp(-depth * 3.2) * 0.25;
   float glowLight = uGlow * source * smoothstep(-0.2, 0.6, cosAngle);
   float spread = pow(max(angle, 0.0), 1.0 / uSpread);
@@ -137,8 +137,8 @@ void main() {
   const hex = (h) => [0, 2, 4].map((i) => parseInt(h.replace("#", "").slice(i, i + 2), 16) / 255);
 
   function lightRays(container, o = {}) {
-    const s = Object.assign({ color: "#E3B27D", anchorX: () => 0.5, speed: 0.6, spread: 0.6, length: 1.6, density: 1, sharpness: 0.35,
-      glow: 0.6, haze: 0.3, atmosphere: 0.25, intensity: 1, fade: 1, saturation: 1, opacity: 1 }, o);
+    const s = Object.assign({ color: "#E3B27D", anchorX: () => 0.5, speed: 0.6, spread: 0.6, length: 1.6, density: 1, sharpness: 0,
+      glow: 0.6, haze: 0, atmosphere: 0.25, intensity: 1, fade: 1, saturation: 1, opacity: 1 }, o);
     const canvas = document.createElement("canvas");
     canvas.setAttribute("aria-hidden", "true");
     canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
