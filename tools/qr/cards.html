@@ -1,0 +1,64 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Table cards (A6, 105x148 mm) with the QR code for https://amedcaferest.com/menu/. Card 1 = #A Espresso & Gold, 2 = #B Latte, 3 = #C Photo. Print to PDF from Chromium (Playwright page.pdf with preferCSSPageSize). Thamir has not chosen one yet. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Noto+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+@page { size: 105mm 148mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; }
+body { background: #555; font-family: Jost, sans-serif; }
+.card { width: 105mm; height: 148mm; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; page-break-after: always; }
+.ar { font-family: "Noto Sans Arabic", sans-serif; direction: rtl; }
+.qr { background: #F3E9DC; padding: 4.5mm; border-radius: 4mm; }
+.qr img { display: block; width: 46mm; height: 46mm; }
+.url { font-size: 8.5pt; letter-spacing: .08em; }
+.langs { display: grid; gap: 1.2mm; }
+/* A: Espresso & Gold */
+.a { background: radial-gradient(circle at 50% 0, #3A281E, #1C120D 70%); color: #F3E9DC; padding: 11mm 9mm 8mm; border: 1.2mm solid #1C120D; outline: .4mm solid #D4A373; outline-offset: -3.2mm; }
+.a .logo { width: 44mm; }
+.a h1 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 30pt; color: #E3B27D; line-height: 1; margin: 5mm 0 1.5mm; }
+.a .langs { color: #C4B09C; font-size: 10.5pt; margin-bottom: 5mm; }
+.a .qr { box-shadow: 0 0 0 .4mm #D4A373; }
+.a .url { color: #D4A373; margin-top: auto; }
+/* B: Latte */
+.b { background: #F3E9DC; color: #2B1A12; padding: 12mm 9mm 8mm; }
+.b::before { content: ""; position: absolute; inset: 0 0 auto; height: 3mm; background: #8B5A3C; }
+.b .logo { width: 44mm; }
+.b h1 { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 30pt; color: #6B3F26; line-height: 1; margin: 5mm 0 1.5mm; }
+.b .langs { color: #6B4E3D; font-size: 10.5pt; margin-bottom: 5mm; }
+.b .qr { background: #fff; border: .5mm solid #C9A27E; }
+.b .url { color: #8B5A3C; margin-top: auto; }
+.b .orn { width: 22mm; height: .4mm; background: #C9A27E; margin: 0 auto 4mm; }
+/* C: Shisha photo */
+.c { background: #1C120D; color: #F3E9DC; padding: 0 0 8mm; }
+.c .photo { width: 100%; height: 54mm; background: url(../../media/space/inside.jpg) center/cover; position: relative; }
+.c .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#1C120D55, #1C120D 98%); }
+.c .logo { position: absolute; top: 7mm; left: 50%; transform: translateX(-50%); width: 40mm; z-index: 2; }
+.c .row { display: flex; align-items: center; gap: 5mm; padding: 0 8mm; margin-top: -16mm; position: relative; z-index: 2; }
+.c .row .qr img { width: 40mm; height: 40mm; }
+.c .shisha { height: 44mm; filter: drop-shadow(0 3mm 3mm #000a); }
+.c h1 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 26pt; color: #E3B27D; line-height: 1; margin: 6mm 0 1.5mm; }
+.c .langs { color: #C4B09C; font-size: 10.5pt; }
+.c .url { color: #D4A373; margin-top: auto; }
+</style></head><body>
+<div class="card a" id="A">
+  <img class="logo" src="../../logo-gold.png" alt="">
+  <h1>Scan for the menu</h1>
+  <div class="langs"><span class="ar">بۆ دیتنا مێنیوێ سکان بکە</span><span class="ar">امسح الرمز لعرض القائمة</span></div>
+  <div class="qr"><img src="qr-menu.svg" alt=""></div>
+  <p class="url">AMEDCAFEREST.COM/MENU</p>
+</div>
+<div class="card b" id="B">
+  <img class="logo" src="../../logo.png" alt="">
+  <h1>Scan for the menu</h1>
+  <div class="langs"><span class="ar">بۆ دیتنا مێنیوێ سکان بکە</span><span class="ar">امسح الرمز لعرض القائمة</span></div>
+  <div class="orn"></div>
+  <div class="qr"><img src="qr-menu.svg" alt=""></div>
+  <p class="url">AMEDCAFEREST.COM/MENU</p>
+</div>
+<div class="card c" id="C">
+  <div class="photo"></div><img class="logo" src="../../logo-gold.png" alt="">
+  <div class="row"><img class="shisha" src="../../shisha-gold.png" alt=""><div class="qr"><img src="qr-menu.svg" alt=""></div></div>
+  <h1>Scan for the menu</h1>
+  <div class="langs"><span class="ar">بۆ دیتنا مێنیوێ سکان بکە</span><span class="ar">امسح الرمز لعرض القائمة</span></div>
+  <p class="url">AMEDCAFEREST.COM/MENU</p>
+</div>
+</body></html>
