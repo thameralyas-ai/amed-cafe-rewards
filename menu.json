@@ -484,10 +484,84 @@
    "new": true,
    "banner": "media/new/asary-bottles.jpg",
    "desc": {
-    "en": "Natural fruit syrup: 60% fruit, 75% less fructose sugar. Flavours: peach, lemon & lime, cherry, blackcurrant, cola, grape, elderflower & mint, mango, raspberry.",
-    "ar": "شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. النكهات: خوخ، ليمون و لايم، كرز، كشمش أسود، كولا، عنب، زهرة البيلسان والنعناع، مانجو، توت العليق.",
-    "ku": "شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تام: خۆخ، لیمون و لایم، گێلاس، کشمشا رەش، کۆلا، تری، گۆڵ بەیبوون و نعناع، مانگۆ، تووا سۆر."
+    "en": "Natural fruit syrup: 60% fruit, 75% less fructose sugar. Choose your flavour:",
+    "ar": "شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. اختر نكهتك:",
+    "ku": "شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تاما خۆ هەلبژێرە:"
    },
+   "flavours": [
+    {
+     "name": {
+      "en": "Peach",
+      "ar": "خوخ",
+      "ku": "خۆخ"
+     },
+     "img": "media/new/flavours/peach.jpg"
+    },
+    {
+     "name": {
+      "en": "Lemon & lime",
+      "ar": "ليمون و لايم",
+      "ku": "لیمون و لایم"
+     },
+     "img": "media/new/flavours/lemon-lime.jpg"
+    },
+    {
+     "name": {
+      "en": "Cherry",
+      "ar": "كرز",
+      "ku": "گێلاس"
+     },
+     "img": "media/new/flavours/cherry.jpg"
+    },
+    {
+     "name": {
+      "en": "Blackcurrant",
+      "ar": "كشمش أسود",
+      "ku": "کشمشا رەش"
+     },
+     "img": "media/new/flavours/blackcurrant.jpg"
+    },
+    {
+     "name": {
+      "en": "Cola",
+      "ar": "كولا",
+      "ku": "کۆلا"
+     },
+     "img": "media/new/flavours/cola.jpg"
+    },
+    {
+     "name": {
+      "en": "Grape",
+      "ar": "عنب",
+      "ku": "تری"
+     },
+     "img": "media/new/flavours/grape.jpg"
+    },
+    {
+     "name": {
+      "en": "Elderflower & mint",
+      "ar": "زهرة البيلسان والنعناع",
+      "ku": "گۆڵ بەیبوون و نعناع"
+     },
+     "img": "media/new/flavours/elderflower-mint.jpg"
+    },
+    {
+     "name": {
+      "en": "Mango",
+      "ar": "مانجو",
+      "ku": "مانگۆ"
+     },
+     "img": "media/new/flavours/mango.jpg"
+    },
+    {
+     "name": {
+      "en": "Raspberry",
+      "ar": "توت العليق",
+      "ku": "تووا سۆر"
+     },
+     "img": "media/new/flavours/raspberry.jpg"
+    }
+   ],
    "items": [
     {
      "name": {

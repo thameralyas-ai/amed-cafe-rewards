@@ -169,6 +169,11 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .lb .x { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #D4A37399; background: #241812; color: var(--gold2); font-size: 24px; line-height: 1; cursor: pointer; }
 .rtl .lb .x { right: auto; left: 14px; }
 
+/* Flavour tiles (e.g. Asary): fruit picture + name, 3 per row. */
+.flv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 8px; }
+.flv div { text-align: center; font-size: 12.5px; line-height: 1.3; color: var(--ink); }
+.flv img { display: block; width: 100%; max-width: 76px; aspect-ratio: 1; object-fit: cover; margin: 0 auto 5px; border-radius: 14px; background: #F3E9DC; }
+@media (min-width: 640px) { .np .flv { grid-template-columns: repeat(9, 1fr); } }
 /* New products: menu categories marked "new" in menu.json get a feature card above the menu. */
 .newp { display: grid; gap: 14px; }
 .np { background: linear-gradient(180deg, #2E1F17, #241812); border: 1px solid #D4A37366; border-radius: 22px; overflow: hidden; }
@@ -431,6 +436,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     sc.style.height = card && getComputedStyle(sc).display === "flex" ? card.offsetHeight + 14 + "px" : "";
   }
 
+  const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
   function renderMenu() {
     const tabs = $("tabs"), sc = $("scroller");
     tabs.textContent = ""; sc.textContent = "";
@@ -445,6 +451,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: c.photo, alt: "", loading: "lazy" })));
       card.append(el("h3", {}, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
       if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
+      if (c.flavours) card.append(flavours(c));
       for (const it of c.items) {
         const opts = it.options || [];
         const same = opts.every((o) => o.price === opts[0].price);
@@ -469,7 +476,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       if (FLYERS[c.id]) acts.append(el("a", { class: "btn sec", href: FLYERS[c.id][0], text: tr("seeFlyer"), onclick: (e) => { e.preventDefault(); openLb({ src: FLYERS[c.id][0], more: FLYERS[c.id], alt: "newT" }); } }));
       box.append(el("div", { class: "np" },
         c.banner ? el("img", { class: "bn", src: c.banner, alt: pick(c.name), loading: "lazy" }) : null,
-        el("div", { class: "bd" }, el("h3", { text: pick(c.name) }), c.desc ? el("p", { text: pick(c.desc) }) : null,
+        el("div", { class: "bd" }, el("h3", { text: pick(c.name) }), c.desc ? el("p", { text: pick(c.desc) }) : null, flavours(c),
           el("span", { class: "pr", text: num(lo) + (hi > lo ? " – " + num(hi) : "") + " " + tr("iqd") }), acts)));
     }
   }

@@ -65,6 +65,10 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .cats a.on .badge { background: #1C120D; color: var(--gold2); }
 .mc .bn { display: block; width: calc(100% + 36px); margin: -16px -18px 12px; aspect-ratio: 20 / 7; object-fit: cover; border-radius: 20px 20px 0 0; }
 .mc .desc { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin: 2px 0 4px; }
+/* Flavour tiles (e.g. Asary): fruit picture + name, 3 per row. */
+.flv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 8px; }
+.flv div { text-align: center; font-size: 12.5px; line-height: 1.3; color: var(--ink); }
+.flv img { display: block; width: 100%; max-width: 76px; aspect-ratio: 1; object-fit: cover; margin: 0 auto 5px; border-radius: 14px; background: #F3E9DC; }
 /* "New" teaser at the top: links down to the new category. */
 .nw { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 10px; border: 1px solid #D4A37388; border-radius: 18px; background: radial-gradient(circle at 0 50%, #3A281E, #241812); text-decoration: none; }
 .nw img { width: 96px; height: 56px; object-fit: cover; border-radius: 12px; flex: none; }
@@ -137,6 +141,7 @@ footer a { color: var(--gold2); text-decoration: none; }
     return h >= 8 || h < 1;
   }
 
+  const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
   function render() {
     const cats = $("cats"), list = $("list");
     cats.textContent = ""; list.textContent = ""; $("newTop").textContent = "";
@@ -154,6 +159,7 @@ footer a { color: var(--gold2); text-decoration: none; }
       if (c.banner) card.append(el("img", { class: "bn", src: "../" + c.banner, alt: "", loading: "lazy" }));
       card.append(el("h2", {}, pick(c.name), badge()));
       if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
+      if (c.flavours) card.append(flavours(c, "../"));
       if (c.photo) card.append(el("div", { class: "shot" }, el("img", { src: "../" + c.photo, alt: "", loading: "lazy" })));
       for (const it of c.items) {
         const opts = it.options || [];
