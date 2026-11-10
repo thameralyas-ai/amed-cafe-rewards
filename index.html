@@ -17,6 +17,7 @@
 <link rel="icon" href="card/icon-192.png">
 <link rel="apple-touch-icon" href="card/icon-180.png">
 <meta name="theme-color" content="#1C120D">
+<link rel="stylesheet" href="vendor/lenis.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Noto+Naskh+Arabic:wght@500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap">
@@ -76,6 +77,14 @@ header { z-index: 6; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .btn.pri { animation: glow 2.6s 2s infinite; }
 @keyframes glow { 50% { box-shadow: 0 0 0 8px #E3B27D00, 0 0 26px #E3B27D66; } }
+/* Motion layer (js/motion.js): Lenis smooth scroll, Light Rays behind the hero, Star Border on the main button. */
+html.lenis { scroll-behavior: auto; }
+.rays { position: absolute; inset: 0; pointer-events: none; }
+.hero.has-rays .beam { display: none; }
+.star-border { position: relative; isolation: isolate; }
+.star-border__light { position: absolute; top: -40px; left: -40px; width: calc(100% + 80px); height: calc(100% + 80px); pointer-events: none; z-index: -1; }
+.btn.pri.star-border { animation: none; }
+.bw { display: inline-block; }
 /* Sections fade up as they scroll into view */
 .js .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .rv.in { opacity: 1; transform: none; }
@@ -240,6 +249,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   <symbol id="sc" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.4c3.1 0 5.2 2.3 5.2 5.4v2.2c.5.2 1.2.1 1.8-.2.7-.3 1.3.5.7 1.1-.6.6-1.6.9-2.4 1.1.4 1.8 2.1 3.4 3.9 3.9.5.2.5.9 0 1.1-1 .4-2 .5-2.5.8-.2.4-.1 1.1-.6 1.2-.9.2-1.9-.3-3 .1-1.1.4-1.9 1.6-3.1 1.6s-2-1.2-3.1-1.6c-1.1-.4-2.1.1-3-.1-.5-.1-.4-.8-.6-1.2-.5-.3-1.5-.4-2.5-.8-.5-.2-.5-.9 0-1.1 1.8-.5 3.5-2.1 3.9-3.9-.8-.2-1.8-.5-2.4-1.1-.6-.6 0-1.4.7-1.1.6.3 1.3.4 1.8.2V7.8c0-3.1 2.1-5.4 5.2-5.4Z"/></symbol>
 </svg>
 <div class="hero" id="top">
+  <div class="rays" id="rays" aria-hidden="true"></div>
   <div class="beam" aria-hidden="true"></div>
   <header><div class="wrap">
     <a class="logo" href="#top" aria-label="Amed Cafe"></a>
@@ -265,7 +275,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       <div class="sname" id="sname"></div>
     </div>
     <div class="t2">
-      <div class="cta"><a class="btn pri" href="card/" id="cardBtn" data-t="myCard"></a><a class="btn sec" href="#menu" data-t="exploreMenu"></a></div>
+      <div class="cta"><a class="btn pri" href="card/" id="cardBtn"><span data-t="myCard"></span></a><a class="btn sec" href="#menu" data-t="exploreMenu"></a></div>
     </div>
   </div>
 </div>
@@ -324,6 +334,10 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   <small>© <span id="yr"></span> Amed Cafe · amedcaferest.com</small>
 </footer>
 
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script src="js/motion.js"></script>
 <script>
 (() => {
   // ---- Cafe details: fill these in when Thamir sends them. Empty = shown as "coming soon". ----
@@ -506,6 +520,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     lv.slice(0, 3).forEach((l, i) => tiers.append(el("div", { class: "t" + (i + 2) }, el("b", { text: T[lang].lv[l.name] || l.name }),
       el("span", { text: Number(l.stamps) > 0 ? tr("lvRowOr", { n: l.visits, s: l.stamps }) : tr("lvRow", { n: l.visits }) }))));
     // Level perks are deliberately not shown (showPerks is off).
+    if (window.AmedMotion) { AmedMotion.countUp($("big")); AmedMotion.countUp(tiers); }
   }
 
   function renderEvents() {
@@ -561,7 +576,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   function openLb(t) {
     let lb = $("lb");
     if (!lb) {
-      lb = el("div", { id: "lb", class: "lb", role: "dialog", "aria-modal": "true", onclick: (e) => { if (e.target === lb) closeLb(); } });
+      lb = el("div", { id: "lb", class: "lb", role: "dialog", "aria-modal": "true", "data-lenis-prevent": "", onclick: (e) => { if (e.target === lb) closeLb(); } });
       document.body.append(lb);
       addEventListener("keydown", (e) => { if (e.key === "Escape") closeLb(); });
     }
@@ -571,12 +586,12 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
         : t.more ? el("div", { class: "lbs" }, ...t.more.map((src) => el("img", { src, alt: tr(t.alt) })))
         : el("img", { src: t.src, alt: tr(t.alt) }));
     lb.classList.add("on");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; if (window.AmedMotion) AmedMotion.stop();
     lb.querySelector(".x").focus();
   }
   function closeLb() {
     const lb = $("lb"); if (!lb) return;
-    lb.classList.remove("on"); lb.textContent = ""; document.body.style.overflow = "";
+    lb.classList.remove("on"); lb.textContent = ""; document.body.style.overflow = ""; if (window.AmedMotion) AmedMotion.start();
   }
 
   function renderInfo() {
@@ -611,7 +626,11 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     const h = $("h1"); h.textContent = "";
     const sw = el("span", { class: "swap" });
     T[lang].words.forEach((w, i) => sw.append(el("b", { class: i ? "" : "on", text: w })));
-    h.append(tr("h1a"), el("br"), sw);
+    // Headline words appear with Blur Text (each word separately so Arabic letters stay joined).
+    const words = tr("h1a").split(" ").filter(Boolean);
+    words.forEach((w, i) => { h.append(el("span", { class: "bw", text: w })); if (i < words.length - 1) h.append(" "); });
+    h.append(el("br"), sw);
+    if (window.AmedMotion) AmedMotion.blurText([...h.querySelectorAll(".bw"), sw]);
     clearInterval(swapTimer);
     const bs = [...sw.children]; let i = 0;
     swapTimer = setInterval(() => { const a = bs[i]; a.classList.remove("on"); a.classList.add("out"); setTimeout(() => a.classList.remove("out"), 700); i = (i + 1) % bs.length; bs[i].classList.add("on"); }, REDUCED ? 3200 : 2200);
@@ -660,7 +679,13 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   // Scroll reveal for the sections below the hero
   document.documentElement.classList.add("js");
   const revealIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); } }), { threshold: 0.12 }) : null;
-  document.querySelectorAll("main .head, #scroller, .reward, #evList, #gal, #social, #info").forEach((n, i) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
+  const revealNodes = [...document.querySelectorAll("main .head, #newp, #scroller, .reward, #evList, #gal, #social, #info")];
+  if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
+    revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
+  if (window.AmedMotion) {
+    if (AmedMotion.lightRays($("rays"), { anchorX: () => innerWidth >= 900 ? (document.body.classList.contains("rtl") ? 0.28 : 0.72) : 0.5 })) document.querySelector(".hero").classList.add("has-rays");
+    AmedMotion.starBorder($("cardBtn"));
+  }
 
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("scroller").addEventListener("scroll", () => {
