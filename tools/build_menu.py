@@ -49,7 +49,7 @@ C=[
   (("With mineral water","مع مياه معدنية","دگەل ئاڤا سروشتی"),1500),
   (("With sparkling water","مع مياه غازية","دگەل ئاڤا گازی"),2000),
   (("With milk","مع الحليب","دگەل شیری"),2500)],
-  {"new":True,"banner":"media/new/asary-bottles.jpg",
+  {"new":True,"banner":"media/new/asary-bottles-real.jpg",
    "desc":{"en":"Natural fruit syrup: 60% fruit, 75% less fructose sugar. Choose your flavour:",
            "ar":"شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. اختر نكهتك:",
            "ku":"شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تاما خۆ هەلبژێرە:"},
