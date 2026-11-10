@@ -702,7 +702,16 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   }
 
   // Stage: the three shishas circle slowly; the one in front is large and bright. Pauses when off screen.
-  let frontShisha = 0;
+  let frontShisha = 0, flavourIdx = -1;
+  // Under the stage: the flavours these shishas are served with (Thamir: only English and Royal),
+  // taken from the menu so the names follow the language. Alternates each time a new shisha turns to the front.
+  const STAGE_FLAVOURS = ["English mix", "Royal mix"];
+  function stageLabel() {
+    const cat = MENU && MENU.categories.find((c) => c.id === "shisha");
+    const fl = cat ? STAGE_FLAVOURS.map((n) => cat.items.find((it) => it.name.en === n)).filter(Boolean) : [];
+    if (!fl.length) return T[lang].shishas[frontShisha];
+    return pick(fl[((flavourIdx % fl.length) + fl.length) % fl.length].name);
+  }
   function startStage() {
     const st = $("stage"), im = [...st.querySelectorAll("img")], dots = [...document.querySelectorAll(".dots i")];
     let visible = true, t0 = performance.now(), paused = 0, last = t0;
@@ -716,7 +725,8 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
       const f = im.map((_, k) => Math.cos(a + k * (Math.PI * 2 / 3))).reduce((b, v, k, arr) => v > arr[b] ? k : b, 0);
       if (f !== frontShisha || !$("sname").textContent) {
         frontShisha = f; dots.forEach((d, k) => d.classList.toggle("on", k === f));
-        const n = $("sname"); n.style.opacity = 0; setTimeout(() => { n.textContent = T[lang].shishas[f]; n.style.opacity = 1; }, 200);
+        flavourIdx++;
+        const n = $("sname"); n.style.opacity = 0; setTimeout(() => { n.textContent = stageLabel(); n.style.opacity = 1; }, 200);
       }
     };
     const PERIOD = REDUCED ? 18000 : 9000; // one full turn; calmer with Reduce Motion
@@ -735,7 +745,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
     for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
     buildHeadline();
-    if ($("sname").textContent) $("sname").textContent = T[lang].shishas[frontShisha];
+    if ($("sname").textContent) $("sname").textContent = stageLabel();
     $("cardBtn").href = "card/#" + lang;
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
     renderStatus(); renderMenu(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
