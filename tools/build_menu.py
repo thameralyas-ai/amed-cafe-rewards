@@ -104,13 +104,14 @@ C=[
   (("Smart Zero","سمارت زيرو","سمارت زیرۆ"),1500),
   (("White Tiger","وايت تايجر","وایت تایگەر"),2000),
   (("Red Bull","ريد بول","رێد بوڵ"),2500,[("Regular","عادي","نورمال",2500),("Mexican","مكسيكي","مەکسیکی",3000)])]),
+ # Shisha flavours 6,000 (Thamir, 11 Nov 2026: shisha + water + tea = 6,750).
  # Shisha photo: Amed's own photo from Instagram, cropped to the shisha only (no customer). smoke = where the puffs start (% of width, % of height).
  ("shisha",("Shisha","أركيلة","نێرگەلە"),"media/drinks/shisha-photo.jpg",[
-  (("Gum & mint","علك ونعناع","علک و نەعناع"),5000),
-  (("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع"),5000),
-  (("Double apple","تفاحتين","دوو سێڤ"),5000),
-  (("Royal mix","خلطة رويال","تێکەلا رۆیال"),5000),
-  (("English mix","خلطة إنجليزية","تێکەلا ئینگلیزی"),5000),
+  (("Gum & mint","علك ونعناع","علک و نەعناع"),6000),
+  (("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع"),6000),
+  (("Double apple","تفاحتين","دوو سێڤ"),6000),
+  (("Royal mix","خلطة رويال","تێکەلا رۆیال"),6000),
+  (("English mix","خلطة إنجليزية","تێکەلا ئینگلیزی"),6000),
   (("Head change","تبديل حجر","گوهۆڕینا سەری"),3000),
   (("Half kilo of tobacco","نصف كيلو معسل","نیڤ کیلۆ مەعسەل"),20000),
   (("1 kilo of tobacco","كيلو معسل","کیلۆیەک مەعسەل"),40000)]),
