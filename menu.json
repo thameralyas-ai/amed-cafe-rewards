@@ -12,6 +12,38 @@
    "items": [
     {
      "name": {
+      "en": "Pistachio coffee",
+      "ar": "قهوة الفستق",
+      "ku": "قەهوا فستقێ"
+     },
+     "price": 1500,
+     "options": [
+      {
+       "name": {
+        "en": "Single",
+        "ar": "سنگل",
+        "ku": "تەک"
+       },
+       "price": 1500
+      },
+      {
+       "name": {
+        "en": "Double",
+        "ar": "دبل",
+        "ku": "دەبل"
+       },
+       "price": 3000
+      }
+     ],
+     "note": {
+      "en": "Made with real pistachio, creamy and rich",
+      "ar": "تُحضّر من الفستق الطبيعي، كريمية وغنية",
+      "ku": "ب فستقێ سروشتی، کرێمی و تام خۆش"
+     },
+     "popular": true
+    },
+    {
+     "name": {
       "en": "Turkish coffee",
       "ar": "قهوة تركية",
       "ku": "قەهوا تورکی"
@@ -34,7 +66,12 @@
        },
        "price": 3000
       }
-     ]
+     ],
+     "note": {
+      "en": "Finely ground coffee, brewed the traditional way",
+      "ar": "قهوة مطحونة ناعماً تُحضّر على الطريقة التقليدية",
+      "ku": "قەهوا هویرکری، ب رێکا کەڤن دهێتە چێکرن"
+     }
     },
     {
      "name": {
@@ -60,7 +97,12 @@
        },
        "price": 3000
       }
-     ]
+     ],
+     "note": {
+      "en": "Made from roasted kezwan (wild pistachio), rich and smooth",
+      "ar": "من حبوب البطم المحمّصة، غنية وناعمة",
+      "ku": "ژ دەنکێن کەزوانێ یێن برژاندی، تام خۆش و نەرم"
+     }
     },
     {
      "name": {
@@ -86,7 +128,12 @@
        },
        "price": 3000
       }
-     ]
+     ],
+     "note": {
+      "en": "A short, strong shot of coffee",
+      "ar": "جرعة قهوة مركّزة وقوية",
+      "ku": "قەهوەیەکا کێم و ب هێز"
+     }
     },
     {
      "name": {
@@ -94,7 +141,12 @@
       "ar": "امريكانو",
       "ku": "ئەمریکانۆ"
      },
-     "price": 3000
+     "price": 3000,
+     "note": {
+      "en": "Espresso with hot water, lighter and smooth",
+      "ar": "إسبريسو ممزوج بالماء الساخن، طعم أخف",
+      "ku": "ئێسپرێسۆ دگەل ئاڤا گەرم، تامەکا سڤکتر"
+     }
     }
    ]
   },
@@ -112,7 +164,12 @@
       "ar": "كابتشينو",
       "ku": "کاپوچینۆ"
      },
-     "price": 3000
+     "price": 3000,
+     "note": {
+      "en": "Espresso, steamed milk and thick foam with a touch of cocoa",
+      "ar": "إسبريسو وحليب مبخّر ورغوة كثيفة مع لمسة كاكاو",
+      "ku": "ئێسپرێسۆ، شیرێ گەرم و کەفەکا ستویر دگەل کاکاوێ"
+     }
     },
     {
      "name": {
@@ -196,7 +253,12 @@
       "ar": "لاتيه كلاسيك",
       "ku": "لاتێ کلاسیک"
      },
-     "price": 3000
+     "price": 3000,
+     "note": {
+      "en": "Espresso with steamed milk and a soft layer of foam",
+      "ar": "إسبريسو مع الحليب المبخّر وطبقة رغوة خفيفة",
+      "ku": "ئێسپرێسۆ دگەل شیرێ گەرم و چینەکا کەفێ"
+     }
     },
     {
      "name": {
@@ -244,7 +306,12 @@
       "ar": "لاتيه Amed",
       "ku": "لاتێ ئامەد"
      },
-     "price": 3000
+     "price": 3000,
+     "note": {
+      "en": "Our house secret. Ask us about it",
+      "ar": "سرّ البيت الخاص بنا. اسألنا عنه",
+      "ku": "نهێنیا مالا مە. پسیارا وێ ژ مە بکە"
+     }
     }
    ]
   },
@@ -432,14 +499,6 @@
     "ku": "شەربەتێن سروشتی"
    },
    "items": [
-    {
-     "name": {
-      "en": "Lemon & mint (Bolo)",
-      "ar": "ليمون ونعناع (بولو)",
-      "ku": "لەیمون و نەعناع (بولو)"
-     },
-     "price": 3500
-    },
     {
      "name": {
       "en": "Orange",
@@ -631,6 +690,14 @@
     },
     {
      "name": {
+      "en": "Blueberry mojito",
+      "ar": "موهيتو بلوبيري",
+      "ku": "مۆهیتۆ بلوبێری"
+     },
+     "price": 2000
+    },
+    {
+     "name": {
       "en": "Vimto",
       "ar": "فيمتو",
       "ku": "ڤیمتۆ"
@@ -807,14 +874,6 @@
     },
     {
      "name": {
-      "en": "Gazoz",
-      "ar": "گازوز",
-      "ku": "گازوز"
-     },
-     "price": 1000
-    },
-    {
-     "name": {
       "en": "Soda",
       "ar": "صودا",
       "ku": "سۆدا"
@@ -942,7 +1001,11 @@
     "ar": "أركيلة",
     "ku": "نێرگەلە"
    },
-   "photo": "shisha-gold.png",
+   "photo": "media/drinks/shisha-photo.jpg",
+   "smoke": [
+    66,
+    13
+   ],
    "items": [
     {
      "name": {
@@ -1009,6 +1072,143 @@
      "price": 40000
     }
    ]
+  }
+ ],
+ "gallery": [
+  {
+   "img": "media/drinks/pistachio-coffee.jpg",
+   "name": {
+    "en": "Pistachio coffee",
+    "ar": "قهوة الفستق",
+    "ku": "قەهوا فستقێ"
+   },
+   "cat": "coffee"
+  },
+  {
+   "img": "media/drinks/latte-art.jpg",
+   "name": {
+    "en": "Latte",
+    "ar": "لاتيه",
+    "ku": "لاتێ"
+   },
+   "cat": "latte"
+  },
+  {
+   "img": "media/drinks/blueberry-mojito.jpg",
+   "name": {
+    "en": "Blueberry mojito",
+    "ar": "موهيتو بلوبيري",
+    "ku": "مۆهیتۆ بلوبێری"
+   },
+   "cat": "mojito"
+  },
+  {
+   "img": "media/drinks/iced-coffee.jpg",
+   "name": {
+    "en": "Iced coffee",
+    "ar": "قهوة مثلجة",
+    "ku": "ئایس کافێ"
+   },
+   "cat": "iced-coffee"
+  },
+  {
+   "img": "media/drinks/amed-cocktail.jpg",
+   "name": {
+    "en": "Amed cocktail",
+    "ar": "كوكتيل Amed",
+    "ku": "کۆکتێلا ئامەد"
+   },
+   "cat": "cocktail"
+  },
+  {
+   "img": "media/drinks/cappuccino.jpg",
+   "name": {
+    "en": "Cappuccino",
+    "ar": "كابتشينو",
+    "ku": "کاپوچینۆ"
+   },
+   "cat": "hot"
+  },
+  {
+   "img": "media/drinks/mojito.jpg",
+   "name": {
+    "en": "Mojito",
+    "ar": "موهيتو",
+    "ku": "مۆهیتۆ"
+   },
+   "cat": "mojito"
+  },
+  {
+   "img": "media/drinks/turkish-coffee.jpg",
+   "name": {
+    "en": "Turkish coffee",
+    "ar": "قهوة تركية",
+    "ku": "قەهوا تورکی"
+   },
+   "cat": "coffee"
+  },
+  {
+   "img": "media/drinks/coffee-layered.jpg",
+   "name": {
+    "en": "Latte",
+    "ar": "لاتيه",
+    "ku": "لاتێ"
+   },
+   "cat": "latte"
+  },
+  {
+   "img": "media/drinks/kurdish-coffee.jpg",
+   "name": {
+    "en": "Kurdish coffee",
+    "ar": "قهوة بطم",
+    "ku": "قەهوا کەزوانێ"
+   },
+   "cat": "coffee"
+  },
+  {
+   "img": "media/drinks/americano.jpg",
+   "name": {
+    "en": "Iced Americano",
+    "ar": "امريكانو مثلج",
+    "ku": "ئەمریکانۆیا سار"
+   },
+   "cat": "iced-coffee"
+  },
+  {
+   "img": "media/drinks/cocktail-pink.jpg",
+   "name": {
+    "en": "Cocktails",
+    "ar": "كوكتيل",
+    "ku": "کۆکتێل"
+   },
+   "cat": "cocktail"
+  },
+  {
+   "img": "media/drinks/espresso.jpg",
+   "name": {
+    "en": "Espresso",
+    "ar": "اسبريسو",
+    "ku": "ئێسپرێسۆ"
+   },
+   "cat": "coffee"
+  },
+  {
+   "img": "media/drinks/latte.jpg",
+   "name": {
+    "en": "Classic latte",
+    "ar": "لاتيه كلاسيك",
+    "ku": "لاتێ کلاسیک"
+   },
+   "cat": "latte"
+  },
+  {
+   "img": "media/drinks/black-coffee.jpg",
+   "name": {
+    "en": "Coffee",
+    "ar": "قهوة",
+    "ku": "قەهوە"
+   },
+   "cat": "coffee"
   }
  ]
 }
