@@ -200,7 +200,9 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .ev h3 { font-size: 24px; line-height: 1.3; }
 .ev p { color: var(--muted); font-size: 14px; }
 .ev .evp { color: var(--gold2); white-space: nowrap; } .ev .evp s { color: var(--muted); }
-.ev .evi { display: block; width: 100%; max-width: 420px; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 16px; margin: 4px 0 10px; border: 1px solid var(--line); }
+/* menu offers: picture without background on the side (right in English, left in Arabic/Badini) */
+.ev:has(.evi) { padding-inline-end: 118px; min-height: 120px; }
+.ev .evi { position: absolute; inset-inline-end: 0; top: 0; width: 104px; height: 110px; object-fit: contain; filter: drop-shadow(0 8px 10px #0008); }
 .ev .evl { color: var(--gold2); font-size: 14px; text-decoration: none; border-bottom: 1px solid #D4A37366; }
 .empty { text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 22px; }
 
