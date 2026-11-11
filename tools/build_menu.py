@@ -4,12 +4,20 @@ import json, sys
 SINGLE_DOUBLE=[("Single","سنگل","تەک",1500),("Double","دبل","دەبل",3000)]
 C=[
  ("coffee",("Coffee","قهوة","قەهوە"),None,[
-  (("Turkish coffee","قهوة تركية","قەهوا تورکی"),1500,SINGLE_DOUBLE),
-  (("Kurdish coffee (kezwan)","قهوة بطم","قەهوا کەزوانێ"),1500,SINGLE_DOUBLE),
-  (("Espresso","اسبريسو","ئێسپرێسۆ"),1500,SINGLE_DOUBLE),
-  (("Americano","امريكانو","ئەمریکانۆ"),3000)]),
+  # Pistachio coffee: Thamir's best seller (11 Nov 2026). Price from the old menu (single 1,500 / double 3,000).
+  (("Pistachio coffee","قهوة الفستق","قەهوا فستقێ"),1500,SINGLE_DOUBLE,
+   ("Made with real pistachio, creamy and rich","تُحضّر من الفستق الطبيعي، كريمية وغنية","ب فستقێ سروشتی، کرێمی و تام خۆش"),{"popular":True}),
+  (("Turkish coffee","قهوة تركية","قەهوا تورکی"),1500,SINGLE_DOUBLE,
+   ("Finely ground coffee, brewed the traditional way","قهوة مطحونة ناعماً تُحضّر على الطريقة التقليدية","قەهوا هویرکری، ب رێکا کەڤن دهێتە چێکرن")),
+  (("Kurdish coffee (kezwan)","قهوة بطم","قەهوا کەزوانێ"),1500,SINGLE_DOUBLE,
+   ("Made from roasted kezwan (wild pistachio), rich and smooth","من حبوب البطم المحمّصة، غنية وناعمة","ژ دەنکێن کەزوانێ یێن برژاندی، تام خۆش و نەرم")),
+  (("Espresso","اسبريسو","ئێسپرێسۆ"),1500,SINGLE_DOUBLE,
+   ("A short, strong shot of coffee","جرعة قهوة مركّزة وقوية","قەهوەیەکا کێم و ب هێز")),
+  (("Americano","امريكانو","ئەمریکانۆ"),3000,None,
+   ("Espresso with hot water, lighter and smooth","إسبريسو ممزوج بالماء الساخن، طعم أخف","ئێسپرێسۆ دگەل ئاڤا گەرم، تامەکا سڤکتر"))]),
  ("hot",("Hot drinks","مشروبات ساخنة","ڤەخوارنێن گەرم"),None,[
-  (("Cappuccino","كابتشينو","کاپوچینۆ"),3000),
+  (("Cappuccino","كابتشينو","کاپوچینۆ"),3000,None,
+   ("Espresso, steamed milk and thick foam with a touch of cocoa","إسبريسو وحليب مبخّر ورغوة كثيفة مع لمسة كاكاو","ئێسپرێسۆ، شیرێ گەرم و کەفەکا ستویر دگەل کاکاوێ")),
   (("Nescafé","نسكافيه","نسکافێ"),1500,[("Regular","عادي","نورمال",1500),("With milk","بالحليب","ب شیر",2000)]),
   (("Plain milk","حليب سادة","شیرێ سادە"),1000),
   (("Honey milk","حليب بالعسل","شیرێ ب هنگڤین"),2000),
@@ -17,13 +25,15 @@ C=[
   (("Sahlab","سحلب","سەحلەب"),3000),
   (("Ginger, lemon & honey","زنجبيل بالليمون والعسل","زەنجەبیل و لەیمون و هنگڤین"),2000)]),
  ("latte",("Latte","لاتيه","لاتێ"),None,[
-  (("Classic latte","لاتيه كلاسيك","لاتێ کلاسیک"),3000),
+  (("Classic latte","لاتيه كلاسيك","لاتێ کلاسیک"),3000,None,
+   ("Espresso with steamed milk and a soft layer of foam","إسبريسو مع الحليب المبخّر وطبقة رغوة خفيفة","ئێسپرێسۆ دگەل شیرێ گەرم و چینەکا کەفێ")),
   (("Caramel latte","لاتيه كراميل","لاتێ کەرامێل"),3000),
   (("Vanilla latte","لاتيه فانيلا","لاتێ ڤانێلا"),3000),
   (("Cookies latte","لاتيه كوكيز","لاتێ کوکیز"),3000),
   (("Chocolate latte","لاتيه شوكولا","لاتێ شکولاتا"),3000),
   (("Dark chocolate latte","لاتيه شوكولا غامق","لاتێ دارک"),3000),
-  (("Amed latte","لاتيه Amed","لاتێ ئامەد"),3000)]),
+  (("Amed latte","لاتيه Amed","لاتێ ئامەد"),3000,None,
+   ("Our house secret. Ask us about it","سرّ البيت الخاص بنا. اسألنا عنه","نهێنیا مالا مە. پسیارا وێ ژ مە بکە"))]),
  ("iced-coffee",("Iced coffee","قهوة مثلجة","ئایس کافێ"),None,[
   (("Classic","كلاسيك","کلاسیک"),2000),
   (("Spanish latte","لاتيه إسباني","لاتێ ئیسپانی"),3000),
@@ -39,7 +49,6 @@ C=[
   (("Flavoured tea","شاي بنكهات","چایا ب تام"),1000,[("Blueberry","توت","توو",1000),("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع",1000),("Peach","خوخ","خۆخ",1000)]),
   (("Iced tea","شاي مثلج","چایا تەزی"),3000,[("Blueberry","توت","توو",3000),("Peach","خوخ","خۆخ",3000),("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع",3000),("Lemon","ليمون","لەیمون",3000)])]),
  ("juices",("Fresh juices","عصائر طبيعية","شەربەتێن سروشتی"),None,[
-  (("Lemon & mint (Bolo)","ليمون ونعناع (بولو)","لەیمون و نەعناع (بولو)"),3500),
   (("Orange","برتقال","پرتەقال"),3500),
   (("Lemon","ليمون","لەیمون"),3500),
   (("Orange & lemon","برتقال وليمون","پرتەقال و لەیمون"),3500),
@@ -68,6 +77,7 @@ C=[
   (("Strawberry mojito","موهيتو فراولة","مۆهیتۆیا فراولایێ"),2000),
   (("Red mojito","موهيتو ريد","مۆهیتۆ رێد"),2000),
   (("Kiwi mojito","موهيتو كيوي","مۆهیتۆ کیڤی"),2000),
+  (("Blueberry mojito","موهيتو بلوبيري","مۆهیتۆ بلوبێری"),2000),
   (("Vimto","فيمتو","ڤیمتۆ"),2000),
   (("Lemon & mint mojito (special)","موهيتو ليمون ونعناع خاص","مۆهیتۆیا لەیمون و نەعناعێ تایبەت"),2000),
   (("Amed mojito","موهيتو Amed","مۆهیتۆ ئامەد"),2000)]),
@@ -86,7 +96,6 @@ C=[
   (("Water","ماء","ئاڤ"),250),
   (("Coca-Cola","كوكا كولا","کۆکا کۆلا"),1000),
   (("Sprite","سبرايت","سپرایت"),1000),
-  (("Gazoz","گازوز","گازوز"),1000),
   (("Soda","صودا","سۆدا"),1000,[("Plain","سادة","سادە",1000),("Lemon","ليمون","لەیمون",1500)])]),
  ("energy",("Energy drinks","مشروبات الطاقة","ڤەخوارنێن بهێزکەر"),None,[
   (("Tiger","تايجر","تایگەر"),1500,[("Regular","عادي","نورمال",1500),("Mexican","مكسيكي","مەکسیکی",2000)]),
@@ -95,7 +104,8 @@ C=[
   (("Smart Zero","سمارت زيرو","سمارت زیرۆ"),1500),
   (("White Tiger","وايت تايجر","وایت تایگەر"),2000),
   (("Red Bull","ريد بول","رێد بوڵ"),2500,[("Regular","عادي","نورمال",2500),("Mexican","مكسيكي","مەکسیکی",3000)])]),
- ("shisha",("Shisha","أركيلة","نێرگەلە"),"shisha-gold.png",[
+ # Shisha photo: Amed's own photo from Instagram, cropped to the shisha only (no customer). smoke = where the puffs start (% of width, % of height).
+ ("shisha",("Shisha","أركيلة","نێرگەلە"),"media/drinks/shisha-photo.jpg",[
   (("Gum & mint","علك ونعناع","علک و نەعناع"),5000),
   (("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع"),5000),
   (("Double apple","تفاحتين","دوو سێڤ"),5000),
@@ -110,13 +120,35 @@ out={"note":"Amed Cafe menu (drinks and shisha; no food), prices in IQD. Source:
 for cid,cn,photo,items,*extra in C:
     cat={"id":cid,"name":dict(zip(L,cn))}
     if photo: cat["photo"]=photo
-    if extra: cat.update(extra[0])  # optional: new (badge), banner (wide photo), desc (en/ar/ku)
+    if extra: cat.update(extra[0])
+    if cid=="shisha": cat["smoke"]=[66,13]  # optional: new (badge), banner (wide photo), desc (en/ar/ku)
     cat["items"]=[]
     for it in items:
         names,price=it[0],it[1]; o={"name":dict(zip(L,names)),"price":price}
         if len(it)>2 and it[2]: o["options"]=[{"name":dict(zip(L,x[:3])),"price":x[3]} for x in it[2]]
         if len(it)>3 and it[3]: o["note"]=dict(zip(L,it[3]))
+        if len(it)>4 and it[4]: o.update(it[4])  # e.g. {"popular":True} -> "Best seller" badge
         cat["items"].append(o)
     out["categories"].append(cat)
+# "From our bar": real photos of Amed's drinks (from Amed's Instagram, text and logos removed), shown as a gallery,
+# not next to each item. cat = the menu section a photo opens.
+GALLERY=[
+ ("pistachio-coffee",("Pistachio coffee","قهوة الفستق","قەهوا فستقێ"),"coffee"),
+ ("latte-art",("Latte","لاتيه","لاتێ"),"latte"),
+ ("blueberry-mojito",("Blueberry mojito","موهيتو بلوبيري","مۆهیتۆ بلوبێری"),"mojito"),
+ ("iced-coffee",("Iced coffee","قهوة مثلجة","ئایس کافێ"),"iced-coffee"),
+ ("amed-cocktail",("Amed cocktail","كوكتيل Amed","کۆکتێلا ئامەد"),"cocktail"),
+ ("cappuccino",("Cappuccino","كابتشينو","کاپوچینۆ"),"hot"),
+ ("mojito",("Mojito","موهيتو","مۆهیتۆ"),"mojito"),
+ ("turkish-coffee",("Turkish coffee","قهوة تركية","قەهوا تورکی"),"coffee"),
+ ("coffee-layered",("Latte","لاتيه","لاتێ"),"latte"),
+ ("kurdish-coffee",("Kurdish coffee","قهوة بطم","قەهوا کەزوانێ"),"coffee"),
+ ("americano",("Iced Americano","امريكانو مثلج","ئەمریکانۆیا سار"),"iced-coffee"),
+ ("cocktail-pink",("Cocktails","كوكتيل","کۆکتێل"),"cocktail"),
+ ("espresso",("Espresso","اسبريسو","ئێسپرێسۆ"),"coffee"),
+ ("latte",("Classic latte","لاتيه كلاسيك","لاتێ کلاسیک"),"latte"),
+ ("black-coffee",("Coffee","قهوة","قەهوە"),"coffee"),
+]
+out["gallery"]=[{"img":"media/drinks/"+f+".jpg","name":dict(zip(L,n)),"cat":c} for f,n,c in GALLERY]
 json.dump(out,open(sys.argv[1],"w"),ensure_ascii=False,indent=1)
 print(len(out["categories"]),"categories",sum(len(c["items"]) for c in out["categories"]),"items")

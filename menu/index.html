@@ -64,6 +64,18 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
 @keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
+/* "From our bar": swipe row of real drink photos (menu.json gallery), not tied to single items. */
+.barw { margin: 6px 0 16px; }
+.barh { font-family: var(--serif); font-weight: 500; font-size: 24px; color: var(--gold2); line-height: 1.2; margin: 0 0 10px; }
+.bar { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -16px; padding: 0 16px 6px; }
+.bar::-webkit-scrollbar { display: none; }
+.bar a { flex: none; width: 128px; scroll-snap-align: start; text-decoration: none; color: var(--ink); font-size: 13px; line-height: 1.3; text-align: center; }
+.bar img { display: block; width: 128px; height: 164px; object-fit: cover; border-radius: 16px; margin-bottom: 6px; border: 1px solid var(--line); background: #2A1C15; }
+/* "Best seller" badge on an item (it.popular) */
+.badge.pop { background: none; color: var(--gold2); box-shadow: inset 0 0 0 1px var(--gold); }
+/* Shisha as a real photo: smoke starts at c.smoke (% of the photo) and stays inside the rounded photo */
+.shot.ph .smoke-wrap { margin-top: 0; overflow: hidden; border-radius: 18px; box-shadow: 0 10px 24px #0008; }
+.shot.ph img { height: 250px; width: auto; filter: none; }
 .li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid #3F2D2399; font-size: 16px; }
 .li:last-child { border: 0; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
@@ -132,6 +144,7 @@ footer a { color: var(--gold2); text-decoration: none; }
 <nav><div class="cats" id="cats"></div></nav>
 <main class="wrap">
   <div id="newTop"></div>
+  <div id="bargal"></div>
   <div id="list"></div>
   <p class="note" data-t="note"></p>
   <div class="promo">
@@ -146,21 +159,27 @@ footer a { color: var(--gold2); text-decoration: none; }
 (() => {
   const T = {
     en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 8:00 AM", iqd: "IQD", note: "Prices in IQD",
-      newT: "New", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
+      newT: "New", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
       hours: "Every day · 8:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
     ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 8:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
-      newT: "جديد", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
+      newT: "جديد", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
       hours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
     ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
-      newT: "نوو", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
+      newT: "نوو", popular: "پتر دهێتە خواستن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
       hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
   };
   const $ = (id) => document.getElementById(id);
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   document.addEventListener("touchstart", () => {}, { passive: true }); // lets iPhone show the menu-item tap effect (:active)
   // Shisha photo gets rising smoke (see .smoke in the CSS).
-  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" });
-    return el("div", { class: "shot" }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, el("span", { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"))) : img); };
+  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" }), ph = /\.jpe?g$/i.test(src);
+    const sm = el("span", ph && c.smoke ? { class: "smoke", "aria-hidden": "true", style: `left:${c.smoke[0]}%;top:${c.smoke[1]}%` } : { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"));
+    return el("div", { class: "shot" + (ph ? " ph" : "") }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, sm) : img); };
+  // "From our bar" gallery: tapping a photo opens its menu section.
+  const gallery = (pre, open, tag) => MENU && MENU.gallery && MENU.gallery.length ? el("div", { class: "barw" }, el(tag, { class: "barh", text: tr("barT") }),
+    el("div", { class: "bar" }, ...MENU.gallery.map((g) => el("a", { href: "#", onclick: (e) => { e.preventDefault(); open(g.cat); } },
+      el("img", { src: pre + g.img, alt: pick(g.name), loading: "lazy" }), el("span", { text: pick(g.name) }))))) : null;
+  const popular = (it) => it.popular ? el("span", { class: "badge pop", text: tr("popular") }) : null;
   const num = (n) => Number(n).toLocaleString("en-US");
   let lang = "ku", MENU = null;
   const tr = (k) => T[lang][k];
@@ -174,13 +193,14 @@ footer a { color: var(--gold2); text-decoration: none; }
   const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
   function render() {
     const cats = $("cats"), list = $("list");
-    cats.textContent = ""; list.textContent = ""; $("newTop").textContent = "";
+    cats.textContent = ""; list.textContent = ""; $("newTop").textContent = ""; $("bargal").textContent = "";
     if (!MENU) return;
     for (const c of MENU.categories.filter((c) => c.new)) {
       $("newTop").append(el("a", { class: "nw", href: "#c-" + c.id, onclick: (e) => { e.preventDefault(); go("c-" + c.id); } },
         c.banner ? el("img", { src: "../" + c.banner, alt: "" }) : null,
         el("div", {}, el("b", {}, el("span", { class: "badge", text: tr("newT") }), " ", pick(c.name)), el("span", { text: tr("newSee") }))));
     }
+    const g = gallery("../", (cat) => go("c-" + cat), "h2"); if (g) $("bargal").append(g);
     for (const c of MENU.categories) {
       const id = "c-" + c.id;
       const badge = () => c.new ? el("span", { class: "badge", text: tr("newT") }) : null;
@@ -195,7 +215,7 @@ footer a { color: var(--gold2); text-decoration: none; }
         const opts = it.options || [];
         const same = opts.every((o) => o.price === opts[0].price);
         const sub = [opts.length ? opts.map((o) => pick(o.name) + (same ? "" : " " + num(o.price))).join(" · ") : "", pick(it.note)].filter(Boolean).join(" — ");
-        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), sub ? el("small", { class: "sub", text: sub }) : null),
+        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), popular(it), sub ? el("small", { class: "sub", text: sub }) : null),
           el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
       }
       list.append(el("section", { id }, card));

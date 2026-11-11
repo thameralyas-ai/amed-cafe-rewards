@@ -137,6 +137,18 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
 @keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
+/* "From our bar": swipe row of real drink photos (menu.json gallery), not tied to single items. */
+.barw { margin: 6px 0 16px; }
+.barh { font-family: var(--serif); font-weight: 500; font-size: 24px; color: var(--gold2); line-height: 1.2; margin: 0 0 10px; }
+.bar { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -20px; padding: 0 20px 6px; }
+.bar::-webkit-scrollbar { display: none; }
+.bar a { flex: none; width: 128px; scroll-snap-align: start; text-decoration: none; color: var(--ink); font-size: 13px; line-height: 1.3; text-align: center; }
+.bar img { display: block; width: 128px; height: 164px; object-fit: cover; border-radius: 16px; margin-bottom: 6px; border: 1px solid var(--line); background: #2A1C15; }
+/* "Best seller" badge on an item (it.popular) */
+.badge.pop { background: none; color: var(--gold2); box-shadow: inset 0 0 0 1px var(--gold); }
+/* Shisha as a real photo: smoke starts at c.smoke (% of the photo) and stays inside the rounded photo */
+.shot.ph .smoke-wrap { margin-top: 0; overflow: hidden; border-radius: 18px; box-shadow: 0 10px 24px #0008; }
+.shot.ph img { height: 250px; width: auto; filter: none; }
 .li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #3F2D2399; font-size: 15px; }
 .li:last-child { border: 0; }
 .li .p { color: var(--gold2); font-weight: 400; white-space: nowrap; direction: ltr; }
@@ -357,6 +369,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
   <section id="menu">
     <div class="head"><span class="kicker" data-t="menuK"></span><h2 data-t="menuT"></h2><i class="orn"></i></div>
+    <div id="bargal"></div>
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="scroller" id="scroller"></div>
     <p class="note"><span class="swipe" data-t="swipe"></span><span id="menuNote"></span></p>
@@ -428,7 +441,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     en: {
       kicker: "Amed Cafe · Duhok", h1a: "Your evening of", words: ["coffee", "shisha", "comfort"], shishas: ["Gold", "Copper", "Silver"], sub: "Slow coffee, smooth shisha and good company — every day until 1 AM.",
       myCard: "My loyalty card", exploreMenu: "Explore the menu", open: "Open now", closed: "Closed · opens at 8:00 AM", hoursShort: "Every day · 8:00 AM – 1:00 AM",
-      navOpen: "Open navigation", navClose: "Close navigation", navMenuSub: "Drinks & shisha, with prices", navCardSub: "Your stamps and rewards", newK: "Just arrived", newT: "Our new products", newBadge: "New", seeMenu: "See in the menu", seeFlyer: "See the flyer", menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
+      navOpen: "Open navigation", navClose: "Close navigation", navMenuSub: "Drinks & shisha, with prices", navCardSub: "Your stamps and rewards", newK: "Just arrived", newT: "Our new products", newBadge: "New", popular: "Best seller", barT: "From our bar", seeMenu: "See in the menu", seeFlyer: "See the flyer", menuK: "The menu", menuT: "Crafted for you", swipe: "Swipe for more · ", iqd: "IQD", menuNote: "Prices in IQD", sampleNote: "Sample menu · the full menu is coming soon",
       rewK: "Amed rewards", rewT: "Buy {n}, the {nth} is free", rewP: "Separate cards for drinks and shisha — just give your phone number at the counter. Free rewards are valid for {d} days.",
       progRow: "Buy {n}, get a {reward}",
       levelsT: "VIP levels", levelsP: "The more you visit, the higher you go.", member: "Member", start: "From your first visit", lvRow: "{n} visits", lvRowOr: "{n} visits or {s} stamps",
@@ -442,7 +455,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
       myCard: "بطاقة الولاء الخاصة بي", exploreMenu: "تصفّح القائمة", open: "مفتوح الآن", closed: "مغلق · نفتح الساعة 8:00 صباحاً", hoursShort: "كل يوم · 8:00 صباحاً – 1:00 ليلاً",
-      navOpen: "فتح القائمة الرئيسية", navClose: "إغلاق القائمة الرئيسية", navMenuSub: "المشروبات والأركيلة مع الأسعار", navCardSub: "أختامك ومكافآتك", newK: "وصل حديثاً", newT: "منتجاتنا الجديدة", newBadge: "جديد", seeMenu: "اعرضه في القائمة", seeFlyer: "شاهد الإعلان", menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
+      navOpen: "فتح القائمة الرئيسية", navClose: "إغلاق القائمة الرئيسية", navMenuSub: "المشروبات والأركيلة مع الأسعار", navCardSub: "أختامك ومكافآتك", newK: "وصل حديثاً", newT: "منتجاتنا الجديدة", newBadge: "جديد", popular: "الأكثر طلباً", barT: "من مشروباتنا", seeMenu: "اعرضه في القائمة", seeFlyer: "شاهد الإعلان", menuK: "القائمة", menuT: "حُضّرت لك بعناية", swipe: "اسحب للمزيد · ", iqd: "د.ع", menuNote: "الأسعار بالدينار العراقي", sampleNote: "قائمة تجريبية · القائمة الكاملة قريباً",
       rewK: "مكافآت Amed", rewT: "اشترِ {n} واحصل على ال{nth} مجاناً", rewP: "بطاقتان منفصلتان للمشروبات والأركيلة — فقط أعطِ رقم هاتفك عند الكاونتر. المكافآت المجانية صالحة لمدة {d} يوماً.",
       progRow: "اشترِ {n} واحصل على {reward}",
       levelsT: "مستويات VIP", levelsP: "كلما زرتنا أكثر، ارتفع مستواك.", member: "عضو", start: "من زيارتك الأولى", lvRow: "{n} زيارة", lvRowOr: "{n} زيارة أو {s} ختم",
@@ -456,7 +469,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
       myCard: "کارتا من", exploreMenu: "مێنیوێ ببینە", open: "نوکە ڤەکریە", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", hoursShort: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ",
-      navOpen: "ڤەکرنا لیستێ", navClose: "گرتنا لیستێ", navMenuSub: "ڤەخوارن و نێرگەلە، دگەل بهایان", navCardSub: "مۆر و خەلاتێن تە", newK: "تازە گەهشتیە", newT: "بەرهەمێن مە یێن نوو", newBadge: "نوو", seeMenu: "د مێنیوێ دا ببینە", seeFlyer: "پۆستەرێ ببینە", menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
+      navOpen: "ڤەکرنا لیستێ", navClose: "گرتنا لیستێ", navMenuSub: "ڤەخوارن و نێرگەلە، دگەل بهایان", navCardSub: "مۆر و خەلاتێن تە", newK: "تازە گەهشتیە", newT: "بەرهەمێن مە یێن نوو", newBadge: "نوو", popular: "پتر دهێتە خواستن", barT: "ژ ڤەخوارنێن مە", seeMenu: "د مێنیوێ دا ببینە", seeFlyer: "پۆستەرێ ببینە", menuK: "مێنیو", menuT: "بۆ تە هاتیە ئامادەکرن", swipe: "بۆ زێدەتر بکێشە · ", iqd: "د.ع", menuNote: "بها ب دینارێن عێراقی", sampleNote: "مێنیوەکێ نموونەیە · مێنیوێ تەمام ب زوویی دێ هێت",
       rewK: "خەلاتێن Amed", rewT: "{n} بکڕە، یا {nth} بێ بەرامبەرە", rewP: "کارتێن جودا بۆ ڤەخوارن و نێرگەلێ — تنێ ژمارا مۆبایلا خۆ ل کاونتەری بدە. خەلاتێن بێ بەرامبەر بۆ ماوێ {d} رۆژان دمینن.",
       progRow: "{n} بکڕە، {reward} وەربگرە",
       levelsT: "ئاستێن VIP", levelsP: "هندی تو پتر سەرەدانا مە بکەی، ئاستێ تە بلندتر دبیت.", member: "ئەندام", start: "ژ سەرەدانا ئێکێ", lvRow: "{n} سەرەدان", lvRowOr: "{n} سەرەدان یان {s} مۆر",
@@ -485,8 +498,14 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   document.addEventListener("touchstart", () => {}, { passive: true }); // lets iPhone show the menu-item tap effect (:active)
   // Shisha photo gets rising smoke (see .smoke in the CSS).
-  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" });
-    return el("div", { class: "shot" }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, el("span", { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"))) : img); };
+  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" }), ph = /\.jpe?g$/i.test(src);
+    const sm = el("span", ph && c.smoke ? { class: "smoke", "aria-hidden": "true", style: `left:${c.smoke[0]}%;top:${c.smoke[1]}%` } : { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"));
+    return el("div", { class: "shot" + (ph ? " ph" : "") }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, sm) : img); };
+  // "From our bar" gallery: tapping a photo opens its menu section.
+  const gallery = (pre, open, tag) => MENU && MENU.gallery && MENU.gallery.length ? el("div", { class: "barw" }, el(tag, { class: "barh", text: tr("barT") }),
+    el("div", { class: "bar" }, ...MENU.gallery.map((g) => el("a", { href: "#", onclick: (e) => { e.preventDefault(); open(g.cat); } },
+      el("img", { src: pre + g.img, alt: pick(g.name), loading: "lazy" }), el("span", { text: pick(g.name) }))))) : null;
+  const popular = (it) => it.popular ? el("span", { class: "badge pop", text: tr("popular") }) : null;
   const pick = (o) => (o && (o[lang] || o.en)) || "";
   const pname = (p) => (lang !== "en" && p["name_" + lang]) || p.name;
   const preward = (p) => (lang !== "en" && p["reward_" + lang]) || p.reward;
@@ -528,8 +547,9 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
   function renderMenu() {
     const tabs = $("tabs"), sc = $("scroller");
-    tabs.textContent = ""; sc.textContent = "";
+    tabs.textContent = ""; sc.textContent = ""; $("bargal").textContent = "";
     if (!MENU) return;
+    const g = gallery("", (cat) => goCat(cat), "h3"); if (g) $("bargal").append(g);
     MENU.categories.forEach((c, i) => {
       tabs.append(el("button", { type: "button", role: "tab", "aria-selected": String(i === activeCat), onclick: () => {
         activeCat = i; fitMenu(); for (const b of tabs.children) b.setAttribute("aria-selected", String(b === tabs.children[i]));
@@ -545,7 +565,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
         const opts = it.options || [];
         const same = opts.every((o) => o.price === opts[0].price);
         const sub = [opts.length ? opts.map((o) => pick(o.name) + (same ? "" : " " + num(o.price))).join(" · ") : "", pick(it.note)].filter(Boolean).join(" — ");
-        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), sub ? el("small", { class: "sub", text: sub }) : null), el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
+        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), popular(it), sub ? el("small", { class: "sub", text: sub }) : null), el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
       }
       sc.append(card);
     });
