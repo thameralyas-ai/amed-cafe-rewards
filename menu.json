@@ -1077,6 +1077,7 @@
  "offers": [
   {
    "id": "shisha-combo",
+   "img": "media/offers/combo.jpg",
    "price": 5000,
    "was": 6750,
    "title": {
@@ -1097,6 +1098,7 @@
   },
   {
    "id": "dice",
+   "img": "media/offers/dice.jpg",
    "title": {
     "en": "Roll the dice",
     "ar": "ارمِ النرد",
@@ -1110,6 +1112,7 @@
   },
   {
    "id": "card",
+   "img": "media/offers/card.jpg",
    "link": "card",
    "title": {
     "en": "Loyalty card",
@@ -1124,6 +1127,7 @@
   },
   {
    "id": "match",
+   "img": "media/offers/match.jpg",
    "title": {
     "en": "Predict the match",
     "ar": "توقّع النتيجة",

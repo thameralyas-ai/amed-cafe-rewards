@@ -68,6 +68,8 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .ofs { display: flex; gap: 10px; margin: 8px -18px 10px; padding: 0 18px 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .ofs::-webkit-scrollbar { display: none; }
 .of { flex: none; width: 78%; min-height: 170px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid #D4A37366; border-radius: 16px; background: linear-gradient(135deg, #3A281E, #241812); }
+.of .oi { display: block; width: calc(100% + 28px); margin: -14px -14px 0; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 15px 15px 0 0; }
+.of:has(.oi) .on { margin-top: -26px; margin-inline-start: 4px; box-shadow: 0 0 0 3px #2E1F17; position: relative; }
 .of .on { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #1C120D; display: grid; place-items: center; font-weight: 500; font-size: 15px; }
 .of .ob { flex: 1; min-width: 0; }
 .of small { display: block; color: var(--gold); font-size: 12.5px; }
@@ -217,7 +219,7 @@ footer a { color: var(--gold2); text-decoration: none; }
     if (MENU.offers && MENU.offers.length) {   // Offers first
       cats.append(el("a", { href: "#c-offers", "data-id": "c-offers" }, tr("offT")));
       list.append(el("section", { id: "c-offers" }, el("div", { class: "mc ofc" }, el("h2", { text: tr("offT") }),
-        el("div", { class: "ofs s1" }, ...MENU.offers.map((o, i) => el("div", { class: "of" }, el("span", { class: "on", text: String(i + 1) }),
+        el("div", { class: "ofs s1" }, ...MENU.offers.map((o, i) => el("div", { class: "of" }, o.img ? el("img", { class: "oi", src: "../" + o.img, alt: "", loading: "lazy" }) : null, el("span", { class: "on", text: String(i + 1) }),
           el("div", { class: "ob" }, o.when ? el("small", { text: pick(o.when) }) : null, el("b", { text: pick(o.title) }), el("p", { text: pick(o.text) }),
             o.link === "card" ? el("a", { class: "ol", href: "../card/", text: tr("myCard") + " ›" }) : null),
           o.price ? el("span", { class: "op" }, num(o.price), el("small", { text: tr("iqd") }), o.was ? el("s", { text: num(o.was) }) : null) : null))))));

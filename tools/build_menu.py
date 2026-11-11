@@ -151,20 +151,22 @@ GALLERY=[
  ("black-coffee",("Coffee","قهوة","قەهوە"),"coffee"),
 ]
 # Offers (Thamir, 11 Nov 2026). Shown at the top of the QR menu and in the website's "Offers & events".
+# img: card picture in media/offers/ (combo = Amed shisha + Thamir's tea photo + CC0 water bottle, Wikimedia Commons;
+# dice = Amed's backgammon table, Instagram; card = the three Amed shishas; match = CC0 football, Wikimedia Commons).
 # price/was in IQD (optional); link: "card" = button to the loyalty card page.
 T3=lambda en,ar,ku:{"en":en,"ar":ar,"ku":ku}
 OFFERS=[
- {"id":"shisha-combo","price":5000,"was":6750,
+ {"id":"shisha-combo","img":"media/offers/combo.jpg","price":5000,"was":6750,
   "title":T3("Shisha combo","عرض الأركيلة","پێشکێشیا نێرگەلێ"),
   "when":T3("9:00 AM – 5:00 PM","9:00 صباحاً – 5:00 مساءً","9:00 سپێدێ – 5:00 ئێڤارێ"),
   "text":T3("A shisha + 1 bottle of water + 1 tea","أركيلة + قنينة ماء + شاي","نێرگەلەک + بوتلەکا ئاڤێ + چایەک")},
- {"id":"dice",
+ {"id":"dice","img":"media/offers/dice.jpg",
   "title":T3("Roll the dice","ارمِ النرد","زارێ بهاڤێژە"),
   "text":T3("Roll a double six and get 50% off your bill","احصل على دبل ستة واحصل على خصم 50% على فاتورتك","دوو شەشان بینە و 50% ژ حسابا خۆ کێم بکە")},
- {"id":"card","link":"card",
+ {"id":"card","img":"media/offers/card.jpg","link":"card",
   "title":T3("Loyalty card","بطاقة الولاء","کارتا ئامەد"),
   "text":T3("Get our loyalty card: your 8th shisha is free","احصل على بطاقة الولاء: الأركيلة الثامنة مجاناً","کارتا مە وەرگرە: نێرگەلا 8ەمین بێ بەرامبەرە")},
- {"id":"match",
+ {"id":"match","img":"media/offers/match.jpg",
   "title":T3("Predict the match","توقّع النتيجة","ئەنجامێ پێشبینی بکە"),
   "text":T3("Predict the exact result of any match before it starts, and your bill is 100% on us","توقّع النتيجة الصحيحة لأي مباراة قبل بدايتها، وفاتورتك علينا 100%","ئەنجامێ دروست یێ هەر یاریەکێ بەری دەستپێکرنا وێ پێشبینی بکە، و حسابا تە 100% ل سەر مەیە")},
 ]

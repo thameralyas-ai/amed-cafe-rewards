@@ -200,6 +200,7 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .ev h3 { font-size: 24px; line-height: 1.3; }
 .ev p { color: var(--muted); font-size: 14px; }
 .ev .evp { color: var(--gold2); white-space: nowrap; } .ev .evp s { color: var(--muted); }
+.ev .evi { display: block; width: 100%; max-width: 420px; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 16px; margin: 4px 0 10px; border: 1px solid var(--line); }
 .ev .evl { color: var(--gold2); font-size: 14px; text-decoration: none; border-bottom: 1px solid #D4A37366; }
 .empty { text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 22px; }
 
@@ -678,6 +679,7 @@ footer small { opacity: .85; }
     const DN = (i) => dfmt(new Date(2024, 0, 7 + Number(i)), { weekday: "long" });
     for (const o of (MENU && MENU.offers) || []) {   // offers from menu.json (menu session)
       tl.append(el("div", { class: "ev" },
+        o.img ? el("img", { class: "evi", src: o.img, alt: "", loading: "lazy" }) : null,
         o.when ? el("small", { text: pick(o.when) }) : null,
         el("h3", { text: pick(o.title) }),
         el("p", {}, pick(o.text), o.price ? el("span", { class: "evp" }, " · " + num(o.price) + " " + tr("iqd") + " ", o.was ? el("s", { text: num(o.was) }) : null) : null),
