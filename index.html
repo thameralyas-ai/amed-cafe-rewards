@@ -8,7 +8,6 @@
   // old Home Screen icons all land here). Add ?home to the address to see the website instead.
   try { if (localStorage.getItem("amed-session") && !/[?&]home\b/.test(location.search)) location.replace("card/" + location.hash); } catch (_) {}
 </script>
-<script>try { const m = /[?&]look=([abc])/.exec(location.search); if (m) document.documentElement.dataset.look = m[1]; } catch (_) {}</script>
 <title>Amed Cafe · your comfort space</title>
 <meta name="description" content="Amed Cafe: coffee, cold drinks and premium shisha. Open every day 8:00 AM – 1:00 AM. Buy 7, the 8th is free with the Amed loyalty card.">
 <meta property="og:title" content="Amed Cafe · your comfort space">
@@ -281,39 +280,6 @@ header .langs { margin-inline-end: 54px; }
 .navp .hrs { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
 @media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
 
-/* ===== Interior samples (preview only): colours taken from Thamir's own photos =====
-   plant wall #4D523A / #6D6F52, terrazzo floor #D9CCB0 with #A18566 #BCA282 #C8875A #4E3F32 chips, wood #786652 */
-:root { --leaf: #A9B77E; --leaf-d: #4D523A; --leaf-bg: #232619; }
-/* A · Plant green: green as the second accent (labels, ornaments with a leaf, "New" badges, card edges) */
-[data-look="a"] .kicker { color: var(--leaf); }
-[data-look="a"] .orn { background: linear-gradient(90deg, transparent, var(--leaf), transparent); width: 90px; }
-[data-look="a"] .orn::after { width: 10px; height: 10px; top: -5px; background: var(--leaf); border-radius: 0 100% 0 100%; }
-[data-look="a"] .badge { background: var(--leaf); }
-[data-look="a"] .mc { border-color: #6D6F52; box-shadow: inset 0 3px 0 #6D6F52AA; }
-[data-look="a"] .reward { border-color: #6D6F5299; background: radial-gradient(80% 60% at 50% 0%, #4D523A55, transparent); }
-[data-look="a"] .hero { background: radial-gradient(38% 34% at var(--glow-x) 0%, #E3B27D2E, transparent 100%), radial-gradient(70% 45% at 100% 0%, #5C6247AA, transparent), radial-gradient(60% 40% at 0% 6%, #4D523A88, transparent), radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
-[data-look="a"] .social .ic { border-color: #8E9A6B; color: var(--leaf); }
-[data-look="a"] .info { border-color: #4D523A; }
-[data-look="a"] .tabs button[aria-selected="true"] { background: var(--leaf); border-color: var(--leaf); }
-/* B · Terrazzo: the floor's chips, very faint, on the cards; a thin terrazzo strip between sections */
-[data-look="b"] .mc, [data-look="b"] .reward, [data-look="b"] .info, [data-look="b"] .np { position: relative; isolation: isolate; }
-[data-look="b"] .mc::before, [data-look="b"] .reward::before, [data-look="b"] .info::before, [data-look="b"] .np::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; background: url(media/look/terrazzo-dark.png) 0 0 / 300px; opacity: .17; z-index: -1; pointer-events: none; }
-[data-look="b"] footer { border-top: 8px solid transparent; border-image: url(media/look/terrazzo-light.png) 30 round; margin-top: 50px; }
-[data-look="b"] .hero { border-bottom: 6px solid transparent; border-image: url(media/look/terrazzo-light.png) 30 round; }
-/* C · The real room: plant green + a light terrazzo footer like the floor + wood-brown cards */
-[data-look="c"] .kicker { color: var(--leaf); }
-[data-look="c"] .orn::after { background: var(--leaf); border-radius: 0 100% 0 100%; width: 9px; height: 9px; top: -4px; }
-[data-look="c"] .badge { background: var(--leaf); }
-[data-look="c"] #rewards { background: linear-gradient(180deg, transparent, var(--leaf-bg) 18%, var(--leaf-bg) 82%, transparent); margin: 0 -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
-[data-look="c"] .reward { border-color: #9BA67666; background: radial-gradient(80% 60% at 50% 0%, #4D523A66, transparent); }
-[data-look="c"] .mc { background: linear-gradient(180deg, #3A2E26, #2B211B); }
-[data-look="c"] footer { background: radial-gradient(60% 70% at 50% 50%, #E8DDC6F2, #E2D5B9B3 70%, #E2D5B966), url(media/look/terrazzo-light.png) 0 0 / 260px; color: #4E3F32; margin-top: 50px; border-top: 3px solid #786652; }
-[data-look="c"] footer a { color: #4E3F32 !important; }
-[data-look="c"] footer .logo { background-image: url(logo.png); }
-[data-look="c"] footer small { opacity: .85; }
-@media (min-width: 900px) { [data-look="c"] #rewards { margin: 0; border-radius: 30px; } }
-
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -354,6 +320,22 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .split section { padding-top: 56px; }
   .head h2 { font-size: 44px; }
 }
+
+/* The real room (Thamir chose sample C): colours taken from Thamir's own photos
+   plant wall #4D523A / #6D6F52, terrazzo floor #D9CCB0 with #A18566 #BCA282 #C8875A #4E3F32 chips, wood #786652
+   plant-green labels and leaf ornaments, rewards on plant green, wood-brown menu cards, a light terrazzo footer like the floor. */
+:root { --leaf: #A9B77E; --leaf-d: #4D523A; --leaf-bg: #232619; }
+.kicker { color: var(--leaf); }
+.orn::after { background: var(--leaf); border-radius: 0 100% 0 100%; width: 9px; height: 9px; top: -4px; }
+.badge { background: var(--leaf); }
+#rewards { background: linear-gradient(180deg, transparent, var(--leaf-bg) 18%, var(--leaf-bg) 82%, transparent); margin: 0 -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
+.reward { border-color: #9BA67666; background: radial-gradient(80% 60% at 50% 0%, #4D523A66, transparent); }
+.mc { background: linear-gradient(180deg, #3A2E26, #2B211B); }
+footer { background: radial-gradient(60% 70% at 50% 50%, #E8DDC6F2, #E2D5B9B3 70%, #E2D5B966), url(media/look/terrazzo-light.png) 0 0 / 260px; color: #4E3F32; margin-top: 50px; border-top: 3px solid #786652; }
+footer a { color: #4E3F32 !important; }
+footer .logo { background-image: url(logo.png); }
+footer small { opacity: .85; }
+@media (min-width: 900px) { #rewards { margin: 0; border-radius: 30px; } }
 </style>
 </head>
 <body>
