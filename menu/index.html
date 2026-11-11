@@ -64,6 +64,18 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
 @keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
+/* Offers (menu.json offers), first section of the menu. Style s1 = gold cards. */
+.ofs { display: grid; gap: 10px; margin: 8px 0 10px; }
+.of { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid #D4A37366; border-radius: 16px; background: linear-gradient(135deg, #3A281E, #241812); }
+.of .on { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #1C120D; display: grid; place-items: center; font-weight: 500; font-size: 15px; }
+.of .ob { flex: 1; min-width: 0; }
+.of small { display: block; color: var(--gold); font-size: 12.5px; }
+.of b { display: block; font-weight: 500; font-size: 17px; line-height: 1.35; }
+.of p { color: var(--muted); font-size: 14px; line-height: 1.45; margin-top: 2px; }
+.of .op { text-align: end; white-space: nowrap; color: var(--gold2); font-size: 17px; direction: ltr; }
+.of .op small { display: inline; color: var(--muted); font-size: 11px; margin-inline-start: 3px; }
+.of .op s { display: block; color: var(--muted); font-size: 12.5px; }
+.of .ol { display: inline-block; margin-top: 6px; color: var(--gold2); font-size: 13.5px; text-decoration: none; border-bottom: 1px solid #D4A37366; }
 /* "From our bar": swipe row of real drink photos (menu.json gallery), not tied to single items. */
 .barw { margin: 6px 0 16px; }
 .barh { font-family: var(--serif); font-weight: 500; font-size: 24px; color: var(--gold2); line-height: 1.2; margin: 0 0 10px; }
@@ -159,13 +171,13 @@ footer a { color: var(--gold2); text-decoration: none; }
 (() => {
   const T = {
     en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 8:00 AM", iqd: "IQD", note: "Prices in IQD",
-      newT: "New", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
+      newT: "New", offT: "Offers", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
       hours: "Every day · 8:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
     ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 8:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
-      newT: "جديد", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
+      newT: "جديد", offT: "العروض", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
       hours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
     ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
-      newT: "نوو", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
+      newT: "نوو", offT: "پێشکێشی", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
       hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
   };
   const $ = (id) => document.getElementById(id);
@@ -201,6 +213,14 @@ footer a { color: var(--gold2); text-decoration: none; }
         el("div", {}, el("b", {}, el("span", { class: "badge", text: tr("newT") }), " ", pick(c.name)), el("span", { text: tr("newSee") }))));
     }
     const g = gallery("../", (cat) => go("c-" + cat), "h2"); if (g) $("bargal").append(g);
+    if (MENU.offers && MENU.offers.length) {   // Offers first
+      cats.append(el("a", { href: "#c-offers", "data-id": "c-offers" }, tr("offT")));
+      list.append(el("section", { id: "c-offers" }, el("div", { class: "mc ofc" }, el("h2", { text: tr("offT") }),
+        el("div", { class: "ofs s1" }, ...MENU.offers.map((o, i) => el("div", { class: "of" }, el("span", { class: "on", text: String(i + 1) }),
+          el("div", { class: "ob" }, o.when ? el("small", { text: pick(o.when) }) : null, el("b", { text: pick(o.title) }), el("p", { text: pick(o.text) }),
+            o.link === "card" ? el("a", { class: "ol", href: "../card/", text: tr("myCard") + " ›" }) : null),
+          o.price ? el("span", { class: "op" }, num(o.price), el("small", { text: tr("iqd") }), o.was ? el("s", { text: num(o.was) }) : null) : null))))));
+    }
     for (const c of MENU.categories) {
       const id = "c-" + c.id;
       const badge = () => c.new ? el("span", { class: "badge", text: tr("newT") }) : null;

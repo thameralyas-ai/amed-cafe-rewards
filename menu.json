@@ -1074,6 +1074,68 @@
    ]
   }
  ],
+ "offers": [
+  {
+   "id": "shisha-combo",
+   "price": 5000,
+   "was": 6750,
+   "title": {
+    "en": "Shisha combo",
+    "ar": "عرض الأركيلة",
+    "ku": "پێشکێشیا نێرگەلێ"
+   },
+   "when": {
+    "en": "9:00 AM – 5:00 PM",
+    "ar": "9:00 صباحاً – 5:00 مساءً",
+    "ku": "9:00 سپێدێ – 5:00 ئێڤارێ"
+   },
+   "text": {
+    "en": "A shisha + 1 bottle of water + 1 tea",
+    "ar": "أركيلة + قنينة ماء + شاي",
+    "ku": "نێرگەلەک + بوتلەکا ئاڤێ + چایەک"
+   }
+  },
+  {
+   "id": "dice",
+   "title": {
+    "en": "Roll the dice",
+    "ar": "ارمِ النرد",
+    "ku": "زارێ بهاڤێژە"
+   },
+   "text": {
+    "en": "Roll a double six and get 50% off your bill",
+    "ar": "احصل على دبل ستة واحصل على خصم 50% على فاتورتك",
+    "ku": "دوو شەشان بینە و 50% ژ حسابا خۆ کێم بکە"
+   }
+  },
+  {
+   "id": "card",
+   "link": "card",
+   "title": {
+    "en": "Loyalty card",
+    "ar": "بطاقة الولاء",
+    "ku": "کارتا ئامەد"
+   },
+   "text": {
+    "en": "Get our loyalty card: your 8th shisha is free",
+    "ar": "احصل على بطاقة الولاء: الأركيلة الثامنة مجاناً",
+    "ku": "کارتا مە وەرگرە: نێرگەلا 8ەمین بێ بەرامبەرە"
+   }
+  },
+  {
+   "id": "match",
+   "title": {
+    "en": "Predict the match",
+    "ar": "توقّع النتيجة",
+    "ku": "ئەنجامێ پێشبینی بکە"
+   },
+   "text": {
+    "en": "Predict the exact result of any match before it starts, and your bill is 100% on us",
+    "ar": "توقّع النتيجة الصحيحة لأي مباراة قبل بدايتها، وفاتورتك علينا 100%",
+    "ku": "ئەنجامێ دروست یێ هەر یاریەکێ بەری دەستپێکرنا وێ پێشبینی بکە، و حسابا تە 100% ل سەر مەیە"
+   }
+  }
+ ],
  "gallery": [
   {
    "img": "media/drinks/pistachio-coffee.jpg",

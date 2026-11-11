@@ -199,6 +199,8 @@ section { padding: 56px 0 0; scroll-margin-top: 10px; }
 .ev small { color: var(--gold); font-size: 13px; }
 .ev h3 { font-size: 24px; line-height: 1.3; }
 .ev p { color: var(--muted); font-size: 14px; }
+.ev .evp { color: var(--gold2); white-space: nowrap; } .ev .evp s { color: var(--muted); }
+.ev .evl { color: var(--gold2); font-size: 14px; text-decoration: none; border-bottom: 1px solid #D4A37366; }
 .empty { text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; padding: 22px; }
 
 /* Gallery */
@@ -674,6 +676,13 @@ footer small { opacity: .85; }
     const box = $("evList"); box.textContent = "";
     const tl = el("div", { class: "tl" });
     const DN = (i) => dfmt(new Date(2024, 0, 7 + Number(i)), { weekday: "long" });
+    for (const o of (MENU && MENU.offers) || []) {   // offers from menu.json (menu session)
+      tl.append(el("div", { class: "ev" },
+        o.when ? el("small", { text: pick(o.when) }) : null,
+        el("h3", { text: pick(o.title) }),
+        el("p", {}, pick(o.text), o.price ? el("span", { class: "evp" }, " · " + num(o.price) + " " + tr("iqd") + " ", o.was ? el("s", { text: num(o.was) }) : null) : null),
+        o.link === "card" ? el("a", { class: "evl", href: "card/", text: tr("myCard") + " ›" }) : null));
+    }
     for (const ev of (DATA && DATA.events) || []) {
       const d = new Date(ev.date + "T12:00:00");
       tl.append(el("div", { class: "ev" },
@@ -869,7 +878,7 @@ footer small { opacity: .85; }
   setInterval(renderStatus, 60000);
   startStage();
 
-  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); renderNav(); } }).catch(() => {});
+  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>
