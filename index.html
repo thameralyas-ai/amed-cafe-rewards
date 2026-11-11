@@ -320,6 +320,22 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
   .split section { padding-top: 56px; }
   .head h2 { font-size: 44px; }
 }
+
+/* The real room (Thamir chose sample C): colours taken from Thamir's own photos
+   plant wall #4D523A / #6D6F52, terrazzo floor #D9CCB0 with #A18566 #BCA282 #C8875A #4E3F32 chips, wood #786652
+   plant-green labels and leaf ornaments, rewards on plant green, wood-brown menu cards, a light terrazzo footer like the floor. */
+:root { --leaf: #A9B77E; --leaf-d: #4D523A; --leaf-bg: #232619; }
+.kicker { color: var(--leaf); }
+.orn::after { background: var(--leaf); border-radius: 0 100% 0 100%; width: 9px; height: 9px; top: -4px; }
+.badge { background: var(--leaf); }
+#rewards { background: linear-gradient(180deg, transparent, var(--leaf-bg) 18%, var(--leaf-bg) 82%, transparent); margin: 0 -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
+.reward { border-color: #9BA67666; background: radial-gradient(80% 60% at 50% 0%, #4D523A66, transparent); }
+.mc { background: linear-gradient(180deg, #3A2E26, #2B211B); }
+footer { background: radial-gradient(60% 70% at 50% 50%, #E8DDC6F2, #E2D5B9B3 70%, #E2D5B966), url(media/look/terrazzo-light.png) 0 0 / 260px; color: #4E3F32; margin-top: 50px; border-top: 3px solid #786652; }
+footer a { color: #4E3F32 !important; }
+footer .logo { background-image: url(logo.png); }
+footer small { opacity: .85; }
+@media (min-width: 900px) { #rewards { margin: 0; border-radius: 30px; } }
 </style>
 </head>
 <body>
