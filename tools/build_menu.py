@@ -4,7 +4,7 @@ import json, sys
 SINGLE_DOUBLE=[("Single","سنگل","تەک",1500),("Double","دبل","دەبل",3000)]
 C=[
  ("coffee",("Coffee","قهوة","قەهوە"),None,[
-  # Pistachio coffee: Thamir's best seller (11 Nov 2026). Price from the old menu (single 1,500 / double 3,000).
+  # Pistachio coffee: Thamir's best seller (11 Nov 2026). Price confirmed by Thamir (single 1,500 / double 3,000).
   (("Pistachio coffee","قهوة الفستق","قەهوا فستقێ"),1500,SINGLE_DOUBLE,
    ("Made with real pistachio, creamy and rich","تُحضّر من الفستق الطبيعي، كريمية وغنية","ب فستقێ سروشتی، کرێمی و تام خۆش"),{"popular":True}),
   (("Turkish coffee","قهوة تركية","قەهوا تورکی"),1500,SINGLE_DOUBLE,
