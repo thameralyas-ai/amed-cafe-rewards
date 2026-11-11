@@ -64,15 +64,16 @@ section { scroll-margin-top: 64px; padding-top: 22px; }
 .smoke i:nth-child(2) { animation-delay: -1.05s; --dx: -10px; } .smoke i:nth-child(3) { animation-delay: -2.1s; --dx: 8px; } .smoke i:nth-child(4) { animation-delay: -3.15s; --dx: -4px; }
 @keyframes puff { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: .9; } 50% { transform: translate(calc(var(--dx, 6px) * .6), -38px) scale(1.6); opacity: .6; } 100% { transform: translate(var(--dx, 6px), -80px) scale(2.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .smoke i { animation-duration: 12s; } }
-/* Offers (menu.json offers), first section of the menu. Style s1 = gold cards. */
-.ofs { display: grid; gap: 10px; margin: 8px 0 10px; }
-.of { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid #D4A37366; border-radius: 16px; background: linear-gradient(135deg, #3A281E, #241812); }
+/* Offers (menu.json offers), first section of the menu: gold cards in a swipe row (Thamir chose sample 2). */
+.ofs { display: flex; gap: 10px; margin: 8px -18px 10px; padding: 0 18px 6px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.ofs::-webkit-scrollbar { display: none; }
+.of { flex: none; width: 78%; min-height: 170px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid #D4A37366; border-radius: 16px; background: linear-gradient(135deg, #3A281E, #241812); }
 .of .on { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #1C120D; display: grid; place-items: center; font-weight: 500; font-size: 15px; }
 .of .ob { flex: 1; min-width: 0; }
 .of small { display: block; color: var(--gold); font-size: 12.5px; }
 .of b { display: block; font-weight: 500; font-size: 17px; line-height: 1.35; }
 .of p { color: var(--muted); font-size: 14px; line-height: 1.45; margin-top: 2px; }
-.of .op { text-align: end; white-space: nowrap; color: var(--gold2); font-size: 17px; direction: ltr; }
+.of .op { margin-top: auto; text-align: start; white-space: nowrap; color: var(--gold2); font-size: 17px; direction: ltr; }
 .of .op small { display: inline; color: var(--muted); font-size: 11px; margin-inline-start: 3px; }
 .of .op s { display: block; color: var(--muted); font-size: 12.5px; }
 .of .ol { display: inline-block; margin-top: 6px; color: var(--gold2); font-size: 13.5px; text-decoration: none; border-bottom: 1px solid #D4A37366; }
