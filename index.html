@@ -16,9 +16,8 @@
 <meta property="og:url" content="https://amedcaferest.com/">
 <link rel="icon" href="card/icon-192.png">
 <link rel="apple-touch-icon" href="card/icon-180.png">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#130e0b" media="(prefers-color-scheme: dark)">
-<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#17110d">
+<meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+Arabic:wght@400;500;600&display=swap">
@@ -26,19 +25,18 @@
 /* Apple-inspired redesign (.claude/skills/apple-design/SKILL.md), adapted to Amed Cafe:
    white space, system type, one focal drink per section, a warm caramel accent instead of gold.
    Dark mode uses the cafe's espresso brown. Spacing uses only 4 8 12 16 24 32 48 64 96 128 160. */
+/* Colours (Claude's choice for Thamir): the cafe at night. Espresso brown background, warm cream text,
+   caramel-gold for prices and buttons (the brand's gold, warmed), olive green from the plant walls for small labels.
+   One dark look in both light and dark mode. */
 :root {
-  --bg: #ffffff; --bg-alt: #f7f4f0; --text: #1d1d1f; --muted: #6e6e73; --hair: #d2d2d7;
-  --accent: #9a6232; --accent-ink: #ffffff; --accent-soft: #9a62321a;
-  --nav: rgb(255 255 255 / .72);
+  --bg: #17110d; --bg-alt: #231b16; --text: #f2eadf; --muted: #b3a595; --hair: #3a2e26;
+  --accent: #d4a46c; --accent-ink: #17110d; --accent-soft: #d4a46c1f; --leaf: #a6b47f;
+  --nav: rgb(23 17 13 / .78);
   --sans: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
   --serif: "Cormorant Garamond", "Times New Roman", serif;
   --ease: cubic-bezier(.25, .1, .25, 1);
   --r: 20px;
-  color-scheme: light dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #130e0b; --bg-alt: #1f1813; --text: #f5f5f7; --muted: #a8a29c; --hair: #3b322c;
-    --accent: #d9a066; --accent-ink: #1d1d1f; --accent-soft: #d9a0661f; --nav: rgb(19 14 11 / .72); }
+  color-scheme: dark;
 }
 .rtl { --sans: -apple-system, BlinkMacSystemFont, "Noto Sans Arabic", "Inter", "Helvetica Neue", Arial, sans-serif; }
 * { box-sizing: border-box; margin: 0; }
@@ -50,7 +48,7 @@ a { color: inherit; }
 @media (min-width: 768px) { .wrap { padding: 0 24px; } }
 @media (min-width: 1200px) { .wrap { padding: 0 48px; } }
 .ltr { direction: ltr; unicode-bidi: isolate; }
-.eyebrow { display: block; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.eyebrow { display: block; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--leaf); margin-bottom: 12px; }
 .rtl .eyebrow { letter-spacing: 0; font-size: 14px; }
 h1, h2, h3 { font-weight: 600; }
 .h2 { font-size: 32px; line-height: 1.2; letter-spacing: -.015em; }
@@ -72,8 +70,7 @@ section { padding: 64px 0; scroll-margin-top: 48px; }
 /* Nav: slim, sticky, translucent */
 .gn { position: sticky; top: 0; z-index: 30; height: 48px; background: var(--nav); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid color-mix(in srgb, var(--hair) 60%, transparent); }
 .gn .wrap { height: 48px; display: flex; align-items: center; gap: 24px; }
-.logo { display: block; width: 72px; height: 32px; flex: none; background: url(logo.png) center/contain no-repeat; }
-@media (prefers-color-scheme: dark) { .logo { background-image: url(logo-gold.png); } }
+.logo { display: block; width: 72px; height: 32px; flex: none; background: url(logo-gold.png) center/contain no-repeat; }
 .gn .links { display: none; gap: 32px; font-size: 12px; margin-inline-start: auto; }
 .gn .links a { text-decoration: none; color: var(--text); opacity: .8; } .gn .links a:hover { opacity: 1; }
 .rtl .gn .links { font-size: 14px; }
