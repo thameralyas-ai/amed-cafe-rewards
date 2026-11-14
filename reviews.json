@@ -1,0 +1,4 @@
+{
+ "note": "Real Google reviews shown as cards on the homepage (section What our guests say). Only real reviews, copied from Google with the reviewer name as Google shows it. Fields: name, rating (1-5), text (string or {en,ar,ku}), date (optional). Empty list = section hidden.",
+ "reviews": []
+}
