@@ -353,7 +353,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 
 /* The real room (Thamir chose sample C): colours taken from Thamir's own photos
    plant wall #4D523A / #6D6F52, terrazzo floor #D9CCB0 with #A18566 #BCA282 #C8875A #4E3F32 chips, wood #786652
-   plant-green labels and leaf ornaments, rewards on plant green, wood-brown menu cards, a light terrazzo footer like the floor. */
+   plant-green labels and leaf ornaments, rewards on plant green, wood-brown menu cards, (the terrazzo footer was later replaced by the coffee-beans footer). */
 :root { --leaf: #A9B77E; --leaf-d: #4D523A; --leaf-bg: #232619; }
 .kicker { color: var(--leaf); }
 .orn::after { background: var(--leaf); border-radius: 0 100% 0 100%; width: 9px; height: 9px; top: -4px; }
@@ -361,11 +361,18 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 #rewards { background: linear-gradient(180deg, transparent, var(--leaf-bg) 18%, var(--leaf-bg) 82%, transparent); margin: 0 -20px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
 .reward { border-color: #9BA67666; background: radial-gradient(80% 60% at 50% 0%, #4D523A66, transparent); }
 .mc { background: linear-gradient(180deg, #3A2E26, #2B211B); }
-footer { background: radial-gradient(60% 70% at 50% 50%, #E8DDC6F2, #E2D5B9B3 70%, #E2D5B966), url(media/look/terrazzo-light.png) 0 0 / 260px; color: #4E3F32; margin-top: 50px; border-top: 3px solid #786652; }
-footer a { color: #4E3F32 !important; }
-footer .logo { background-image: url(logo.png); }
-footer small { opacity: .85; }
 @media (min-width: 900px) { #rewards { margin: 0; border-radius: 30px; } }
+
+/* Footer (Thamir chose sample B): real coffee beans moving slowly behind the gold logo (Mixkit footage, free licence),
+   darkened so the text stays readable. Plays only while the footer is on screen. Replaces the terrazzo footer. */
+footer { background: #120c09; color: var(--muted); border-top: 0; margin-top: 50px; position: relative; overflow: hidden; isolation: isolate;
+  padding-top: 80px; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+footer a { color: var(--muted) !important; }
+footer .logo { background-image: url(logo-gold.png); }
+footer > :not(.fx) { position: relative; z-index: 1; }
+.fx { position: absolute; inset: 0; z-index: 0; }
+.fx video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fx::after { content: ""; position: absolute; inset: 0; background: radial-gradient(70% 90% at 50% 55%, #120c09b3, #120c09e6); }
 </style>
 </head>
 <body>
@@ -469,6 +476,7 @@ footer small { opacity: .85; }
 </main>
 
 <footer>
+  <div class="fx" aria-hidden="true"><video id="fxv" muted loop playsinline preload="none"></video></div>
   <div class="logo"></div>
   <span data-t="tagline"></span>
   <small>© <span id="yr"></span> Amed Cafe · amedcaferest.com</small>
@@ -871,6 +879,11 @@ footer small { opacity: .85; }
   addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("yr").textContent = new Date().getFullYear();
+  const FOOT = "beans";
+  if ("IntersectionObserver" in window) {
+    const v = $("fxv"); v.muted = true; v.poster = "media/footer/" + FOOT + ".jpg";
+    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { if (!v.src) v.src = "media/footer/" + FOOT + ".mp4"; v.play().catch(() => {}); } else v.pause(); }), { rootMargin: "200px" }).observe(v.parentNode.parentNode);
+  }
 
   let start = (location.hash || "").replace("#", "");
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
