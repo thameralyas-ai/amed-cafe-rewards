@@ -152,6 +152,7 @@ footer a { color: var(--gold2); text-decoration: none; }
       <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg></button>
       <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg></button>
       <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
+      <button type="button" data-lang="de" title="Deutsch" aria-label="German"><svg class="flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg></button>
     </div>
   </div>
   <h1 data-t="title"></h1>
@@ -183,6 +184,9 @@ footer a { color: var(--gold2); text-decoration: none; }
     ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
       newT: "نوو", offT: "پێشکێشی", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
       hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
+    de: { title: "Getränkekarte", open: "Jetzt geöffnet · bis 1:00 Uhr", closed: "Geschlossen · öffnet um 8:00 Uhr", iqd: "IQD", note: "Preise in IQD",
+      newT: "Neu", offT: "Angebote", popular: "Bestseller", barT: "Von unserer Bar", newSee: "Tippen, um es in der Karte zu sehen", promoT: "Kaufen Sie 7, das 8. ist gratis", promoP: "Karten für Getränke und Shisha – nennen Sie an der Theke Ihre Telefonnummer.", myCard: "Meine Treuekarte", review: "Bewerten Sie uns ★",
+      hours: "Täglich · 8:00 – 1:00 Uhr", err: "Die Karte konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut." },
   };
   const $ = (id) => document.getElementById(id);
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
@@ -270,8 +274,8 @@ footer a { color: var(--gold2); text-decoration: none; }
   function setLang(l) {
     lang = T[l] ? l : "ku";
     document.documentElement.lang = lang === "ku" ? "ckb" : lang;
-    document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
-    document.body.classList.toggle("rtl", lang !== "en");
+    document.documentElement.dir = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
+    document.body.classList.toggle("rtl", lang === "ar" || lang === "ku");
     for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
     for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
     $("promoT").textContent = tr("promoT");
@@ -285,7 +289,7 @@ footer a { color: var(--gold2); text-decoration: none; }
 
   let start = (location.hash || "").replace("#", "");
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
-  if (!T[start]) { const nl = (navigator.language || "").toLowerCase(); start = nl.startsWith("ar") ? "ar" : nl.startsWith("en") ? "en" : "ku"; }
+  if (!T[start]) { const nl = (navigator.language || "").toLowerCase(); start = nl.startsWith("ar") ? "ar" : nl.startsWith("en") ? "en" : nl.startsWith("de") ? "de" : "ku"; }
   setLang(start);
   fetch("../menu.json", { cache: "no-cache" }).then((r) => r.json()).then((m) => { MENU = m; render(); })
     .catch(() => { $("list").dataset.err = "1"; $("list").append(el("p", { class: "err", text: tr("err") })); });
