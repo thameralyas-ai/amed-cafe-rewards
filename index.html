@@ -285,9 +285,16 @@ header .langs { margin-inline-end: 54px; }
 .navp .hrs { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
 @media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
 
-/* Google reviews: the cafe's Google Maps window (rating and reviews) + buttons */
-.revp { text-align: center; color: var(--muted); max-width: 34ch; margin: -6px auto 18px; }
-.gmap { border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 4 / 3; max-height: 460px; width: 100%; }
+/* Google reviews (cards from reviews.json) + the Google Maps window in "Find us" */
+.revs { display: grid; gap: 14px; }
+@media (min-width: 900px) { .revs { grid-template-columns: repeat(3, 1fr); } }
+.rev { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.rev .stars { color: var(--gold2); letter-spacing: 2px; direction: ltr; }
+.rev p { margin: 8px 0 12px; }
+.rev small { color: var(--muted); font-size: 13px; }
+.maplink { text-align: center; margin: 14px 0 22px; }
+.maplink .btn { display: inline-block; padding: 12px 24px; }
+.gmap { border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 4 / 3; max-height: 420px; width: 100%; margin-top: 4px; }
 .gmap iframe { display: block; width: 100%; height: 100%; border: 0; }
 .revbtns { display: flex; flex-direction: column; gap: 10px; margin: 18px auto 0; max-width: 340px; }
 @media (min-width: 900px) { .gmap { aspect-ratio: 16 / 7; } .revbtns { flex-direction: row; max-width: none; justify-content: center; } .revbtns .btn { padding: 14px 28px; } }
@@ -424,16 +431,18 @@ footer small { opacity: .85; }
     </section>
   </div>
 
-  <section id="reviews">
+  <!-- Real Google reviews as cards (reviews.json). Hidden until there are reviews to show. -->
+  <section id="reviews" hidden>
     <div class="head"><span class="kicker" data-t="revK"></span><h2 data-t="revT"></h2><i class="orn"></i></div>
-    <p class="revp" data-t="revP"></p>
-    <div class="gmap"><iframe id="gmap" title="Amed Cafe on Google Maps" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    <div class="revs" id="revList"></div>
     <div class="revbtns"><a class="btn pri" id="revRead" target="_blank" rel="noopener" data-t="revRead"></a><a class="btn sec" id="revWrite" target="_blank" rel="noopener" data-t="reviewLink"></a></div>
   </section>
 
   <section id="visit">
     <div class="head"><span class="kicker" data-t="visK"></span><h2 data-t="visT"></h2><i class="orn"></i></div>
     <div class="social" id="social"></div>
+    <div class="gmap"><iframe id="gmap" title="Amed Cafe on Google Maps" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    <div class="maplink"><a class="btn sec" id="mapOpen" target="_blank" rel="noopener" data-t="openMaps"></a></div>
     <div class="info" id="info"></div>
   </section>
 </main>
@@ -588,7 +597,7 @@ footer small { opacity: .85; }
       { id: "rewards", t: tr("rewK") },
       { id: "events", t: tr("evT") },
       { id: "gallery", t: tr("galT") },
-      { id: "reviews", t: tr("revK") },
+      REVIEWS.length ? { id: "reviews", t: tr("revK") } : null,
       { id: "visit", t: tr("visT") },
     ].filter(Boolean);
     items.forEach((it, i) => {
@@ -721,10 +730,16 @@ footer small { opacity: .85; }
   // Google Maps window for "Amed cafe&rest" (embed code from Thamir); the map's own text follows the language.
   const GMAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1597.5310672999801!2d42.96795352748537!3d36.79306061534336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x400889cacdaee915%3A0x91468bec4ad078f8!2sAmed%20cafe%26rest!5e0!3m2!1sen!2siq!4v1794651122163!5m2!1sen!2siq";
   const GMAP_HL = { en: "en", ar: "ar", ku: "ckb" };
+  let REVIEWS = [];
   function renderReviews() {
     const src = GMAP.replace(/!1sen!2siq/g, "!1s" + GMAP_HL[lang] + "!2siq");
     if ($("gmap").getAttribute("src") !== src) $("gmap").setAttribute("src", src);
-    $("revRead").href = CONTACT.maps; $("revWrite").href = CONTACT.review;
+    $("revRead").href = CONTACT.maps; $("revWrite").href = CONTACT.review; $("mapOpen").href = CONTACT.maps;
+    // Review cards: only real reviews from reviews.json ({ name, rating, text, date }); the section stays hidden without them.
+    const box = $("revList"); box.textContent = "";
+    for (const r of REVIEWS) box.append(el("div", { class: "rev" }, el("div", { class: "stars", "aria-label": r.rating + "/5", text: "★".repeat(r.rating) + "☆".repeat(5 - r.rating) }),
+      el("p", { text: typeof r.text === "string" ? r.text : pick(r.text) }), el("small", { text: [r.name, r.date].filter(Boolean).join(" · ") })));
+    $("reviews").hidden = !REVIEWS.length;
   }
 
   function renderInfo() {
@@ -822,7 +837,7 @@ footer small { opacity: .85; }
   // Scroll reveal for the sections below the hero
   document.documentElement.classList.add("js");
   const revealIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); } }), { threshold: 0.12 }) : null;
-  const revealNodes = [...document.querySelectorAll("main .head, #newp, .gmap, .reward, #evList, #gal, #social, #info")];
+  const revealNodes = [...document.querySelectorAll("main .head, #newp, .reward, #evList, #gal, #social, #info")];
   if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
     revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
   if (window.AmedMotion) {
@@ -843,6 +858,7 @@ footer small { opacity: .85; }
   startStage();
 
   fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
+  fetch("reviews.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.reviews)) { REVIEWS = d.reviews.filter((x) => x && x.text && x.rating); renderReviews(); renderNav(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>
