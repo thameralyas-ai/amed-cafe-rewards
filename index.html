@@ -377,7 +377,7 @@ footer small { opacity: .85; }
       <div class="sname" id="sname"></div>
     </div>
     <div class="t2">
-      <div class="cta"><a class="btn pri" href="card/" id="cardBtn"><span data-t="myCard"></span></a><a class="btn sec" href="#menu" data-t="exploreMenu"></a></div>
+      <div class="cta"><a class="btn pri" href="card/" id="cardBtn"><span data-t="myCard"></span></a><a class="btn sec" href="menu/" id="menuBtn" data-t="exploreMenu"></a></div>
     </div>
   </div>
 </div>
@@ -386,14 +386,6 @@ footer small { opacity: .85; }
   <section id="new" hidden>
     <div class="head"><span class="kicker" data-t="newK"></span><h2 data-t="newT"></h2><i class="orn"></i></div>
     <div class="newp" id="newp"></div>
-  </section>
-
-  <section id="menu">
-    <div class="head"><span class="kicker" data-t="menuK"></span><h2 data-t="menuT"></h2><i class="orn"></i></div>
-    <div id="bargal"></div>
-    <div class="tabs" id="tabs" role="tablist"></div>
-    <div class="scroller" id="scroller"></div>
-    <p class="note"><span class="swipe" data-t="swipe"></span><span id="menuNote"></span></p>
   </section>
 
   <section id="rewards">
@@ -553,46 +545,9 @@ footer small { opacity: .85; }
     $("hrs").hidden = !o; // "Closed · opens at 8:00 AM" already says when
   }
 
-  // Scroll a horizontal row so that child is centred (works left-to-right and right-to-left).
-  function centerIn(row, child) {
-    const r = row.getBoundingClientRect(), c = child.getBoundingClientRect();
-    row.scrollBy({ left: (c.left + c.width / 2) - (r.left + r.width / 2), behavior: "smooth" });
-  }
-
-  // On phones the menu is a swipe row: fit its height to the card in view so short cards leave no gap.
-  function fitMenu() {
-    const sc = $("scroller"), card = sc.children[activeCat];
-    sc.style.height = card && getComputedStyle(sc).display === "flex" ? card.offsetHeight + 14 + "px" : "";
-  }
-
+  // The full menu lives on its own page (menu/); the homepage only links to it.
+  const menuUrl = () => "menu/#" + lang;
   const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
-  function renderMenu() {
-    const tabs = $("tabs"), sc = $("scroller");
-    tabs.textContent = ""; sc.textContent = ""; $("bargal").textContent = "";
-    if (!MENU) return;
-    const g = gallery("", (cat) => goCat(cat), "h3"); if (g) $("bargal").append(g);
-    MENU.categories.forEach((c, i) => {
-      tabs.append(el("button", { type: "button", role: "tab", "aria-selected": String(i === activeCat), onclick: () => {
-        activeCat = i; fitMenu(); for (const b of tabs.children) b.setAttribute("aria-selected", String(b === tabs.children[i]));
-        centerIn(sc, sc.children[i]);
-      } }, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
-      const card = el("div", { class: "mc", id: "mc-" + c.id });
-      if (c.banner) card.append(el("img", { class: "bn", src: c.banner, alt: "", loading: "lazy" }));
-      if (c.photo) card.append(shot(c, c.photo));
-      card.append(el("h3", {}, pick(c.name), c.new ? el("span", { class: "badge", text: tr("newBadge") }) : null));
-      if (c.desc) card.append(el("p", { class: "desc", text: pick(c.desc) }));
-      if (c.flavours) card.append(flavours(c));
-      for (const it of c.items) {
-        const opts = it.options || [];
-        const same = opts.every((o) => o.price === opts[0].price);
-        const sub = [opts.length ? opts.map((o) => pick(o.name) + (same ? "" : " " + num(o.price))).join(" · ") : "", pick(it.note)].filter(Boolean).join(" — ");
-        card.append(el("div", { class: "li" }, el("span", {}, pick(it.name), popular(it), sub ? el("small", { class: "sub", text: sub }) : null), el("span", { class: "p" }, num(it.price), el("small", { text: tr("iqd") }))));
-      }
-      sc.append(card);
-    });
-    $("menuNote").textContent = MENU.sample ? tr("sampleNote") : tr("menuNote");
-    activeCat = Math.min(activeCat, MENU.categories.length - 1); fitMenu();
-  }
 
   // "Our new products": one feature card per menu category marked new, linking to it in the menu.
   const FLYERS = { asary: ["media/new/asary-flyer-1.jpg", "media/new/asary-flyer-2.jpg"] };
@@ -602,7 +557,7 @@ footer small { opacity: .85; }
     $("new").hidden = !cats.length;
     for (const c of cats) {
       const ps = c.items.map((i) => i.price), lo = Math.min(...ps), hi = Math.max(...ps);
-      const acts = el("div", { class: "acts" }, el("a", { class: "btn pri", href: "#menu", text: tr("seeMenu"), onclick: (e) => { e.preventDefault(); goCat(c.id); } }));
+      const acts = el("div", { class: "acts" }, el("a", { class: "btn pri", href: menuUrl(), text: tr("seeMenu") }));
       if (FLYERS[c.id]) acts.append(el("a", { class: "btn sec", href: FLYERS[c.id][0], text: tr("seeFlyer"), onclick: (e) => { e.preventDefault(); openLb({ src: FLYERS[c.id][0], more: FLYERS[c.id], alt: "newT" }); } }));
       box.append(el("div", { class: "np" },
         c.banner ? el("img", { class: "bn", src: c.banner, alt: pick(c.name), loading: "lazy" }) : null,
@@ -610,13 +565,6 @@ footer small { opacity: .85; }
           el("span", { class: "pr", text: num(lo) + (hi > lo ? " – " + num(hi) : "") + " " + tr("iqd") }), acts)));
     }
   }
-  function goCat(id) {
-    const i = MENU.categories.findIndex((c) => c.id === id);
-    const tab = $("tabs").children[i];
-    if (tab && getComputedStyle($("tabs")).display !== "none") { tab.click(); $("menu").scrollIntoView({ behavior: "smooth" }); }
-    else { const card = $("mc-" + id); if (card) card.scrollIntoView({ behavior: "smooth", block: "start" }); }
-  }
-
   // ☰ navigation panel
   function renderNav() {
     const ul = $("navList"); ul.textContent = "";
@@ -842,15 +790,15 @@ footer small { opacity: .85; }
     for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
     buildHeadline();
     if ($("sname").textContent) $("sname").textContent = stageLabel();
-    $("cardBtn").href = "card/#" + lang;
+    $("cardBtn").href = "card/#" + lang; $("menuBtn").href = menuUrl();
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
-    renderStatus(); renderMenu(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
+    renderStatus(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
   }
 
   // Scroll reveal for the sections below the hero
   document.documentElement.classList.add("js");
   const revealIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); } }), { threshold: 0.12 }) : null;
-  const revealNodes = [...document.querySelectorAll("main .head, #newp, #scroller, .reward, #evList, #gal, #social, #info")];
+  const revealNodes = [...document.querySelectorAll("main .head, #newp, .reward, #evList, #gal, #social, #info")];
   if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
     revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
   if (window.AmedMotion) {
@@ -860,18 +808,6 @@ footer small { opacity: .85; }
   $("navBtn").addEventListener("click", () => setNav(!document.body.classList.contains("nav-open")));
   addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
-  $("scroller").addEventListener("scroll", () => {
-    const sc = $("scroller"), r = sc.getBoundingClientRect(), mid = r.left + r.width / 2;
-    let best = 0, bd = 1e9;
-    [...sc.children].forEach((c, i) => { const cr = c.getBoundingClientRect(), d = Math.abs(cr.left + cr.width / 2 - mid); if (d < bd) { bd = d; best = i; } });
-    if (best !== activeCat) {
-      activeCat = best; const tabs = $("tabs");
-      [...tabs.children].forEach((b, i) => b.setAttribute("aria-selected", String(i === best)));
-      if (tabs.children[best]) centerIn(tabs, tabs.children[best]);
-      fitMenu();
-    }
-  }, { passive: true });
-  window.addEventListener("resize", fitMenu);
   $("yr").textContent = new Date().getFullYear();
 
   let start = (location.hash || "").replace("#", "");
@@ -882,7 +818,7 @@ footer small { opacity: .85; }
   setInterval(renderStatus, 60000);
   startStage();
 
-  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderMenu(); renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
+  fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>
