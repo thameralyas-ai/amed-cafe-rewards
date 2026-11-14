@@ -1,7 +1,38 @@
 {
- "note": "Real Google reviews shown as cards on the homepage (section What our guests say). Only real reviews, copied from Google with the reviewer name as Google shows it. Fields: name, rating (1-5), text (string or {en,ar,ku}), date (optional). Empty list = section hidden. rating/count: the Google rating summary (from Google Maps); update both together.",
+ "note": "Real Google reviews shown as cards on the homepage (section What our guests say). Only real reviews, copied word for word from Google with the reviewer name as Google shows it. Fields: name, rating (1-5), text, date (YYYY-MM or YYYY, approximate from Google's 'x ago'). rating/count: the Google rating summary (from Google Maps); update both together.",
  "rating": 4.9,
  "count": 8,
  "updated": "2026-11-14",
- "reviews": []
+ "reviews": [
+  {
+   "name": "araz dnany",
+   "rating": 5,
+   "text": "Best shisha in town",
+   "date": "2026-11"
+  },
+  {
+   "name": "حسين سعدي",
+   "rating": 5,
+   "text": "مكان مريح وهادئ وتعاملهم جيد جدا مع الزبائن",
+   "date": "2026-11"
+  },
+  {
+   "name": "ahmed mahjo",
+   "rating": 5,
+   "text": "It’s a best place in Sharya town to have shisha and drinks",
+   "date": "2026-11"
+  },
+  {
+   "name": "Ali shamo Ali",
+   "rating": 4,
+   "text": "افضل كافي في شاريا\n\nلان كل ما تحتاجه بمكان واحد\nمن اركيلة و لعب ورق و مباريات و مشروبات الساخنة و باردة و أكل داخل كافي\n\n🧡🎄🦌🤶",
+   "date": "2025"
+  },
+  {
+   "name": "Reko Alsheikh",
+   "rating": 5,
+   "text": "beautiful place",
+   "date": "2023"
+  }
+ ]
 }

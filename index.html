@@ -320,8 +320,15 @@ header .langs { margin-inline-end: 54px; }
 @media (min-width: 900px) { .revs { grid-template-columns: repeat(3, 1fr); } }
 .rev { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
 .rev .stars { color: var(--gold2); letter-spacing: 2px; direction: ltr; }
-.rev p { margin: 8px 0 12px; }
+.rtl .rev .stars { text-align: right; }
+.rev p { margin: 10px 0 0; white-space: pre-line; }
 .rev small { color: var(--muted); font-size: 13px; }
+.rev .who { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.rev .who b { display: block; font-weight: 500; }
+.rev .who small { display: block; }
+.rev .av { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, #E3B27D, #B98552); color: #1C120D; font-weight: 500; font-size: 17px; }
+.revs .rev:only-child { max-width: 520px; margin: 0 auto; }
+.revnote { text-align: center; color: var(--muted); font-size: 13px; margin-top: 14px; }
 /* Google rating summary (rating + count from reviews.json) */
 .rsum { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 4px 0 22px; text-align: center; }
 .rsum .rnum { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--gold2); font-weight: 500; }
@@ -847,8 +854,14 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     $("revRead").href = CONTACT.maps; $("revWrite").href = CONTACT.review; $("mapOpen").href = CONTACT.maps;
     // Review cards: only real reviews from reviews.json ({ name, rating, text, date }); the section stays hidden without them.
     const box = $("revList"); box.textContent = "";
-    for (const r of REVIEWS) box.append(el("div", { class: "rev" }, el("div", { class: "stars", "aria-label": r.rating + "/5", text: "★".repeat(r.rating) + "☆".repeat(5 - r.rating) }),
-      el("p", { text: typeof r.text === "string" ? r.text : pick(r.text) }), el("small", { text: [r.name, r.date].filter(Boolean).join(" · ") })));
+    const KU_MONTHS = ["کانوونا دووێ", "شوبات", "ئادار", "نیسان", "گولان", "حزیران", "تیرمەه", "تەباخ", "ئەیلوول", "چریا ئێکێ", "چریا دووێ", "کانوونا ئێکێ"];
+    const when = (d) => !d ? "" : !/^\d{4}-\d{2}$/.test(d) ? String(d) : lang === "ku" ? KU_MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4)
+      : new Date(d + "-15").toLocaleDateString(LOC[lang] || "en-GB", { month: "long", year: "numeric" });
+    for (const r of REVIEWS) box.append(el("div", { class: "rev" },
+      el("div", { class: "who" }, el("span", { class: "av", "aria-hidden": "true", text: [...r.name.trim()][0].toUpperCase() }),
+        el("span", {}, el("b", { dir: "auto", text: r.name }), el("small", { text: when(r.date) }))),
+      el("div", { class: "stars", role: "img", "aria-label": r.rating + "/5", text: "★".repeat(r.rating) + "☆".repeat(5 - r.rating) }),
+      el("p", { dir: "auto", text: typeof r.text === "string" ? r.text : pick(r.text) })));
     // Google rating summary: the real rating and count from Google (reviews.json "rating" and "count").
     const rs = $("rsum"); rs.hidden = !RATING;
     if (RATING) {
