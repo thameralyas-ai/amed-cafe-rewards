@@ -8,6 +8,7 @@
   // old Home Screen icons all land here). Add ?home to the address to see the website instead.
   try { if (localStorage.getItem("amed-session") && !/[?&]home\b/.test(location.search)) location.replace("card/" + location.hash); } catch (_) {}
 </script>
+<script>try { const m = /[?&]foot=([abc])/.exec(location.search); if (m) document.documentElement.dataset.foot = m[1]; } catch (_) {}</script>
 <title>Amed Cafe · your comfort space</title>
 <meta name="description" content="Amed Cafe: coffee, cold drinks and premium shisha. Open every day 8:00 AM – 1:00 AM. Buy 7, the 8th is free with the Amed loyalty card.">
 <meta property="og:title" content="Amed Cafe · your comfort space">
@@ -366,6 +367,25 @@ footer a { color: #4E3F32 !important; }
 footer .logo { background-image: url(logo.png); }
 footer small { opacity: .85; }
 @media (min-width: 900px) { #rewards { margin: 0; border-radius: 30px; } }
+
+/* ===== Footer samples (preview only): real coffee footage (Mixkit, free licence) instead of the terrazzo =====
+   A: steaming cup behind the footer · B: coffee beans moving slowly · C: espresso pour in a round window */
+.fx { display: none; }
+[data-foot] footer { background: #120c09; color: var(--muted); border-top: 0; position: relative; overflow: hidden; isolation: isolate; }
+[data-foot] footer a { color: var(--muted) !important; }
+[data-foot] footer .logo { background-image: url(logo-gold.png); }
+[data-foot] footer > :not(.fx) { position: relative; z-index: 1; }
+[data-foot="a"] .fx, [data-foot="b"] .fx { display: block; position: absolute; inset: 0; z-index: 0; }
+.fx video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fx::after { content: ""; position: absolute; inset: 0; }
+[data-foot="a"] footer { min-height: 520px; display: flex; flex-direction: column; justify-content: flex-end; }
+[data-foot="a"] .fx video { object-position: 52% 0; }
+[data-foot="a"] .fx::after { background: linear-gradient(180deg, #120c09 0%, #120c0900 22%, #120c0900 45%, #120c09e6 78%, #120c09 100%); }
+[data-foot="b"] footer { padding-top: 80px; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+[data-foot="b"] .fx::after { background: radial-gradient(70% 90% at 50% 55%, #120c09b3, #120c09e6); }
+[data-foot="c"] .fx { display: block; position: relative; width: 168px; height: 168px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden;
+  box-shadow: 0 0 0 1px #D4A37388, 0 0 44px #D4A3733d; }
+@media (min-width: 900px) { [data-foot="a"] footer { min-height: 480px; } [data-foot="a"] .fx video { object-position: 50% 70%; } }
 </style>
 </head>
 <body>
@@ -469,6 +489,7 @@ footer small { opacity: .85; }
 </main>
 
 <footer>
+  <div class="fx" aria-hidden="true"><video id="fxv" muted loop playsinline preload="none"></video></div>
   <div class="logo"></div>
   <span data-t="tagline"></span>
   <small>© <span id="yr"></span> Amed Cafe · amedcaferest.com</small>
@@ -871,6 +892,11 @@ footer small { opacity: .85; }
   addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
   $("yr").textContent = new Date().getFullYear();
+  const FOOT = { a: "steam", b: "beans", c: "espresso" }[document.documentElement.dataset.foot];
+  if (FOOT && "IntersectionObserver" in window) {
+    const v = $("fxv"); v.muted = true; v.poster = "media/footer/" + FOOT + ".jpg";
+    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { if (!v.src) v.src = "media/footer/" + FOOT + ".mp4"; v.play().catch(() => {}); } else v.pause(); }), { rootMargin: "200px" }).observe(v.parentNode.parentNode);
+  }
 
   let start = (location.hash || "").replace("#", "");
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
