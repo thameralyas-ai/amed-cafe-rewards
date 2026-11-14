@@ -285,6 +285,13 @@ header .langs { margin-inline-end: 54px; }
 .navp .hrs { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
 @media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
 
+/* Google reviews: the cafe's Google Maps window (rating and reviews) + buttons */
+.revp { text-align: center; color: var(--muted); max-width: 34ch; margin: -6px auto 18px; }
+.gmap { border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 4 / 3; max-height: 460px; width: 100%; }
+.gmap iframe { display: block; width: 100%; height: 100%; border: 0; }
+.revbtns { display: flex; flex-direction: column; gap: 10px; margin: 18px auto 0; max-width: 340px; }
+@media (min-width: 900px) { .gmap { aspect-ratio: 16 / 7; } .revbtns { flex-direction: row; max-width: none; justify-content: center; } .revbtns .btn { padding: 14px 28px; } }
+
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -417,6 +424,13 @@ footer small { opacity: .85; }
     </section>
   </div>
 
+  <section id="reviews">
+    <div class="head"><span class="kicker" data-t="revK"></span><h2 data-t="revT"></h2><i class="orn"></i></div>
+    <p class="revp" data-t="revP"></p>
+    <div class="gmap"><iframe id="gmap" title="Amed Cafe on Google Maps" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    <div class="revbtns"><a class="btn pri" id="revRead" target="_blank" rel="noopener" data-t="revRead"></a><a class="btn sec" id="revWrite" target="_blank" rel="noopener" data-t="reviewLink"></a></div>
+  </section>
+
   <section id="visit">
     <div class="head"><span class="kicker" data-t="visK"></span><h2 data-t="visT"></h2><i class="orn"></i></div>
     <div class="social" id="social"></div>
@@ -463,7 +477,7 @@ footer small { opacity: .85; }
       galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", gSign: "The Amed Cafe sign", gBar: "Our bar", gDrink: "A drink served at Amed Cafe", gHintTouch: "Tap a photo to see it in colour, tap it again to open it", gHintMouse: "Point at a photo to see it in colour, click it to bring it forward", close: "Close",
       visK: "Visit", visT: "Find us", hours: "Hours", everyDayHours: "Every day · 8:00 AM – 1:00 AM", location: "Location", openMaps: "Open in Google Maps",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "Open in Snapchat", phone: "Phone", review: "Review us", reviewLink: "Write a Google review ★", soon: "Coming soon",
-      tagline: "your comfort space",
+      tagline: "your comfort space", revK: "Google reviews", revT: "What our guests say", revP: "See our rating and read every review on Google.", revRead: "Read our reviews",
     },
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
@@ -477,7 +491,7 @@ footer small { opacity: .85; }
       galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", gSign: "لافتة Amed Cafe", gBar: "البار", gDrink: "مشروب يُقدَّم في Amed Cafe", gHintTouch: "اضغط على صورة لتظهر بالألوان، واضغط مرة أخرى لفتحها", gHintMouse: "مرّر الماوس فوق صورة لتظهر بالألوان، وانقر لتقديمها", close: "إغلاق",
       visK: "زورونا", visT: "موقعنا", hours: "أوقات العمل", everyDayHours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", location: "الموقع", openMaps: "افتح في خرائط Google",
       whatsapp: "واتساب", instagram: "إنستغرام", tiktok: "تيك توك", snapchat: "سناب شات", openSnap: "افتح في سناب شات", phone: "الهاتف", review: "قيّمنا", reviewLink: "اكتب تقييماً على Google ★", soon: "قريباً",
-      tagline: "مكان راحتك",
+      tagline: "مكان راحتك", revK: "تقييمات Google", revT: "ماذا يقول ضيوفنا", revP: "شاهد تقييمنا واقرأ كل المراجعات على Google.", revRead: "اقرأ تقييماتنا",
     },
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
@@ -491,7 +505,7 @@ footer small { opacity: .85; }
       galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", gSign: "تابلۆیا Amed Cafe", gBar: "بارێ مە", gDrink: "ڤەخوارنەک ل Amed Cafe", gHintTouch: "ل سەر وێنەیەکێ کلیک بکە دا رەنگ دیار ببیت، جارەکا دی کلیک بکە دا ڤەبیت", gHintMouse: "ماوسێ ببە سەر وێنەیەکێ دا ب رەنگ دیار ببیت، کلیک بکە دا بهێتە پێشیێ", close: "گرتن",
       visK: "سەرەدان", visT: "سەرەدانا مە بکە", hours: "دەمژمێرێن کاری", everyDayHours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", location: "جه", openMaps: "ل Google Maps ڤەکە",
       whatsapp: "واتسئاپ", instagram: "ئینستاگرام", tiktok: "تیکتۆک", snapchat: "سناپچات", openSnap: "ل سناپچات ڤەکە", phone: "تەلەفۆن", review: "هەلسەنگاندن", reviewLink: "ل Google بنڤیسە ★", soon: "ب زوویی",
-      tagline: "جهێ ئارامیا تە",
+      tagline: "جهێ ئارامیا تە", revK: "هەلسەنگاندنێن Google", revT: "میڤانێن مە چ دبێژن", revP: "هەلسەنگاندنا مە ببینە و هەمی بۆچوونان ل Google بخوینە.", revRead: "هەلسەنگاندنێن مە بخوینە",
     },
   };
   const ORD_AR = { 6: "سادس", 7: "سابع", 8: "ثامن", 9: "تاسع", 10: "عاشر", 11: "حادي عشر" };
@@ -574,6 +588,7 @@ footer small { opacity: .85; }
       { id: "rewards", t: tr("rewK") },
       { id: "events", t: tr("evT") },
       { id: "gallery", t: tr("galT") },
+      { id: "reviews", t: tr("revK") },
       { id: "visit", t: tr("visT") },
     ].filter(Boolean);
     items.forEach((it, i) => {
@@ -703,6 +718,15 @@ footer small { opacity: .85; }
     lb.classList.remove("on"); lb.textContent = ""; document.body.style.overflow = ""; if (window.AmedMotion) AmedMotion.start();
   }
 
+  // Google Maps window for "Amed cafe&rest" (embed code from Thamir); the map's own text follows the language.
+  const GMAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1597.5310672999801!2d42.96795352748537!3d36.79306061534336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x400889cacdaee915%3A0x91468bec4ad078f8!2sAmed%20cafe%26rest!5e0!3m2!1sen!2siq!4v1794651122163!5m2!1sen!2siq";
+  const GMAP_HL = { en: "en", ar: "ar", ku: "ckb" };
+  function renderReviews() {
+    const src = GMAP.replace(/!1sen!2siq/g, "!1s" + GMAP_HL[lang] + "!2siq");
+    if ($("gmap").getAttribute("src") !== src) $("gmap").setAttribute("src", src);
+    $("revRead").href = CONTACT.maps; $("revWrite").href = CONTACT.review;
+  }
+
   function renderInfo() {
     // Social media: a row of gold icons (only the accounts that are filled in).
     const wa0 = (CONTACT.whatsapp || (DATA && DATA.contact && DATA.contact.wa) || "").replace(/\D/g, "");
@@ -792,13 +816,13 @@ footer small { opacity: .85; }
     if ($("sname").textContent) $("sname").textContent = stageLabel();
     $("cardBtn").href = "card/#" + lang; $("menuBtn").href = menuUrl();
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
-    renderStatus(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInfo();
+    renderStatus(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderReviews(); renderInfo();
   }
 
   // Scroll reveal for the sections below the hero
   document.documentElement.classList.add("js");
   const revealIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); } }), { threshold: 0.12 }) : null;
-  const revealNodes = [...document.querySelectorAll("main .head, #newp, .reward, #evList, #gal, #social, #info")];
+  const revealNodes = [...document.querySelectorAll("main .head, #newp, .gmap, .reward, #evList, #gal, #social, #info")];
   if (!(window.AmedMotion && AmedMotion.reveal(revealNodes))) // GSAP ScrollTrigger; old fade-up if it did not load
     revealNodes.forEach((n) => { n.classList.add("rv"); if (revealIO) revealIO.observe(n); else n.classList.add("in"); });
   if (window.AmedMotion) {
