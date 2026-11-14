@@ -174,3 +174,6 @@ out["offers"]=OFFERS
 out["gallery"]=[{"img":"media/drinks/"+f+".jpg","name":dict(zip(L,n)),"cat":c} for f,n,c in GALLERY]
 json.dump(out,open(sys.argv[1],"w"),ensure_ascii=False,indent=1)
 print(len(out["categories"]),"categories",sum(len(c["items"]) for c in out["categories"]),"items")
+# German (Thamir asked for German): add "de" from tools/menu-de.json
+import os, subprocess
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "add_de.py"), sys.argv[1]])

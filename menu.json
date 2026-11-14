@@ -7,14 +7,16 @@
    "name": {
     "en": "Coffee",
     "ar": "قهوة",
-    "ku": "قەهوە"
+    "ku": "قەهوە",
+    "de": "Kaffee"
    },
    "items": [
     {
      "name": {
       "en": "Pistachio coffee",
       "ar": "قهوة الفستق",
-      "ku": "قەهوا فستقێ"
+      "ku": "قەهوا فستقێ",
+      "de": "Pistazienkaffee"
      },
      "price": 1500,
      "options": [
@@ -22,7 +24,8 @@
        "name": {
         "en": "Single",
         "ar": "سنگل",
-        "ku": "تەک"
+        "ku": "تەک",
+        "de": "Einfach"
        },
        "price": 1500
       },
@@ -30,7 +33,8 @@
        "name": {
         "en": "Double",
         "ar": "دبل",
-        "ku": "دەبل"
+        "ku": "دەبل",
+        "de": "Doppelt"
        },
        "price": 3000
       }
@@ -38,7 +42,8 @@
      "note": {
       "en": "Made with real pistachio, creamy and rich",
       "ar": "تُحضّر من الفستق الطبيعي، كريمية وغنية",
-      "ku": "ب فستقێ سروشتی، کرێمی و تام خۆش"
+      "ku": "ب فستقێ سروشتی، کرێمی و تام خۆش",
+      "de": "Mit echten Pistazien zubereitet, cremig und vollmundig"
      },
      "popular": true
     },
@@ -46,7 +51,8 @@
      "name": {
       "en": "Turkish coffee",
       "ar": "قهوة تركية",
-      "ku": "قەهوا تورکی"
+      "ku": "قەهوا تورکی",
+      "de": "Türkischer Kaffee"
      },
      "price": 1500,
      "options": [
@@ -54,7 +60,8 @@
        "name": {
         "en": "Single",
         "ar": "سنگل",
-        "ku": "تەک"
+        "ku": "تەک",
+        "de": "Einfach"
        },
        "price": 1500
       },
@@ -62,7 +69,8 @@
        "name": {
         "en": "Double",
         "ar": "دبل",
-        "ku": "دەبل"
+        "ku": "دەبل",
+        "de": "Doppelt"
        },
        "price": 3000
       }
@@ -70,14 +78,16 @@
      "note": {
       "en": "Finely ground coffee, brewed the traditional way",
       "ar": "قهوة مطحونة ناعماً تُحضّر على الطريقة التقليدية",
-      "ku": "قەهوا هویرکری، ب رێکا کەڤن دهێتە چێکرن"
+      "ku": "قەهوا هویرکری، ب رێکا کەڤن دهێتە چێکرن",
+      "de": "Fein gemahlener Kaffee, traditionell zubereitet"
      }
     },
     {
      "name": {
       "en": "Kurdish coffee (kezwan)",
       "ar": "قهوة بطم",
-      "ku": "قەهوا کەزوانێ"
+      "ku": "قەهوا کەزوانێ",
+      "de": "Kurdischer Kaffee (Kezwan)"
      },
      "price": 1500,
      "options": [
@@ -85,7 +95,8 @@
        "name": {
         "en": "Single",
         "ar": "سنگل",
-        "ku": "تەک"
+        "ku": "تەک",
+        "de": "Einfach"
        },
        "price": 1500
       },
@@ -93,7 +104,8 @@
        "name": {
         "en": "Double",
         "ar": "دبل",
-        "ku": "دەبل"
+        "ku": "دەبل",
+        "de": "Doppelt"
        },
        "price": 3000
       }
@@ -101,14 +113,16 @@
      "note": {
       "en": "Made from roasted kezwan (wild pistachio), rich and smooth",
       "ar": "من حبوب البطم المحمّصة، غنية وناعمة",
-      "ku": "ژ دەنکێن کەزوانێ یێن برژاندی، تام خۆش و نەرم"
+      "ku": "ژ دەنکێن کەزوانێ یێن برژاندی، تام خۆش و نەرم",
+      "de": "Aus geröstetem Kezwan (wilde Pistazie), vollmundig und mild"
      }
     },
     {
      "name": {
       "en": "Espresso",
       "ar": "اسبريسو",
-      "ku": "ئێسپرێسۆ"
+      "ku": "ئێسپرێسۆ",
+      "de": "Espresso"
      },
      "price": 1500,
      "options": [
@@ -116,7 +130,8 @@
        "name": {
         "en": "Single",
         "ar": "سنگل",
-        "ku": "تەک"
+        "ku": "تەک",
+        "de": "Einfach"
        },
        "price": 1500
       },
@@ -124,7 +139,8 @@
        "name": {
         "en": "Double",
         "ar": "دبل",
-        "ku": "دەبل"
+        "ku": "دەبل",
+        "de": "Doppelt"
        },
        "price": 3000
       }
@@ -132,20 +148,23 @@
      "note": {
       "en": "A short, strong shot of coffee",
       "ar": "جرعة قهوة مركّزة وقوية",
-      "ku": "قەهوەیەکا کێم و ب هێز"
+      "ku": "قەهوەیەکا کێم و ب هێز",
+      "de": "Ein kurzer, kräftiger Kaffee"
      }
     },
     {
      "name": {
       "en": "Americano",
       "ar": "امريكانو",
-      "ku": "ئەمریکانۆ"
+      "ku": "ئەمریکانۆ",
+      "de": "Americano"
      },
      "price": 3000,
      "note": {
       "en": "Espresso with hot water, lighter and smooth",
       "ar": "إسبريسو ممزوج بالماء الساخن، طعم أخف",
-      "ku": "ئێسپرێسۆ دگەل ئاڤا گەرم، تامەکا سڤکتر"
+      "ku": "ئێسپرێسۆ دگەل ئاڤا گەرم، تامەکا سڤکتر",
+      "de": "Espresso mit heißem Wasser, leichter und mild"
      }
     }
    ]
@@ -155,27 +174,31 @@
    "name": {
     "en": "Hot drinks",
     "ar": "مشروبات ساخنة",
-    "ku": "ڤەخوارنێن گەرم"
+    "ku": "ڤەخوارنێن گەرم",
+    "de": "Heißgetränke"
    },
    "items": [
     {
      "name": {
       "en": "Cappuccino",
       "ar": "كابتشينو",
-      "ku": "کاپوچینۆ"
+      "ku": "کاپوچینۆ",
+      "de": "Cappuccino"
      },
      "price": 3000,
      "note": {
       "en": "Espresso, steamed milk and thick foam with a touch of cocoa",
       "ar": "إسبريسو وحليب مبخّر ورغوة كثيفة مع لمسة كاكاو",
-      "ku": "ئێسپرێسۆ، شیرێ گەرم و کەفەکا ستویر دگەل کاکاوێ"
+      "ku": "ئێسپرێسۆ، شیرێ گەرم و کەفەکا ستویر دگەل کاکاوێ",
+      "de": "Espresso, heiße Milch und dichter Milchschaum mit einem Hauch Kakao"
      }
     },
     {
      "name": {
       "en": "Nescafé",
       "ar": "نسكافيه",
-      "ku": "نسکافێ"
+      "ku": "نسکافێ",
+      "de": "Nescafé"
      },
      "price": 1500,
      "options": [
@@ -183,7 +206,8 @@
        "name": {
         "en": "Regular",
         "ar": "عادي",
-        "ku": "نورمال"
+        "ku": "نورمال",
+        "de": "Normal"
        },
        "price": 1500
       },
@@ -191,7 +215,8 @@
        "name": {
         "en": "With milk",
         "ar": "بالحليب",
-        "ku": "ب شیر"
+        "ku": "ب شیر",
+        "de": "Mit Milch"
        },
        "price": 2000
       }
@@ -201,7 +226,8 @@
      "name": {
       "en": "Plain milk",
       "ar": "حليب سادة",
-      "ku": "شیرێ سادە"
+      "ku": "شیرێ سادە",
+      "de": "Milch"
      },
      "price": 1000
     },
@@ -209,7 +235,8 @@
      "name": {
       "en": "Honey milk",
       "ar": "حليب بالعسل",
-      "ku": "شیرێ ب هنگڤین"
+      "ku": "شیرێ ب هنگڤین",
+      "de": "Milch mit Honig"
      },
      "price": 2000
     },
@@ -217,7 +244,8 @@
      "name": {
       "en": "Hot chocolate",
       "ar": "شوكولاتة ساخنة",
-      "ku": "چکلێتا گەرم"
+      "ku": "چکلێتا گەرم",
+      "de": "Heiße Schokolade"
      },
      "price": 3000
     },
@@ -225,7 +253,8 @@
      "name": {
       "en": "Sahlab",
       "ar": "سحلب",
-      "ku": "سەحلەب"
+      "ku": "سەحلەب",
+      "de": "Sahlab"
      },
      "price": 3000
     },
@@ -233,7 +262,8 @@
      "name": {
       "en": "Ginger, lemon & honey",
       "ar": "زنجبيل بالليمون والعسل",
-      "ku": "زەنجەبیل و لەیمون و هنگڤین"
+      "ku": "زەنجەبیل و لەیمون و هنگڤین",
+      "de": "Ingwer, Zitrone & Honig"
      },
      "price": 2000
     }
@@ -244,27 +274,31 @@
    "name": {
     "en": "Latte",
     "ar": "لاتيه",
-    "ku": "لاتێ"
+    "ku": "لاتێ",
+    "de": "Latte"
    },
    "items": [
     {
      "name": {
       "en": "Classic latte",
       "ar": "لاتيه كلاسيك",
-      "ku": "لاتێ کلاسیک"
+      "ku": "لاتێ کلاسیک",
+      "de": "Klassischer Latte"
      },
      "price": 3000,
      "note": {
       "en": "Espresso with steamed milk and a soft layer of foam",
       "ar": "إسبريسو مع الحليب المبخّر وطبقة رغوة خفيفة",
-      "ku": "ئێسپرێسۆ دگەل شیرێ گەرم و چینەکا کەفێ"
+      "ku": "ئێسپرێسۆ دگەل شیرێ گەرم و چینەکا کەفێ",
+      "de": "Espresso mit heißer Milch und einer zarten Schaumschicht"
      }
     },
     {
      "name": {
       "en": "Caramel latte",
       "ar": "لاتيه كراميل",
-      "ku": "لاتێ کەرامێل"
+      "ku": "لاتێ کەرامێل",
+      "de": "Karamell-Latte"
      },
      "price": 3000
     },
@@ -272,7 +306,8 @@
      "name": {
       "en": "Vanilla latte",
       "ar": "لاتيه فانيلا",
-      "ku": "لاتێ ڤانێلا"
+      "ku": "لاتێ ڤانێلا",
+      "de": "Vanille-Latte"
      },
      "price": 3000
     },
@@ -280,7 +315,8 @@
      "name": {
       "en": "Cookies latte",
       "ar": "لاتيه كوكيز",
-      "ku": "لاتێ کوکیز"
+      "ku": "لاتێ کوکیز",
+      "de": "Cookie-Latte"
      },
      "price": 3000
     },
@@ -288,7 +324,8 @@
      "name": {
       "en": "Chocolate latte",
       "ar": "لاتيه شوكولا",
-      "ku": "لاتێ شکولاتا"
+      "ku": "لاتێ شکولاتا",
+      "de": "Schoko-Latte"
      },
      "price": 3000
     },
@@ -296,7 +333,8 @@
      "name": {
       "en": "Dark chocolate latte",
       "ar": "لاتيه شوكولا غامق",
-      "ku": "لاتێ دارک"
+      "ku": "لاتێ دارک",
+      "de": "Zartbitter-Latte"
      },
      "price": 3000
     },
@@ -304,13 +342,15 @@
      "name": {
       "en": "Amed latte",
       "ar": "لاتيه Amed",
-      "ku": "لاتێ ئامەد"
+      "ku": "لاتێ ئامەد",
+      "de": "Amed-Latte"
      },
      "price": 3000,
      "note": {
       "en": "Our house secret. Ask us about it",
       "ar": "سرّ البيت الخاص بنا. اسألنا عنه",
-      "ku": "نهێنیا مالا مە. پسیارا وێ ژ مە بکە"
+      "ku": "نهێنیا مالا مە. پسیارا وێ ژ مە بکە",
+      "de": "Unser Hausgeheimnis. Fragen Sie uns danach"
      }
     }
    ]
@@ -320,14 +360,16 @@
    "name": {
     "en": "Iced coffee",
     "ar": "قهوة مثلجة",
-    "ku": "ئایس کافێ"
+    "ku": "ئایس کافێ",
+    "de": "Eiskaffee"
    },
    "items": [
     {
      "name": {
       "en": "Classic",
       "ar": "كلاسيك",
-      "ku": "کلاسیک"
+      "ku": "کلاسیک",
+      "de": "Klassisch"
      },
      "price": 2000
     },
@@ -335,7 +377,8 @@
      "name": {
       "en": "Spanish latte",
       "ar": "لاتيه إسباني",
-      "ku": "لاتێ ئیسپانی"
+      "ku": "لاتێ ئیسپانی",
+      "de": "Spanish Latte"
      },
      "price": 3000
     },
@@ -343,7 +386,8 @@
      "name": {
       "en": "Caramel",
       "ar": "كراميل",
-      "ku": "کەرامێل مەکیاتۆ"
+      "ku": "کەرامێل مەکیاتۆ",
+      "de": "Karamell"
      },
      "price": 2500
     },
@@ -351,7 +395,8 @@
      "name": {
       "en": "Mocha",
       "ar": "موكا",
-      "ku": "مۆکا"
+      "ku": "مۆکا",
+      "de": "Mokka"
      },
      "price": 2500
     },
@@ -359,7 +404,8 @@
      "name": {
       "en": "Vanilla",
       "ar": "فانيلا",
-      "ku": "ڤانێلا"
+      "ku": "ڤانێلا",
+      "de": "Vanille"
      },
      "price": 2500
     },
@@ -367,7 +413,8 @@
      "name": {
       "en": "White chocolate",
       "ar": "شوكولا بيضاء",
-      "ku": "شکولاتا سپی"
+      "ku": "شکولاتا سپی",
+      "de": "Weiße Schokolade"
      },
      "price": 2500
     },
@@ -375,7 +422,8 @@
      "name": {
       "en": "Amed iced coffee",
       "ar": "Amed",
-      "ku": "ئامەد"
+      "ku": "ئامەد",
+      "de": "Amed-Eiskaffee"
      },
      "price": 2500
     },
@@ -383,7 +431,8 @@
      "name": {
       "en": "Iced Americano",
       "ar": "امريكانو",
-      "ku": "ئەمریکانۆ"
+      "ku": "ئەمریکانۆ",
+      "de": "Iced Americano"
      },
      "price": 3000
     }
@@ -394,14 +443,16 @@
    "name": {
     "en": "Tea",
     "ar": "شاي",
-    "ku": "چای"
+    "ku": "چای",
+    "de": "Tee"
    },
    "items": [
     {
      "name": {
       "en": "Iraqi tea",
       "ar": "شاي عراقي",
-      "ku": "چایا عێراقی"
+      "ku": "چایا عێراقی",
+      "de": "Irakischer Tee"
      },
      "price": 500
     },
@@ -409,7 +460,8 @@
      "name": {
       "en": "Green tea",
       "ar": "شاي أخضر",
-      "ku": "چایا کەسک"
+      "ku": "چایا کەسک",
+      "de": "Grüner Tee"
      },
      "price": 1000
     },
@@ -417,7 +469,8 @@
      "name": {
       "en": "Flavoured tea",
       "ar": "شاي بنكهات",
-      "ku": "چایا ب تام"
+      "ku": "چایا ب تام",
+      "de": "Aromatisierter Tee"
      },
      "price": 1000,
      "options": [
@@ -425,7 +478,8 @@
        "name": {
         "en": "Blueberry",
         "ar": "توت",
-        "ku": "توو"
+        "ku": "توو",
+        "de": "Blaubeere"
        },
        "price": 1000
       },
@@ -433,7 +487,8 @@
        "name": {
         "en": "Lemon & mint",
         "ar": "ليمون ونعناع",
-        "ku": "لەیمون و نەعناع"
+        "ku": "لەیمون و نەعناع",
+        "de": "Zitrone & Minze"
        },
        "price": 1000
       },
@@ -441,7 +496,8 @@
        "name": {
         "en": "Peach",
         "ar": "خوخ",
-        "ku": "خۆخ"
+        "ku": "خۆخ",
+        "de": "Pfirsich"
        },
        "price": 1000
       }
@@ -451,7 +507,8 @@
      "name": {
       "en": "Iced tea",
       "ar": "شاي مثلج",
-      "ku": "چایا تەزی"
+      "ku": "چایا تەزی",
+      "de": "Eistee"
      },
      "price": 3000,
      "options": [
@@ -459,7 +516,8 @@
        "name": {
         "en": "Blueberry",
         "ar": "توت",
-        "ku": "توو"
+        "ku": "توو",
+        "de": "Blaubeere"
        },
        "price": 3000
       },
@@ -467,7 +525,8 @@
        "name": {
         "en": "Peach",
         "ar": "خوخ",
-        "ku": "خۆخ"
+        "ku": "خۆخ",
+        "de": "Pfirsich"
        },
        "price": 3000
       },
@@ -475,7 +534,8 @@
        "name": {
         "en": "Lemon & mint",
         "ar": "ليمون ونعناع",
-        "ku": "لەیمون و نەعناع"
+        "ku": "لەیمون و نەعناع",
+        "de": "Zitrone & Minze"
        },
        "price": 3000
       },
@@ -483,7 +543,8 @@
        "name": {
         "en": "Lemon",
         "ar": "ليمون",
-        "ku": "لەیمون"
+        "ku": "لەیمون",
+        "de": "Zitrone"
        },
        "price": 3000
       }
@@ -496,14 +557,16 @@
    "name": {
     "en": "Fresh juices",
     "ar": "عصائر طبيعية",
-    "ku": "شەربەتێن سروشتی"
+    "ku": "شەربەتێن سروشتی",
+    "de": "Frische Säfte"
    },
    "items": [
     {
      "name": {
       "en": "Orange",
       "ar": "برتقال",
-      "ku": "پرتەقال"
+      "ku": "پرتەقال",
+      "de": "Orange"
      },
      "price": 3500
     },
@@ -511,7 +574,8 @@
      "name": {
       "en": "Lemon",
       "ar": "ليمون",
-      "ku": "لەیمون"
+      "ku": "لەیمون",
+      "de": "Zitrone"
      },
      "price": 3500
     },
@@ -519,7 +583,8 @@
      "name": {
       "en": "Orange & lemon",
       "ar": "برتقال وليمون",
-      "ku": "پرتەقال و لەیمون"
+      "ku": "پرتەقال و لەیمون",
+      "de": "Orange & Zitrone"
      },
      "price": 3500
     },
@@ -527,7 +592,8 @@
      "name": {
       "en": "Pomegranate",
       "ar": "رمان",
-      "ku": "هنار"
+      "ku": "هنار",
+      "de": "Granatapfel"
      },
      "price": 3500
     }
@@ -538,21 +604,24 @@
    "name": {
     "en": "Asary fruit drinks",
     "ar": "عصاري",
-    "ku": "عەساری"
+    "ku": "عەساری",
+    "de": "Asary Fruchtgetränke"
    },
    "new": true,
    "banner": "media/new/asary-bottles-real.jpg",
    "desc": {
     "en": "Natural fruit syrup: 60% fruit, 75% less fructose sugar. Choose your flavour:",
     "ar": "شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. اختر نكهتك:",
-    "ku": "شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تاما خۆ هەلبژێرە:"
+    "ku": "شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تاما خۆ هەلبژێرە:",
+    "de": "Natürlicher Fruchtsirup: 60 % Frucht, 75 % weniger Fruchtzucker. Wählen Sie Ihre Sorte:"
    },
    "flavours": [
     {
      "name": {
       "en": "Peach",
       "ar": "خوخ",
-      "ku": "خۆخ"
+      "ku": "خۆخ",
+      "de": "Pfirsich"
      },
      "img": "media/new/flavours/peach.jpg"
     },
@@ -560,7 +629,8 @@
      "name": {
       "en": "Lemon & lime",
       "ar": "ليمون و لايم",
-      "ku": "لیمون و لایم"
+      "ku": "لیمون و لایم",
+      "de": "Zitrone & Limette"
      },
      "img": "media/new/flavours/lemon-lime.jpg"
     },
@@ -568,7 +638,8 @@
      "name": {
       "en": "Cherry",
       "ar": "كرز",
-      "ku": "گێلاس"
+      "ku": "گێلاس",
+      "de": "Kirsche"
      },
      "img": "media/new/flavours/cherry.jpg"
     },
@@ -576,7 +647,8 @@
      "name": {
       "en": "Blackcurrant",
       "ar": "كشمش أسود",
-      "ku": "کشمشا رەش"
+      "ku": "کشمشا رەش",
+      "de": "Schwarze Johannisbeere"
      },
      "img": "media/new/flavours/blackcurrant.jpg"
     },
@@ -584,7 +656,8 @@
      "name": {
       "en": "Cola",
       "ar": "كولا",
-      "ku": "کۆلا"
+      "ku": "کۆلا",
+      "de": "Cola"
      },
      "img": "media/new/flavours/cola.jpg"
     },
@@ -592,7 +665,8 @@
      "name": {
       "en": "Grape",
       "ar": "عنب",
-      "ku": "تری"
+      "ku": "تری",
+      "de": "Traube"
      },
      "img": "media/new/flavours/grape.jpg"
     },
@@ -600,7 +674,8 @@
      "name": {
       "en": "Elderflower & mint",
       "ar": "زهرة البيلسان والنعناع",
-      "ku": "گۆڵ بەیبوون و نعناع"
+      "ku": "گۆڵ بەیبوون و نعناع",
+      "de": "Holunderblüte & Minze"
      },
      "img": "media/new/flavours/elderflower-mint.jpg"
     },
@@ -608,7 +683,8 @@
      "name": {
       "en": "Mango",
       "ar": "مانجو",
-      "ku": "مانگۆ"
+      "ku": "مانگۆ",
+      "de": "Mango"
      },
      "img": "media/new/flavours/mango.jpg"
     },
@@ -616,7 +692,8 @@
      "name": {
       "en": "Raspberry",
       "ar": "توت العليق",
-      "ku": "تووا سۆر"
+      "ku": "تووا سۆر",
+      "de": "Himbeere"
      },
      "img": "media/new/flavours/raspberry.jpg"
     }
@@ -626,7 +703,8 @@
      "name": {
       "en": "With mineral water",
       "ar": "مع مياه معدنية",
-      "ku": "دگەل ئاڤا سروشتی"
+      "ku": "دگەل ئاڤا سروشتی",
+      "de": "Mit stillem Wasser"
      },
      "price": 1500
     },
@@ -634,7 +712,8 @@
      "name": {
       "en": "With sparkling water",
       "ar": "مع مياه غازية",
-      "ku": "دگەل ئاڤا گازی"
+      "ku": "دگەل ئاڤا گازی",
+      "de": "Mit Sprudelwasser"
      },
      "price": 2000
     },
@@ -642,7 +721,8 @@
      "name": {
       "en": "With milk",
       "ar": "مع الحليب",
-      "ku": "دگەل شیری"
+      "ku": "دگەل شیری",
+      "de": "Mit Milch"
      },
      "price": 2500
     }
@@ -653,14 +733,16 @@
    "name": {
     "en": "Mojito",
     "ar": "موهيتو",
-    "ku": "مۆهیتۆ"
+    "ku": "مۆهیتۆ",
+    "de": "Mojito"
    },
    "items": [
     {
      "name": {
       "en": "Classic mojito",
       "ar": "موهيتو كلاسيك",
-      "ku": "مۆهیتۆ کلاسیک"
+      "ku": "مۆهیتۆ کلاسیک",
+      "de": "Klassischer Mojito"
      },
      "price": 2000
     },
@@ -668,7 +750,8 @@
      "name": {
       "en": "Strawberry mojito",
       "ar": "موهيتو فراولة",
-      "ku": "مۆهیتۆیا فراولایێ"
+      "ku": "مۆهیتۆیا فراولایێ",
+      "de": "Erdbeer-Mojito"
      },
      "price": 2000
     },
@@ -676,7 +759,8 @@
      "name": {
       "en": "Red mojito",
       "ar": "موهيتو ريد",
-      "ku": "مۆهیتۆ رێد"
+      "ku": "مۆهیتۆ رێد",
+      "de": "Red Mojito"
      },
      "price": 2000
     },
@@ -684,7 +768,8 @@
      "name": {
       "en": "Kiwi mojito",
       "ar": "موهيتو كيوي",
-      "ku": "مۆهیتۆ کیڤی"
+      "ku": "مۆهیتۆ کیڤی",
+      "de": "Kiwi-Mojito"
      },
      "price": 2000
     },
@@ -692,7 +777,8 @@
      "name": {
       "en": "Blueberry mojito",
       "ar": "موهيتو بلوبيري",
-      "ku": "مۆهیتۆ بلوبێری"
+      "ku": "مۆهیتۆ بلوبێری",
+      "de": "Blaubeer-Mojito"
      },
      "price": 2000
     },
@@ -700,7 +786,8 @@
      "name": {
       "en": "Vimto",
       "ar": "فيمتو",
-      "ku": "ڤیمتۆ"
+      "ku": "ڤیمتۆ",
+      "de": "Vimto"
      },
      "price": 2000
     },
@@ -708,7 +795,8 @@
      "name": {
       "en": "Lemon & mint mojito (special)",
       "ar": "موهيتو ليمون ونعناع خاص",
-      "ku": "مۆهیتۆیا لەیمون و نەعناعێ تایبەت"
+      "ku": "مۆهیتۆیا لەیمون و نەعناعێ تایبەت",
+      "de": "Zitronen-Minz-Mojito (Spezial)"
      },
      "price": 2000
     },
@@ -716,7 +804,8 @@
      "name": {
       "en": "Amed mojito",
       "ar": "موهيتو Amed",
-      "ku": "مۆهیتۆ ئامەد"
+      "ku": "مۆهیتۆ ئامەد",
+      "de": "Amed-Mojito"
      },
      "price": 2000
     }
@@ -727,14 +816,16 @@
    "name": {
     "en": "Milkshake",
     "ar": "ميلك شيك",
-    "ku": "میلک شەیک"
+    "ku": "میلک شەیک",
+    "de": "Milchshake"
    },
    "items": [
     {
      "name": {
       "en": "Chocolate",
       "ar": "شوكولا",
-      "ku": "شکولاتا"
+      "ku": "شکولاتا",
+      "de": "Schokolade"
      },
      "price": 3000
     },
@@ -742,7 +833,8 @@
      "name": {
       "en": "Banana",
       "ar": "موز",
-      "ku": "مۆز"
+      "ku": "مۆز",
+      "de": "Banane"
      },
      "price": 3000
     },
@@ -750,7 +842,8 @@
      "name": {
       "en": "Caramel",
       "ar": "كراميل",
-      "ku": "کەرامێل"
+      "ku": "کەرامێل",
+      "de": "Karamell"
      },
      "price": 3000
     },
@@ -758,7 +851,8 @@
      "name": {
       "en": "Oreo",
       "ar": "أوريو",
-      "ku": "ئۆریۆ"
+      "ku": "ئۆریۆ",
+      "de": "Oreo"
      },
      "price": 3000
     },
@@ -766,7 +860,8 @@
      "name": {
       "en": "Lotus",
       "ar": "لوتس",
-      "ku": "لۆتۆس"
+      "ku": "لۆتۆس",
+      "de": "Lotus"
      },
      "price": 3000
     },
@@ -774,7 +869,8 @@
      "name": {
       "en": "Amed milkshake",
       "ar": "ميلك شيك Amed",
-      "ku": "میلک شەیکا ئامەد"
+      "ku": "میلک شەیکا ئامەد",
+      "de": "Amed-Milchshake"
      },
      "price": 3000
     }
@@ -785,14 +881,16 @@
    "name": {
     "en": "Cocktails",
     "ar": "كوكتيل",
-    "ku": "کۆکتێل"
+    "ku": "کۆکتێل",
+    "de": "Cocktails"
    },
    "items": [
     {
      "name": {
       "en": "Banana milk cocktail",
       "ar": "كوكتيل حليب وموز",
-      "ku": "کۆکتێلا شیر و مۆزێ"
+      "ku": "کۆکتێلا شیر و مۆزێ",
+      "de": "Bananenmilch-Cocktail"
      },
      "price": 3000
     },
@@ -800,7 +898,8 @@
      "name": {
       "en": "Amed cocktail",
       "ar": "كوكتيل Amed",
-      "ku": "کۆکتێلا ئامەد"
+      "ku": "کۆکتێلا ئامەد",
+      "de": "Amed-Cocktail"
      },
      "price": 5000,
      "options": [
@@ -808,7 +907,8 @@
        "name": {
         "en": "Special",
         "ar": "خاص",
-        "ku": "تایبەت"
+        "ku": "تایبەت",
+        "de": "Spezial"
        },
        "price": 5000
       },
@@ -816,7 +916,8 @@
        "name": {
         "en": "Royal",
         "ar": "ملكي",
-        "ku": "شاهانە"
+        "ku": "شاهانە",
+        "de": "Royal"
        },
        "price": 5000
       },
@@ -824,7 +925,8 @@
        "name": {
         "en": "Legendary",
         "ar": "أسطوري",
-        "ku": "ئەفسانە"
+        "ku": "ئەفسانە",
+        "de": "Legendär"
        },
        "price": 5000
       }
@@ -834,7 +936,8 @@
      "name": {
       "en": "Piña colada",
       "ar": "بينا كولادا",
-      "ku": "پینا کۆلادا"
+      "ku": "پینا کۆلادا",
+      "de": "Piña Colada"
      },
      "price": 5000
     }
@@ -845,14 +948,16 @@
    "name": {
     "en": "Soft drinks",
     "ar": "مشروبات باردة",
-    "ku": "ڤەخوارنێن سار"
+    "ku": "ڤەخوارنێن سار",
+    "de": "Erfrischungsgetränke"
    },
    "items": [
     {
      "name": {
       "en": "Water",
       "ar": "ماء",
-      "ku": "ئاڤ"
+      "ku": "ئاڤ",
+      "de": "Wasser"
      },
      "price": 250
     },
@@ -860,7 +965,8 @@
      "name": {
       "en": "Coca-Cola",
       "ar": "كوكا كولا",
-      "ku": "کۆکا کۆلا"
+      "ku": "کۆکا کۆلا",
+      "de": "Coca-Cola"
      },
      "price": 1000
     },
@@ -868,7 +974,8 @@
      "name": {
       "en": "Sprite",
       "ar": "سبرايت",
-      "ku": "سپرایت"
+      "ku": "سپرایت",
+      "de": "Sprite"
      },
      "price": 1000
     },
@@ -876,7 +983,8 @@
      "name": {
       "en": "Soda",
       "ar": "صودا",
-      "ku": "سۆدا"
+      "ku": "سۆدا",
+      "de": "Soda"
      },
      "price": 1000,
      "options": [
@@ -884,7 +992,8 @@
        "name": {
         "en": "Plain",
         "ar": "سادة",
-        "ku": "سادە"
+        "ku": "سادە",
+        "de": "Pur"
        },
        "price": 1000
       },
@@ -892,7 +1001,8 @@
        "name": {
         "en": "Lemon",
         "ar": "ليمون",
-        "ku": "لەیمون"
+        "ku": "لەیمون",
+        "de": "Zitrone"
        },
        "price": 1500
       }
@@ -905,14 +1015,16 @@
    "name": {
     "en": "Energy drinks",
     "ar": "مشروبات الطاقة",
-    "ku": "ڤەخوارنێن بهێزکەر"
+    "ku": "ڤەخوارنێن بهێزکەر",
+    "de": "Energydrinks"
    },
    "items": [
     {
      "name": {
       "en": "Tiger",
       "ar": "تايجر",
-      "ku": "تایگەر"
+      "ku": "تایگەر",
+      "de": "Tiger"
      },
      "price": 1500,
      "options": [
@@ -920,7 +1032,8 @@
        "name": {
         "en": "Regular",
         "ar": "عادي",
-        "ku": "نورمال"
+        "ku": "نورمال",
+        "de": "Normal"
        },
        "price": 1500
       },
@@ -928,7 +1041,8 @@
        "name": {
         "en": "Mexican",
         "ar": "مكسيكي",
-        "ku": "مەکسیکی"
+        "ku": "مەکسیکی",
+        "de": "Mexican"
        },
        "price": 2000
       }
@@ -938,7 +1052,8 @@
      "name": {
       "en": "Blink",
       "ar": "بلنك",
-      "ku": "بلینک"
+      "ku": "بلینک",
+      "de": "Blink"
      },
      "price": 1500
     },
@@ -946,7 +1061,8 @@
      "name": {
       "en": "Smart",
       "ar": "سمارت",
-      "ku": "سمارت"
+      "ku": "سمارت",
+      "de": "Smart"
      },
      "price": 1500
     },
@@ -954,7 +1070,8 @@
      "name": {
       "en": "Smart Zero",
       "ar": "سمارت زيرو",
-      "ku": "سمارت زیرۆ"
+      "ku": "سمارت زیرۆ",
+      "de": "Smart Zero"
      },
      "price": 1500
     },
@@ -962,7 +1079,8 @@
      "name": {
       "en": "White Tiger",
       "ar": "وايت تايجر",
-      "ku": "وایت تایگەر"
+      "ku": "وایت تایگەر",
+      "de": "White Tiger"
      },
      "price": 2000
     },
@@ -970,7 +1088,8 @@
      "name": {
       "en": "Red Bull",
       "ar": "ريد بول",
-      "ku": "رێد بوڵ"
+      "ku": "رێد بوڵ",
+      "de": "Red Bull"
      },
      "price": 2500,
      "options": [
@@ -978,7 +1097,8 @@
        "name": {
         "en": "Regular",
         "ar": "عادي",
-        "ku": "نورمال"
+        "ku": "نورمال",
+        "de": "Normal"
        },
        "price": 2500
       },
@@ -986,7 +1106,8 @@
        "name": {
         "en": "Mexican",
         "ar": "مكسيكي",
-        "ku": "مەکسیکی"
+        "ku": "مەکسیکی",
+        "de": "Mexican"
        },
        "price": 3000
       }
@@ -999,7 +1120,8 @@
    "name": {
     "en": "Shisha",
     "ar": "أركيلة",
-    "ku": "نێرگەلە"
+    "ku": "نێرگەلە",
+    "de": "Shisha"
    },
    "photo": "media/drinks/shisha-photo.jpg",
    "smoke": [
@@ -1011,7 +1133,8 @@
      "name": {
       "en": "Gum & mint",
       "ar": "علك ونعناع",
-      "ku": "علک و نەعناع"
+      "ku": "علک و نەعناع",
+      "de": "Kaugummi & Minze"
      },
      "price": 6000
     },
@@ -1019,7 +1142,8 @@
      "name": {
       "en": "Lemon & mint",
       "ar": "ليمون ونعناع",
-      "ku": "لەیمون و نەعناع"
+      "ku": "لەیمون و نەعناع",
+      "de": "Zitrone & Minze"
      },
      "price": 6000
     },
@@ -1027,7 +1151,8 @@
      "name": {
       "en": "Double apple",
       "ar": "تفاحتين",
-      "ku": "دوو سێڤ"
+      "ku": "دوو سێڤ",
+      "de": "Doppelapfel"
      },
      "price": 6000
     },
@@ -1035,7 +1160,8 @@
      "name": {
       "en": "Royal mix",
       "ar": "خلطة رويال",
-      "ku": "تێکەلا رۆیال"
+      "ku": "تێکەلا رۆیال",
+      "de": "Royal-Mix"
      },
      "price": 6000
     },
@@ -1043,7 +1169,8 @@
      "name": {
       "en": "English mix",
       "ar": "خلطة إنجليزية",
-      "ku": "تێکەلا ئینگلیزی"
+      "ku": "تێکەلا ئینگلیزی",
+      "de": "English-Mix"
      },
      "price": 6000
     },
@@ -1051,7 +1178,8 @@
      "name": {
       "en": "Head change",
       "ar": "تبديل حجر",
-      "ku": "گوهۆڕینا سەری"
+      "ku": "گوهۆڕینا سەری",
+      "de": "Kopfwechsel"
      },
      "price": 3000
     },
@@ -1059,7 +1187,8 @@
      "name": {
       "en": "Half kilo of tobacco",
       "ar": "نصف كيلو معسل",
-      "ku": "نیڤ کیلۆ مەعسەل"
+      "ku": "نیڤ کیلۆ مەعسەل",
+      "de": "Ein halbes Kilo Tabak"
      },
      "price": 20000
     },
@@ -1067,7 +1196,8 @@
      "name": {
       "en": "1 kilo of tobacco",
       "ar": "كيلو معسل",
-      "ku": "کیلۆیەک مەعسەل"
+      "ku": "کیلۆیەک مەعسەل",
+      "de": "1 Kilo Tabak"
      },
      "price": 40000
     }
@@ -1083,17 +1213,20 @@
    "title": {
     "en": "Shisha combo",
     "ar": "عرض الأركيلة",
-    "ku": "پێشکێشیا نێرگەلێ"
+    "ku": "پێشکێشیا نێرگەلێ",
+    "de": "Shisha-Kombi"
    },
    "when": {
     "en": "9:00 AM – 5:00 PM",
     "ar": "9:00 صباحاً – 5:00 مساءً",
-    "ku": "9:00 سپێدێ – 5:00 ئێڤارێ"
+    "ku": "9:00 سپێدێ – 5:00 ئێڤارێ",
+    "de": "9:00 – 17:00 Uhr"
    },
    "text": {
     "en": "A shisha + 1 bottle of water + 1 tea",
     "ar": "أركيلة + قنينة ماء + شاي",
-    "ku": "نێرگەلەک + بوتلەکا ئاڤێ + چایەک"
+    "ku": "نێرگەلەک + بوتلەکا ئاڤێ + چایەک",
+    "de": "Eine Shisha + 1 Flasche Wasser + 1 Tee"
    }
   },
   {
@@ -1102,12 +1235,14 @@
    "title": {
     "en": "Roll the dice",
     "ar": "ارمِ النرد",
-    "ku": "زارێ بهاڤێژە"
+    "ku": "زارێ بهاڤێژە",
+    "de": "Würfeln Sie"
    },
    "text": {
     "en": "Roll a double six and get 50% off your bill",
     "ar": "احصل على دبل ستة واحصل على خصم 50% على فاتورتك",
-    "ku": "دوو شەشان بینە و 50% ژ حسابا خۆ کێم بکە"
+    "ku": "دوو شەشان بینە و 50% ژ حسابا خۆ کێم بکە",
+    "de": "Würfeln Sie einen Sechserpasch und erhalten Sie 50 % Rabatt auf Ihre Rechnung"
    }
   },
   {
@@ -1117,12 +1252,14 @@
    "title": {
     "en": "Loyalty card",
     "ar": "بطاقة الولاء",
-    "ku": "کارتا ئامەد"
+    "ku": "کارتا ئامەد",
+    "de": "Treuekarte"
    },
    "text": {
     "en": "Get our loyalty card: your 8th shisha is free",
     "ar": "احصل على بطاقة الولاء: الأركيلة الثامنة مجاناً",
-    "ku": "کارتا مە وەرگرە: نێرگەلا 8ەمین بێ بەرامبەرە"
+    "ku": "کارتا مە وەرگرە: نێرگەلا 8ەمین بێ بەرامبەرە",
+    "de": "Holen Sie sich unsere Treuekarte: Ihre 8. Shisha ist gratis"
    }
   },
   {
@@ -1131,12 +1268,14 @@
    "title": {
     "en": "Predict the match",
     "ar": "توقّع النتيجة",
-    "ku": "ئەنجامێ پێشبینی بکە"
+    "ku": "ئەنجامێ پێشبینی بکە",
+    "de": "Tippen Sie das Spiel"
    },
    "text": {
     "en": "Predict the exact result of any match before it starts, and your bill is 100% on us",
     "ar": "توقّع النتيجة الصحيحة لأي مباراة قبل بدايتها، وفاتورتك علينا 100%",
-    "ku": "ئەنجامێ دروست یێ هەر یاریەکێ بەری دەستپێکرنا وێ پێشبینی بکە، و حسابا تە 100% ل سەر مەیە"
+    "ku": "ئەنجامێ دروست یێ هەر یاریەکێ بەری دەستپێکرنا وێ پێشبینی بکە، و حسابا تە 100% ل سەر مەیە",
+    "de": "Tippen Sie vor Spielbeginn das genaue Ergebnis eines Spiels, und Ihre Rechnung geht zu 100 % auf uns"
    }
   }
  ],
@@ -1146,7 +1285,8 @@
    "name": {
     "en": "Pistachio coffee",
     "ar": "قهوة الفستق",
-    "ku": "قەهوا فستقێ"
+    "ku": "قەهوا فستقێ",
+    "de": "Pistazienkaffee"
    },
    "cat": "coffee"
   },
@@ -1155,7 +1295,8 @@
    "name": {
     "en": "Latte",
     "ar": "لاتيه",
-    "ku": "لاتێ"
+    "ku": "لاتێ",
+    "de": "Latte"
    },
    "cat": "latte"
   },
@@ -1164,7 +1305,8 @@
    "name": {
     "en": "Blueberry mojito",
     "ar": "موهيتو بلوبيري",
-    "ku": "مۆهیتۆ بلوبێری"
+    "ku": "مۆهیتۆ بلوبێری",
+    "de": "Blaubeer-Mojito"
    },
    "cat": "mojito"
   },
@@ -1173,7 +1315,8 @@
    "name": {
     "en": "Iced coffee",
     "ar": "قهوة مثلجة",
-    "ku": "ئایس کافێ"
+    "ku": "ئایس کافێ",
+    "de": "Eiskaffee"
    },
    "cat": "iced-coffee"
   },
@@ -1182,7 +1325,8 @@
    "name": {
     "en": "Amed cocktail",
     "ar": "كوكتيل Amed",
-    "ku": "کۆکتێلا ئامەد"
+    "ku": "کۆکتێلا ئامەد",
+    "de": "Amed-Cocktail"
    },
    "cat": "cocktail"
   },
@@ -1191,7 +1335,8 @@
    "name": {
     "en": "Cappuccino",
     "ar": "كابتشينو",
-    "ku": "کاپوچینۆ"
+    "ku": "کاپوچینۆ",
+    "de": "Cappuccino"
    },
    "cat": "hot"
   },
@@ -1200,7 +1345,8 @@
    "name": {
     "en": "Mojito",
     "ar": "موهيتو",
-    "ku": "مۆهیتۆ"
+    "ku": "مۆهیتۆ",
+    "de": "Mojito"
    },
    "cat": "mojito"
   },
@@ -1209,7 +1355,8 @@
    "name": {
     "en": "Turkish coffee",
     "ar": "قهوة تركية",
-    "ku": "قەهوا تورکی"
+    "ku": "قەهوا تورکی",
+    "de": "Türkischer Kaffee"
    },
    "cat": "coffee"
   },
@@ -1218,7 +1365,8 @@
    "name": {
     "en": "Latte",
     "ar": "لاتيه",
-    "ku": "لاتێ"
+    "ku": "لاتێ",
+    "de": "Latte"
    },
    "cat": "latte"
   },
@@ -1227,7 +1375,8 @@
    "name": {
     "en": "Kurdish coffee",
     "ar": "قهوة بطم",
-    "ku": "قەهوا کەزوانێ"
+    "ku": "قەهوا کەزوانێ",
+    "de": "Kurdischer Kaffee"
    },
    "cat": "coffee"
   },
@@ -1236,7 +1385,8 @@
    "name": {
     "en": "Iced Americano",
     "ar": "امريكانو مثلج",
-    "ku": "ئەمریکانۆیا سار"
+    "ku": "ئەمریکانۆیا سار",
+    "de": "Iced Americano"
    },
    "cat": "iced-coffee"
   },
@@ -1245,7 +1395,8 @@
    "name": {
     "en": "Cocktails",
     "ar": "كوكتيل",
-    "ku": "کۆکتێل"
+    "ku": "کۆکتێل",
+    "de": "Cocktails"
    },
    "cat": "cocktail"
   },
@@ -1254,7 +1405,8 @@
    "name": {
     "en": "Espresso",
     "ar": "اسبريسو",
-    "ku": "ئێسپرێسۆ"
+    "ku": "ئێسپرێسۆ",
+    "de": "Espresso"
    },
    "cat": "coffee"
   },
@@ -1263,7 +1415,8 @@
    "name": {
     "en": "Classic latte",
     "ar": "لاتيه كلاسيك",
-    "ku": "لاتێ کلاسیک"
+    "ku": "لاتێ کلاسیک",
+    "de": "Klassischer Latte"
    },
    "cat": "latte"
   },
@@ -1272,7 +1425,8 @@
    "name": {
     "en": "Coffee",
     "ar": "قهوة",
-    "ku": "قەهوە"
+    "ku": "قەهوە",
+    "de": "Kaffee"
    },
    "cat": "coffee"
   }
