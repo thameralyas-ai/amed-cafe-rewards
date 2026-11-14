@@ -12,8 +12,38 @@
 <meta name="description" content="Amed Cafe: coffee, cold drinks and premium shisha. Open every day 8:00 AM – 1:00 AM. Buy 7, the 8th is free with the Amed loyalty card.">
 <meta property="og:title" content="Amed Cafe · your comfort space">
 <meta property="og:description" content="Coffee, drinks and premium shisha. Open every day 8:00 AM – 1:00 AM.">
-<meta property="og:image" content="https://amedcaferest.com/card/icon-512.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Amed Cafe">
+<meta property="og:image" content="https://amedcaferest.com/media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Amed Cafe in Sharya, Duhok: coffee and shisha, open every day 8 AM – 1 AM">
 <meta property="og:url" content="https://amedcaferest.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amedcaferest.com/media/og.jpg">
+<link rel="canonical" href="https://amedcaferest.com/">
+<!-- Google search: the cafe's details (hours, address, phone, menu). Keep in step with the page when they change. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "Amed Cafe",
+  "alternateName": ["Amed cafe&rest", "ئامەد کافێ", "امد كافي"],
+  "slogan": "your comfort space",
+  "url": "https://amedcaferest.com/",
+  "image": ["https://amedcaferest.com/media/og.jpg", "https://amedcaferest.com/media/space/inside.jpg", "https://amedcaferest.com/media/space/evening.jpg"],
+  "logo": "https://amedcaferest.com/card/icon-512.png",
+  "telephone": "+9647502620262",
+  "hasMenu": "https://amedcaferest.com/menu/",
+  "servesCuisine": ["Coffee", "Drinks", "Shisha"],
+  "currenciesAccepted": "IQD",
+  "address": { "@type": "PostalAddress", "streetAddress": "Duhok Road, near Sharya Camp", "addressLocality": "Sharya", "addressRegion": "Duhok", "postalCode": "42001", "addressCountry": "IQ" },
+  "geo": { "@type": "GeoCoordinates", "latitude": 36.79306, "longitude": 42.96795 },
+  "hasMap": "https://maps.app.goo.gl/QWJCvuRBjmKmjnWs7",
+  "openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "08:00", "closes": "01:00" }],
+  "sameAs": ["https://www.instagram.com/amed.caferest/", "https://www.tiktok.com/@amedcaferest", "https://www.snapchat.com/place/amed-caferest/788297e9-37d0-48a7-bfea-ca6504ef569e", "https://maps.app.goo.gl/QWJCvuRBjmKmjnWs7"]
+}
+</script>
 <link rel="icon" href="card/icon-192.png">
 <link rel="apple-touch-icon" href="card/icon-180.png">
 <meta name="theme-color" content="#1C120D">
@@ -292,6 +322,24 @@ header .langs { margin-inline-end: 54px; }
 .rev .stars { color: var(--gold2); letter-spacing: 2px; direction: ltr; }
 .rev p { margin: 8px 0 12px; }
 .rev small { color: var(--muted); font-size: 13px; }
+/* Google rating summary (rating + count from reviews.json) */
+.rsum { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 4px 0 22px; text-align: center; }
+.rsum .rnum { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--gold2); font-weight: 500; }
+.rsum .rstars { position: relative; display: inline-block; font-size: 26px; letter-spacing: 4px; color: var(--line); direction: ltr; line-height: 1; }
+.rsum .rstars::before { content: "★★★★★"; }
+.rsum .rstars::after { content: "★★★★★"; position: absolute; left: 0; top: 0; width: var(--p, 100%); overflow: hidden; white-space: nowrap; color: var(--gold2); }
+.rsum small { color: var(--muted); font-size: 14px; }
+/* Instagram: latest posts (instagram.json, images saved in media/ig/) */
+.igrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+@media (min-width: 900px) { .igrid { grid-template-columns: repeat(6, 1fr); gap: 12px; } }
+.igrid a { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.igrid img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .6s; }
+.igrid a:hover img, .igrid a:focus-visible img { transform: scale(1.06); filter: brightness(1.08); }
+.igrid .play { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,.6)); }
+.igrid .play svg { width: 100%; height: 100%; display: block; }
+.igbtns .story { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.igbtns .igring { width: 26px; height: 26px; border-radius: 50%; padding: 2px; background: conic-gradient(from 200deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75); flex: none; }
+.igbtns .igring i { display: block; width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--bg); background: url(card/icon-192.png) center/cover; }
 .maplink { text-align: center; margin: 14px 0 22px; }
 .maplink .btn { display: inline-block; padding: 12px 24px; }
 .gmap { border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); aspect-ratio: 4 / 3; max-height: 420px; width: 100%; margin-top: 4px; }
@@ -462,9 +510,17 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     </section>
   </div>
 
-  <!-- Real Google reviews as cards (reviews.json). Hidden until there are reviews to show. -->
+  <!-- Latest Instagram posts (instagram.json). Hidden until there are posts. -->
+  <section id="insta" hidden>
+    <div class="head"><span class="kicker" data-t="igK"></span><h2 data-t="igT"></h2><i class="orn"></i></div>
+    <div class="igrid" id="igList"></div>
+    <div class="revbtns igbtns"><a class="btn pri story" id="igStory" target="_blank" rel="noopener"><span class="igring"><i></i></span><span data-t="igStories"></span></a><a class="btn sec" id="igFollow" target="_blank" rel="noopener" data-t="igFollow"></a></div>
+  </section>
+
+  <!-- Google rating summary + real Google reviews as cards (reviews.json). Hidden until there is a rating or reviews. -->
   <section id="reviews" hidden>
     <div class="head"><span class="kicker" data-t="revK"></span><h2 data-t="revT"></h2><i class="orn"></i></div>
+    <div class="rsum" id="rsum" hidden><b class="rnum" id="rNum"></b><span class="rstars" id="rStars"></span><small id="rCount"></small></div>
     <div class="revs" id="revList"></div>
     <div class="revbtns"><a class="btn pri" id="revRead" target="_blank" rel="noopener" data-t="revRead"></a><a class="btn sec" id="revWrite" target="_blank" rel="noopener" data-t="reviewLink"></a></div>
   </section>
@@ -518,7 +574,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", gSign: "The Amed Cafe sign", gBar: "Our bar", gDrink: "A drink served at Amed Cafe", gHintTouch: "Tap a photo to see it in colour, tap it again to open it", gHintMouse: "Point at a photo to see it in colour, click it to bring it forward", close: "Close",
       visK: "Visit", visT: "Find us", hours: "Hours", everyDayHours: "Every day · 8:00 AM – 1:00 AM", location: "Location", openMaps: "Open in Google Maps",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "Open in Snapchat", phone: "Phone", review: "Review us", reviewLink: "Write a Google review ★", soon: "Coming soon",
-      tagline: "your comfort space", revK: "Google reviews", revT: "What our guests say", revP: "See our rating and read every review on Google.", revRead: "Read our reviews",
+      tagline: "your comfort space", revK: "Google reviews", revT: "What our guests say", revP: "See our rating and read every review on Google.", revRead: "Read our reviews", rCount: "{n} reviews on Google", rAria: "Rated {r} out of 5 on Google",
+      igK: "Instagram", igT: "Latest from Instagram", igStories: "Watch our stories", igFollow: "Follow @amed.caferest", igOpen: "Open this post on Instagram", igReel: "Reel",
     },
     ar: {
       kicker: "Amed Cafe · دهوك", h1a: "أمسية من", words: ["القهوة", "الأركيلة", "الراحة"], shishas: ["ذهبية", "نحاسية", "فضية"], sub: "قهوة على مهل، أركيلة ناعمة وصحبة طيبة — كل يوم حتى الساعة 1 ليلاً.",
@@ -532,7 +589,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", gSign: "لافتة Amed Cafe", gBar: "البار", gDrink: "مشروب يُقدَّم في Amed Cafe", gHintTouch: "اضغط على صورة لتظهر بالألوان، واضغط مرة أخرى لفتحها", gHintMouse: "مرّر الماوس فوق صورة لتظهر بالألوان، وانقر لتقديمها", close: "إغلاق",
       visK: "زورونا", visT: "موقعنا", hours: "أوقات العمل", everyDayHours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", location: "الموقع", openMaps: "افتح في خرائط Google",
       whatsapp: "واتساب", instagram: "إنستغرام", tiktok: "تيك توك", snapchat: "سناب شات", openSnap: "افتح في سناب شات", phone: "الهاتف", review: "قيّمنا", reviewLink: "اكتب تقييماً على Google ★", soon: "قريباً",
-      tagline: "مكان راحتك", revK: "تقييمات Google", revT: "ماذا يقول ضيوفنا", revP: "شاهد تقييمنا واقرأ كل المراجعات على Google.", revRead: "اقرأ تقييماتنا",
+      tagline: "مكان راحتك", revK: "تقييمات Google", revT: "ماذا يقول ضيوفنا", revP: "شاهد تقييمنا واقرأ كل المراجعات على Google.", revRead: "اقرأ تقييماتنا", rCount: "{n} تقييمات على Google", rAria: "التقييم {r} من 5 على Google",
+      igK: "إنستغرام", igT: "أحدث منشوراتنا على إنستغرام", igStories: "شاهد قصصنا", igFollow: "تابعنا \u2066@amed.caferest\u2069", igOpen: "افتح هذا المنشور على إنستغرام", igReel: "ريلز",
     },
     ku: {
       kicker: "Amed Cafe · دهۆک", h1a: "ئێڤارەکا", words: ["قەهوێ", "نێرگەلێ", "ئارامیێ"], shishas: ["زێڕین", "مسین", "زیڤین"], sub: "قەهوەیەکا خۆش، نێرگەلەکا نەرم و هەڤالینیەکا باش — هەمی رۆژ هەتا دەمژمێر 1ێ شەڤێ.",
@@ -546,7 +604,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", gSign: "تابلۆیا Amed Cafe", gBar: "بارێ مە", gDrink: "ڤەخوارنەک ل Amed Cafe", gHintTouch: "ل سەر وێنەیەکێ کلیک بکە دا رەنگ دیار ببیت، جارەکا دی کلیک بکە دا ڤەبیت", gHintMouse: "ماوسێ ببە سەر وێنەیەکێ دا ب رەنگ دیار ببیت، کلیک بکە دا بهێتە پێشیێ", close: "گرتن",
       visK: "سەرەدان", visT: "سەرەدانا مە بکە", hours: "دەمژمێرێن کاری", everyDayHours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", location: "جه", openMaps: "ل Google Maps ڤەکە",
       whatsapp: "واتسئاپ", instagram: "ئینستاگرام", tiktok: "تیکتۆک", snapchat: "سناپچات", openSnap: "ل سناپچات ڤەکە", phone: "تەلەفۆن", review: "هەلسەنگاندن", reviewLink: "ل Google بنڤیسە ★", soon: "ب زوویی",
-      tagline: "جهێ ئارامیا تە", revK: "هەلسەنگاندنێن Google", revT: "میڤانێن مە چ دبێژن", revP: "هەلسەنگاندنا مە ببینە و هەمی بۆچوونان ل Google بخوینە.", revRead: "هەلسەنگاندنێن مە بخوینە",
+      tagline: "جهێ ئارامیا تە", revK: "هەلسەنگاندنێن Google", revT: "میڤانێن مە چ دبێژن", revP: "هەلسەنگاندنا مە ببینە و هەمی بۆچوونان ل Google بخوینە.", revRead: "هەلسەنگاندنێن مە بخوینە", rCount: "{n} هەلسەنگاندن ل Google", rAria: "هەلسەنگاندن {r} ژ 5 ل Google",
+      igK: "ئینستاگرام", igT: "نووترین ل ئینستاگرامێ", igStories: "ستۆرییێن مە ببینە", igFollow: "دویڤ مە بکەڤە \u2066@amed.caferest\u2069", igOpen: "ڤێ پۆستێ ل ئینستاگرامێ ڤەکە", igReel: "ڕیل",
     },
     de: {
       kicker: "Amed Cafe · Duhok", h1a: "Ihr Abend mit", words: ["Kaffee", "Shisha", "Gemütlichkeit"], shishas: ["Gold", "Kupfer", "Silber"], sub: "Kaffee in Ruhe genießen, sanfte Shisha und gute Gesellschaft – täglich bis 1 Uhr nachts.",
@@ -560,7 +619,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "Galerie", galT: "Unser Café", gInside: "Im Amed Cafe", gShisha: "Shisha im Amed Cafe", gEvening: "Das Amed Cafe am Abend", gVideo: "Video vom Amed Cafe", gSign: "Das Schild des Amed Cafe", gBar: "Unsere Bar", gDrink: "Ein Getränk im Amed Cafe", gHintTouch: "Tippen Sie auf ein Foto, um es in Farbe zu sehen, und erneut, um es zu öffnen", gHintMouse: "Zeigen Sie auf ein Foto, um es in Farbe zu sehen, und klicken Sie darauf, um es nach vorne zu holen", close: "Schließen",
       visK: "Besuch", visT: "So finden Sie uns", hours: "Öffnungszeiten", everyDayHours: "Täglich · 8:00 – 1:00 Uhr", location: "Adresse", openMaps: "In Google Maps öffnen",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "In Snapchat öffnen", phone: "Telefon", review: "Bewerten Sie uns", reviewLink: "Google-Bewertung schreiben ★", soon: "Demnächst",
-      tagline: "Ihr Ort zum Wohlfühlen", revK: "Google-Bewertungen", revT: "Was unsere Gäste sagen", revP: "Sehen Sie unsere Bewertung und lesen Sie alle Rezensionen auf Google.", revRead: "Unsere Bewertungen lesen",
+      tagline: "Ihr Ort zum Wohlfühlen", revK: "Google-Bewertungen", revT: "Was unsere Gäste sagen", revP: "Sehen Sie unsere Bewertung und lesen Sie alle Rezensionen auf Google.", revRead: "Unsere Bewertungen lesen", rCount: "{n} Bewertungen auf Google", rAria: "Bewertet mit {r} von 5 auf Google",
+      igK: "Instagram", igT: "Neues auf Instagram", igStories: "Unsere Stories ansehen", igFollow: "Folgen Sie @amed.caferest", igOpen: "Diesen Beitrag auf Instagram öffnen", igReel: "Reel",
     },
   };
   const ORD_AR = { 6: "سادس", 7: "سابع", 8: "ثامن", 9: "تاسع", 10: "عاشر", 11: "حادي عشر" };
@@ -646,7 +706,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       { id: "rewards", t: tr("rewK") },
       { id: "events", t: tr("evT") },
       { id: "gallery", t: tr("galT") },
-      REVIEWS.length ? { id: "reviews", t: tr("revK") } : null,
+      POSTS.length ? { id: "insta", t: tr("igK") } : null,
+      REVIEWS.length || RATING ? { id: "reviews", t: tr("revK") } : null,
       { id: "visit", t: tr("visT") },
     ].filter(Boolean);
     items.forEach((it, i) => {
@@ -779,7 +840,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   // Google Maps window for "Amed cafe&rest" (embed code from Thamir); the map's own text follows the language.
   const GMAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1597.5310672999801!2d42.96795352748537!3d36.79306061534336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x400889cacdaee915%3A0x91468bec4ad078f8!2sAmed%20cafe%26rest!5e0!3m2!1sen!2siq!4v1794651122163!5m2!1sen!2siq";
   const GMAP_HL = { en: "en", ar: "ar", ku: "ckb", de: "de" };
-  let REVIEWS = [];
+  let REVIEWS = [], RATING = null, POSTS = [];
   function renderReviews() {
     const src = GMAP.replace(/!1sen!2siq/g, "!1s" + GMAP_HL[lang] + "!2siq");
     if ($("gmap").getAttribute("src") !== src) $("gmap").setAttribute("src", src);
@@ -788,7 +849,30 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     const box = $("revList"); box.textContent = "";
     for (const r of REVIEWS) box.append(el("div", { class: "rev" }, el("div", { class: "stars", "aria-label": r.rating + "/5", text: "★".repeat(r.rating) + "☆".repeat(5 - r.rating) }),
       el("p", { text: typeof r.text === "string" ? r.text : pick(r.text) }), el("small", { text: [r.name, r.date].filter(Boolean).join(" · ") })));
-    $("reviews").hidden = !REVIEWS.length;
+    // Google rating summary: the real rating and count from Google (reviews.json "rating" and "count").
+    const rs = $("rsum"); rs.hidden = !RATING;
+    if (RATING) {
+      const num = (x, d) => x.toLocaleString(LOC[lang] || "en-GB", { minimumFractionDigits: d, maximumFractionDigits: d });
+      $("rNum").textContent = num(RATING.rating, 1);
+      $("rStars").style.setProperty("--p", (RATING.rating / 5 * 100) + "%");
+      rs.setAttribute("role", "img"); rs.setAttribute("aria-label", tr("rAria").replace("{r}", num(RATING.rating, 1)));
+      $("rCount").textContent = tr("rCount").replace("{n}", num(RATING.count, 0));
+    }
+    $("reviews").hidden = !(REVIEWS.length || RATING);
+  }
+
+  // Instagram: the latest posts, each opens on Instagram; plus "Watch our stories" and "Follow".
+  function renderInsta() {
+    const h = CONTACT.instagram;
+    $("igStory").href = "https://www.instagram.com/stories/" + h + "/"; $("igFollow").href = "https://www.instagram.com/" + h + "/";
+    const box = $("igList"); box.textContent = "";
+    for (const p of POSTS.slice(0, 6)) {
+      const a = el("a", { href: p.url, target: "_blank", rel: "noopener", "aria-label": tr("igOpen") + (p.video ? " (" + tr("igReel") + ")" : "") },
+        el("img", { src: p.img, alt: "", loading: "lazy", decoding: "async", width: "640", height: "640" }));
+      if (p.video) { const s = el("span", { class: "play" }); s.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l10.5-6.5z"/></svg>'; a.append(s); }
+      box.append(a);
+    }
+    $("insta").hidden = !POSTS.length;
   }
 
   function renderInfo() {
@@ -880,7 +964,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     if ($("sname").textContent) $("sname").textContent = stageLabel();
     $("cardBtn").href = "card/#" + lang; $("menuBtn").href = menuUrl();
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
-    renderStatus(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderReviews(); renderInfo();
+    renderStatus(); renderNew(); renderNav(); renderRewards(); renderEvents(); renderGallery(); renderInsta(); renderReviews(); renderInfo();
   }
 
   // Scroll reveal for the sections below the hero
@@ -914,7 +998,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   startStage();
 
   fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
-  fetch("reviews.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.reviews)) { REVIEWS = d.reviews.filter((x) => x && x.text && x.rating); renderReviews(); renderNav(); } }).catch(() => {});
+  fetch("instagram.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.posts)) { POSTS = d.posts.filter((x) => x && x.img && x.url); renderInsta(); renderNav(); } }).catch(() => {});
+  fetch("reviews.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.reviews)) { REVIEWS = d.reviews.filter((x) => x && x.text && x.rating); RATING = d.rating > 0 && d.count > 0 ? { rating: +d.rating, count: +d.count } : null; renderReviews(); renderNav(); } }).catch(() => {});
   fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
 })();
 </script>

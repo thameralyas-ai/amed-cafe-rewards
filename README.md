@@ -39,3 +39,10 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - `data.json` holds the cards, levels, offers and events. **Do not edit by hand**: it is regenerated hourly from the staff tool by `tools/sync.py` (run by the "Amed Cafe – hourly customer-page updater" routine). It contains no names or phone numbers: each card is stored under a key made from the customer's phone number and PIN. Do not move or rename `data.json` or `tools/sync.py` without updating that routine.
 - `staff-guide.html` is the staff guide (linked from the staff tool).
 - `logo.png`, `logo-gold.png`, `logo-silver.png`, `logo-copper.png` and `shisha-gold.png`, `shisha-silver.png`, `shisha-copper.png` are the brand logo and real photos of the cafe's shishas.
+
+## Instagram, Google rating, link previews, Google search data
+
+- **Instagram section** (homepage, after "The space"): the latest 6 posts from `instagram.json`, images saved in `media/ig/` (Instagram's own image links expire after a few days, so the images live in the repo). Each tile opens the post; reels show a ▶ mark. Buttons: "Watch our stories" (instagram.com/stories/amed.caferest) and "Follow". To refresh: fetch the newest posts, save the images as `media/ig/1.jpg`… (640×640) and update `instagram.json`.
+- **Google rating** (section "What our guests say"): `reviews.json` → `rating` and `count` are Google's real numbers (4.9 from 8 reviews on 14 Nov 2026). Review cards appear only for real reviews added to `reviews` (name, rating, text, date). Never invent reviews.
+- **Link previews**: `media/og.jpg` (1200×630) is the picture WhatsApp, Instagram, Facebook etc. show when amedcaferest.com, /menu/ or /card/ is shared (og:image + twitter:card on all three pages).
+- **Google search data**: a JSON-LD `CafeOrCoffeeShop` block in the homepage `<head>` gives Google the name, address, map position, phone, opening hours (every day 08:00–01:00), menu link and social pages. Keep it in step when any of these change.

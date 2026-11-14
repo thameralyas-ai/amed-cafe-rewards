@@ -1,0 +1,42 @@
+{
+ "note": "Latest Instagram posts of @amed.caferest shown on the homepage (section Instagram). Images are saved in media/ig/ because Instagram's own image links expire. Fields: img, url (the post), video (true for reels), date.",
+ "updated": "2026-11-14",
+ "posts": [
+  {
+   "img": "media/ig/1.jpg",
+   "url": "https://www.instagram.com/reel/DfkntpNto3X/",
+   "video": true,
+   "date": "2026-11-10"
+  },
+  {
+   "img": "media/ig/2.jpg",
+   "url": "https://www.instagram.com/reel/DfiAWamtXcF/",
+   "video": true,
+   "date": "2026-11-09"
+  },
+  {
+   "img": "media/ig/3.jpg",
+   "url": "https://www.instagram.com/p/Dfh5lpzjdTw/",
+   "video": false,
+   "date": "2026-11-09"
+  },
+  {
+   "img": "media/ig/4.jpg",
+   "url": "https://www.instagram.com/p/DfPHUL4jSUw/",
+   "video": false,
+   "date": "2026-11-02"
+  },
+  {
+   "img": "media/ig/5.jpg",
+   "url": "https://www.instagram.com/reel/DS5yU5Jjanl/",
+   "video": true,
+   "date": "2025-12-30"
+  },
+  {
+   "img": "media/ig/6.jpg",
+   "url": "https://www.instagram.com/reel/DExl8zSMHsE/",
+   "video": true,
+   "date": "2025-01-13"
+  }
+ ]
+}
