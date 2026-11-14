@@ -299,6 +299,17 @@ header .langs { margin-inline-end: 54px; }
 .revbtns { display: flex; flex-direction: column; gap: 10px; margin: 18px auto 0; max-width: 340px; }
 @media (min-width: 900px) { .gmap { aspect-ratio: 16 / 7; } .revbtns { flex-direction: row; max-width: none; justify-content: center; } .revbtns .btn { padding: 14px 28px; } }
 
+/* Floating language flags beside the ☰ button (appear once the page is scrolled) and a row at the top of the ☰ list */
+.flangs { position: fixed; z-index: 30; top: calc(12px + env(safe-area-inset-top)); right: max(68px, calc((100vw - 1080px) / 2 + 68px)); height: 44px; padding: 0 8px; align-items: center;
+  border-radius: 22px; border: 1px solid #D4A37399; background: #1C120DCC; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .3s, transform .3s, visibility 0s .3s; }
+.rtl .flangs { right: auto; left: max(68px, calc((100vw - 1080px) / 2 + 68px)); }
+.scrolled .flangs, .nav-open .flangs { opacity: 1; visibility: visible; transform: none; transition: opacity .3s, transform .3s; }
+.nav-open .flangs { opacity: 0; visibility: hidden; }
+.nlangs { justify-content: center; gap: 12px; margin: 0 auto 18px; }
+.nlangs .flag { width: 36px; height: 24px; }
+@media (prefers-reduced-motion: reduce) { .flangs { transform: none; } }
+
 /* Visit */
 .info { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 6px 20px; }
 .r { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -373,8 +384,18 @@ footer small { opacity: .85; }
       <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
     </div>
   </div></header>
+  <!-- Languages stay reachable while scrolling: flags next to the ☰ button, and at the top of the ☰ list -->
+  <div class="langs flangs" role="group" aria-label="Language">
+      <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg></button>
+      <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg></button>
+      <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
+  </div>
   <button type="button" class="navbtn" id="navBtn" aria-expanded="false" aria-controls="navP"><i></i></button>
-  <nav class="navp" id="navP" data-lenis-prevent aria-hidden="true"><ul id="navList"></ul></nav>
+  <nav class="navp" id="navP" data-lenis-prevent aria-hidden="true"><div class="langs nlangs" role="group" aria-label="Language">
+      <button type="button" data-lang="ku" title="بادینی" aria-label="Kurdish Badini"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#ED2024"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#278E43"/><polygon points="150.0,54.0 154.0,73.3 163.6,56.0 161.7,75.7 175.9,62.0 168.4,80.2 186.0,71.3 173.4,86.5 192.8,83.2 176.3,94.0 195.9,96.6 176.9,102.0 194.8,110.2 175.1,109.9 189.8,123.0 171.1,116.8 181.3,133.7 165.2,122.3 170.0,141.4 158.0,125.8 156.9,145.5 150.0,127.0 143.1,145.5 142.0,125.8 130.0,141.4 134.8,122.3 118.7,133.7 128.9,116.8 110.2,123.0 124.9,109.9 105.2,110.2 123.1,102.0 104.1,96.6 123.7,94.0 107.2,83.2 126.6,86.5 114.0,71.3 131.6,80.2 124.1,62.0 138.3,75.7 136.4,56.0 146.0,73.3" fill="#FEBD11"/><circle cx="150" cy="100" r="25" fill="#FEBD11"/></svg></button>
+      <button type="button" data-lang="ar" title="العربية" aria-label="Arabic"><svg class="flag" viewBox="0 0 300 200" aria-hidden="true"><rect width="300" height="67" fill="#CE1126"/><rect y="67" width="300" height="66" fill="#fff"/><rect y="133" width="300" height="67" fill="#000"/><text x="150" y="113" text-anchor="middle" font-size="40" font-weight="700" fill="#007A3D" font-family="Noto Sans Arabic, sans-serif">الله أكبر</text></svg></button>
+      <button type="button" data-lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="3"/><path d="M30,0 v40 M0,20 h60" stroke="#fff" stroke-width="12"/><path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="7"/></svg></button>
+  </div><ul id="navList"></ul></nav>
   <div class="wrap hg">
     <div class="t1 intro">
       <div class="kicker" data-t="kicker"></div>
@@ -844,6 +865,8 @@ footer small { opacity: .85; }
     AmedMotion.starBorder($("cardBtn"));
   }
 
+  const onScrollFlags = () => document.body.classList.toggle("scrolled", scrollY > 60);
+  addEventListener("scroll", onScrollFlags, { passive: true }); onScrollFlags();
   $("navBtn").addEventListener("click", () => setNav(!document.body.classList.contains("nav-open")));
   addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("nav-open")) setNav(false); });
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => { setLang(b.dataset.lang); history.replaceState(null, "", "#" + lang); });
