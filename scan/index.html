@@ -32,11 +32,14 @@
   .res span { font-size: 1.15rem; }
   #resLine { font-size: 1.35rem; font-weight: 800; letter-spacing: .02em; }
   @keyframes resIn { from { transform: translateY(30px) scale(.9); opacity: 0; } }
+  .hd { display: grid; justify-items: end; gap: 2px; }
+  #link { font-size: .85rem; font-weight: 700; }
+  #link.ok { color: #5BD38A; } #link.err { color: var(--danger); }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
-<header><img src="/logo.png" alt="Amed Cafe"><h1 id="title">Card scanner</h1></header>
+<header><img src="/logo.png" alt="Amed Cafe"><div class="hd"><h1 id="title">Card scanner</h1><span id="link"></span></div></header>
 <div class="view"><video id="video" playsinline muted autoplay></video><div class="frame" id="frame" aria-hidden="true"></div>
   <div class="res" id="res" role="status" hidden><b id="resName"></b><span id="resNote"></span><span id="resLine"></span></div></div>
 <footer>
@@ -51,9 +54,9 @@
 (() => {
   const STAFF_ORIGIN = "https://claude.ai", LIVE_HOST = "https://ntfy.sh";
   const T = {
-    en: { title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Done ✓ — ready for the next customer", noLink: "Not connected to the staff tool. Close this tab, go to the staff tool tab and tap Scan there.", noAnswer: "The staff tool didn't answer. Open the staff tool tab once, then come back here.", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
-    ar: { title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تم ✓ — جاهز للزبون التالي", noLink: "غير متصل بأداة الموظفين. أغلق هذا التبويب، واذهب إلى تبويب أداة الموظفين واضغط «مسح» من هناك.", noAnswer: "لم تستجب أداة الموظفين. افتح تبويبها مرة واحدة ثم عد إلى هنا.", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
-    ku: { title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", stamped: "تمام ✓ — بۆ کڕیارێ دی ئامادەیە", noLink: "ب ئامرازێ کارمەندان ڤە نەگرێدایە. ڤێ تابێ دابخە، بچە تابا ئامرازێ کارمەندان و ژ وێرێ «سکان» بکە.", noAnswer: "ئامرازێ کارمەندان بەرسڤ نەدا. جارەکێ تابا وێ ڤەکە، پاشان بزڤڕە ڤێرێ.", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
+    en: { linkOk: "✓ Connected to the staff tool", linkNo: "✗ Not connected", noAnswer: "The staff tool isn't answering. Keep the staff tool open in its own tab (refresh it once), then come back here.", k_stamped: "Stamp added ✓", k_won: "Reward earned! 🎁", k_opened: "Card opened in the staff tool", k_ready: "A free reward is waiting — give it first. Not stamped.", k_dup: "Already stamped a moment ago. Not stamped again.", k_notenrolled: "Not on this card. Not stamped.", k_unknown: "No member has this code.", k_notmember: "Not an Amed Cafe member card.", k_notstamped: "Not stamped — check the staff tool (opening hours or daily limit).", title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Done ✓ — ready for the next customer", noLink: "Not connected to the staff tool. Close this tab, go to the staff tool tab and tap Scan there.", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
+    ar: { linkOk: "✓ متصل بأداة الموظفين", linkNo: "✗ غير متصل", noAnswer: "أداة الموظفين لا تستجيب. أبقِها مفتوحة في تبويبها (حدّثها مرة واحدة)، ثم عد إلى هنا.", k_stamped: "تمت إضافة الختم ✓", k_won: "ربح مكافأة! 🎁", k_opened: "فُتحت البطاقة في أداة الموظفين", k_ready: "لديه مكافأة مجانية جاهزة — قدّمها أولاً. لم يُضف ختم.", k_dup: "تم الختم قبل لحظات. لم يُضف ختم آخر.", k_notenrolled: "غير مسجّل في هذه البطاقة. لم يُضف ختم.", k_unknown: "لا يوجد عضو بهذا الرمز.", k_notmember: "ليست بطاقة عضوية لمقهى أميد.", k_notstamped: "لم يُضف ختم — راجع أداة الموظفين (ساعات العمل أو الحد اليومي).", title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تم ✓ — جاهز للزبون التالي", noLink: "غير متصل بأداة الموظفين. أغلق هذا التبويب، واذهب إلى تبويب أداة الموظفين واضغط «مسح» من هناك.", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
+    ku: { linkOk: "✓ ب ئامرازێ کارمەندان ڤە گرێدایە", linkNo: "✗ نەگرێدایە", noAnswer: "ئامرازێ کارمەندان بەرسڤێ نادەت. د تابا خۆ دا ڤەکری بهێلە (جارەکێ نوو بکە)، پاشان بزڤڕە ڤێرێ.", k_stamped: "مۆر هاتە زێدەکرن ✓", k_won: "خەلاتەک بدەستڤە ئینا! 🎁", k_opened: "کارت د ئامرازێ کارمەندان دا ڤەبوو", k_ready: "خەلاتەکێ بێ بەرامبەر یێ ئامادەیە — دەستپێکێ وێ بدە. مۆر نەهاتە لێدان.", k_dup: "بەری کێمەکێ مۆر هاتە لێدان. دووبارە نەهاتە لێدان.", k_notenrolled: "ل سەر ڤێ کارتێ نینە. مۆر نەهاتە لێدان.", k_unknown: "چ ئەندام ڤی کۆدی نینە.", k_notmember: "نە کارتا ئەندامێتیا ئامێد کافێیە.", k_notstamped: "مۆر نەهاتە لێدان — ئامرازێ کارمەندان ببینە (دەمێن کارکرنێ یان سنوورێ ڕۆژانە).", title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", stamped: "تمام ✓ — بۆ کڕیارێ دی ئامادەیە", noLink: "ب ئامرازێ کارمەندان ڤە نەگرێدایە. ڤێ تابێ دابخە، بچە تابا ئامرازێ کارمەندان و ژ وێرێ «سکان» بکە.", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
   };
   const qs = new URLSearchParams(location.search);
   const lang = T[qs.get("lang")] ? qs.get("lang") : "en";
@@ -98,30 +101,62 @@
     clearTimeout(resTimer);
     resTimer = setTimeout(() => { $("res").hidden = true; $("frame").classList.remove("ok"); done = false; msg(tr("point")); if (stream) loop(); else start(); }, ms);
   }
+  // Link to the staff tool. Inside Claude the staff tool can't keep a tab link, so scans travel through ntfy.sh on a
+  // private topic made from a random counter key (k) that only this tablet knows. Only codes and counts are sent.
+  const K = /^[0-9a-f]{24}$/.test(qs.get("k") || "") ? qs.get("k") : "";
+  const waits = new Map(); let relayEs = null, relayOk = false, pongAt = 0;
+  function relayListen() {
+    if (!K || relayEs || !window.EventSource) return;
+    relayEs = new EventSource(LIVE_HOST + "/amed-scanres-" + K + "/sse");
+    relayEs.onopen = () => { relayOk = true; };
+    relayEs.onerror = () => { relayOk = false; };
+    relayEs.onmessage = (m) => {
+      try { const d = JSON.parse(m.data); if (d.event !== "message") return; const r = JSON.parse(d.message);
+        if (!r || r.type !== "amed-scan-result") return; if (r.kind === "pong") pongAt = Date.now();
+        const w = waits.get(r.rid); if (w) { waits.delete(r.rid); w(r); } } catch (_) {}
+    };
+  }
+  function relaySend(obj) { return fetch(LIVE_HOST + "/", { method: "POST", body: JSON.stringify({ topic: "amed-scan-" + K, message: JSON.stringify(obj) }) }); }
+  const newRid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+  // Send a request to the staff tool (tab link if there is one, else the relay) and wait for its answer.
+  async function ask(req, ms) {
+    const rid = newRid(); req.rid = rid; req.t = Date.now();
+    const op = window.opener && !window.opener.closed ? window.opener : null;
+    const answer = new Promise((res) => {
+      const done1 = (d) => { window.removeEventListener("message", on); waits.delete(rid); clearTimeout(to); res(d); };
+      const on = (e) => { const d = e.data; if (!op || e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; done1(d); };
+      window.addEventListener("message", on); waits.set(rid, done1);
+      const to = setTimeout(() => done1(null), ms);
+    });
+    if (op) { try { op.postMessage(req, STAFF_ORIGIN); } catch (_) {} try { op.postMessage(req, "*"); } catch (_) {} }
+    if (K) { try { await relaySend(req); } catch (_) {} }
+    return answer;
+  }
+  async function ping() {
+    if (done) return;
+    const d = await ask({ type: "amed-scan", ping: 1 }, 9000);
+    if (done) return;
+    if (d) { pongAt = Date.now(); if ($("res").dataset.link) { delete $("res").dataset.link; $("res").hidden = true; } $("link").textContent = tr("linkOk"); $("link").className = "ok"; }
+    else { showResult("warn", "", K ? tr("noAnswer") : tr("noLink"), ""); $("res").dataset.link = "1"; $("link").textContent = tr("linkNo"); $("link").className = "err"; }
+  }
+  const KIND = { stamped: "ok", won: "ok", opened: "ok" };
   async function found(code, raw) {
     const p = progFrom(raw);
     done = true; clearTimeout(timer); lastRaw = raw; lastRawAt = Date.now(); $("frame").classList.add("ok");
     try { navigator.vibrate && navigator.vibrate(90); } catch (_) {}
     msg(tr("found", { code }), "ok");
-    const op = window.opener;
-    if (!op || op.closed) { showResult("warn", "", tr("noLink"), ""); nextCustomer(5000); return; }
-    const rid = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    // Ask the staff tool (the tab that opened this scanner) to open the card and stamp it, and wait for its answer.
-    const answer = new Promise((res) => {
-      const on = (e) => { const d = e.data; if (e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; window.removeEventListener("message", on); res(d); };
-      window.addEventListener("message", on); setTimeout(() => { window.removeEventListener("message", on); res(null); }, 8000);
-    });
-    try { op.postMessage({ type: "amed-scan", code, p, rid }, STAFF_ORIGIN); } catch (_) {}
-    try { op.postMessage({ type: "amed-scan", code, p, rid }, "*"); } catch (_) {}
-    const d = await answer;
+    if (!K && !(window.opener && !window.opener.closed)) { showResult("warn", "", tr("noLink"), ""); nextCustomer(5000); return; }
+    const d = await ask({ type: "amed-scan", code, p }, 12000);
     if (!d) { showResult("warn", "", tr("noAnswer"), ""); nextCustomer(5000); return; }
+    pongAt = Date.now();
     const stamped = typeof d.topic === "string" && /^amed-[0-9a-f]{32}$/.test(d.topic) && d.ev;
-    const name = typeof d.name === "string" ? d.name.slice(0, 60) : "", note = typeof d.note === "string" ? d.note.slice(0, 200) : "", line = typeof d.line === "string" ? d.line.slice(0, 80) : "";
-    showResult(stamped ? "ok" : "warn", name, note, line);
+    const kind = typeof d.kind === "string" && T[lang]["k_" + d.kind] ? d.kind : (stamped ? "stamped" : "opened");
+    const name = typeof d.name === "string" ? d.name.slice(0, 60) : "", line = typeof d.line === "string" ? d.line.slice(0, 80) : "";
+    showResult(KIND[kind] || "warn", name || code, tr("k_" + kind), line);
     msg(stamped ? tr("stamped") : "", "ok");
     // Tell the customer's phone at once (no name, phone or PIN in the message).
     if (stamped) { try { fetch(LIVE_HOST + "/", { method: "POST", keepalive: true, body: JSON.stringify({ topic: d.topic, message: JSON.stringify(d.ev) }) }).catch(() => {}); } catch (_) {} }
-    nextCustomer(stamped ? 3500 : 5000);
+    nextCustomer(KIND[kind] ? 3500 : 5500);
   }
   function loop() {
     clearTimeout(timer);
@@ -147,10 +182,10 @@
   $("switch").addEventListener("click", () => { facing = facing === "environment" ? "user" : "environment"; try { localStorage.setItem("amed-scan-facing", facing); } catch (_) {} start(); });
   $("close").addEventListener("click", () => { stop(); try { window.close(); } catch (_) {} setTimeout(() => history.length > 1 ? history.back() : null, 200); });
   document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else if (!done) start(); });
-  const linked = () => !!(window.opener && !window.opener.closed);
-  function linkCheck() { if (!linked()) { showResult("warn", "", tr("noLink"), ""); $("res").dataset.link = "1"; } else if ($("res").dataset.link) { delete $("res").dataset.link; $("res").hidden = true; } }
-  setInterval(() => { if (!done) linkCheck(); }, 3000);
-  start(); linkCheck();
+  relayListen(); start();
+  setTimeout(ping, 1500);
+  setInterval(() => { if (!done && Date.now() - pongAt > 110000) ping(); }, 120000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - pongAt > 30000) setTimeout(ping, 800); });
 })();
 </script>
 </body>
