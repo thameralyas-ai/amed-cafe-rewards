@@ -316,26 +316,32 @@ header .langs { margin-inline-end: 54px; }
 @media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
 
 /* Google reviews (cards from reviews.json) + the Google Maps window in "Find us" */
-.revs { display: grid; gap: 14px; }
-@media (min-width: 900px) { .revs { grid-template-columns: repeat(3, 1fr); } }
-.rev { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
-.rev .stars { color: var(--gold2); letter-spacing: 2px; direction: ltr; }
-.rtl .rev .stars { text-align: right; }
-.rev p { margin: 10px 0 0; white-space: pre-line; }
-.rev small { color: var(--muted); font-size: 13px; }
-.rev .who { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.rev .who b { display: block; font-weight: 500; }
-.rev .who small { display: block; }
-.rev .av { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, #E3B27D, #B98552); color: #1C120D; font-weight: 500; font-size: 17px; }
-.revs .rev:only-child { max-width: 520px; margin: 0 auto; }
-.revnote { text-align: center; color: var(--muted); font-size: 13px; margin-top: 14px; }
-/* Google rating summary (rating + count from reviews.json) */
-.rsum { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 4px 0 22px; text-align: center; }
-.rsum .rnum { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--gold2); font-weight: 500; }
-.rsum .rstars { position: relative; display: inline-block; font-size: 26px; letter-spacing: 4px; color: var(--line); direction: ltr; line-height: 1; }
+/* Reviews: "Gliding wall" (Thamir chose B): two rows of review cards drift slowly in opposite directions */
+.rsum { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; margin: -14px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+.rsum .rnum { font-family: var(--serif); font-size: 42px; line-height: 1; color: var(--gold2); font-weight: 500; }
+.rsum .rstars { position: relative; display: inline-block; font-size: 18px; letter-spacing: 3px; color: var(--line); direction: ltr; line-height: 1; }
 .rsum .rstars::before { content: "★★★★★"; }
 .rsum .rstars::after { content: "★★★★★"; position: absolute; left: 0; top: 0; width: var(--p, 100%); overflow: hidden; white-space: nowrap; color: var(--gold2); }
-.rsum small { color: var(--muted); font-size: 14px; }
+.rsum .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--line); }
+.revwall { margin: 0 -16px; }
+.rail { direction: ltr; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.rail + .rail { margin-top: 20px; }
+.rail .track { display: flex; align-items: stretch; gap: 20px; width: max-content; direction: ltr; animation: glide var(--dur, 70s) linear infinite; }
+.rail.rev2 .track { animation-direction: reverse; }
+.rail:hover .track, .rail:focus-within .track { animation-play-state: paused; }
+@keyframes glide { to { transform: translateX(-50%); } }
+.rcard { width: 320px; flex: none; display: flex; flex-direction: column; padding: 26px 28px; border-radius: 4px; background: linear-gradient(160deg, #2A1C15, #22170F); border: 1px solid #3F2D2399; position: relative; }
+.rcard::after { content: ""; position: absolute; top: 0; left: 28px; right: 28px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .6; }
+.rcard .stars { color: var(--gold2); letter-spacing: 3px; font-size: 13px; direction: ltr; unicode-bidi: isolate; }
+.rcard .stars i { font-style: normal; color: var(--line); }
+.rcard p { font-family: var(--serif); font-size: 22px; line-height: 1.35; font-weight: 500; white-space: pre-line; margin: auto 0; padding: 14px 0 18px; }
+.rcard.wide { width: 470px; }
+.rcard p:dir(rtl) { font-family: "Noto Naskh Arabic", var(--serif); font-size: 18px; line-height: 1.75; }
+@media (max-width: 600px) { .rcard p:dir(rtl) { font-size: 16px; } }
+.rcard small { display: block; color: var(--muted); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.rcard small b { color: var(--ink); font-weight: 500; }
+@media (max-width: 600px) { .rcard { width: 270px; padding: 22px 22px; } .rcard.wide { width: 330px; } .rcard p { font-size: 20px; } }
+@media (prefers-reduced-motion: reduce) { .rail { overflow-x: auto; } .rail .track { animation: none; } .rail .track [aria-hidden] { display: none; } }
 /* Instagram: latest posts (instagram.json, images saved in media/ig/) */
 .igrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 @media (min-width: 900px) { .igrid { grid-template-columns: repeat(6, 1fr); gap: 12px; } }
@@ -527,8 +533,8 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   <!-- Google rating summary + real Google reviews as cards (reviews.json). Hidden until there is a rating or reviews. -->
   <section id="reviews" hidden>
     <div class="head"><span class="kicker" data-t="revK"></span><h2 data-t="revT"></h2><i class="orn"></i></div>
-    <div class="rsum" id="rsum" hidden><b class="rnum" id="rNum"></b><span class="rstars" id="rStars"></span><small id="rCount"></small></div>
-    <div class="revs" id="revList"></div>
+    <div class="rsum" id="rsum" hidden><b class="rnum" id="rNum"></b><span class="rstars" id="rStars"></span><span class="dot"></span><small id="rCount"></small></div>
+    <div class="revwall" id="revList"></div>
     <div class="revbtns"><a class="btn pri" id="revRead" target="_blank" rel="noopener" data-t="revRead"></a><a class="btn sec" id="revWrite" target="_blank" rel="noopener" data-t="reviewLink"></a></div>
   </section>
 
@@ -857,11 +863,24 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     const KU_MONTHS = ["کانوونا دووێ", "شوبات", "ئادار", "نیسان", "گولان", "حزیران", "تیرمەه", "تەباخ", "ئەیلوول", "چریا ئێکێ", "چریا دووێ", "کانوونا ئێکێ"];
     const when = (d) => !d ? "" : !/^\d{4}-\d{2}$/.test(d) ? String(d) : lang === "ku" ? KU_MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4)
       : new Date(d + "-15").toLocaleDateString(LOC[lang] || "en-GB", { month: "long", year: "numeric" });
-    for (const r of REVIEWS) box.append(el("div", { class: "rev" },
-      el("div", { class: "who" }, el("span", { class: "av", "aria-hidden": "true", text: [...r.name.trim()][0].toUpperCase() }),
-        el("span", {}, el("b", { dir: "auto", text: r.name }), el("small", { text: when(r.date) }))),
-      el("div", { class: "stars", role: "img", "aria-label": r.rating + "/5", text: "★".repeat(r.rating) + "☆".repeat(5 - r.rating) }),
-      el("p", { dir: "auto", text: typeof r.text === "string" ? r.text : pick(r.text) })));
+    // Gliding wall: two rows, the second in a different order and moving the other way. Each row holds the
+    // reviews repeated until it is wider than any screen, then doubled so the loop is seamless (copies hidden from screen readers).
+    const card = (r, copy) => el("div", Object.assign({ class: "rcard" + (String(typeof r.text === "string" ? r.text : pick(r.text)).length > 90 ? " wide" : ""), dir: "auto" }, copy ? { "aria-hidden": "true" } : {}),
+      el("span", { class: "stars", role: "img", "aria-label": r.rating + "/5" }, "★".repeat(r.rating), r.rating < 5 ? el("i", { text: "★".repeat(5 - r.rating) }) : null),
+      el("p", { dir: "auto", text: typeof r.text === "string" ? r.text : pick(r.text) }),
+      el("small", {}, el("b", { dir: "auto", text: r.name }), when(r.date) ? " · " + when(r.date) : ""));
+    if (REVIEWS.length) {
+      const rows = [REVIEWS, REVIEWS.map((_, k) => REVIEWS[(k * 2 + 1) % REVIEWS.length])];
+      if (REVIEWS.length % 2 === 0) rows[1] = REVIEWS.slice().reverse();
+      rows.forEach((list, n) => {
+        let half = list.slice(); while (half.length * 340 < 2400) half = half.concat(list);
+        const tr_ = el("div", { class: "track" });
+        half.forEach((r, k) => tr_.append(card(r, n === 1 || k >= list.length)));
+        half.forEach((r) => tr_.append(card(r, true)));
+        tr_.style.setProperty("--dur", Math.round(half.length * 7 + n * 10) + "s");
+        box.append(el("div", { class: "rail" + (n ? " rev2" : "") }, tr_));
+      });
+    }
     // Google rating summary: the real rating and count from Google (reviews.json "rating" and "count").
     const rs = $("rsum"); rs.hidden = !RATING;
     if (RATING) {
