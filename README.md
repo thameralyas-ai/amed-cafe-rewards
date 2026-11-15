@@ -46,3 +46,10 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - **Google rating** (section "What our guests say"): `reviews.json` → `rating` and `count` are Google's real numbers (4.9 from 8 reviews on 14 Nov 2026). Reviews show as a "Gliding wall" (Thamir chose style B): two rows of cards drifting slowly in opposite directions, pausing on hover. Cards appear only for real reviews added to `reviews` (name, rating, text word for word, date as YYYY-MM or YYYY). 5 real reviews added on 14 Nov 2026 from screenshots Thamir sent. Never invent reviews.
 - **Link previews**: `media/og.jpg` (1200×630) is the picture WhatsApp, Instagram, Facebook etc. show when amedcaferest.com, /menu/ or /card/ is shared (og:image + twitter:card on all three pages).
 - **Google search data**: a JSON-LD `CafeOrCoffeeShop` block in the homepage `<head>` gives Google the name, address, map position, phone, opening hours (every day 08:00–01:00), menu link and social pages. Keep it in step when any of these change.
+
+## Search engines (SEO)
+
+- Homepage `<title>`: "Amed Cafe · Coffee & Shisha in Sharya, Duhok · كافي وشيشة في شاريا" and the description under it in Google results (chosen by Thamir, option B). The slogan "your comfort space" stays in the description. The small line above the homepage headline reads "Amed Cafe · Sharya, Duhok" in all 4 languages.
+- `robots.txt`: lets search engines read the site, skips staff-only things (staff-guide.html, data.json, tools/) and points to the sitemap.
+- `sitemap.xml`: the list of pages (homepage, menu, card) and main photos for Google. Update `<lastmod>` after big changes; add new pages here.
+- Google Search Console: to be connected (needs the verification meta tag from Thamir).
