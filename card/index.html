@@ -244,6 +244,7 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 .qrfull .qrbig { line-height: 0; }
 .qrfull .qrbig img, .qrfull .qrbig canvas { width: min(88vw, 68vh) !important; height: min(88vw, 68vh) !important; display: block; image-rendering: pixelated; }
 .qrfull b { font-family: var(--f-mono, monospace); font-size: 1.7rem; letter-spacing: .16em; }
+.qrfull .qrcard { font-size: 1.35rem; font-weight: 800; padding: 6px 18px; border-radius: 999px; background: #111; color: #fff; }
 .qrfull p { margin: 0; max-width: 30ch; text-align: center; font-size: 1rem; color: #333; }
 .lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
 @media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
@@ -516,7 +517,7 @@ footer p { margin: 0; }
     box.hidden = true; try { if (qrWake) qrWake.release(); } catch (_) {} qrWake = null;
     if (!fromPop && history.state && history.state.amedQR) { try { history.back(); } catch (_) {} }
   }
-  function openBigQR(text, code) {
+  function openBigQR(text, code, cardName) {
     let box = document.getElementById("qrFull");
     if (!box) {
       box = el("div", { id: "qrFull", class: "qrfull", role: "dialog", "aria-modal": "true", hidden: "", onclick: () => closeBigQR(false) });
@@ -525,7 +526,7 @@ footer p { margin: 0; }
       window.addEventListener("popstate", () => closeBigQR(true));
     }
     const big = el("div", { class: "qrbig" });
-    box.replaceChildren(big, el("b", { dir: "ltr", text: code }), el("p", { text: tr("qrClose") }));
+    box.replaceChildren(...[big, el("b", { dir: "ltr", text: code }), cardName ? el("strong", { class: "qrcard", text: cardName }) : null, el("p", { text: tr("qrClose") })].filter(Boolean));
     box.setAttribute("aria-label", tr("qrTitle"));
     try { new QRCode(big, { text, width: 720, height: 720, colorDark: "#000000", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { return; }
     box.hidden = false;
@@ -686,8 +687,8 @@ footer p { margin: 0; }
     else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
     if (entry.code) {
       const q = el("div", { class: "lc-qrimg" });
-      const qrLink = ((DATA && DATA.staffLink) || "") + "#m-" + entry.code;
-      const openBig = () => openBigQR(qrLink, entry.code);
+      const qrLink = ((DATA && DATA.staffLink) || "") + "#m-" + entry.code + "." + p.id;
+      const openBig = () => openBigQR(qrLink, entry.code, pname(p));
       card.append(el("div", { class: "lc-qr", role: "button", tabindex: "0", "aria-label": tr("qrZoom"), onclick: openBig, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBig(); } } }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("span", { class: "lc-zoom", text: tr("qrZoom") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
       try { new QRCode(q, { text: qrLink, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }

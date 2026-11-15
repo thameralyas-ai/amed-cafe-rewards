@@ -59,6 +59,7 @@
 
   let stream = null, timer = 0, done = false, detector, facing = "environment";
   try { facing = localStorage.getItem("amed-scan-facing") || "environment"; } catch (_) {}
+  const progFrom = (s) => { const m = String(s).match(/#m-[A-Z0-9]{6}\.([a-z]{2,20})\b/i); return m ? m[1].toLowerCase() : null; };
   const codeFrom = (s) => { const m = String(s).match(/#m-([A-Z0-9]{6})\b/i) || String(s).trim().match(/^([A-Z0-9]{6})$/i); return m ? m[1].toUpperCase() : null; };
 
   async function getDetector() {
@@ -81,15 +82,16 @@
   function stop() { clearTimeout(timer); if (stream) stream.getTracks().forEach((t) => t.stop()); stream = null; }
 
   async function found(code, raw) {
+    const p = progFrom(raw);
     done = true; stop(); $("frame").classList.add("ok");
     try { navigator.vibrate && navigator.vibrate(90); } catch (_) {}
     msg(tr("found", { code }), "ok");
     let link = "";
-    try { const d = await (await fetch("/data.json", { cache: "no-store" })).json(); if (d && d.staffLink) link = d.staffLink + "#m-" + code; } catch (_) {}
+    try { const d = await (await fetch("/data.json", { cache: "no-store" })).json(); if (d && d.staffLink) link = d.staffLink + "#m-" + code + (p ? "." + p : ""); } catch (_) {}
     if (!link && /^https:\/\/claude\.ai\//.test(raw)) link = raw;
     if (window.opener && !window.opener.closed) {
-      try { window.opener.postMessage({ type: "amed-scan", code }, STAFF_ORIGIN); } catch (_) {}
-      try { window.opener.postMessage({ type: "amed-scan", code }, "*"); } catch (_) {}
+      try { window.opener.postMessage({ type: "amed-scan", code, p }, STAFF_ORIGIN); } catch (_) {}
+      try { window.opener.postMessage({ type: "amed-scan", code, p }, "*"); } catch (_) {}
       setTimeout(() => { try { window.close(); } catch (_) {} }, 350);
       setTimeout(() => { msg(tr("backHint"), "ok"); if (link) { $("back").href = link; $("back").hidden = false; } }, 1200);
     } else {
