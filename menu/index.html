@@ -181,18 +181,18 @@ footer a { color: var(--gold2); text-decoration: none; }
 <script>
 (() => {
   const T = {
-    en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 8:00 AM", iqd: "IQD", note: "Prices in IQD",
+    en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 9:00 AM", iqd: "IQD", note: "Prices in IQD",
       newT: "New", offT: "Offers", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
-      hours: "Every day · 8:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
-    ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 8:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
+      hours: "Every day · 9:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
+    ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 9:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
       newT: "جديد", offT: "العروض", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
-      hours: "كل يوم · 8:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
-    ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 8:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
+      hours: "كل يوم · 9:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
+    ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 9:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
       newT: "نوو", offT: "پێشکێشی", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
-      hours: "هەمی رۆژ · 8:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
-    de: { title: "Getränkekarte", open: "Jetzt geöffnet · bis 1:00 Uhr", closed: "Geschlossen · öffnet um 8:00 Uhr", iqd: "IQD", note: "Preise in IQD",
+      hours: "هەمی رۆژ · 9:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
+    de: { title: "Getränkekarte", open: "Jetzt geöffnet · bis 1:00 Uhr", closed: "Geschlossen · öffnet um 9:00 Uhr", iqd: "IQD", note: "Preise in IQD",
       newT: "Neu", offT: "Angebote", popular: "Bestseller", barT: "Von unserer Bar", newSee: "Tippen, um es in der Karte zu sehen", promoT: "Kaufen Sie 7, das 8. ist gratis", promoP: "Karten für Getränke und Shisha – nennen Sie an der Theke Ihre Telefonnummer.", myCard: "Meine Treuekarte", review: "Bewerten Sie uns ★",
-      hours: "Täglich · 8:00 – 1:00 Uhr", err: "Die Karte konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut." },
+      hours: "Täglich · 9:00 – 1:00 Uhr", err: "Die Karte konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut." },
   };
   const $ = (id) => document.getElementById(id);
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
@@ -213,7 +213,7 @@ footer a { color: var(--gold2); text-decoration: none; }
 
   function isOpen() {
     const h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Baghdad", hour: "2-digit", hourCycle: "h23" }).format(new Date()));
-    return h >= 8 || h < 1;
+    return h >= 9 || h < 1;
   }
 
   const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
