@@ -236,6 +236,15 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 .lc-qrtxt { display: grid; gap: 3px; min-width: 0; }
 .lc-qrtxt span { font-size: .84rem; color: var(--lc-soft); }
 .lc-qrtxt small { font-size: .76rem; color: var(--lc-muted); }
+.lc-qr[role="button"] { cursor: zoom-in; -webkit-tap-highlight-color: transparent; }
+.lc-qr[role="button"]:active { transform: scale(.985); }
+.lc-qrtxt .lc-zoom { font-size: .8rem; font-weight: 700; color: var(--lc-soft); text-decoration: underline; text-underline-offset: 3px; }
+.qrfull { position: fixed; inset: 0; z-index: 1000; background: #fff; color: #111; display: grid; place-items: center; align-content: center; gap: 18px; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); cursor: zoom-out; }
+.qrfull[hidden] { display: none; }
+.qrfull .qrbig { line-height: 0; }
+.qrfull .qrbig img, .qrfull .qrbig canvas { width: min(88vw, 68vh) !important; height: min(88vw, 68vh) !important; display: block; image-rendering: pixelated; }
+.qrfull b { font-family: var(--f-mono, monospace); font-size: 1.7rem; letter-spacing: .16em; }
+.qrfull p { margin: 0; max-width: 30ch; text-align: center; font-size: 1rem; color: #333; }
 .lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
 @media (max-width: 370px) { .lc-photo { height: 250px; } .lc-hero { min-height: 260px; } .lc-rail { height: 260px; } .lc-h { font-size: 2.2rem; } }
 
@@ -357,7 +366,7 @@ footer p { margin: 0; }
       levelIs: "{level} member", toNext: "{n} more visits to {level}", perk: "Your perk: {perk}",
       rule: "Buy {n}, the {nth} is on us", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} rewards waiting: {reward}. Say your number at the counter.", useBy: " Use it by {date}.",
       stamped: "Stamps so far", collected: "Rewards collected",
-      qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", again: "Check another number",
+      qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", qrZoom: "Tap the code to make it bigger", qrClose: "Show this to the staff. Tap anywhere to close.", again: "Check another number",
       nfTitle: "We couldn't find this card", nfText: "Check your phone number and PIN. They must match what you gave at the counter. If you joined today, your card may take a few hours to appear here. Not a member yet? Ask our staff to sign you up on your next visit.",
       howTitle: "How it works", s1t: "Join at the counter", s1d: "Give our staff your phone number. Joining is free and takes a few seconds.", s2t: "Collect a stamp with every order", s2d: "Each drink or shisha adds one stamp to its own card.", s3t: "Your {nth} one is free", s3d: "When your card is full, say your number at the counter and enjoy your reward.",
       cardsTitle: "Our reward cards", plusFree: "{n} + 1 free", collect: "Collect {n} stamps and get a {reward}.",
@@ -374,7 +383,7 @@ footer p { margin: 0; }
       levelIs: "عضو {level}", toNext: "باقي {n} زيارات للوصول إلى {level}", perk: "ميزتك: {perk}",
       rule: "اشترِ {n} واحصل على ال{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت بانتظارك: {reward}. أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
       stamped: "الأختام حتى الآن", collected: "المكافآت المستلمة",
-      qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", again: "تحقّق من رقم آخر",
+      qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", qrZoom: "اضغط على الرمز لتكبيره", qrClose: "اعرضه على الموظف. اضغط في أي مكان للإغلاق.", again: "تحقّق من رقم آخر",
       nfTitle: "لم نجد هذه البطاقة", nfText: "تحقّق من رقم هاتفك والرمز السري. يجب أن يطابقا ما أعطيته عند الكاونتر. إذا انضممت اليوم فقد تحتاج بطاقتك بضع ساعات لتظهر هنا. لست عضواً بعد؟ اطلب من فريقنا تسجيلك في زيارتك القادمة.",
       howTitle: "كيف يعمل", s1t: "انضم عند الكاونتر", s1d: "أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.", s2t: "اجمع ختماً مع كل طلب", s2d: "كل مشروب أو أركيلة يضيف ختماً إلى بطاقته.", s3t: "ال{nth} مجاناً", s3d: "عندما تكتمل بطاقتك، أعطِ رقمك عند الكاونتر واستمتع بمكافأتك.",
       cardsTitle: "بطاقات المكافآت", plusFree: "{n} + 1 مجاناً", collect: "اجمع {n} أختام واحصل على {reward}.",
@@ -391,7 +400,7 @@ footer p { margin: 0; }
       levelIs: "ئەندامێ {level}", toNext: "{n} سەرەدانێن دی بۆ {level}", perk: "تایبەتمەندیا تە: {perk}",
       rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلات ل هیڤیا تە نە: {reward}. ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
       stamped: "مۆر هەتا نوکە", collected: "خەلاتێن وەرگرتی",
-      qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", again: "ژمارەکا دی بپشکنە",
+      qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", qrZoom: "پەنجێ ل سەر کۆدی بدە دا مەزن ببیت", qrClose: "ڤێ نیشانی کارمەندی بدە. ل هەر جهەکی پەنجێ بدە دا بهێتە گرتن.", again: "ژمارەکا دی بپشکنە",
       nfTitle: "مە ئەڤ کارتە نەدیت", nfText: "ژمارا مۆبایلێ و ژمارا نهێنی بپشکنە. دڤێت وەک وان بن یێن تە ل کاونتەری داین. ئەگەر تو ئەڤرۆ بوویە ئەندام، دبیت چەند دەمژمێر بڤێن هەتا کارتا تە ل ڤێرە دیار دبیت. هێشتا نە ئەندامی؟ ل سەرەدانا دی ژ ستافێ مە بخوازە تە تۆمار بکەن.",
       howTitle: "چاوا کار دکەت", s1t: "ل کاونتەری ببە ئەندام", s1d: "ژمارا مۆبایلا خۆ بدە ستافێ مە. ئەندامبوون بێ بەرامبەرە و چەند چرکەیان دڤێت.", s2t: "ل گەل هەر داخوازەکێ مۆرەکێ کۆم بکە", s2d: "هەر ڤەخوارنەک یان نێرگەلەک مۆرەکێ بۆ کارتا خۆ زێدە دکەت.", s3t: "یا {nth} بێ بەرامبەرە", s3d: "دەمێ کارتا تە تژی بوو، ژمارا خۆ ل کاونتەری بێژە و خۆشیێ ژ خەلاتا خۆ ببە.",
       cardsTitle: "کارتێن خەلاتان", plusFree: "{n} + 1 بێ بەرامبەر", collect: "{n} مۆران کۆم بکە و {reward} وەربگرە.",
@@ -421,7 +430,7 @@ footer p { margin: 0; }
       levelIs: "{level}-Mitglied", toNext: "Noch {n} Besuche bis {level}", perk: "Ihr Vorteil: {perk}",
       rule: "Kaufen Sie {n}, das {nth} geht auf uns", more: "Noch {n}", toGo: " bis zu Ihrer Prämie ({reward}) · {s} von {n} Stempeln", ready1: "Ihre Prämie ist bereit: {reward}! Nennen Sie an der Theke Ihre Nummer, um sie abzuholen.", readyN: "Es warten {k} Prämien auf Sie: {reward}. Nennen Sie an der Theke Ihre Nummer.", useBy: " Einzulösen bis {date}.",
       stamped: "Bisherige Stempel", collected: "Eingelöste Prämien",
-      qrTitle: "Ihr Mitglieds-QR-Code", qrText: "Zeigen Sie ihn an der Theke, damit wir Ihre Karte schnell finden.", again: "Andere Nummer prüfen",
+      qrTitle: "Ihr Mitglieds-QR-Code", qrText: "Zeigen Sie ihn an der Theke, damit wir Ihre Karte schnell finden.", qrZoom: "Zum Vergrößern auf den Code tippen", qrClose: "Zeigen Sie das dem Personal. Zum Schließen irgendwo tippen.", again: "Andere Nummer prüfen",
       nfTitle: "Wir konnten diese Karte nicht finden", nfText: "Bitte prüfen Sie Ihre Telefonnummer und PIN. Beide müssen mit Ihren Angaben an der Theke übereinstimmen. Wenn Sie sich heute angemeldet haben, kann es einige Stunden dauern, bis Ihre Karte hier erscheint. Noch kein Mitglied? Bitten Sie bei Ihrem nächsten Besuch unser Team, Sie anzumelden.",
       howTitle: "So funktioniert es", s1t: "An der Theke anmelden", s1d: "Nennen Sie unserem Team Ihre Telefonnummer. Die Anmeldung ist kostenlos und dauert nur wenige Sekunden.", s2t: "Bei jeder Bestellung einen Stempel sammeln", s2d: "Jedes Getränk und jede Shisha bringt einen Stempel auf die jeweilige Karte.", s3t: "Das {nth} ist gratis", s3d: "Wenn Ihre Karte voll ist, nennen Sie an der Theke Ihre Nummer und genießen Sie Ihre Prämie.",
       cardsTitle: "Unsere Prämienkarten", plusFree: "{n} + 1 gratis", collect: "Sammeln Sie {n} Stempel und erhalten Sie: {reward}.",
@@ -499,6 +508,30 @@ footer p { margin: 0; }
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   const fmtDate = (t, o) => dfmt(new Date(t), o || { day: "numeric", month: "long" });
   const ago = (t) => { if (!t) return tr("never"); const d0 = new Date(); d0.setHours(0, 0, 0, 0); if (t >= d0.getTime()) return tr("today"); if (t >= d0.getTime() - 864e5) return tr("yesterday"); return tr("daysAgo", { n: Math.ceil((d0.getTime() - t) / 864e5) }); };
+
+  /* Tap the member QR: show it full screen so the counter tablet can scan it easily. */
+  let qrWake = null;
+  function closeBigQR(fromPop) {
+    const box = document.getElementById("qrFull"); if (!box || box.hidden) return;
+    box.hidden = true; try { if (qrWake) qrWake.release(); } catch (_) {} qrWake = null;
+    if (!fromPop && history.state && history.state.amedQR) { try { history.back(); } catch (_) {} }
+  }
+  function openBigQR(text, code) {
+    let box = document.getElementById("qrFull");
+    if (!box) {
+      box = el("div", { id: "qrFull", class: "qrfull", role: "dialog", "aria-modal": "true", hidden: "", onclick: () => closeBigQR(false) });
+      document.body.append(box);
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeBigQR(false); });
+      window.addEventListener("popstate", () => closeBigQR(true));
+    }
+    const big = el("div", { class: "qrbig" });
+    box.replaceChildren(big, el("b", { dir: "ltr", text: code }), el("p", { text: tr("qrClose") }));
+    box.setAttribute("aria-label", tr("qrTitle"));
+    try { new QRCode(big, { text, width: 720, height: 720, colorDark: "#000000", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { return; }
+    box.hidden = false;
+    try { history.pushState({ amedQR: 1 }, ""); } catch (_) {}
+    try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { qrWake = w; }).catch(() => {}); } catch (_) {}
+  }
 
   function setLang(l) {
     lang = T[l] ? l : "en";
@@ -653,8 +686,10 @@ footer p { margin: 0; }
     else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
     if (entry.code) {
       const q = el("div", { class: "lc-qrimg" });
-      card.append(el("div", { class: "lc-qr" }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
-      try { new QRCode(q, { text: ((DATA && DATA.staffLink) || "") + "#m-" + entry.code, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
+      const qrLink = ((DATA && DATA.staffLink) || "") + "#m-" + entry.code;
+      const openBig = () => openBigQR(qrLink, entry.code);
+      card.append(el("div", { class: "lc-qr", role: "button", tabindex: "0", "aria-label": tr("qrZoom"), onclick: openBig, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBig(); } } }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("span", { class: "lc-zoom", text: tr("qrZoom") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
+      try { new QRCode(q, { text: qrLink, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
     if (!storyShown) { storyShown = true; setTimeout(async () => { await maybeLevelStory(entry); storyShown = false; maybeStory(entry); }, 700); }
