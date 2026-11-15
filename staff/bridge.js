@@ -153,7 +153,7 @@
       contact: { wa: wa.startsWith("0") && cc ? cc + wa.slice(1) : wa, join: !!s.joinEnabled },
     };
   }
-  let isOwnerCached = null;
+  let isOwnerCached = null, lastOwnerErr = "";
   async function publishMeta() {
     if (!(await ownerCheck())) return;
     const s = await readLocal(SETTINGS); if (!s) return; settings = s;
@@ -163,7 +163,7 @@
     if (isOwnerCached !== null) return isOwnerCached;
     for (let i = 0; i < 8 && isOwnerCached === null; i++) {   // the connection may still be starting: retry briefly
       try { await FB.getDoc(FB.doc(fs, "private/owner")); isOwnerCached = true; }
-      catch (e) { if (e && e.code === "permission-denied") isOwnerCached = false; else await new Promise((r) => setTimeout(r, 800)); }
+      catch (e) { lastOwnerErr = (e && e.code) || "error"; if (e && e.code === "permission-denied") isOwnerCached = false; else await new Promise((r) => setTimeout(r, 800)); }
     }
     return !!isOwnerCached;
   }
@@ -240,10 +240,24 @@
     FB.onSnapshot(FB.doc(fs, SETTINGS), (s) => { if (s.exists()) settings = s.data(); }, () => {});
     resolveReady();
     if (await ownerCheck()) { setTimeout(() => publishMeta().catch(() => {}), 3000); if (qs.has("import")) importPanel(); }
+    else if (qs.has("import")) importProblem(u);
   });
   if (EMU) window.__amedTestSignIn = (email, name) => FB.signInWithCredential(auth, FB.GoogleAuthProvider.credential(JSON.stringify({ sub: "uid-" + email.replace(/\W/g, ""), email, email_verified: true, name: name || email })));
 
   /* ---------- one-time import of the old staff tool's data (owner only: /staff/?import) ---------- */
+  function importProblem(u) {
+    const box = document.createElement("div");
+    box.style.cssText = "position:fixed;inset:auto 12px 60px 12px;z-index:4500;max-width:560px;margin:0 auto;background:#FFF4E5;color:#4A2C00;border:2px solid #C77700;border-radius:16px;padding:16px;display:grid;gap:8px;font:15px/1.45 Figtree,system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.25)";
+    const why = lastOwnerErr === "permission-denied"
+      ? (String(u.email || "").toLowerCase() === "amedcaferest@gmail.com"
+        ? "The database rules are not active yet. In Firebase open Firestore Database → Rules, paste the rules Claude gave you and tap Publish. Wait 1 minute, then reload this page."
+        : "You are signed in as " + (u.email || "?") + ". Only amedcaferest@gmail.com can import. Tap Sign out (bottom corner) and sign in again with amedcaferest@gmail.com.")
+      : "The database could not be reached (" + (lastOwnerErr || "unknown") + "). In Firebase check that Firestore Database is created, then reload this page.";
+    box.innerHTML = "<b>Import is not available yet</b><span></span><small></small>";
+    box.querySelector("span").textContent = why;
+    box.querySelector("small").textContent = "Signed in as: " + (u.email || "?") + " · code: " + (lastOwnerErr || "-");
+    document.body.append(box);
+  }
   function importPanel() {
     const box = document.createElement("div");
     box.style.cssText = "position:fixed;inset:auto 12px 60px 12px;z-index:4500;max-width:520px;margin:0 auto;background:var(--surface,#fff);color:var(--ink,#222);border:2px solid var(--accent,#6F4E37);border-radius:16px;padding:16px;display:grid;gap:10px;font-family:Figtree,system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.25)";
