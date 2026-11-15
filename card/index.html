@@ -244,6 +244,24 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 .qrfull .qrbig { line-height: 0; }
 .qrfull .qrbig img, .qrfull .qrbig canvas { width: min(88vw, 68vh) !important; height: min(88vw, 68vh) !important; display: block; image-rendering: pixelated; }
 .qrfull b { font-family: var(--f-mono, monospace); font-size: 1.7rem; letter-spacing: .16em; }
+.cele { position: fixed; inset: 0; z-index: 1100; display: grid; place-items: center; padding: 70px 18px 24px; background: rgba(0,0,0,.6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: celeFade .25s ease-out; }
+.cele canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.cele-card { position: relative; width: min(100%, 360px); background: var(--c-bg); color: var(--c-text); border: 1px solid var(--c-border); border-radius: 26px; padding: 30px 22px 22px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.55); animation: celePop .6s cubic-bezier(.2,1.4,.4,1) both; }
+.cele-badge { width: 108px; height: 108px; margin: -86px auto 12px; border-radius: 50%; background: var(--c-accent); color: var(--c-on); display: grid; place-items: center; font-size: 2.3rem; font-weight: 800; line-height: 1; box-shadow: 0 0 0 8px rgba(var(--c-glow), .22), 0 0 44px rgba(var(--c-glow), .65); animation: celeBadge .9s cubic-bezier(.2,1.6,.4,1) .12s both; }
+.cele.won .cele-badge { font-size: 3rem; animation: celeBadge .9s cubic-bezier(.2,1.6,.4,1) .12s both, celeGlow 1.6s ease-in-out 1.1s infinite; }
+.cele h2 { margin: 4px 0 6px; font-size: 1.75rem; line-height: 1.15; }
+.cele p { margin: 0; color: var(--c-soft); font-size: 1.05rem; }
+.cele-dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 16px 0 14px; }
+.cele-dots i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--c-border); box-sizing: border-box; }
+.cele-dots i.on { background: var(--c-accent); border-color: var(--c-accent); }
+.cele-dots i.new { animation: celeDot .75s cubic-bezier(.2,1.8,.4,1) .5s both; box-shadow: 0 0 16px rgba(var(--c-glow), .9); }
+.cele button { margin-top: 20px; width: 100%; min-height: 52px; border: 0; border-radius: 14px; background: var(--c-accent); color: var(--c-on); font: inherit; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+@keyframes celeFade { from { opacity: 0; } }
+@keyframes celePop { from { transform: translateY(46px) scale(.82); opacity: 0; } }
+@keyframes celeBadge { 0% { transform: scale(0) rotate(-35deg); } 100% { transform: none; } }
+@keyframes celeDot { 0% { transform: scale(0); } 60% { transform: scale(1.45); } 100% { transform: none; } }
+@keyframes celeGlow { 50% { box-shadow: 0 0 0 16px rgba(var(--c-glow), .16), 0 0 80px rgba(var(--c-glow), .95); } }
+@media (prefers-reduced-motion: reduce) { .cele, .cele * { animation: none !important; } }
 .qrfull .qrcard { font-size: 1.35rem; font-weight: 800; padding: 6px 18px; border-radius: 999px; background: #111; color: #fff; }
 .qrfull p { margin: 0; max-width: 30ch; text-align: center; font-size: 1rem; color: #333; }
 .lc-code { font: 600 1.2rem var(--f-mono) !important; letter-spacing: .16em; color: var(--lc-accent) !important; text-align: start; }
@@ -367,7 +385,7 @@ footer p { margin: 0; }
       levelIs: "{level} member", toNext: "{n} more visits to {level}", perk: "Your perk: {perk}",
       rule: "Buy {n}, the {nth} is on us", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} rewards waiting: {reward}. Say your number at the counter.", useBy: " Use it by {date}.",
       stamped: "Stamps so far", collected: "Rewards collected",
-      qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", qrZoom: "Tap the code to make it bigger", qrClose: "Show this to the staff. Tap anywhere to close.", again: "Check another number",
+      qrTitle: "Your member QR code", qrText: "Show this at the counter so we can find your card quickly.", qrZoom: "Tap the code to make it bigger", qrClose: "Show this to the staff. Tap anywhere to close.", celeStamp: "+1 stamp!", celeStampN: "+{n} stamps!", celeLeft: "Only {n} more to your {reward}", celeLeft1: "Just 1 more to your {reward}!", celeWon: "You won a {reward}!", celeWonSub: "It's ready now. Ask the staff and enjoy!", celeOk: "Yay!", again: "Check another number",
       nfTitle: "We couldn't find this card", nfText: "Check your phone number and PIN. They must match what you gave at the counter. If you joined today, your card may take a few hours to appear here. Not a member yet? Ask our staff to sign you up on your next visit.",
       howTitle: "How it works", s1t: "Join at the counter", s1d: "Give our staff your phone number. Joining is free and takes a few seconds.", s2t: "Collect a stamp with every order", s2d: "Each drink or shisha adds one stamp to its own card.", s3t: "Your {nth} one is free", s3d: "When your card is full, say your number at the counter and enjoy your reward.",
       cardsTitle: "Our reward cards", plusFree: "{n} + 1 free", collect: "Collect {n} stamps and get a {reward}.",
@@ -384,7 +402,7 @@ footer p { margin: 0; }
       levelIs: "عضو {level}", toNext: "باقي {n} زيارات للوصول إلى {level}", perk: "ميزتك: {perk}",
       rule: "اشترِ {n} واحصل على ال{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت بانتظارك: {reward}. أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
       stamped: "الأختام حتى الآن", collected: "المكافآت المستلمة",
-      qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", qrZoom: "اضغط على الرمز لتكبيره", qrClose: "اعرضه على الموظف. اضغط في أي مكان للإغلاق.", again: "تحقّق من رقم آخر",
+      qrTitle: "رمز QR الخاص بك", qrText: "اعرضه عند الكاونتر لنجد بطاقتك بسرعة.", qrZoom: "اضغط على الرمز لتكبيره", qrClose: "اعرضه على الموظف. اضغط في أي مكان للإغلاق.", celeStamp: "+1 ختم!", celeStampN: "+{n} أختام!", celeLeft: "باقي {n} فقط على {reward}", celeLeft1: "باقي ختم واحد فقط على {reward}!", celeWon: "ربحت {reward}!", celeWonSub: "إنها جاهزة الآن. اطلبها من الموظف واستمتع!", celeOk: "رائع!", again: "تحقّق من رقم آخر",
       nfTitle: "لم نجد هذه البطاقة", nfText: "تحقّق من رقم هاتفك والرمز السري. يجب أن يطابقا ما أعطيته عند الكاونتر. إذا انضممت اليوم فقد تحتاج بطاقتك بضع ساعات لتظهر هنا. لست عضواً بعد؟ اطلب من فريقنا تسجيلك في زيارتك القادمة.",
       howTitle: "كيف يعمل", s1t: "انضم عند الكاونتر", s1d: "أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.", s2t: "اجمع ختماً مع كل طلب", s2d: "كل مشروب أو أركيلة يضيف ختماً إلى بطاقته.", s3t: "ال{nth} مجاناً", s3d: "عندما تكتمل بطاقتك، أعطِ رقمك عند الكاونتر واستمتع بمكافأتك.",
       cardsTitle: "بطاقات المكافآت", plusFree: "{n} + 1 مجاناً", collect: "اجمع {n} أختام واحصل على {reward}.",
@@ -401,7 +419,7 @@ footer p { margin: 0; }
       levelIs: "ئەندامێ {level}", toNext: "{n} سەرەدانێن دی بۆ {level}", perk: "تایبەتمەندیا تە: {perk}",
       rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلات ل هیڤیا تە نە: {reward}. ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
       stamped: "مۆر هەتا نوکە", collected: "خەلاتێن وەرگرتی",
-      qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", qrZoom: "پەنجێ ل سەر کۆدی بدە دا مەزن ببیت", qrClose: "ڤێ نیشانی کارمەندی بدە. ل هەر جهەکی پەنجێ بدە دا بهێتە گرتن.", again: "ژمارەکا دی بپشکنە",
+      qrTitle: "کۆدێ QR یێ ئەندامێتیا تە", qrText: "ل کاونتەری نیشان بدە دا ب لەز کارتا تە ببینین.", qrZoom: "پەنجێ ل سەر کۆدی بدە دا مەزن ببیت", qrClose: "ڤێ نیشانی کارمەندی بدە. ل هەر جهەکی پەنجێ بدە دا بهێتە گرتن.", celeStamp: "+1 مۆر!", celeStampN: "+{n} مۆر!", celeLeft: "تەنێ {n} یێن ماین بۆ {reward}", celeLeft1: "تەنێ ئێک یێ مای بۆ {reward}!", celeWon: "تە {reward} بدەستڤە ئینا!", celeWonSub: "نوکە ئامادەیە. داخوازێ ژ کارمەندی بکە و خۆش بیت!", celeOk: "زۆر باشە!", again: "ژمارەکا دی بپشکنە",
       nfTitle: "مە ئەڤ کارتە نەدیت", nfText: "ژمارا مۆبایلێ و ژمارا نهێنی بپشکنە. دڤێت وەک وان بن یێن تە ل کاونتەری داین. ئەگەر تو ئەڤرۆ بوویە ئەندام، دبیت چەند دەمژمێر بڤێن هەتا کارتا تە ل ڤێرە دیار دبیت. هێشتا نە ئەندامی؟ ل سەرەدانا دی ژ ستافێ مە بخوازە تە تۆمار بکەن.",
       howTitle: "چاوا کار دکەت", s1t: "ل کاونتەری ببە ئەندام", s1d: "ژمارا مۆبایلا خۆ بدە ستافێ مە. ئەندامبوون بێ بەرامبەرە و چەند چرکەیان دڤێت.", s2t: "ل گەل هەر داخوازەکێ مۆرەکێ کۆم بکە", s2d: "هەر ڤەخوارنەک یان نێرگەلەک مۆرەکێ بۆ کارتا خۆ زێدە دکەت.", s3t: "یا {nth} بێ بەرامبەرە", s3d: "دەمێ کارتا تە تژی بوو، ژمارا خۆ ل کاونتەری بێژە و خۆشیێ ژ خەلاتا خۆ ببە.",
       cardsTitle: "کارتێن خەلاتان", plusFree: "{n} + 1 بێ بەرامبەر", collect: "{n} مۆران کۆم بکە و {reward} وەربگرە.",
@@ -431,7 +449,7 @@ footer p { margin: 0; }
       levelIs: "{level}-Mitglied", toNext: "Noch {n} Besuche bis {level}", perk: "Ihr Vorteil: {perk}",
       rule: "Kaufen Sie {n}, das {nth} geht auf uns", more: "Noch {n}", toGo: " bis zu Ihrer Prämie ({reward}) · {s} von {n} Stempeln", ready1: "Ihre Prämie ist bereit: {reward}! Nennen Sie an der Theke Ihre Nummer, um sie abzuholen.", readyN: "Es warten {k} Prämien auf Sie: {reward}. Nennen Sie an der Theke Ihre Nummer.", useBy: " Einzulösen bis {date}.",
       stamped: "Bisherige Stempel", collected: "Eingelöste Prämien",
-      qrTitle: "Ihr Mitglieds-QR-Code", qrText: "Zeigen Sie ihn an der Theke, damit wir Ihre Karte schnell finden.", qrZoom: "Zum Vergrößern auf den Code tippen", qrClose: "Zeigen Sie das dem Personal. Zum Schließen irgendwo tippen.", again: "Andere Nummer prüfen",
+      qrTitle: "Ihr Mitglieds-QR-Code", qrText: "Zeigen Sie ihn an der Theke, damit wir Ihre Karte schnell finden.", qrZoom: "Zum Vergrößern auf den Code tippen", qrClose: "Zeigen Sie das dem Personal. Zum Schließen irgendwo tippen.", celeStamp: "+1 Stempel!", celeStampN: "+{n} Stempel!", celeLeft: "Nur noch {n} Stempel bis zum {reward}", celeLeft1: "Nur noch 1 Stempel bis zum {reward}!", celeWon: "Gewonnen: {reward}!", celeWonSub: "Es ist jetzt bereit. Fragen Sie das Personal und genießen Sie es!", celeOk: "Super!", again: "Andere Nummer prüfen",
       nfTitle: "Wir konnten diese Karte nicht finden", nfText: "Bitte prüfen Sie Ihre Telefonnummer und PIN. Beide müssen mit Ihren Angaben an der Theke übereinstimmen. Wenn Sie sich heute angemeldet haben, kann es einige Stunden dauern, bis Ihre Karte hier erscheint. Noch kein Mitglied? Bitten Sie bei Ihrem nächsten Besuch unser Team, Sie anzumelden.",
       howTitle: "So funktioniert es", s1t: "An der Theke anmelden", s1d: "Nennen Sie unserem Team Ihre Telefonnummer. Die Anmeldung ist kostenlos und dauert nur wenige Sekunden.", s2t: "Bei jeder Bestellung einen Stempel sammeln", s2d: "Jedes Getränk und jede Shisha bringt einen Stempel auf die jeweilige Karte.", s3t: "Das {nth} ist gratis", s3d: "Wenn Ihre Karte voll ist, nennen Sie an der Theke Ihre Nummer und genießen Sie Ihre Prämie.",
       cardsTitle: "Unsere Prämienkarten", plusFree: "{n} + 1 gratis", collect: "Sammeln Sie {n} Stempel und erhalten Sie: {reward}.",
@@ -532,6 +550,92 @@ footer p { margin: 0; }
     box.hidden = false;
     try { history.pushState({ amedQR: 1 }, ""); } catch (_) {}
     try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { qrWake = w; }).catch(() => {}); } catch (_) {}
+  }
+
+  /* ---------- live stamps: the counter tablet tells this phone the moment it stamps a scanned card ---------- */
+  // Messages go through ntfy.sh to a private topic made from this card's key; they hold only numbers (no name, phone or PIN).
+  const LIVE_HOST = "https://ntfy.sh";
+  const live = { es: null, key: null, seen: new Set(), lastAt: 0, audio: null, timer: 0 };
+  try { live.lastAt = Number(localStorage.getItem("amed-live-at")) || 0; } catch (_) {}
+  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  async function liveStart(key) {
+    if (!key || !window.EventSource || !(window.crypto && crypto.subtle)) return;
+    if (live.key === key && live.es) return;
+    liveStop(); live.key = key;
+    let topic; try { topic = "amed-" + hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode("amed-live:" + key))).slice(0, 32); } catch (_) { return; }
+    if (live.key !== key) return;
+    const since = Math.max(Math.floor(((DATA && DATA.updated) || Date.now()) / 1000) - 5, Math.floor(Date.now() / 1000) - 11 * 3600);
+    try { live.es = new EventSource(LIVE_HOST + "/" + topic + "/sse?since=" + since); } catch (_) { live.es = null; return; }
+    live.es.onmessage = (m) => { try { const d = JSON.parse(m.data); if (d && d.event === "message" && d.message) liveEvent(JSON.parse(d.message), d); } catch (_) {} };
+  }
+  function liveStop() { if (live.es) { try { live.es.close(); } catch (_) {} } live.es = null; }
+  document.addEventListener("visibilitychange", () => { if (document.hidden) liveStop(); else if (live.key && lastEntry) { const k = live.key; live.key = null; liveStart(k); } });
+  function liveEvent(ev, msg) {
+    if (!ev || ev.v !== 1 || !lastEntry || !DATA || !msg || live.seen.has(msg.id)) return;
+    live.seen.add(msg.id);
+    const entry = lastEntry, a = entry.p && entry.p[ev.p]; if (!a) return;
+    if (!(ev.t > (DATA.updated || 0))) return;              // the regular update already includes this stamp
+    entry._lt = entry._lt || {};
+    if (ev.t <= (entry._lt[ev.p] || 0)) return;            // older than what is already shown
+    entry._lt[ev.p] = ev.t;
+    a[0] = ev.s; a[1] = ev.r; a[3] = ev.tot; if (typeof ev.vis === "number") entry.v = ev.vis;
+    const at = (msg.time || 0) * 1000, fresh = Date.now() - at < 120000 && at > live.lastAt;
+    if (fresh) { live.lastAt = at; try { localStorage.setItem("amed-live-at", String(at)); } catch (_) {} }
+    activeProg = ev.p; showCards(entry, false);
+    if (fresh) { closeBigQR(false); celebrate(entry, ev); }
+  }
+  // Sound: phones only allow it after a tap on the page, so unlock audio on the first touch.
+  function audioCtx() { if (!live.audio) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; try { live.audio = new A(); } catch (_) { return null; } } return live.audio; }
+  document.addEventListener("pointerdown", () => { const a = audioCtx(); if (a && a.state === "suspended") a.resume().catch(() => {}); }, { passive: true });
+  function chime(won) {
+    const a = audioCtx(); if (!a) return; if (a.state === "suspended") a.resume().catch(() => {});
+    const notes = won ? [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5, 1318.5] : [987.77, 1318.5], step = won ? .12 : .13, t0 = a.currentTime + .03;
+    notes.forEach((f, i) => {
+      const o = a.createOscillator(), g = a.createGain(), st = t0 + i * step, end = st + (i === notes.length - 1 ? 1.1 : .42);
+      o.type = "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, st); g.gain.exponentialRampToValueAtTime(.25, st + .02); g.gain.exponentialRampToValueAtTime(.0001, end);
+      o.connect(g); g.connect(a.destination); o.start(st); o.stop(end + .05);
+    });
+  }
+  function confetti(cv, colors, n) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight; cv.width = W * dpr; cv.height = H * dpr;
+    const x = cv.getContext("2d"); x.scale(dpr, dpr);
+    const ps = Array.from({ length: n }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * 80, y: H * .36, vx: (Math.random() - .5) * 15, vy: -Math.random() * 15 - 7, r: Math.random() * 6, vr: (Math.random() - .5) * .35, w: 6 + Math.random() * 6, h: 9 + Math.random() * 9, c: colors[i % colors.length], round: Math.random() < .3 }));
+    const t0 = performance.now();
+    const f = (t) => {
+      const k = t - t0; x.clearRect(0, 0, W, H); let alive = 0;
+      for (const p of ps) {
+        p.vy += .38; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr; if (p.y < H + 30) alive++;
+        x.save(); x.globalAlpha = Math.max(0, 1 - k / 3600); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c;
+        if (p.round) { x.beginPath(); x.arc(0, 0, p.w / 2, 0, 7); x.fill(); } else x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        x.restore();
+      }
+      if (alive && k < 3800 && cv.isConnected) requestAnimationFrame(f);
+    };
+    requestAnimationFrame(f);
+  }
+  function closeCele() { clearTimeout(live.timer); const b = document.getElementById("cele"); if (b) b.remove(); }
+  function celebrate(entry, ev) {
+    const p = DATA.programs.find((q) => q.id === ev.p); if (!p) return;
+    const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier];
+    const won = ev.e > 0, T0 = p.target, s = Math.min(ev.s, T0), left = T0 - s, n = Math.max(1, ev.n || 1);
+    closeCele();
+    const box = el("div", { id: "cele", class: "cele" + (won ? " won" : ""), role: "dialog", "aria-modal": "true", "aria-live": "assertive" });
+    box.addEventListener("click", (e) => { if (e.target === box) closeCele(); });
+    for (const [k, v] of Object.entries({ bg: th.bg, text: th.text, accent: th.accent, soft: th.soft, border: th.border, on: th.on, glow: th.glow })) box.style.setProperty("--c-" + k, v);
+    const dots = el("div", { class: "cele-dots", dir: "ltr", "aria-hidden": "true" });
+    for (let i = 1; i <= T0; i++) dots.append(el("i", { class: won ? "on new" : i <= s ? (i > s - n ? "on new" : "on") : "" }));
+    const title = won ? tr("celeWon", { reward: preward(p) }) : n > 1 ? tr("celeStampN", { n }) : tr("celeStamp");
+    const sub = won ? tr("celeWonSub") : left === 1 ? tr("celeLeft1", { reward: preward(p) }) : tr("celeLeft", { n: left, reward: preward(p) });
+    const cv = el("canvas", { "aria-hidden": "true" });
+    const ok = el("button", { type: "button", text: tr("celeOk") }); ok.addEventListener("click", closeCele);
+    box.append(cv, el("div", { class: "cele-card" }, el("div", { class: "cele-badge", "aria-hidden": "true", text: won ? "🎁" : "+" + n }), el("h2", { text: title }), dots, el("p", { text: sub }), ok));
+    document.body.append(box);
+    confetti(cv, [th.accent, th.hi, "#FFFFFF", th.soft], won ? 240 : 130);
+    chime(won);
+    try { if (navigator.vibrate) navigator.vibrate(won ? [90, 60, 90, 60, 260] : [70, 50, 110]); } catch (_) {}
+    live.timer = setTimeout(closeCele, won ? 14000 : 9000);
   }
 
   function setLang(l) {
@@ -844,6 +948,7 @@ footer p { margin: 0; }
   function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
   function signOut() {
     try { localStorage.removeItem("amed-session"); } catch (_) {}
+    liveStop(); live.key = null; closeCele();
     lastEntry = null; activeProg = null; storyShown = false; $("result").hidden = true; $("result").textContent = "";
     $("phone").value = ""; $("pin").value = ""; setSignedIn(false); clearPageTheme(); window.scrollTo({ top: 0 });
   }
@@ -906,7 +1011,7 @@ footer p { margin: 0; }
     if (!loaded) return fail("loading");
     try {
       const key = await hash(d, pin), entry = DATA.cards[key];
-      if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); } else showNotFound();
+      if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); liveStart(key); } else showNotFound();
     }
     catch (_) { fail("noCrypto"); }
   });
@@ -930,7 +1035,7 @@ footer p { margin: 0; }
     .then((d) => {
       DATA = d; loaded = true; renderStatic();
       let key = null; try { key = localStorage.getItem("amed-session"); } catch (_) {}
-      if (key && DATA.cards[key]) showCards(DATA.cards[key], false);
+      if (key && DATA.cards[key]) { showCards(DATA.cards[key], false); liveStart(key); }
     })
     .catch(() => { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; });
 })();

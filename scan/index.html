@@ -42,11 +42,11 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" async></script>
 <script>
 (() => {
-  const STAFF_ORIGIN = "https://claude.ai";
+  const STAFF_ORIGIN = "https://claude.ai", LIVE_HOST = "https://ntfy.sh";
   const T = {
-    en: { title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
-    ar: { title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
-    ku: { title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
+    en: { title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Stamp added ✓ — the customer's phone is updating…", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
+    ar: { title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تمت إضافة الختم ✓ — يتم تحديث هاتف الزبون…", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
+    ku: { title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", stamped: "مۆر هاتە زێدەکرن ✓ — مۆبایلا کڕیاری نوو دبیت…", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
   };
   const qs = new URLSearchParams(location.search);
   const lang = T[qs.get("lang")] ? qs.get("lang") : "en";
@@ -90,9 +90,20 @@
     try { const d = await (await fetch("/data.json", { cache: "no-store" })).json(); if (d && d.staffLink) link = d.staffLink + "#m-" + code + (p ? "." + p : ""); } catch (_) {}
     if (!link && /^https:\/\/claude\.ai\//.test(raw)) link = raw;
     if (window.opener && !window.opener.closed) {
-      try { window.opener.postMessage({ type: "amed-scan", code, p }, STAFF_ORIGIN); } catch (_) {}
-      try { window.opener.postMessage({ type: "amed-scan", code, p }, "*"); } catch (_) {}
-      setTimeout(() => { try { window.close(); } catch (_) {} }, 350);
+      const rid = Math.random().toString(36).slice(2) + Date.now().toString(36), op = window.opener;
+      // Wait (briefly) for the staff tool's answer, then pass the new stamp on to the customer's phone.
+      const answer = new Promise((res) => {
+        const on = (e) => { const d = e.data; if (e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; window.removeEventListener("message", on); res(d); };
+        window.addEventListener("message", on); setTimeout(() => { window.removeEventListener("message", on); res(null); }, 6000);
+      });
+      try { op.postMessage({ type: "amed-scan", code, p, rid }, STAFF_ORIGIN); } catch (_) {}
+      try { op.postMessage({ type: "amed-scan", code, p, rid }, "*"); } catch (_) {}
+      const d = await answer;
+      if (d && typeof d.topic === "string" && /^amed-[0-9a-f]{32}$/.test(d.topic) && d.ev) {
+        msg(tr("stamped"), "ok");
+        try { await Promise.race([fetch(LIVE_HOST + "/", { method: "POST", body: JSON.stringify({ topic: d.topic, message: JSON.stringify(d.ev) }) }), new Promise((r) => setTimeout(r, 4000))]); } catch (_) {}
+      }
+      setTimeout(() => { try { window.close(); } catch (_) {} }, 150);
       setTimeout(() => { msg(tr("backHint"), "ok"); if (link) { $("back").href = link; $("back").hidden = false; } }, 1200);
     } else {
       msg(tr("backHint"), "ok");
