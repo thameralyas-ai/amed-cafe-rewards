@@ -25,16 +25,23 @@
   .btns { display: flex; gap: 10px; }
   button, .btn { flex: 1; min-height: 52px; border-radius: 14px; border: 1px solid var(--line); background: #221D18; color: var(--ink); font: 600 1rem inherit; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 0 14px; }
   .primary { background: var(--accent); border-color: var(--accent); color: #1B130C; }
+  .res { position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 2; display: grid; gap: 6px; padding: 18px 20px; border-radius: 20px; text-align: center; box-shadow: 0 18px 50px rgba(0,0,0,.5); animation: resIn .35s cubic-bezier(.2,1.4,.4,1); }
+  .res.ok { background: #1F6B43; color: #fff; }
+  .res.warn { background: #8A5A12; color: #fff; }
+  .res b { font-size: 1.6rem; line-height: 1.2; }
+  .res span { font-size: 1.15rem; }
+  #resLine { font-size: 1.35rem; font-weight: 800; letter-spacing: .02em; }
+  @keyframes resIn { from { transform: translateY(30px) scale(.9); opacity: 0; } }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <header><img src="/logo.png" alt="Amed Cafe"><h1 id="title">Card scanner</h1></header>
-<div class="view"><video id="video" playsinline muted autoplay></video><div class="frame" id="frame" aria-hidden="true"></div></div>
+<div class="view"><video id="video" playsinline muted autoplay></video><div class="frame" id="frame" aria-hidden="true"></div>
+  <div class="res" id="res" role="status" hidden><b id="resName"></b><span id="resNote"></span><span id="resLine"></span></div></div>
 <footer>
   <p id="msg" role="status"></p>
   <div class="btns">
-    <a class="btn primary" id="back" hidden>Open card</a>
     <button type="button" id="switch">Switch camera</button>
     <button type="button" id="close">Close</button>
   </div>
@@ -44,9 +51,9 @@
 (() => {
   const STAFF_ORIGIN = "https://claude.ai", LIVE_HOST = "https://ntfy.sh";
   const T = {
-    en: { title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Stamp added ✓ — the customer's phone is updating…", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
-    ar: { title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تمت إضافة الختم ✓ — يتم تحديث هاتف الزبون…", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
-    ku: { title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", stamped: "مۆر هاتە زێدەکرن ✓ — مۆبایلا کڕیاری نوو دبیت…", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
+    en: { title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Done ✓ — ready for the next customer", noLink: "This scanner isn't connected to the staff tool. Open the staff tool and tap Scan there.", noAnswer: "The staff tool didn't answer. Open the staff tool tab once, then come back here.", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
+    ar: { title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تم ✓ — جاهز للزبون التالي", noLink: "هذا الماسح غير متصل بأداة الموظفين. افتح أداة الموظفين واضغط «مسح» من هناك.", noAnswer: "لم تستجب أداة الموظفين. افتح تبويبها مرة واحدة ثم عد إلى هنا.", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
+    ku: { title: "سکانەرێ کارتان", point: "کامێرایێ بەرەڤ کۆدێ QR ل سەر مۆبایلا کڕیاری بگرە.", allow: "ڕێ بدە کامێرایێ دا سکانەر کۆدی بخوینیت.", denied: "کامێرا هاتیە ڕاگرتن. د وێبگەڕی دا ل سەر نیشانا قفلێ ل تەنیشت ناڤنیشانی بدە (یان ڕێکخستن ← ڕێکخستنێن ماڵپەڕی ← کامێرا)، ڕێ بدە کامێرایێ بۆ amedcaferest.com، پاشان پەڕێ نوو بکە.", notMember: "ئەڤ کۆدە نە کارتا ئەندامێتیا ئامێد کافێیە.", found: "کارت هاتە دیتن: {code}", stamped: "تمام ✓ — بۆ کڕیارێ دی ئامادەیە", noLink: "ئەڤ سکانەرە ب ئامرازێ کارمەندان ڤە نەگرێدایە. ئامرازێ کارمەندان ڤەکە و ژ وێرێ «سکان» بکە.", noAnswer: "ئامرازێ کارمەندان بەرسڤ نەدا. جارەکێ تابا وێ ڤەکە، پاشان بزڤڕە ڤێرێ.", backHint: "بزڤڕە تابا ئامرازێ کارمەندان — کارت ل وێرێ ڤەبوویە.", openCard: "کارتێ ڤەکە", sw: "کامێرایێ بگوهۆڕە", close: "دابخە", noCam: "چ کامێرا ل سەر ڤێ ئامیرێ نینە." }
   };
   const qs = new URLSearchParams(location.search);
   const lang = T[qs.get("lang")] ? qs.get("lang") : "en";
@@ -54,7 +61,7 @@
   document.documentElement.lang = lang === "ku" ? "ckb" : lang;
   document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
   const $ = (id) => document.getElementById(id);
-  $("title").textContent = tr("title"); $("switch").textContent = tr("sw"); $("close").textContent = tr("close"); $("back").textContent = tr("openCard");
+  $("title").textContent = tr("title"); $("switch").textContent = tr("sw"); $("close").textContent = tr("close");
   const msg = (text, cls) => { $("msg").textContent = text; $("msg").className = cls || ""; };
 
   let stream = null, timer = 0, done = false, detector, facing = "environment";
@@ -81,34 +88,40 @@
   }
   function stop() { clearTimeout(timer); if (stream) stream.getTracks().forEach((t) => t.stop()); stream = null; }
 
+  // Continuous counter scanner: after each card it shows the result for a few seconds, then scans the next one by itself.
+  let lastRaw = "", lastRawAt = 0, resTimer = 0;
+  function showResult(kind, name, note, line) {
+    const r = $("res"); r.className = "res " + kind; $("resName").textContent = name || ""; $("resNote").textContent = note || ""; $("resLine").textContent = line || "";
+    $("resName").hidden = !name; $("resLine").hidden = !line; r.hidden = false;
+  }
+  function nextCustomer(ms) {
+    clearTimeout(resTimer);
+    resTimer = setTimeout(() => { $("res").hidden = true; $("frame").classList.remove("ok"); done = false; msg(tr("point")); if (stream) loop(); else start(); }, ms);
+  }
   async function found(code, raw) {
     const p = progFrom(raw);
-    done = true; stop(); $("frame").classList.add("ok");
+    done = true; clearTimeout(timer); lastRaw = raw; lastRawAt = Date.now(); $("frame").classList.add("ok");
     try { navigator.vibrate && navigator.vibrate(90); } catch (_) {}
     msg(tr("found", { code }), "ok");
-    let link = "";
-    try { const d = await (await fetch("/data.json", { cache: "no-store" })).json(); if (d && d.staffLink) link = d.staffLink + "#m-" + code + (p ? "." + p : ""); } catch (_) {}
-    if (!link && /^https:\/\/claude\.ai\//.test(raw)) link = raw;
-    if (window.opener && !window.opener.closed) {
-      const rid = Math.random().toString(36).slice(2) + Date.now().toString(36), op = window.opener;
-      // Wait (briefly) for the staff tool's answer, then pass the new stamp on to the customer's phone.
-      const answer = new Promise((res) => {
-        const on = (e) => { const d = e.data; if (e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; window.removeEventListener("message", on); res(d); };
-        window.addEventListener("message", on); setTimeout(() => { window.removeEventListener("message", on); res(null); }, 6000);
-      });
-      try { op.postMessage({ type: "amed-scan", code, p, rid }, STAFF_ORIGIN); } catch (_) {}
-      try { op.postMessage({ type: "amed-scan", code, p, rid }, "*"); } catch (_) {}
-      const d = await answer;
-      if (d && typeof d.topic === "string" && /^amed-[0-9a-f]{32}$/.test(d.topic) && d.ev) {
-        msg(tr("stamped"), "ok");
-        try { await Promise.race([fetch(LIVE_HOST + "/", { method: "POST", body: JSON.stringify({ topic: d.topic, message: JSON.stringify(d.ev) }) }), new Promise((r) => setTimeout(r, 4000))]); } catch (_) {}
-      }
-      setTimeout(() => { try { window.close(); } catch (_) {} }, 150);
-      setTimeout(() => { msg(tr("backHint"), "ok"); if (link) { $("back").href = link; $("back").hidden = false; } }, 1200);
-    } else {
-      msg(tr("backHint"), "ok");
-      if (link) { $("back").href = link; $("back").hidden = false; }
-    }
+    const op = window.opener;
+    if (!op || op.closed) { showResult("warn", "", tr("noLink"), ""); nextCustomer(5000); return; }
+    const rid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    // Ask the staff tool (the tab that opened this scanner) to open the card and stamp it, and wait for its answer.
+    const answer = new Promise((res) => {
+      const on = (e) => { const d = e.data; if (e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; window.removeEventListener("message", on); res(d); };
+      window.addEventListener("message", on); setTimeout(() => { window.removeEventListener("message", on); res(null); }, 8000);
+    });
+    try { op.postMessage({ type: "amed-scan", code, p, rid }, STAFF_ORIGIN); } catch (_) {}
+    try { op.postMessage({ type: "amed-scan", code, p, rid }, "*"); } catch (_) {}
+    const d = await answer;
+    if (!d) { showResult("warn", "", tr("noAnswer"), ""); nextCustomer(5000); return; }
+    const stamped = typeof d.topic === "string" && /^amed-[0-9a-f]{32}$/.test(d.topic) && d.ev;
+    const name = typeof d.name === "string" ? d.name.slice(0, 60) : "", note = typeof d.note === "string" ? d.note.slice(0, 200) : "", line = typeof d.line === "string" ? d.line.slice(0, 80) : "";
+    showResult(stamped ? "ok" : "warn", name, note, line);
+    msg(stamped ? tr("stamped") : "", "ok");
+    // Tell the customer's phone at once (no name, phone or PIN in the message).
+    if (stamped) { try { fetch(LIVE_HOST + "/", { method: "POST", keepalive: true, body: JSON.stringify({ topic: d.topic, message: JSON.stringify(d.ev) }) }).catch(() => {}); } catch (_) {} }
+    nextCustomer(stamped ? 3500 : 5000);
   }
   function loop() {
     clearTimeout(timer);
@@ -117,13 +130,13 @@
       const v = $("video");
       if (v.readyState >= 2) {
         const raw = await decode(v);
-        if (raw !== null && !done) { const code = codeFrom(raw); if (code) return found(code, raw); msg(tr("notMember"), "err"); }
+        if (raw !== null && !done && !(raw === lastRaw && Date.now() - lastRawAt < 15000)) { const code = codeFrom(raw); if (code) return found(code, raw); msg(tr("notMember"), "err"); }
       }
       loop();
     }, 180);
   }
   async function start() {
-    stop(); done = false; $("frame").classList.remove("ok"); $("back").hidden = true; msg(tr("allow"));
+    stop(); done = false; $("frame").classList.remove("ok"); msg(tr("allow"));
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { msg(tr("noCam"), "err"); return; }
     try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }); }
     catch (e) { msg(e && e.name === "NotFoundError" ? tr("noCam") : tr("denied"), "err"); return; }
