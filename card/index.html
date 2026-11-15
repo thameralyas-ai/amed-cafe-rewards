@@ -367,6 +367,7 @@ footer p { margin: 0; }
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="../vendor/amed-firebase.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -552,36 +553,43 @@ footer p { margin: 0; }
     try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then((w) => { qrWake = w; }).catch(() => {}); } catch (_) {}
   }
 
-  /* ---------- live stamps: the counter tablet tells this phone the moment it stamps a scanned card ---------- */
-  // Messages go through ntfy.sh to a private topic made from this card's key; they hold only numbers (no name, phone or PIN).
-  const LIVE_HOST = "https://ntfy.sh";
-  const live = { es: null, key: null, seen: new Set(), lastAt: 0, audio: null, timer: 0 };
-  try { live.lastAt = Number(localStorage.getItem("amed-live-at")) || 0; } catch (_) {}
-  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
-  async function liveStart(key) {
-    if (!key || !window.EventSource || !(window.crypto && crypto.subtle)) return;
-    if (live.key === key && live.es) return;
-    liveStop(); live.key = key;
-    let topic; try { topic = "amed-" + hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode("amed-live:" + key))).slice(0, 32); } catch (_) { return; }
-    if (live.key !== key) return;
-    const since = Math.max(Math.floor(((DATA && DATA.updated) || Date.now()) / 1000) - 5, Math.floor(Date.now() / 1000) - 11 * 3600);
-    try { live.es = new EventSource(LIVE_HOST + "/" + topic + "/sse?since=" + since); } catch (_) { live.es = null; return; }
-    live.es.onmessage = (m) => { try { const d = JSON.parse(m.data); if (d && d.event === "message" && d.message) liveEvent(JSON.parse(d.message), d); } catch (_) {} };
+  /* ---------- live card: read straight from the cafe's database, so a new stamp shows (and celebrates) at once ---------- */
+  // cards/<key> holds only the first name, member code and counts; the key comes from the phone number + PIN.
+  const FB_CFG = { apiKey: "AIzaSyBL1jUUtB8uQ26jTj3aoBjOJrRWHJuErVI", authDomain: "amed-cafe.firebaseapp.com", projectId: "amed-cafe", appId: "1:1005235134584:web:f977d4b29ad2ddcc234d8d" };
+  const EMU = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && /[?&]emu\b/.test(location.search);
+  let FBX = null;
+  function fbx() {
+    if (FBX !== null) return FBX;
+    try { const F = window.AmedFB; const app = F.initializeApp(FB_CFG, "card"); const fs = F.initializeFirestore(app, {}); if (EMU) F.connectFirestoreEmulator(fs, "127.0.0.1", 8080); FBX = { F, fs }; }
+    catch (_) { FBX = false; }
+    return FBX;
   }
-  function liveStop() { if (live.es) { try { live.es.close(); } catch (_) {} } live.es = null; }
-  document.addEventListener("visibilitychange", () => { if (document.hidden) liveStop(); else if (live.key && lastEntry) { const k = live.key; live.key = null; liveStart(k); } });
-  function liveEvent(ev, msg) {
-    if (!ev || ev.v !== 1 || !lastEntry || !DATA || !msg || live.seen.has(msg.id)) return;
-    live.seen.add(msg.id);
-    const entry = lastEntry, a = entry.p && entry.p[ev.p]; if (!a) return;
-    if (!(ev.t > (DATA.updated || 0))) return;              // the regular update already includes this stamp
-    entry._lt = entry._lt || {};
-    if (ev.t <= (entry._lt[ev.p] || 0)) return;            // older than what is already shown
-    entry._lt[ev.p] = ev.t;
-    a[0] = ev.s; a[1] = ev.r; a[3] = ev.tot; if (typeof ev.vis === "number") entry.v = ev.vis;
-    const at = (msg.time || 0) * 1000, fresh = Date.now() - at < 120000 && at > live.lastAt;
-    if (fresh) { live.lastAt = at; try { localStorage.setItem("amed-live-at", String(at)); } catch (_) {} }
-    activeProg = ev.p; showCards(entry, false);
+  async function loadData() {
+    const x = fbx();
+    if (x) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "public/meta")); if (s.exists()) return Object.assign({ cards: {}, live: true }, s.data()); } catch (_) {} }
+    const r = await fetch("../data.json", { cache: "no-store" }); if (!r.ok) throw 0; return r.json();   // fallback: last published copy
+  }
+  async function getCard(key) {
+    const x = fbx();
+    if (x && DATA && DATA.live) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "cards/" + key)); return s.exists() ? s.data() : null; } catch (_) {} }
+    return (DATA && DATA.cards && DATA.cards[key]) || null;
+  }
+  const live = { unsub: null, key: null, lastAt: 0, audio: null, timer: 0 };
+  try { live.lastAt = Number(localStorage.getItem("amed-live-at")) || 0; } catch (_) {}
+  function liveStart(key) {
+    const x = fbx(); if (!key || !x || !DATA || !DATA.live) return;
+    if (live.key === key && live.unsub) return;
+    liveStop(); live.key = key;
+    live.unsub = x.F.onSnapshot(x.F.doc(x.fs, "cards/" + key), (s) => { if (s.exists() && live.key === key) liveCard(s.data()); }, () => {});
+  }
+  function liveStop() { if (live.unsub) { try { live.unsub(); } catch (_) {} } live.unsub = null; }
+  function liveCard(entry) {
+    if (!lastEntry) return;
+    const ev = entry.ev;
+    const fresh = !!(ev && ev.t > live.lastAt && Date.now() - ev.t < 120000 && entry.p && entry.p[ev.p]);
+    if (fresh) { live.lastAt = ev.t; try { localStorage.setItem("amed-live-at", String(ev.t)); } catch (_) {} activeProg = ev.p; }
+    if (!fresh && JSON.stringify(entry.p) === JSON.stringify(lastEntry.p) && entry.v === lastEntry.v) return;   // nothing new to show
+    showCards(entry, false);
     if (fresh) { closeBigQR(false); celebrate(entry, ev); }
   }
   // Sound: phones only allow it after a tap on the page, so unlock audio on the first touch.
@@ -619,7 +627,7 @@ footer p { margin: 0; }
   function celebrate(entry, ev) {
     const p = DATA.programs.find((q) => q.id === ev.p); if (!p) return;
     const L = levelInfo(entry.v || 0, stampsOf(entry)), th = THEMES[L.tier];
-    const won = ev.e > 0, T0 = p.target, s = Math.min(ev.s, T0), left = T0 - s, n = Math.max(1, ev.n || 1);
+    const won = ev.e > 0, T0 = p.target, s = Math.min(ev.s != null ? ev.s : ((entry.p[ev.p] || [])[0] || 0), T0), left = T0 - s, n = Math.max(1, ev.n || 1);
     closeCele();
     const box = el("div", { id: "cele", class: "cele" + (won ? " won" : ""), role: "dialog", "aria-modal": "true", "aria-live": "assertive" });
     box.addEventListener("click", (e) => { if (e.target === box) closeCele(); });
@@ -1010,7 +1018,7 @@ footer p { margin: 0; }
     if (pin.length !== 4) return fail("needPin");
     if (!loaded) return fail("loading");
     try {
-      const key = await hash(d, pin), entry = DATA.cards[key];
+      const key = await hash(d, pin), entry = await getCard(key);
       if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); liveStart(key); } else showNotFound();
     }
     catch (_) { fail("noCrypto"); }
@@ -1031,11 +1039,12 @@ footer p { margin: 0; }
   setLang(start);
   window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
 
-  fetch("../data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
-    .then((d) => {
+  loadData()
+    .then(async (d) => {
       DATA = d; loaded = true; renderStatic();
       let key = null; try { key = localStorage.getItem("amed-session"); } catch (_) {}
-      if (key && DATA.cards[key]) { showCards(DATA.cards[key], false); liveStart(key); }
+      const entry = key ? await getCard(key) : null;
+      if (entry) { showCards(entry, false); liveStart(key); }
     })
     .catch(() => { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; });
 })();
