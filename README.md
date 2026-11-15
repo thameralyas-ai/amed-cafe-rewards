@@ -52,4 +52,4 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - Homepage `<title>`: "Amed Cafe · Coffee & Shisha in Sharya, Duhok · كافي وشيشة في شاريا" and the description under it in Google results (chosen by Thamir, option B). The slogan "your comfort space" stays in the description. The small line above the homepage headline reads "Amed Cafe · Sharya, Duhok" in all 4 languages.
 - `robots.txt`: lets search engines read the site, skips staff-only things (staff-guide.html, data.json, tools/) and points to the sitemap.
 - `sitemap.xml`: the list of pages (homepage, menu, card) and main photos for Google. Update `<lastmod>` after big changes; add new pages here.
-- Google Search Console: to be connected (needs the verification meta tag from Thamir).
+- Google Search Console: verification meta tag `google-site-verification` is in the homepage <head> (keep it, or Search Console loses access). Sitemap to submit: sitemap.xml.
