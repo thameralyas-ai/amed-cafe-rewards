@@ -239,7 +239,12 @@
     if (started) return; started = true;
     FB.onSnapshot(FB.doc(fs, SETTINGS), (s) => { if (s.exists()) settings = s.data(); }, () => {});
     resolveReady();
-    if (await ownerCheck()) { setTimeout(() => publishMeta().catch(() => {}), 3000); if (qs.has("import")) importPanel(); }
+    if (await ownerCheck()) {
+      setTimeout(() => publishMeta().catch(() => {}), 3000);
+      let empty = false;   // a new, empty database: offer the import straight away
+      try { empty = (await FB.getDocs(FB.query(FB.collection(fs, "customers"), FB.limit(1)))).empty; } catch (_) {}
+      if (qs.has("import") || empty) importPanel();
+    }
     else if (qs.has("import")) importProblem(u);
   });
   if (EMU) window.__amedTestSignIn = (email, name) => FB.signInWithCredential(auth, FB.GoogleAuthProvider.credential(JSON.stringify({ sub: "uid-" + email.replace(/\W/g, ""), email, email_verified: true, name: name || email })));
