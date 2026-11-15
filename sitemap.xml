@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The list of amedcaferest.com pages for search engines. Update <lastmod> when a page changes a lot. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://amedcaferest.com/</loc>
+    <lastmod>2026-11-15</lastmod>
+    <image:image><image:loc>https://amedcaferest.com/media/space/inside.jpg</image:loc></image:image>
+    <image:image><image:loc>https://amedcaferest.com/media/space/evening.jpg</image:loc></image:image>
+    <image:image><image:loc>https://amedcaferest.com/media/space/shisha.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://amedcaferest.com/menu/</loc>
+    <lastmod>2026-11-15</lastmod>
+  </url>
+  <url>
+    <loc>https://amedcaferest.com/card/</loc>
+    <lastmod>2026-11-15</lastmod>
+  </url>
+</urlset>

@@ -1,0 +1,9 @@
+# Tells search engines (Google, Bing…) what they may read on amedcaferest.com.
+User-agent: *
+Allow: /
+# Not for search results: staff-only pages and data files.
+Disallow: /staff-guide.html
+Disallow: /data.json
+Disallow: /tools/
+
+Sitemap: https://amedcaferest.com/sitemap.xml
