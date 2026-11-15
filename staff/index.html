@@ -135,6 +135,29 @@ a.btn:not(.wa) { color: var(--ink); }
 .tabs button { flex: 1; border: 0; background: transparent; border-radius: 8px; padding: 8px 10px; font-weight: 600; color: var(--muted); min-height: 40px; }
 .tabs button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
 .tabs .count { display: inline-block; min-width: 20px; padding: 0 6px; border-radius: 99px; background: var(--warn-soft); color: var(--warn); font-size: .75rem; margin-left: 4px; }
+
+/* staff sign-in (name + PIN) */
+#shiftLock { position: fixed; inset: 0; z-index: 3000; background: var(--bg); overflow-y: auto; display: grid; place-items: start center; padding: calc(20px + env(safe-area-inset-top, 0px)) 16px 28px; }
+#shiftLock .lockcard { width: min(100%, 560px); display: grid; gap: 14px; text-align: center; }
+#shiftLock .locklogo { width: 170px; margin: 0 auto; filter: var(--logo-filter); }
+#shiftLock h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.9rem; margin: 6px 0 0; }
+#shiftLock .locksub { margin: 0; color: var(--muted); font-size: 1rem; }
+#shiftLock .lockgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 6px; }
+#shiftLock .lockname { min-height: 72px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
+#shiftLock .lockowner, #shiftLock .lockback { justify-self: center; border: 0; background: none; color: var(--muted); font: inherit; font-weight: 600; padding: 12px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+#shiftLock .lockpin { justify-self: center; width: 200px; text-align: center; font-size: 2rem; letter-spacing: .5em; padding: 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+#shiftLock .lockpad { justify-self: center; display: grid; grid-template-columns: repeat(3, 84px); gap: 10px; }
+#shiftLock .lockpad button { height: 68px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.6rem; font-weight: 700; cursor: pointer; }
+#shiftLock .lockerr { margin: 0; min-height: 1.3em; color: var(--danger); font-weight: 700; }
+#shiftLock .lockf { display: grid; gap: 4px; text-align: start; font-weight: 600; }
+#shiftLock .lockf input { min-height: 48px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.1rem; padding: 0 12px; }
+#shiftLock .big { min-height: 54px; font-size: 1.1rem; }
+#shiftLock .locklangs { display: flex; justify-content: center; gap: 6px; }
+#shiftLock .locklangs button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: inherit; cursor: pointer; }
+#shiftLock .locklangs button.on { background: var(--ink); color: var(--bg); }
+#shiftChip { position: fixed; inset-inline-end: 10px; bottom: 10px; z-index: 40; display: flex; gap: 8px; align-items: center; font-weight: 700; font-size: .95rem; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 6px 6px 6px 14px; box-shadow: var(--shadow); }
+#shiftChip button { border: 0; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 8px 14px; font: inherit; cursor: pointer; }
+body:not(.shift-boss) #fbAcct { display: none !important; }
 .searchRow { display: flex; gap: 8px; flex-wrap: wrap; }
 .searchRow input { flex: 1 1 100%; min-width: 0; }
 .searchRow .btn { flex: 1 1 0; }
@@ -592,22 +615,30 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 <div class="overlay" id="staffDlg" hidden>
   <div class="modal form">
     <h2>Staff</h2>
-    <p class="lead">Each staff member needs two things: (1) the staff tool shared with their email from the Share menu, as Contributor; (2) the staff code below, which you send on WhatsApp. The code decides what they can do here.</p>
+    <p class="lead">Add each staff member with their name and a 4-digit PIN. At the start of a shift they tap their name on the tablet and enter their PIN, and stay signed in until they tap Sign out. Choose below what each person may do. Only the owner can open Staff and Settings.</p>
+    <form class="erow" id="ownerPinForm" novalidate>
+      <div class="g">
+        <label>Owner name<input id="ownName" type="text" autocomplete="off"></label>
+        <label>New owner PIN (4 digits)<input id="ownPin" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password"></label>
+      </div>
+      <p class="err" id="ownErr" hidden></p>
+      <div class="row"><button class="btn" type="submit">Change owner name / PIN</button></div>
+    </form>
     <form class="erow" id="invForm" novalidate>
       <div class="g">
         <label>Name<input id="invName" type="text" autocomplete="off"></label>
-        <label>Phone<input id="invPhone" type="tel" inputmode="tel" autocomplete="off"></label>
-        <label>Message language<select id="invLang"><option value="ku">Badini</option><option value="ar">Arabic</option><option value="en">English</option></select></label>
+        <label>PIN (4 digits)<input id="invPin" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password"></label>
+        <label>Phone (optional)<input id="invPhone" type="tel" inputmode="tel" autocomplete="off"></label>
         <label>Max stamps per day (0 = no limit)<input id="invCap" type="number" min="0" max="500"></label>
       </div>
       <label>Role
-        <select id="invPreset"><option value="barista">Barista: stamps, rewards, new members, messages</option><option value="manager">Shift manager: everything except removing members</option><option value="custom">Custom</option></select>
+        <select id="invPreset"><option value="barista">Barista: stamps, rewards, new members, messages (no undo)</option><option value="manager">Shift manager: everything except removing members</option><option value="custom">Custom</option></select>
       </label>
       <fieldset class="pick" id="invPerms"><legend>Allowed to</legend></fieldset>
       <p class="err" id="invErr" hidden></p>
-      <div class="row"><button class="btn primary" type="submit" id="invSave">Create staff code</button><button class="btn" type="button" id="invCancel" hidden>Cancel editing</button></div>
+      <div class="row"><button class="btn primary" type="submit" id="invSave">Add staff member</button><button class="btn" type="button" id="invCancel" hidden>Cancel editing</button></div>
     </form>
-    <h4>Staff codes</h4>
+    <h4>Staff members</h4>
     <div id="invList" class="rowed"></div>
     <div class="row"><button class="btn" type="button" id="btnCloseStaff">Close</button></div>
   </div>
@@ -803,7 +834,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   const KINDS = ["welcome", "ready", "expiring", "away", "feedback", "review", "birthday", "event", "staffInvite"];
   const KIND_FIELD = { welcome: "sMsgWelcome", ready: "sMsgReady", expiring: "sMsgExpiring", away: "sMsgAway", feedback: "sMsgFeedback", review: "sMsgReview", birthday: "sMsgBirthday", event: "sMsgEvent", staffInvite: "sMsgStaff" };
   const PERMS = [["stamp", "Add stamps"], ["reward", "Give rewards & gifts"], ["undo", "Undo"], ["addMember", "Add new members"], ["editMember", "Edit members & PINs"], ["deleteMember", "Remove members"], ["message", "Messages, ratings & follow-ups"], ["reports", "See reports"], ["export", "Export & backup"]];
-  const PRESETS = { barista: ["stamp", "reward", "undo", "addMember", "message"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export"] };
+  const PRESETS = { barista: ["stamp", "reward", "addMember", "message"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export"] };
 
   const state = {
     db: null, user: null, uid: null, myName: "", base: new Map(), customers: new Map(), settings: structuredClone(DEFAULTS),
@@ -832,7 +863,12 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   /* ---------- staff roles ---------- */
   function resolveRole() {
-    if (state.isAdmin) { state.role = { admin: true, perms: Object.fromEntries(PERMS.map(([k]) => [k, true])), cap: 0, name: state.myName || "Owner" }; return; }
+    if (state.isAdmin) {
+      const sh = state.shift;   // the person signed in on this tablet with name + PIN
+      if (!sh) { state.role = null; return; }   // nobody signed in yet: locked
+      if (sh && !sh.admin) { state.role = { admin: false, perms: sh.perms || {}, cap: Number(sh.dailyCap) || 0, name: sh.name || "" }; return; }
+      state.role = { admin: true, perms: Object.fromEntries(PERMS.map(([k]) => [k, true])), cap: 0, name: (sh && sh.name) || state.myName || "Owner" }; return;
+    }
     const claim = state.uid && state.claims.get(state.uid);
     const inv = claim && state.invites.get(String(claim.code || "").toUpperCase());
     if (!claim || !inv || inv.revoked) { state.role = null; return; }
@@ -998,10 +1034,29 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       "No QR code found. Take the photo closer, without glare.": "لم يُعثر على رمز QR. صوّر عن قرب وبدون انعكاس.",
       "This QR code is not an Amed Cafe member card.": "هذا الرمز ليس بطاقة عضوية لمقهى أميد.",
       "No member has the code {code}.": "لا يوجد عضو بالرمز {code}.",
-      "Card found: {name}": "تم العثور على البطاقة: {name}", "The camera is blocked. Allow the camera for this site in the browser's site settings, then tap Scan again — or tap “Take a photo”.": "الكاميرا محظورة. اسمح بالكاميرا لهذا الموقع من إعدادات المتصفح، ثم اضغط «مسح» مرة أخرى — أو اضغط «التقط صورة».", "✓ Scanner link ready": "✓ الاتصال بالماسح جاهز", "✗ Scanner link blocked on this device": "✗ الاتصال بالماسح محظور على هذا الجهاز", "Already stamped from a scan a moment ago. Tap +1 if they bought another.": "تم الختم من مسح قبل لحظات. اضغط +1 إذا اشترى مرة أخرى.", "{name} has a {reward} ready. Give it, or tap +1 to stamp.": "لدى {name} {reward} جاهزة. قدّمها، أو اضغط +1 للختم.", "{name} isn't on the {card} card.": "{name} غير مسجّل في بطاقة {card}.", "Open scanner": "افتح الماسح", "The scanner opened. Hold the customer's QR code in front of the camera — the card opens here by itself.": "فُتح الماسح. ضع رمز QR الخاص بالزبون أمام الكاميرا — ستُفتح البطاقة هنا تلقائياً.", "Tap “Open scanner” to start the camera.": "اضغط «افتح الماسح» لتشغيل الكاميرا.",
+      "Card found: {name}": "تم العثور على البطاقة: {name}", "Sign out": "تسجيل الخروج", "Save and sign in": "حفظ وتسجيل الدخول", "Choose a 4-digit PIN.": "اختر رمزاً سرياً من 4 أرقام.", "The two PINs don't match.": "الرمزان غير متطابقين.", "That didn't save. Try again.": "لم يتم الحفظ. حاول مرة أخرى.", "Set up the owner PIN": "إعداد الرمز السري للمالك", "Choose a 4-digit PIN for the owner. Staff sign in with their own name and PIN, which you add in Staff.": "اختر رمزاً سرياً من 4 أرقام للمالك. يسجّل الموظفون الدخول بأسمائهم ورموزهم التي تضيفها في قسم الفريق.", "Your name": "اسمك", "PIN": "الرمز السري", "Repeat PIN": "أعد الرمز السري", "No staff added yet. The owner can add staff in Staff after signing in.": "لم يُضف أي موظف بعد. يمكن للمالك إضافتهم من قسم الفريق بعد تسجيل الدخول.", "Who is working now?": "من يعمل الآن؟", "Tap your name, then enter your PIN.": "اضغط على اسمك ثم أدخل رمزك السري.", "Owner": "المالك", "Too many wrong tries. Wait 30 seconds.": "محاولات خاطئة كثيرة. انتظر 30 ثانية.", "Enter your 4-digit PIN.": "أدخل رمزك السري المكوّن من 4 أرقام.", "Wrong PIN. Try again.": "رمز خاطئ. حاول مرة أخرى.", "Enter your PIN.": "أدخل رمزك السري.", "Back": "رجوع", "The camera is blocked. Allow the camera for this site in the browser's site settings, then tap Scan again — or tap “Take a photo”.": "الكاميرا محظورة. اسمح بالكاميرا لهذا الموقع من إعدادات المتصفح، ثم اضغط «مسح» مرة أخرى — أو اضغط «التقط صورة».", "✓ Scanner link ready": "✓ الاتصال بالماسح جاهز", "✗ Scanner link blocked on this device": "✗ الاتصال بالماسح محظور على هذا الجهاز", "Already stamped from a scan a moment ago. Tap +1 if they bought another.": "تم الختم من مسح قبل لحظات. اضغط +1 إذا اشترى مرة أخرى.", "{name} has a {reward} ready. Give it, or tap +1 to stamp.": "لدى {name} {reward} جاهزة. قدّمها، أو اضغط +1 للختم.", "{name} isn't on the {card} card.": "{name} غير مسجّل في بطاقة {card}.", "Open scanner": "افتح الماسح", "The scanner opened. Hold the customer's QR code in front of the camera — the card opens here by itself.": "فُتح الماسح. ضع رمز QR الخاص بالزبون أمام الكاميرا — ستُفتح البطاقة هنا تلقائياً.", "Tap “Open scanner” to start the camera.": "اضغط «افتح الماسح» لتشغيل الكاميرا.",
       "Live camera isn't available here. Tap “Take a photo” and photograph the QR code.": "الكاميرا المباشرة غير متاحة هنا. اضغط «التقط صورة» وصوّر رمز QR.",
     },
     ku: {
+      "Sign out": "دەرکەفتن",
+      "Save and sign in": "پاشەکەفت بکە و بچە ژوور",
+      "Choose a 4-digit PIN.": "پینەکێ 4 ژمارەیی هەلبژێرە.",
+      "The two PINs don't match.": "هەردوو پین وەک ئێک نینن.",
+      "That didn't save. Try again.": "پاشەکەفت نەبوو. دووبارە هەول بدە.",
+      "Set up the owner PIN": "پینێ خودانی دابنە",
+      "Choose a 4-digit PIN for the owner. Staff sign in with their own name and PIN, which you add in Staff.": "پینەکێ 4 ژمارەیی بۆ خودانی هەلبژێرە. کارمەند ب ناڤ و پینێن خۆ دچنە ژوور، یێن تو د بەشێ کارمەندان دا زێدە دکەی.",
+      "Your name": "ناڤێ تە",
+      "PIN": "پین",
+      "Repeat PIN": "پینێ دووبارە بکە",
+      "No staff added yet. The owner can add staff in Staff after signing in.": "هێشتا چ کارمەند نەهاتینە زێدەکرن. خودان دشێت پشتی چوونا ژوور ژ بەشێ کارمەندان زێدە بکەت.",
+      "Who is working now?": "کی نوکە کار دکەت؟",
+      "Tap your name, then enter your PIN.": "ل سەر ناڤێ خۆ بدە، پاشان پینێ خۆ بنڤیسە.",
+      "Owner": "خودان",
+      "Too many wrong tries. Wait 30 seconds.": "گەلەک جاران خەلەت بوو. 30 چرکەیان چاڤەڕێ بکە.",
+      "Enter your 4-digit PIN.": "پینێ خۆ یێ 4 ژمارەیی بنڤیسە.",
+      "Wrong PIN. Try again.": "پین خەلەتە. دووبارە هەول بدە.",
+      "Enter your PIN.": "پینێ خۆ بنڤیسە.",
+      "Back": "زڤڕین",
       "Loyalty stamp card": "کارتا مۆرێن دلسۆزیێ", "Members": "ئەندام", "Stamps today": "مۆرێن ئەڤرۆ", "Rewards today": "خەلاتێن ئەڤرۆ", "To follow up": "بۆ دویڤچوونێ",
       "Counter mode": "شێوازێ کاونتەری", "Reports": "راپۆرت", "Staff": "ستاف", "Settings": "رێکخستن", "Guide": "رێبەر", "Follow-ups": "دویڤچوون",
       "Phone, name or member code": "مۆبایل، ناڤ یان کۆدێ ئەندامی", "New member": "ئەندامێ نوو",
@@ -1194,8 +1249,9 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     const joining = state.roleReady && !state.role && !!state.db;
     $("joinView").hidden = !joining;
     if (joining) { $("mainView").hidden = true; $("reportsView").hidden = true; }
-    $("btnStaff").hidden = !state.isAdmin;
-    $("btnSettings").hidden = state.roleReady && !state.isAdmin;
+    const boss = !!(state.role && state.role.admin);
+    $("btnStaff").hidden = !boss;
+    $("btnSettings").hidden = state.roleReady && !boss;
     $("btnReports").hidden = !can("reports");
     $("btnNew").hidden = !can("addMember");
     for (const id of ["btnExportMembers", "btnExportActivity", "btnBackup"]) $(id).hidden = !can("export");
@@ -2157,15 +2213,97 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   applyUILang();
 
   /* ---------- staff codes (admin) ---------- */
+
+  /* ---------- staff sign-in on the shared cafe tablet: name + PIN (the tablet itself stays signed in to the cafe account) ---------- */
+  const OWNER_ID = "OWNER";
+  const shiftId = () => { try { return localStorage.getItem("amed-shift") || ""; } catch (_) { return ""; } };
+  async function pinHash(id, pin) {
+    const enc = new TextEncoder(), k = await crypto.subtle.importKey("raw", enc.encode(String(pin)), "PBKDF2", false, ["deriveBits"]);
+    const b = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode("amed-staff:" + id), iterations: 60000 }, k, 256);
+    return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
+  }
+  const lock = { pick: null, tries: 0, until: 0, ready: false };
+  function checkShift() {
+    lock.ready = true;
+    const sid = shiftId(), p = sid && state.invites.get(sid);
+    if (p && !p.revoked && p.pinHash) { state.shift = { id: sid, ...p }; showLock(false); return; }
+    if (sid) { try { localStorage.removeItem("amed-shift"); } catch (_) {} if (state.uid === "staff_" + sid) { location.reload(); return; } }
+    state.shift = null; showLock(true);
+  }
+  function shiftSignOut() { try { localStorage.removeItem("amed-shift"); } catch (_) {} location.reload(); }
+  function showLock(on) {
+    document.body.classList.toggle("shift-on", !!state.shift); document.body.classList.toggle("shift-boss", !!(state.shift && state.shift.admin));
+    let chip = $("shiftChip");
+    if (state.shift) {
+      if (!chip) { chip = el("div", { id: "shiftChip" }); document.body.append(chip); }
+      chip.textContent = ""; chip.append(el("span", { text: "👤 " + (state.shift.name || "") }), el("button", { type: "button", text: t("Sign out"), onclick: shiftSignOut }));
+    } else if (chip) chip.remove();
+    let box = $("shiftLock");
+    if (!on) { if (box) box.remove(); return; }
+    if (!box) { box = el("div", { id: "shiftLock", role: "dialog", "aria-modal": "true" }); document.body.append(box); }
+    renderLock();
+  }
+  function renderLock() {
+    const box = $("shiftLock"); if (!box) return; box.textContent = ""; box.dir = uiLang === "en" ? "ltr" : "rtl";
+    const card = el("div", { class: "lockcard" });
+    const langs = el("div", { class: "locklangs" });
+    for (const [l, lab] of [["ku", "بادینی"], ["ar", "عربي"], ["en", "English"]]) langs.append(el("button", { type: "button", class: l === uiLang ? "on" : "", text: lab, onclick: () => { const b = document.querySelector('.uilangs button[data-lang="' + l + '"]'); if (b) b.click(); renderLock(); } }));
+    card.append(langs, el("img", { src: "../logo.png", alt: "Amed Cafe", class: "locklogo" }));
+    if (!lock.ready) { card.append(el("p", { class: "locksub", text: "…" })); box.append(card); return; }
+    const owner = state.invites.get(OWNER_ID);
+    if (!owner || !owner.pinHash) {   // first time: the owner chooses their PIN
+      const n = el("input", { type: "text", value: state.myName || "", autocomplete: "off" }), p1 = el("input", { type: "password", inputmode: "numeric", maxlength: "4", autocomplete: "new-password" }), p2 = el("input", { type: "password", inputmode: "numeric", maxlength: "4", autocomplete: "new-password" });
+      const err = el("p", { class: "lockerr" });
+      const save = el("button", { type: "button", class: "btn primary big", text: t("Save and sign in"), onclick: async () => {
+        const a = digits(p1.value), b = digits(p2.value);
+        if (a.length !== 4) { err.textContent = t("Choose a 4-digit PIN."); return; }
+        if (a !== b) { err.textContent = t("The two PINs don't match."); return; }
+        save.disabled = true;
+        try { await state.db.doc("invites/" + OWNER_ID).set({ name: n.value.trim() || "Owner", admin: true, pinHash: await pinHash(OWNER_ID, a), revoked: false, createdAt: Date.now() }); localStorage.setItem("amed-shift", OWNER_ID); location.reload(); }
+        catch (_) { save.disabled = false; err.textContent = t("That didn't save. Try again."); }
+      } });
+      card.append(el("h2", { text: t("Set up the owner PIN") }), el("p", { class: "locksub", text: t("Choose a 4-digit PIN for the owner. Staff sign in with their own name and PIN, which you add in Staff.") }),
+        el("label", { class: "lockf" }, t("Your name"), n), el("label", { class: "lockf" }, t("PIN"), p1), el("label", { class: "lockf" }, t("Repeat PIN"), p2), err, save);
+      box.append(card); return;
+    }
+    if (!lock.pick) {
+      const list = [...state.invites.values()].filter((i) => i.id !== OWNER_ID && i.pinHash && !i.revoked).sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+      const grid = el("div", { class: "lockgrid" });
+      for (const i of list) grid.append(el("button", { type: "button", class: "lockname", text: i.name || "Staff", onclick: () => { lock.pick = i.id; renderLock(); } }));
+      if (!list.length) grid.append(el("p", { class: "locksub", text: t("No staff added yet. The owner can add staff in Staff after signing in.") }));
+      card.append(el("h2", { text: t("Who is working now?") }), el("p", { class: "locksub", text: t("Tap your name, then enter your PIN.") }), grid,
+        el("button", { type: "button", class: "lockowner", text: "🔑 " + (owner.name || t("Owner")), onclick: () => { lock.pick = OWNER_ID; renderLock(); } }));
+      box.append(card); return;
+    }
+    const who = state.invites.get(lock.pick) || {};
+    const pin = el("input", { type: "password", inputmode: "numeric", maxlength: "4", autocomplete: "off", class: "lockpin", "aria-label": t("PIN") });
+    const err = el("p", { class: "lockerr" });
+    const go = async () => {
+      if (Date.now() < lock.until) { err.textContent = t("Too many wrong tries. Wait 30 seconds."); return; }
+      const v = digits(pin.value); if (v.length !== 4) { err.textContent = t("Enter your 4-digit PIN."); return; }
+      if ((await pinHash(lock.pick, v)) === who.pinHash) { try { localStorage.setItem("amed-shift", lock.pick); } catch (_) {} location.reload(); return; }
+      lock.tries++; pin.value = ""; err.textContent = t("Wrong PIN. Try again.");
+      if (lock.tries >= 5) { lock.tries = 0; lock.until = Date.now() + 30000; err.textContent = t("Too many wrong tries. Wait 30 seconds."); }
+    };
+    pin.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+    pin.addEventListener("input", () => { if (digits(pin.value).length === 4) go(); });
+    const pad = el("div", { class: "lockpad", dir: "ltr" });
+    for (const k of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"]) pad.append(el("button", { type: "button", text: k, onclick: () => {
+      if (k === "⌫") pin.value = pin.value.slice(0, -1); else if (k === "✓") go(); else if (pin.value.length < 4) { pin.value += k; if (pin.value.length === 4) go(); } } }));
+    card.append(el("h2", { text: (lock.pick === OWNER_ID ? "🔑 " : "") + (who.name || "") }), el("p", { class: "locksub", text: t("Enter your PIN.") }), pin, err, pad,
+      el("button", { type: "button", class: "lockback", text: t("Back"), onclick: () => { lock.pick = null; renderLock(); } }));
+    box.append(card); setTimeout(() => pin.focus(), 50);
+  }
   let editingInv = null;
   function renderInvPerms(list) {
     const box = $("invPerms"); box.querySelectorAll("label").forEach((l) => l.remove());
     for (const [k, lab] of PERMS) { const i = el("input", { type: "checkbox", value: k, id: "perm-" + k }); i.checked = list.includes(k); i.addEventListener("change", () => ($("invPreset").value = "custom")); box.append(el("label", { class: "check" }, i, el("span", { text: lab }))); }
   }
   function resetInvForm() {
-    editingInv = null; $("invName").value = ""; $("invPhone").value = ""; $("invLang").value = "ku"; $("invCap").value = 0;
+    editingInv = null; $("invName").value = ""; $("invPhone").value = ""; $("invPin").value = ""; $("invPin").placeholder = ""; $("invCap").value = 0;
     $("invPreset").value = "barista"; renderInvPerms(PRESETS.barista); $("invErr").hidden = true;
-    $("invSave").textContent = "Create staff code"; $("invCancel").hidden = true;
+    $("invSave").textContent = "Add staff member"; $("invCancel").hidden = true;
+    const o = state.invites.get(OWNER_ID); $("ownName").value = (o && o.name) || "Owner"; $("ownPin").value = ""; $("ownErr").hidden = true;
   }
   const staffCode = () => "AMED-" + [...crypto.getRandomValues(new Uint32Array(4))].map((x) => CODE_ABC[x % CODE_ABC.length]).join("");
   function staffMessage(inv) {
@@ -2175,26 +2313,21 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   }
   async function renderInvList() {
     const box = $("invList"); box.textContent = "";
-    const invs = [...state.invites.values()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    if (!invs.length) { box.append(el("p", { class: "lead", text: "No staff codes yet. Create one above." })); return; }
-    let profiles = {}; const ids = [...state.claims.values()].map((c) => c.uid).filter(Boolean);
-    try { if (state.user && ids.length) profiles = await state.user.profiles(ids); } catch (_) {}
+    const invs = [...state.invites.values()].filter((i) => i.id !== OWNER_ID && i.pinHash).sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+    if (!invs.length) { box.append(el("p", { class: "lead", text: "No staff members yet. Add one above." })); return; }
     for (const inv of invs) {
-      const claim = [...state.claims.values()].filter((c) => String(c.code || "").toUpperCase() === inv.id).sort((a, b) => (a.t || 0) - (b.t || 0))[0];
-      const who = claim ? ((profiles[claim.uid] && profiles[claim.uid].name) || claim.name || "a staff member") : null;
-      const status = inv.revoked ? "Switched off" : who ? "Joined: " + who : "Waiting for them to enter the code";
-      const msg = staffMessage(inv), wa = inv.phone ? waLink({ id: digits(inv.phone) }, msg) : null;
       const acts = el("div", { class: "row" });
-      if (wa && !inv.revoked) acts.append(el("a", { class: "btn wa sm", href: wa, target: "_blank", rel: "noopener", text: "Send on WhatsApp" }));
-      acts.append(el("button", { type: "button", class: "btn sm", text: "Copy invitation", onclick: () => copy(msg, "Invitation copied") }));
-      acts.append(el("button", { type: "button", class: "btn sm", text: "Edit", onclick: () => {
-        editingInv = inv.id; $("invName").value = inv.name || ""; $("invPhone").value = inv.phone || ""; $("invLang").value = inv.lang || "ku"; $("invCap").value = inv.dailyCap || 0;
-        $("invPreset").value = "custom"; renderInvPerms(Object.keys(inv.perms || {}).filter((k) => inv.perms[k])); $("invSave").textContent = "Save changes to " + inv.id; $("invCancel").hidden = false; $("invName").focus(); } }));
-      acts.append(el("button", { type: "button", class: "btn sm danger", text: inv.revoked ? "Switch back on" : "Switch off", onclick: async () => { try { await state.db.doc("invites/" + inv.id).update({ revoked: !inv.revoked }); toast(inv.revoked ? "Staff code switched back on" : "Staff code switched off. They can no longer use the tool."); } catch (e) { toast("That didn't save. Only the owner or an Editor can change staff."); } } }));
+      acts.append(el("button", { type: "button", class: "btn sm", text: "Edit / change PIN", onclick: () => {
+        editingInv = inv.id; $("invName").value = inv.name || ""; $("invPhone").value = inv.phone || ""; $("invPin").value = ""; $("invPin").placeholder = "Leave empty to keep the PIN"; $("invCap").value = inv.dailyCap || 0;
+        $("invPreset").value = "custom"; renderInvPerms(Object.keys(inv.perms || {}).filter((k) => inv.perms[k])); $("invSave").textContent = "Save changes for " + (inv.name || ""); $("invCancel").hidden = false; $("invName").focus(); } }));
+      acts.append(el("button", { type: "button", class: "btn sm", text: inv.revoked ? "Switch back on" : "Switch off", onclick: async () => { try { await state.db.doc("invites/" + inv.id).update({ revoked: !inv.revoked }); toast(inv.revoked ? "Switched back on" : "Switched off: they can't sign in"); } catch (_) { toast("That didn't save. Try again."); } } }));
+      const del = el("button", { type: "button", class: "btn sm danger", text: "Remove", onclick: async () => {
+        if (del.dataset.sure !== "1") { del.dataset.sure = "1"; del.textContent = "Tap again to remove"; setTimeout(() => { del.dataset.sure = ""; del.textContent = "Remove"; }, 4000); return; }
+        try { await state.db.doc("invites/" + inv.id).delete(); toast((inv.name || "Staff member") + " removed"); } catch (_) { toast("That didn't save. Try again."); } } });
+      acts.append(del);
       const perms = PERMS.filter(([k]) => inv.perms && inv.perms[k]).map(([, l]) => l).join(", ") || "Nothing allowed";
       box.append(el("div", { class: "erow inv" + (inv.revoked ? " revoked" : "") },
-        el("div", { class: "top3" }, el("strong", { text: inv.name || "Staff" }), el("code", { text: inv.id })),
-        el("div", { class: "perms", text: status + (inv.dailyCap ? " · max " + inv.dailyCap + " stamps a day" : "") }),
+        el("div", { class: "top3" }, el("strong", { text: inv.name || "Staff" }), el("span", { class: "perms", text: inv.revoked ? "Switched off" : "Active" + (inv.dailyCap ? " · max " + inv.dailyCap + " stamps a day" : "") })),
         el("div", { class: "perms", text: perms }), acts));
     }
   }
@@ -2205,20 +2338,32 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   $("invCancel").addEventListener("click", resetInvForm);
   $("invForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const err = $("invErr"), name = $("invName").value.trim(), phone = digits($("invPhone").value), cap = Math.max(0, parseInt($("invCap").value, 10) || 0);
+    const err = $("invErr"), name = $("invName").value.trim(), phone = digits($("invPhone").value), pin = digits($("invPin").value), cap = Math.max(0, parseInt($("invCap").value, 10) || 0);
     err.hidden = true;
-    if (!name) { err.textContent = "Enter the staff member's name."; err.hidden = false; return; }
-    if (phone && phone.length < 6) { err.textContent = "Check the phone number, or leave it empty."; err.hidden = false; return; }
+    const fail = (m) => { err.textContent = m; err.hidden = false; };
+    if (!name) return fail("Enter the staff member's name.");
+    if (!editingInv && pin.length !== 4) return fail("Choose a 4-digit PIN for them.");
+    if (pin && pin.length !== 4) return fail("The PIN must be exactly 4 digits.");
+    if ([...state.invites.values()].some((i) => i.id !== editingInv && i.id !== OWNER_ID && String(i.name || "").trim().toLowerCase() === name.toLowerCase())) return fail("There is already a staff member with this name. Add a surname or initial.");
     const perms = Object.fromEntries(PERMS.map(([k]) => [k, $("perm-" + k).checked]));
     try {
-      if (editingInv) { await state.db.doc("invites/" + editingInv).update({ name, phone, lang: $("invLang").value, dailyCap: cap, perms }); toast("Staff member updated"); }
-      else {
-        let code = staffCode(); while (state.invites.has(code)) code = staffCode();
-        await state.db.doc("invites/" + code).set({ name, phone, lang: $("invLang").value, dailyCap: cap, perms, revoked: false, createdAt: Date.now(), createdBy: state.uid || null });
-        toast("Staff code " + code + " created. Send it on WhatsApp, and share the tool with their email.", 5000);
+      if (editingInv) {
+        const patch = { name, phone, dailyCap: cap, perms }; if (pin) patch.pinHash = await pinHash(editingInv, pin);
+        await state.db.doc("invites/" + editingInv).update(patch); toast(pin ? "Saved, with the new PIN" : "Staff member updated");
+      } else {
+        let id = staffCode(); while (state.invites.has(id)) id = staffCode();
+        await state.db.doc("invites/" + id).set({ name, phone, dailyCap: cap, perms, revoked: false, pinHash: await pinHash(id, pin), createdAt: Date.now() });
+        toast(name + " added. They can now sign in on the tablet with their PIN.", 4500);
       }
       resetInvForm();
-    } catch (x) { err.textContent = x && x.code === "invalid_argument" ? "Only the owner or an Editor can manage staff." : "That didn't save. Try again."; err.hidden = false; }
+    } catch (x) { fail("That didn't save. Try again."); }
+  });
+  $("ownerPinForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = $("ownErr"), name = $("ownName").value.trim() || "Owner", pin = digits($("ownPin").value); err.hidden = true;
+    if (pin && pin.length !== 4) { err.textContent = "The PIN must be exactly 4 digits."; err.hidden = false; return; }
+    try { const patch = { name, admin: true }; if (pin) patch.pinHash = await pinHash(OWNER_ID, pin); await state.db.doc("invites/" + OWNER_ID).update(patch); toast(pin ? "Owner PIN changed" : "Saved"); $("ownPin").value = ""; }
+    catch (_) { err.textContent = "That didn't save. Try again."; err.hidden = false; }
   });
   $("joinForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -2455,9 +2600,10 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       try { state.canEditSettings = await user.canEdit(); } catch (_) {}
       let owner = false; try { owner = await user.isOwner(); } catch (_) {}
       state.isAdmin = !!(state.canEditSettings || owner);
+      if (state.isAdmin) { const sid = shiftId(); if (sid) state.uid = "staff_" + sid; else showLock(true); }
     } else state.isAdmin = true;
     let invReady = false, claimReady = false;
-    const roleUpdate = () => { resolveRole(); if (state.isAdmin || (invReady && claimReady)) state.roleReady = true; render(); if (!$("staffDlg").hidden) renderInvList(); };
+    const roleUpdate = () => { if (state.isAdmin && invReady) checkShift(); resolveRole(); if (state.isAdmin || (invReady && claimReady)) state.roleReady = true; render(); if (!$("staffDlg").hidden) renderInvList(); };
     db.collection("invites").onSnapshot((snap) => { state.invites = new Map(snap.docs.map((d) => [d.id, { id: d.id, ...d.data() }])); invReady = true; roleUpdate(); }, () => { invReady = true; roleUpdate(); });
     db.collection("staffclaims").onSnapshot((snap) => { state.claims = new Map(snap.docs.map((d) => [d.id, { uid: d.id, ...d.data() }])); claimReady = true; roleUpdate(); }, () => { claimReady = true; roleUpdate(); });
     if (state.isAdmin) roleUpdate();
