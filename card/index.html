@@ -571,18 +571,20 @@ footer p { margin: 0; }
   }
   async function getCard(key) {
     const x = fbx();
-    if (x && DATA && DATA.live) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "cards/" + key)); return s.exists() ? s.data() : null; } catch (_) {} }
+    // Always ask the live database first; use the published copy only if this card is not in the database.
+    if (x) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "cards/" + key)); if (s.exists()) { live.db = true; return s.data(); } } catch (_) {} }
     return (DATA && DATA.cards && DATA.cards[key]) || null;
   }
-  const live = { unsub: null, key: null, lastAt: 0, audio: null, timer: 0 };
+  const live = { unsub: null, key: null, lastAt: 0, audio: null, timer: 0, db: false };
   try { live.lastAt = Number(localStorage.getItem("amed-live-at")) || 0; } catch (_) {}
   function liveStart(key) {
-    const x = fbx(); if (!key || !x || !DATA || !DATA.live) return;
+    const x = fbx(); if (!key || !x || !DATA) return;
     if (live.key === key && live.unsub) return;
     liveStop(); live.key = key;
     live.unsub = x.F.onSnapshot(x.F.doc(x.fs, "cards/" + key), (s) => { if (s.exists() && live.key === key) liveCard(s.data()); }, () => {});
   }
   function liveStop() { if (live.unsub) { try { live.unsub(); } catch (_) {} } live.unsub = null; }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && live.key && lastEntry) { const k = live.key; live.key = null; liveStart(k); } });
   function liveCard(entry) {
     if (!lastEntry) return;
     const ev = entry.ev;
