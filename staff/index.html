@@ -137,6 +137,15 @@ a.btn:not(.wa) { color: var(--ink); }
 .tabs .count { display: inline-block; min-width: 20px; padding: 0 6px; border-radius: 99px; background: var(--warn-soft); color: var(--warn); font-size: .75rem; margin-left: 4px; }
 
 /* staff sign-in (name + PIN) */
+#approveDlg { z-index: 26; }
+#approveDlg .modal { max-width: 460px; display: grid; gap: 12px; text-align: center; }
+#approveDlg .apwhy { margin: 0; font-weight: 700; color: var(--danger); }
+#approveDlg .apgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+#approveDlg .apgrid button { min-height: 60px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
+#approveDlg .lockpin { justify-self: center; width: 200px; text-align: center; font-size: 2rem; letter-spacing: .5em; padding: 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+#approveDlg .lockpad { justify-self: center; display: grid; grid-template-columns: repeat(3, 76px); gap: 8px; }
+#approveDlg .lockpad button { height: 60px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.5rem; font-weight: 700; cursor: pointer; }
+#approveDlg .lockerr { margin: 0; min-height: 1.3em; color: var(--danger); font-weight: 700; }
 #shiftLock { position: fixed; inset: 0; z-index: 3000; background: var(--bg); overflow-y: auto; display: grid; place-items: start center; padding: calc(20px + env(safe-area-inset-top, 0px)) 16px 28px; }
 #shiftLock .lockcard { width: min(100%, 560px); display: grid; gap: 14px; text-align: center; }
 #shiftLock .locklogo { width: 170px; margin: 0 auto; filter: var(--logo-filter); }
@@ -755,6 +764,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     <input id="scanFile" type="file" accept="image/*" capture="environment" hidden>
   </div>
 </div>
+<div class="overlay" id="approveDlg" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="apTitle"></div></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="../vendor/amed-firebase.js"></script>
@@ -812,8 +822,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   const DEFAULTS = {
     programs: [
-      { id: "drinks", name: "Drinks", target: 7, reward: "free drink", dailyLimit: 3, ...PROG_I18N.drinks },
-      { id: "shisha", name: "Shisha", target: 7, reward: "free shisha", dailyLimit: 2, ...PROG_I18N.shisha },
+      { id: "drinks", name: "Drinks", target: 7, reward: "free drink", dailyLimit: 3, gapMin: 0, ...PROG_I18N.drinks },
+      { id: "shisha", name: "Shisha", target: 7, reward: "free shisha", dailyLimit: 2, gapMin: 60, ...PROG_I18N.shisha },
     ],
     cafe: "Amed Cafe", countryCode: "964", readyDays: 3, awayDays: 14, expiryDays: 60, expWarnDays: 5,
     customerLink: "https://amedcaferest.com/",
@@ -833,8 +843,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   };
   const KINDS = ["welcome", "ready", "expiring", "away", "feedback", "review", "birthday", "event", "staffInvite"];
   const KIND_FIELD = { welcome: "sMsgWelcome", ready: "sMsgReady", expiring: "sMsgExpiring", away: "sMsgAway", feedback: "sMsgFeedback", review: "sMsgReview", birthday: "sMsgBirthday", event: "sMsgEvent", staffInvite: "sMsgStaff" };
-  const PERMS = [["stamp", "Add stamps"], ["reward", "Give rewards & gifts"], ["undo", "Undo"], ["addMember", "Add new members"], ["editMember", "Edit members & PINs"], ["deleteMember", "Remove members"], ["message", "Messages, ratings & follow-ups"], ["reports", "See reports"], ["export", "Export & backup"]];
-  const PRESETS = { barista: ["stamp", "reward", "addMember", "message"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export"] };
+  const PERMS = [["stamp", "Add stamps"], ["reward", "Give rewards & gifts"], ["undo", "Undo"], ["addMember", "Add new members"], ["editMember", "Edit members & PINs"], ["deleteMember", "Remove members"], ["message", "Messages, ratings & follow-ups"], ["reports", "See reports"], ["export", "Export & backup"], ["approve", "Approve extra stamps (over the daily limit or too soon)"]];
+  const PRESETS = { barista: ["stamp", "reward", "addMember", "message"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export", "approve"] };
 
   const state = {
     db: null, user: null, uid: null, myName: "", base: new Map(), customers: new Map(), settings: structuredClone(DEFAULTS),
@@ -940,6 +950,15 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   const sortedLevels = () => [...state.settings.levels].sort((a, b) => a.visits - b.visits);
   function levelOf(c) { let lv = null; for (const l of sortedLevels()) if (reached(l, c)) lv = l; return lv; }
   function nextLevel(c) { const cur = levelOf(c), all = sortedLevels(); return all.slice(cur ? all.indexOf(cur) + 1 : 0).find((l) => !reached(l, c)) || null; }
+  const lastStampAt = (c, pid) => { const e = (c.log || []).find((x) => x.type === "stamp" && logProg(x) === pid); return e ? e.t || 0 : 0; };
+  const minsSince = (ts) => Math.max(1, Math.floor((Date.now() - ts) / 60000));
+  // Why a stamp on this card needs the owner's or a manager's OK: over the daily limit, or too soon after the last one.
+  function stampChecks(c, pid, n) {
+    const p = prog(pid), lim = Number(p.dailyLimit) || 0, gap = Number(p.gapMin) || 0, used = usedToday(c, pid), last = lastStampAt(c, pid), out = [];
+    if (lim > 0 && used + n > lim) out.push({ why: "limit", pid, used, lim });
+    if (gap > 0 && last && Date.now() - last < gap * 60000) out.push({ why: "gap", pid, m: minsSince(last) });
+    return out;
+  }
   function usedToday(c, pid) { const t0 = startOfBizDay(); return (c.log || []).filter((e) => e.t >= t0 && e.type === "stamp" && logProg(e) === pid).reduce((n, e) => n + (e.n || 0), 0); }
   const inWindow = (hm, from, to) => !from || !to || (from <= to ? hm >= from && hm < to : hm >= from || hm < to);
   function offersNow(now = new Date()) {
@@ -1036,6 +1055,16 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       "No member has the code {code}.": "لا يوجد عضو بالرمز {code}.",
       "Card found: {name}": "تم العثور على البطاقة: {name}", "Sign out": "تسجيل الخروج", "Save and sign in": "حفظ وتسجيل الدخول", "Choose a 4-digit PIN.": "اختر رمزاً سرياً من 4 أرقام.", "The two PINs don't match.": "الرمزان غير متطابقين.", "That didn't save. Try again.": "لم يتم الحفظ. حاول مرة أخرى.", "Set up the owner PIN": "إعداد الرمز السري للمالك", "Choose a 4-digit PIN for the owner. Staff sign in with their own name and PIN, which you add in Staff.": "اختر رمزاً سرياً من 4 أرقام للمالك. يسجّل الموظفون الدخول بأسمائهم ورموزهم التي تضيفها في قسم الفريق.", "Your name": "اسمك", "PIN": "الرمز السري", "Repeat PIN": "أعد الرمز السري", "No staff added yet. The owner can add staff in Staff after signing in.": "لم يُضف أي موظف بعد. يمكن للمالك إضافتهم من قسم الفريق بعد تسجيل الدخول.", "Who is working now?": "من يعمل الآن؟", "Tap your name, then enter your PIN.": "اضغط على اسمك ثم أدخل رمزك السري.", "Owner": "المالك", "Too many wrong tries. Wait 30 seconds.": "محاولات خاطئة كثيرة. انتظر 30 ثانية.", "Enter your 4-digit PIN.": "أدخل رمزك السري المكوّن من 4 أرقام.", "Wrong PIN. Try again.": "رمز خاطئ. حاول مرة أخرى.", "Enter your PIN.": "أدخل رمزك السري.", "Back": "رجوع", "The camera is blocked. Allow the camera for this site in the browser's site settings, then tap Scan again — or tap “Take a photo”.": "الكاميرا محظورة. اسمح بالكاميرا لهذا الموقع من إعدادات المتصفح، ثم اضغط «مسح» مرة أخرى — أو اضغط «التقط صورة».", "✓ Scanner link ready": "✓ الاتصال بالماسح جاهز", "✗ Scanner link blocked on this device": "✗ الاتصال بالماسح محظور على هذا الجهاز", "Already stamped from a scan a moment ago. Tap +1 if they bought another.": "تم الختم من مسح قبل لحظات. اضغط +1 إذا اشترى مرة أخرى.", "{name} has a {reward} ready. Give it, or tap +1 to stamp.": "لدى {name} {reward} جاهزة. قدّمها، أو اضغط +1 للختم.", "{name} isn't on the {card} card.": "{name} غير مسجّل في بطاقة {card}.", "Open scanner": "افتح الماسح", "The scanner opened. Hold the customer's QR code in front of the camera — the card opens here by itself.": "فُتح الماسح. ضع رمز QR الخاص بالزبون أمام الكاميرا — ستُفتح البطاقة هنا تلقائياً.", "Tap “Open scanner” to start the camera.": "اضغط «افتح الماسح» لتشغيل الكاميرا.",
       "Live camera isn't available here. Tap “Take a photo” and photograph the QR code.": "الكاميرا المباشرة غير متاحة هنا. اضغط «التقط صورة» وصوّر رمز QR.",
+      "Approval needed": "مطلوب موافقة",
+      "{name} already had {used} of {lim} {card} stamps today.": "حصل {name} اليوم على {used} من {lim} أختام {card}.",
+      "{name} got a {card} stamp {m} min ago.": "حصل {name} على ختم {card} قبل {m} دقيقة.",
+      "Ask the owner or a shift manager to approve this extra stamp.": "اطلب من المالك أو مدير الوردية الموافقة على هذا الختم الإضافي.",
+      "Who approves?": "من يوافق؟",
+      "Approve as {name}": "موافقة باسم {name}",
+      "No stamps added.": "لم تُضف أي أختام.",
+      " Extra stamps need approval.": " الأختام الإضافية تحتاج موافقة.",
+      " Last {card} stamp {m} min ago: another one now needs approval.": " آخر ختم {card} قبل {m} دقيقة: أي ختم آخر الآن يحتاج موافقة.",
+      " (approved by {name})": " (بموافقة {name})",
     },
     ku: {
       "Sign out": "دەرکەفتن",
@@ -1127,6 +1156,16 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       "No member has the code {code}.": "چ ئەندام کۆدێ {code} نینە.",
       "Card found: {name}": "کارت هاتە دیتن: {name}", "The camera is blocked. Allow the camera for this site in the browser's site settings, then tap Scan again — or tap “Take a photo”.": "کامێرا هاتیە ڕاگرتن. ژ ڕێکخستنێن وێبگەڕی ڕێ بدە کامێرایێ بۆ ڤی ماڵپەڕی، پاشان دووبارە «سکان» بکە — یان «وێنەیەکی بگرە» بکە.", "✓ Scanner link ready": "✓ گرێدانا سکانەری ئامادەیە", "✗ Scanner link blocked on this device": "✗ گرێدانا سکانەری ل سەر ڤێ ئامیرێ هاتیە ڕاگرتن", "Already stamped from a scan a moment ago. Tap +1 if they bought another.": "بەری کێمەکێ ب سکانێ مۆر هاتە لێدان. ئەگەر یەکا دی کڕی، +1 بکە.", "{name} has a {reward} ready. Give it, or tap +1 to stamp.": "{name} {reward} یا ئامادەیە. بدەیێ، یان +1 بکە بۆ مۆرلێدانێ.", "{name} isn't on the {card} card.": "{name} ل سەر کارتا {card} نینە.", "Open scanner": "سکانەرێ ڤەکە", "The scanner opened. Hold the customer's QR code in front of the camera — the card opens here by itself.": "سکانەر ڤەبوو. کۆدێ QR یێ کڕیاری ل بەرانبەر کامێرایێ بگرە — کارت ب خۆ ل ڤێرێ ڤەدبیت.", "Tap “Open scanner” to start the camera.": "«سکانەرێ ڤەکە» بکە دا کامێرا دەست پێ بکەت.",
       "Live camera isn't available here. Tap “Take a photo” and photograph the QR code.": "کامێرا ڕاستەوخۆ ل ڤێرێ بەردەست نینە. «وێنەیەکی بگرە» بکە و وێنێ کۆدێ QR بگرە.",
+      "Approval needed": "پێدڤی ب ڕەزامەندیێ یە",
+      "{name} already had {used} of {lim} {card} stamps today.": "{name} ئەڤرۆ {used} ژ {lim} مۆرێن {card} وەرگرتینە.",
+      "{name} got a {card} stamp {m} min ago.": "{name} بەری {m} خولەکان مۆرەکا {card} وەرگرت.",
+      "Ask the owner or a shift manager to approve this extra stamp.": "داخازێ ژ خودانی یان بەرپرسێ دەوامی بکە دا ڕەزامەندیێ ل سەر ڤێ مۆرا زێدە بدەت.",
+      "Who approves?": "کی ڕەزامەندیێ ددەت؟",
+      "Approve as {name}": "پەسەند بکە وەک {name}",
+      "No stamps added.": "چ مۆر نەهاتنە زێدەکرن.",
+      " Extra stamps need approval.": " مۆرێن زێدە پێدڤی ب ڕەزامەندیێ نە.",
+      " Last {card} stamp {m} min ago: another one now needs approval.": " دوماهیک مۆرا {card} بەری {m} خولەکان بوو: مۆرەکا دی نوکە پێدڤی ب ڕەزامەندیێ یە.",
+      " (approved by {name})": " (ب ڕەزامەندیا {name})",
     },
   };
   let uiLang = "en";
@@ -1388,12 +1427,14 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     const left = lim > 0 ? lim - used : Infinity;
     const capLeft = state.role && state.role.cap > 0 ? state.role.cap - state.myStampsToday : Infinity;
     const sd = dis || !can("stamp");
-    $("btnStamp1").disabled = sd || left < 1 || capLeft < 1; $("btnStamp2").disabled = sd || left < 2 || capLeft < 2; $("btnStamp3").disabled = sd || left < 3 || capLeft < 3;
+    $("btnStamp1").disabled = sd || capLeft < 1; $("btnStamp2").disabled = sd || capLeft < 2; $("btnStamp3").disabled = sd || capLeft < 3;
+    const gapM = Number(p.gapMin) || 0, lastT = lastStampAt(c, p.id), tooSoon = gapM > 0 && lastT && Date.now() - lastT < gapM * 60000;
     $("btnStamp1").textContent = mult > 1 ? t("Add stamp (×{m} offer)", { m: mult }) : t("Add stamp");
     const ln = $("limitNote");
-    ln.className = "limitnote" + (lim > 0 && left <= 0 ? " hit" : "");
+    ln.className = "limitnote" + ((lim > 0 && left <= 0) || tooSoon ? " hit" : "");
     const cardName = uiLang === "en" ? p.name.toLowerCase() : P(p);
-    ln.textContent = (lim > 0 ? (left <= 0 ? t("Daily limit reached: {used} of {lim} {card} stamps today.", { used, lim, card: cardName }) : t("{used} of {lim} {card} stamps used today.", { used, lim, card: cardName })) : "")
+    ln.textContent = (lim > 0 ? (left <= 0 ? t("Daily limit reached: {used} of {lim} {card} stamps today.", { used, lim, card: cardName }) + t(" Extra stamps need approval.") : t("{used} of {lim} {card} stamps used today.", { used, lim, card: cardName })) : "")
+      + (tooSoon ? t(" Last {card} stamp {m} min ago: another one now needs approval.", { card: cardName, m: minsSince(lastT) }) : "")
       + (capLeft !== Infinity ? t(" You can give {n} more stamps today.", { n: Math.max(0, capLeft) }) : "")
       + (state.role && !can("stamp") ? t(" You aren't allowed to add stamps.") : "");
     if (capLeft <= 0 && capLeft !== Infinity) ln.className = "limitnote hit";
@@ -1406,7 +1447,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       const qt = el("span", { class: "qt" }); qt.innerHTML = iconFor(q); qt.append("+1 " + P(q) + (m > 1 ? " (×" + m + ")" : ""));
       const b = el("button", { type: "button", class: "btn primary qbtn", onclick: () => { state.program = q.id; addStamps({ [q.id]: 1 }); } }, qt,
         el("small", { text: full ? t("Daily limit reached") : t("{s} of {T} stamps", { s: Math.min(cardOf(c, q.id).stamps, q.target), T: q.target }) + (lm > 0 ? t(" · {u}/{lm} today", { u, lm }) : "") }));
-      b.disabled = sd || full || capLeft < 1;
+      b.disabled = sd || capLeft < 1;
       qb.append(b);
     }
     $("btnRedeem").disabled = dis || !can("reward") || !(k.rewards > 0);
@@ -1538,24 +1579,39 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     });
   }
 
-  function addStamps(req) {
+  function addStamps(req, opt = {}) {
     const c = state.customers.get(state.selected); if (!c || !can("stamp")) return;
     if (state.role && state.role.cap > 0) {
       const want = Object.values(req).reduce((a, n) => a + n, 0);
       if (state.myStampsToday + want > state.role.cap) { toast(t("Your daily stamp limit ({n}) is reached. Ask the owner.", { n: state.role.cap })); return; }
     }
     const after = !isOpenNow();
-    if (after && !(state.closedOk && Date.now() - state.closedOk < 5000)) { state.closedOk = Date.now(); toast(t("The cafe is closed now ({from}–{to}). Tap again within 5 seconds to stamp anyway.", { from: state.settings.openFrom, to: state.settings.openTo }), 5000); return; }
+    if (after && !opt.closedOk && !(state.closedOk && Date.now() - state.closedOk < 5000)) { state.closedOk = Date.now(); toast(t("The cafe is closed now ({from}–{to}). Tap again within 5 seconds to stamp anyway.", { from: state.settings.openFrom, to: state.settings.openTo }), 5000); return; }
+    if (!opt.ok) {   // over the limit or too soon: ask the owner / a manager first
+      const needs = Object.entries(req).flatMap(([pid, n]) => stampChecks(c, pid, n));
+      if (needs.length) {
+        const cid = c.id;
+        return askApproval(c, needs).then((ok) => {
+          if (state.selected !== cid) return null;
+          if (ok) return addStamps(req, { ok, closedOk: true });
+          const rest = Object.fromEntries(Object.entries(req).filter(([pid]) => !needs.some((x) => x.pid === pid)));
+          if (Object.keys(rest).length) return addStamps(rest, { closedOk: true });
+          toast(t("No stamps added.")); return null;
+        });
+      }
+    }
     const now = Date.now(), cards = {}, entries = [], acts = [], earnedP = [], blocked = [];
     const newVisit = !c.lastStampAt || now - c.lastStampAt > VISIT_GAP;
     for (const [pid, n] of Object.entries(req)) {
-      const p = prog(pid), k = cardOf(c, pid), lim = Number(p.dailyLimit) || 0;
-      if (lim > 0 && usedToday(c, pid) + n > lim) { blocked.push(P(p)); continue; }
+      const p = prog(pid), k = cardOf(c, pid);
+      const why = opt.ok ? stampChecks(c, pid, n).map((x) => x.why).join("+") : "";
       const total = n * multiplierFor(pid), x = total - n, sum = k.stamps + total, earned = Math.floor(sum / p.target);
       const times = [...k.rewardTimes, ...Array(earned).fill(now)];
       cards[pid] = { stamps: sum % p.target, rewards: times.length, rewardTimes: times, totalStamps: k.totalStamps + total, redeemed: k.redeemed, readySince: times[0] || null };
-      entries.push({ t: now, type: "stamp", program: pid, n, x, earned, by: state.uid || null, newVisit: false, before: { stamps: k.stamps, rewardTimes: k.rewardTimes } });
-      acts.push({ t: now, c: c.id, p: pid, k: "stamp", n, x, after });
+      const entry = { t: now, type: "stamp", program: pid, n, x, earned, by: state.uid || null, newVisit: false, before: { stamps: k.stamps, rewardTimes: k.rewardTimes } };
+      const act = { t: now, c: c.id, p: pid, k: "stamp", n, x, after };
+      if (why) { entry.okBy = opt.ok.id; entry.okWhy = why; act.okBy = opt.ok.name; act.okWhy = why; }
+      entries.push(entry); acts.push(act);
       if (earned) earnedP.push(p);
     }
     if (!entries.length) { toast(t("Daily limit reached for {list}. No stamps added.", { list: blocked.join(" & ") })); return; }
@@ -1574,6 +1630,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       : (tot === 1 ? t("Stamp added") : t("{n} stamps added", { n: tot })) + (entries[0].x ? t(" (offer bonus included)") : "");
     if (lvAfter && (!lvBefore || lvAfter.name !== lvBefore.name)) msg += t(" Now a {level} member!", { level: lvAfter.name });
     if (blocked.length) msg += t(" Daily limit reached for {list}.", { list: blocked.join(" & ") });
+    if (opt.ok && entries.some((e) => e.okBy)) msg += t(" (approved by {name})", { name: opt.ok.name });
     return writeCustomer(c.id, patch, msg).then((ok) => { if (ok) logActivity(acts); return ok ? { cards, entries, patch, visits: newVisit ? patch.visits : visitsOf(c), earned: earnedP.length } : null; });
   }
 
@@ -1789,7 +1846,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
           inputCell("Card", p.name, (v) => (p.name = v)),
           inputCell("Stamps", p.target, (v) => (p.target = v), { type: "number", min: 3, max: 20 }),
           inputCell("Reward", p.reward, (v) => (p.reward = v)),
-          inputCell("Daily limit", p.dailyLimit || 0, (v) => (p.dailyLimit = v), { type: "number", min: 0, max: 20 })),
+          inputCell("Daily limit (more needs a manager PIN)", p.dailyLimit || 0, (v) => (p.dailyLimit = v), { type: "number", min: 0, max: 20 }),
+          inputCell("Minutes between stamps (0 = off)", p.gapMin || 0, (v) => (p.gapMin = v), { type: "number", min: 0, max: 600 })),
         el("div", { class: "g" },
           inputCell("Name in Arabic", p.name_ar, (v) => (p.name_ar = v), { dir: "rtl" }),
           inputCell("Reward in Arabic", p.reward_ar, (v) => (p.reward_ar = v), { dir: "rtl" }),
@@ -1903,7 +1961,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     const err = $("sErr"), fail = (m) => { err.textContent = m; err.hidden = false; };
     err.hidden = true; storeLangFields();
     for (const p of draft.programs) {
-      p.name = (p.name || "").trim(); p.reward = (p.reward || "").trim(); p.target = Math.round(p.target); p.dailyLimit = Math.max(0, Math.round(p.dailyLimit || 0));
+      p.name = (p.name || "").trim(); p.reward = (p.reward || "").trim(); p.target = Math.round(p.target); p.dailyLimit = Math.max(0, Math.round(p.dailyLimit || 0)); p.gapMin = Math.min(600, Math.max(0, Math.round(p.gapMin || 0)));
       if (!p.name) return fail("Give every card a name, e.g. Drinks.");
       if (!(p.target >= 3 && p.target <= 20)) return fail("Stamps for " + p.name + " must be between 3 and 20.");
       if (!p.reward) return fail("Describe the reward for " + p.name + ", e.g. free drink.");
@@ -1940,7 +1998,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   function applySettings(d) {
     const s = structuredClone(DEFAULTS);
-    if (Array.isArray(d.programs) && d.programs.length) s.programs = d.programs.filter((p) => p && p.id).map((p) => ({ ...(PROG_I18N[p.id] || {}), ...p, target: Number(p.target) >= 3 ? Number(p.target) : 7, dailyLimit: Number(p.dailyLimit) || 0 }));
+    if (Array.isArray(d.programs) && d.programs.length) s.programs = d.programs.filter((p) => p && p.id).map((p) => ({ ...(PROG_I18N[p.id] || {}), ...p, target: Number(p.target) >= 3 ? Number(p.target) : 7, dailyLimit: Number(p.dailyLimit) || 0, gapMin: p.gapMin === undefined || p.gapMin === null ? (p.id === "shisha" ? 60 : 0) : Math.max(0, Number(p.gapMin) || 0) }));
     for (const k of ["cafe", "countryCode", "customerLink", "staffLink"]) if (typeof d[k] === "string" && (d[k] || k === "countryCode")) s[k] = d[k];
     for (const k of ["readyDays", "awayDays", "expWarnDays"]) if (Number(d[k]) > 0) s[k] = Number(d[k]);
     if (Number.isFinite(Number(d.expiryDays)) && d.expiryDays !== undefined) s.expiryDays = Number(d.expiryDays);
@@ -2012,6 +2070,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     for (const e of allEv) {
       if (e.k === "undo") cntr(undos, e.date + "|" + e.staff);
       if (e.k === "stamp" && e.after) odd.push([e.t, e.staff, e.c, "Stamp outside opening hours"]);
+      if (e.k === "stamp" && e.okBy) odd.push([e.t, e.staff, e.c, "Extra " + (prog(e.p) || {}).name + " stamp approved by " + e.okBy + (String(e.okWhy).includes("limit") ? " · over the daily limit" : "") + (String(e.okWhy).includes("gap") ? " · too soon after the last one" : "")]);
       if (e.k === "redeem") cntr(rws, e.date + "|" + e.c);
       if (e.k === "stamp") cntr(sc, e.date + "|" + e.staff + "|" + e.c);
       if (e.k === "phone") odd.push([e.t, e.staff, e.c, "Phone number changed from " + fmtPhone(e.from || "")]);
@@ -2294,6 +2353,58 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       el("button", { type: "button", class: "lockback", text: t("Back"), onclick: () => { lock.pick = null; renderLock(); } }));
     box.append(card); setTimeout(() => pin.focus(), 50);
   }
+  /* ---------- approval for an extra stamp: the owner or a manager confirms with their PIN ---------- */
+  const approvers = () => [...state.invites.values()].filter((i) => (i.id === OWNER_ID || (i.perms && i.perms.approve)) && !i.revoked && i.pinHash)
+    .sort((a, b) => (a.id === OWNER_ID ? -1 : b.id === OWNER_ID ? 1 : String(a.name || "").localeCompare(String(b.name || ""))));
+  let apState = null;
+  function askApproval(c, needs) {
+    if (apState) apState.done(null);
+    return new Promise((res) => {
+      apState = { c, needs, pick: null, tries: 0, until: 0, done: (v) => { $("approveDlg").hidden = true; apState = null; res(v); } };
+      $("approveDlg").hidden = false; renderApproval();
+    });
+  }
+  function renderApproval() {
+    const a = apState, box = $("approveDlg").querySelector(".modal"); if (!a) return; box.textContent = "";
+    const name = a.c.name || a.c.code || "";
+    box.append(el("h2", { id: "apTitle", text: t("Approval needed") }));
+    for (const x of a.needs) {
+      const card = uiLang === "en" ? prog(x.pid).name.toLowerCase() : P(prog(x.pid));
+      box.append(el("p", { class: "apwhy", text: x.why === "limit" ? t("{name} already had {used} of {lim} {card} stamps today.", { name, used: x.used, lim: x.lim, card }) : t("{name} got a {card} stamp {m} min ago.", { name, card, m: x.m }) }));
+    }
+    const cancel = el("button", { type: "button", class: "btn", text: t("Cancel"), onclick: () => a.done(null) });
+    const me = state.shift && approvers().find((i) => i.id === state.shift.id);
+    if (me) {   // the owner / a manager is signed in: one tap
+      box.append(el("button", { type: "button", class: "btn primary big", text: t("Approve as {name}", { name: me.name || t("Owner") }), onclick: () => a.done({ id: me.id, name: me.name || "Owner" }) }), cancel);
+      return;
+    }
+    if (!a.pick) {
+      box.append(el("p", { class: "lead", text: t("Ask the owner or a shift manager to approve this extra stamp.") }), el("p", { text: t("Who approves?") }));
+      const g = el("div", { class: "apgrid" });
+      for (const i of approvers()) g.append(el("button", { type: "button", text: (i.id === OWNER_ID ? "🔑 " : "") + (i.name || t("Owner")), onclick: () => { a.pick = i.id; renderApproval(); } }));
+      box.append(g, cancel); return;
+    }
+    const who = state.invites.get(a.pick) || {};
+    const pin = el("input", { type: "password", inputmode: "numeric", maxlength: "4", autocomplete: "off", class: "lockpin", "aria-label": t("PIN") });
+    const err = el("p", { class: "lockerr" });
+    const go = async () => {
+      if (Date.now() < a.until) { err.textContent = t("Too many wrong tries. Wait 30 seconds."); pin.value = ""; return; }
+      const v = digits(pin.value); if (v.length !== 4) { err.textContent = t("Enter your 4-digit PIN."); return; }
+      if ((await pinHash(a.pick, v)) === who.pinHash) { a.done({ id: a.pick, name: who.name || "Owner" }); return; }
+      a.tries++; pin.value = ""; err.textContent = t("Wrong PIN. Try again.");
+      if (a.tries >= 5) { a.tries = 0; a.until = Date.now() + 30000; err.textContent = t("Too many wrong tries. Wait 30 seconds."); }
+    };
+    pin.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+    pin.addEventListener("input", () => { if (digits(pin.value).length === 4) go(); });
+    const padEl = el("div", { class: "lockpad", dir: "ltr" });
+    for (const k of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"]) padEl.append(el("button", { type: "button", text: k, onclick: () => {
+      if (k === "⌫") pin.value = pin.value.slice(0, -1); else if (k === "✓") go(); else if (pin.value.length < 4) { pin.value += k; if (pin.value.length === 4) go(); } } }));
+    box.append(el("p", { text: (a.pick === OWNER_ID ? "🔑 " : "") + (who.name || "") + " · " + t("Enter your PIN.") }), pin, err, padEl,
+      el("div", { class: "row", style: "justify-content:center" }, el("button", { type: "button", class: "btn", text: t("Back"), onclick: () => { a.pick = null; renderApproval(); } }), cancel));
+    setTimeout(() => pin.focus(), 50);
+  }
+  $("approveDlg").addEventListener("click", (e) => { if (e.target === $("approveDlg") && apState) apState.done(null); });
+
   let editingInv = null;
   function renderInvPerms(list) {
     const box = $("invPerms"); box.querySelectorAll("label").forEach((l) => l.remove());
@@ -2431,6 +2542,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     return "amed-" + hx(await crypto.subtle.digest("SHA-256", enc.encode("amed-live:" + key))).slice(0, 32);
   }
   function scanFound(text, reply) {
+    if (!$("approveDlg").hidden) return true;   // finish the approval first
     let who = "";
     const counterMode = !!scan.stream && !$("scanDlg").hidden;
     const done = (o) => { const out = Object.assign({ name: who, note: lastToastText }, o || {}); if (counterMode) counterResult(out); if (reply) { try { reply(out); } catch (_) {} reply = null; } };
@@ -2449,10 +2561,9 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       const p = enrolled(c).find((q) => q.id === pid);
       if (!p) { const q = state.settings.programs.find((x) => x.id === pid); toast(t("{name} isn't on the {card} card.", { name: c.name || code, card: q ? P(q) : pid }), 5000); done({ kind: "notenrolled" }); return true; }
       state.program = pid; render();
-      const k = cardOf(c, pid), now = Date.now(), last = state.lastScanStamp;
+      const k = cardOf(c, pid), now = Date.now(), lastT = lastStampAt(c, pid);
       if (k.rewards > 0) { toast(t("{name} has a {reward} ready. Give it, or tap +1 to stamp.", { name: c.name || "", reward: PR(p) }), 6000); done({ kind: "ready", line: "🎁 " + cap(PR(p)) }); return true; }
-      if (last && last.id === c.id && last.p === pid && now - last.t < 180000) { toast(t("Already stamped from a scan a moment ago. Tap +1 if they bought another."), 6000); done({ kind: "dup" }); return true; }
-      state.lastScanStamp = { id: c.id, p: pid, t: now };
+      if (lastT && now - lastT < 180000) { toast(t("Already stamped from a scan a moment ago. Tap +1 if they bought another."), 6000); done({ kind: "dup" }); return true; }
       const w = addStamps({ [pid]: 1 });
       if (w && w.then) {
         // Tell the customer's phone right away (through the scanner page), so they see the new stamp and a celebration.
