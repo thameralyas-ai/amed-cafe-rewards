@@ -193,6 +193,9 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); outline
 .form { display: grid; gap: 10px; margin-top: 12px; padding: 14px; border: 1px dashed var(--line); border-radius: 12px; }
 .form label.f { display: grid; gap: 4px; font-size: .74rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 .form label.f input, .form label.f textarea, .form label.f select { text-transform: none; letter-spacing: normal; font-weight: 400; color: var(--ink); font-size: 15px; }
+.phonerow { display: flex; gap: 6px; direction: ltr; }
+.phonerow select { flex: none; width: auto; max-width: 11.5em; }
+.phonerow input { flex: 1; min-width: 0; }
 .check { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; }
 .check input { width: 20px; height: 20px; margin-top: 1px; accent-color: var(--accent); flex: none; }
 .form .row, .row { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -436,7 +439,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
         <form class="form" id="newForm" hidden novalidate>
           <label class="f">Name<input id="newName" type="text" autocomplete="off" placeholder="e.g. Rayan Khidhir"></label>
-          <label class="f">Phone number<input id="newPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="e.g. 0750 123 4567"></label>
+          <label class="f" for="newPhone">Phone number<span class="phonerow"><select id="newCC" aria-label="Country"></select><input id="newPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="e.g. 0750 123 4567"></span></label>
           <div class="dupe" id="newDupe" role="alert" hidden></div>
           <fieldset class="pick" id="newProgs"><legend>Which cards does this customer want?</legend></fieldset>
           <label class="f">Message language
@@ -564,7 +567,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
               <select id="editLang"><option value="ku">Kurdish Badini (بادینی)</option><option value="ar">Arabic (العربية)</option><option value="en">English</option></select>
             </label>
             <label class="f">Birthday<input id="editBday" type="date"></label>
-            <label class="f">New phone number<input id="editPhone" type="tel" inputmode="tel" autocomplete="off"></label>
+            <label class="f" for="editPhone">New phone number<span class="phonerow"><select id="editCC" aria-label="Country"></select><input id="editPhone" type="tel" inputmode="tel" autocomplete="off"></span></label>
             <div class="dupe" id="editDupe" role="alert" hidden></div>
             <div class="row"><button class="btn" type="button" id="btnChangePhone">Change number</button></div>
             <label class="check"><input id="editOptIn" type="checkbox"> <span>Agrees to WhatsApp messages</span></label>
@@ -890,7 +893,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   /* ---------- small helpers ---------- */
   const digits = (s) => String(s || "").replace(/\D/g, "");
-  const fmtPhone = (d) => "\u2066" + d.replace(/(\d{4})(?=\d)/g, "$1 ") + "\u2069";
+  const fmtPhone = (d) => { d = String(d || ""); let pre = ""; if (d.startsWith("00")) { d = d.slice(2); const c = ccOf(d); pre = "+" + c + " "; d = d.slice(c.length); } return "\u2066" + pre + d.replace(/(\d{4})(?=\d)/g, "$1 ") + "\u2069"; };
   const pad = (n) => String(n).padStart(2, "0");
   const ymd = (t) => { const d = new Date(t); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
   const startOfToday = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); };
@@ -908,6 +911,64 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   const randomCode = () => { const a = crypto.getRandomValues(new Uint32Array(6)); return [...a].map((x) => CODE_ABC[x % CODE_ABC.length]).join(""); };
   const newPin = () => String(crypto.getRandomValues(new Uint32Array(1))[0] % 10000).padStart(4, "0");
+  /* ---------- phone numbers from any country ----------
+     Numbers from the cafe's own country are saved as typed (as before). A number from another country is saved as
+     00 + country code + number (e.g. 0049 151 2345678), so WhatsApp links and the customer's card work for it. */
+  const COUNTRIES = [
+    ["964", "🇮🇶", "Iraq", "العراق", "عێراق"],
+    ["90", "🇹🇷", "Turkey", "تركيا", "تورکیا"],
+    ["98", "🇮🇷", "Iran", "إيران", "ئیران"],
+    ["963", "🇸🇾", "Syria", "سوريا", "سووریا"],
+    ["962", "🇯🇴", "Jordan", "الأردن", "ئوردن"],
+    ["961", "🇱🇧", "Lebanon", "لبنان", "لوبنان"],
+    ["966", "🇸🇦", "Saudi Arabia", "السعودية", "سعوودیە"],
+    ["971", "🇦🇪", "UAE", "الإمارات", "ئیمارات"],
+    ["965", "🇰🇼", "Kuwait", "الكويت", "کوەیت"],
+    ["974", "🇶🇦", "Qatar", "قطر", "قەتەر"],
+    ["973", "🇧🇭", "Bahrain", "البحرين", "بەحرەین"],
+    ["968", "🇴🇲", "Oman", "عُمان", "عومان"],
+    ["20", "🇪🇬", "Egypt", "مصر", "میسر"],
+    ["49", "🇩🇪", "Germany", "ألمانيا", "ئەلمانیا"],
+    ["44", "🇬🇧", "United Kingdom", "بريطانيا", "بەریتانیا"],
+    ["46", "🇸🇪", "Sweden", "السويد", "سوید"],
+    ["31", "🇳🇱", "Netherlands", "هولندا", "هۆلەندا"],
+    ["47", "🇳🇴", "Norway", "النرويج", "نەرویج"],
+    ["45", "🇩🇰", "Denmark", "الدنمارك", "دانیمارک"],
+    ["358", "🇫🇮", "Finland", "فنلندا", "فینلەندا"],
+    ["43", "🇦🇹", "Austria", "النمسا", "نەمسا"],
+    ["41", "🇨🇭", "Switzerland", "سويسرا", "سویسرا"],
+    ["32", "🇧🇪", "Belgium", "بلجيكا", "بەلجیکا"],
+    ["33", "🇫🇷", "France", "فرنسا", "فەرەنسا"],
+    ["39", "🇮🇹", "Italy", "إيطاليا", "ئیتالیا"],
+    ["30", "🇬🇷", "Greece", "اليونان", "یۆنان"],
+    ["1", "🇺🇸", "USA / Canada", "أمريكا / كندا", "ئەمریکا / کەنەدا"],
+    ["61", "🇦🇺", "Australia", "أستراليا", "ئوسترالیا"],
+    ["7", "🇷🇺", "Russia", "روسيا", "ڕووسیا"],
+    ["374", "🇦🇲", "Armenia", "أرمينيا", "ئەرمینیا"],
+    ["995", "🇬🇪", "Georgia", "جورجيا", "گورجستان"]];
+  const homeCC = () => digits(state.settings.countryCode) || "964";
+  const latinDigits = (s) => String(s || "").replace(/[٠-٩]/g, (c) => "٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g, (c) => "۰۱۲۳۴۵۶۷۸۹".indexOf(c));
+  const typedIntl = (raw) => /^\s*(\+|00)/.test(latinDigits(raw));
+  function ccOf(full) { let best = ""; for (const [c] of COUNTRIES) if (full.startsWith(c) && c.length > best.length) best = c; return best; }
+  // raw = what staff typed, cc = the country chosen next to it ("" = Other). Returns the member id, or "" when the country is missing.
+  function phoneId(raw, cc) {
+    let d = digits(latinDigits(raw)); const home = homeCC();
+    if (typedIntl(raw)) { if (d.startsWith("00")) d = d.slice(2); d = d.replace(/^0+/, ""); return d.startsWith(home) ? d : d ? "00" + d : ""; }
+    if (cc === undefined || cc === null || cc === home) return d;
+    if (!cc) return "";
+    let n = d.replace(/^0+/, ""); if (n.startsWith(cc) && n.length > cc.length + 6) n = n.slice(cc.length);
+    return n ? "00" + cc + n : "";
+  }
+  function fillCC(sel) {
+    const cur = sel.value || homeCC(), L = uiLang === "ar" ? 3 : uiLang === "ku" ? 4 : 2; sel.textContent = "";
+    for (const c of COUNTRIES) sel.append(el("option", { value: c[0], text: c[1] + " +" + c[0] + " " + c[L] }));
+    if (!COUNTRIES.some((c) => c[0] === homeCC())) sel.prepend(el("option", { value: homeCC(), text: "+" + homeCC() }));
+    sel.append(el("option", { value: "", text: t("Other (type + and the code)") }));
+    sel.value = cur;
+  }
+  function watchCC(input, sel) {   // typing +44… picks the country by itself
+    input.addEventListener("input", () => { if (!typedIntl(input.value)) return; let d = digits(latinDigits(input.value)); if (d.startsWith("00")) d = d.slice(2); const c = ccOf(d); if (c) sel.value = c; });
+  }
   function normPhone(raw) {
     let d = digits(raw); if (d.startsWith("00")) d = d.slice(2);
     const cc = digits(state.settings.countryCode);
@@ -1065,6 +1126,9 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       " Extra stamps need approval.": " الأختام الإضافية تحتاج موافقة.",
       " Last {card} stamp {m} min ago: another one now needs approval.": " آخر ختم {card} قبل {m} دقيقة: أي ختم آخر الآن يحتاج موافقة.",
       " (approved by {name})": " (بموافقة {name})",
+      "Other (type + and the code)": "دولة أخرى (اكتب + والرمز)",
+      "Choose the country, or type the number with + and the country code.": "اختر الدولة، أو اكتب الرقم مع + ورمز الدولة.",
+      "Country": "الدولة",
     },
     ku: {
       "Sign out": "دەرکەفتن",
@@ -1166,6 +1230,9 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       " Extra stamps need approval.": " مۆرێن زێدە پێدڤی ب ڕەزامەندیێ نە.",
       " Last {card} stamp {m} min ago: another one now needs approval.": " دوماهیک مۆرا {card} بەری {m} خولەکان بوو: مۆرەکا دی نوکە پێدڤی ب ڕەزامەندیێ یە.",
       " (approved by {name})": " (ب ڕەزامەندیا {name})",
+      "Other (type + and the code)": "وەڵاتەکێ دی (+ و کۆدی بنڤیسە)",
+      "Choose the country, or type the number with + and the country code.": "وەڵاتی هەلبژێرە، یان ژمارێ دگەل + و کۆدێ وەڵاتی بنڤیسە.",
+      "Country": "وەڵات",
     },
   };
   let uiLang = "en";
@@ -1197,7 +1264,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   function intlNumber(id) {
     const cc = digits(state.settings.countryCode);
-    if (cc) { if (id.startsWith("00")) return id.slice(2); if (id.startsWith(cc) && id.length > 10) return id; if (id.startsWith("0")) return cc + id.slice(1); return cc + id; }
+    if (cc) { if (id.startsWith("00")) return id.slice(2); if (id.startsWith(cc) && id.length > 10) return id; if (id.startsWith("0")) return cc + id.slice(1); if (id.length >= 11 && ccOf(id) && ccOf(id) !== cc) return id; return cc + id; }
     return id.length >= 11 && !id.startsWith("0") ? id : null;
   }
   function template(kind, lang) { const m = state.settings.messages || {}; return (m[lang] && m[lang][kind]) || (MSG[lang] && MSG[lang][kind]) || MSG.en[kind]; }
@@ -1497,6 +1564,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       log.append(el("li", {}, what, el("time", { text: fmtWhen(e.t) })));
     }
     if (document.activeElement !== $("editName")) $("editName").value = c.name || "";
+    if (!$("editCC").options.length || state.ccLang !== uiLang) { fillCC($("editCC")); state.ccLang = uiLang; }
+    if (!$("editPhone").value && document.activeElement !== $("editCC")) $("editCC").value = homeCC();
     $("editOptIn").checked = c.whatsappOptIn !== false;
     if (!$("manage").open) { renderPick("editProgs", mine.map((q) => q.id)); $("editLang").value = c.lang || "en"; $("editBday").value = c.birthday ? "2000-" + c.birthday : ""; }
   }
@@ -1704,11 +1773,12 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   async function createMember(ev) {
     ev.preventDefault();
-    const name = $("newName").value.trim(), id = digits($("newPhone").value), err = $("newErr");
+    const name = $("newName").value.trim(), id = phoneId($("newPhone").value, $("newCC").value), err = $("newErr");
     const fail = (m, f) => { err.textContent = m; err.hidden = false; if (f) $(f).focus(); };
     err.hidden = true;
     if (!name) return fail("Enter the customer's name.", "newName");
-    if (id.length < 6) return fail("Enter a phone number with at least 6 digits.", "newPhone");
+    if (!id && digits($("newPhone").value).length >= 6) return fail(t("Choose the country, or type the number with + and the country code."), "newPhone");
+    if (id.replace(/^00/, "").length < 6) return fail("Enter a phone number with at least 6 digits.", "newPhone");
     const dupe = [...state.customers.values()].find((c) => normPhone(c.id) === normPhone(id));
     if (dupe) { showDupe(dupe, "newDupe"); return; }
     const progs = picked("newProgs");
@@ -1748,7 +1818,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     finally { $("btnCreate").disabled = false; }
   }
   function openNew(prefill) {
-    $("newForm").hidden = false; $("newPhone").value = prefill || ""; $("newName").value = ""; $("newRef").value = "";
+    $("newForm").hidden = false; $("newPhone").value = prefill || ""; $("newCC").value = homeCC(); fillCC($("newCC")); $("newPhone").dispatchEvent(new Event("input")); $("newName").value = ""; $("newRef").value = "";
     $("newOptIn").checked = true; $("newErr").hidden = true; $("newLang").value = "ku"; $("newBday").value = ""; renderPick("newProgs", []);
     $("refLabel").hidden = !(state.settings.referral && state.settings.referral.enabled);
     $("newName").focus();
@@ -2245,15 +2315,20 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     box.append(el("span", { text: t("This number is already registered to {name}.", { name: dupe.name || fmtPhone(dupe.id) }) }),
       el("button", { type: "button", class: "btn sm", text: t("Open their card"), onclick: () => { box.hidden = true; closeNew(); select(dupe.id); } }));
   }
-  const findDupe = (raw, exceptId) => { const d = digits(raw); if (d.length < 6) return null; return [...state.customers.values()].find((x) => x.id !== exceptId && normPhone(x.id) === normPhone(d)) || null; };
-  $("newPhone").addEventListener("input", () => { const d = findDupe($("newPhone").value); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; });
-  $("editPhone").addEventListener("input", () => { const d = findDupe($("editPhone").value, state.selected); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; });
+  const findDupe = (raw, exceptId, cc) => { const d = phoneId(raw, cc); if (d.replace(/^00/, "").length < 6) return null; return [...state.customers.values()].find((x) => x.id !== exceptId && normPhone(x.id) === normPhone(d)) || null; };
+  watchCC($("newPhone"), $("newCC")); watchCC($("editPhone"), $("editCC"));
+  const newDupe = () => { const d = findDupe($("newPhone").value, null, $("newCC").value); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; };
+  const editDupe = () => { const d = findDupe($("editPhone").value, state.selected, $("editCC").value); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; };
+  $("newCC").addEventListener("change", newDupe); $("editCC").addEventListener("change", editDupe);
+  $("newPhone").addEventListener("input", () => { const d = findDupe($("newPhone").value, null, $("newCC").value); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; });
+  $("editPhone").addEventListener("input", () => { const d = findDupe($("editPhone").value, state.selected, $("editCC").value); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; });
   $("btnChangePhone").addEventListener("click", async () => {
     const c = state.customers.get(state.selected); if (!c || !can("editMember") || !state.db) return;
-    const nid = digits($("editPhone").value);
-    if (nid.length < 6) { toast("Enter a phone number with at least 6 digits."); return; }
+    const nid = phoneId($("editPhone").value, $("editCC").value);
+    if (!nid && digits($("editPhone").value).length >= 6) { toast(t("Choose the country, or type the number with + and the country code."), 5000); return; }
+    if (nid.replace(/^00/, "").length < 6) { toast("Enter a phone number with at least 6 digits."); return; }
     if (nid === c.id) return;
-    const dupe = findDupe(nid, c.id); if (dupe) { showDupe(dupe, "editDupe"); return; }
+    const dupe = findDupe($("editPhone").value, c.id, $("editCC").value); if (dupe) { showDupe(dupe, "editDupe"); return; }
     if (navigator.onLine === false || state.queue.length) { toast("Changing a number needs internet. Try again when you're online."); return; }
     const { id, ...data } = c;
     try {
@@ -2265,6 +2340,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   });
   document.querySelectorAll(".uilangs button").forEach((b) => b.addEventListener("click", () => {
     uiLang = b.dataset.lang; try { localStorage.setItem("amed-ui-lang", uiLang); } catch (_) {}
+    fillCC($("newCC"));
     $("btnGuide").href = "https://amedcaferest.com/staff-guide.html#" + uiLang;
     applyUILang(); render();
   }));
