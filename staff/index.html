@@ -893,7 +893,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   /* ---------- small helpers ---------- */
   const digits = (s) => String(s || "").replace(/\D/g, "");
-  const fmtPhone = (d) => { d = String(d || ""); let pre = ""; if (d.startsWith("00")) { d = d.slice(2); const c = ccOf(d); pre = "+" + c + " "; d = d.slice(c.length); } return "\u2066" + pre + d.replace(/(\d{4})(?=\d)/g, "$1 ") + "\u2069"; };
+  const fmtPhone = (d) => { d = String(d || ""); let pre = ""; if (!d.startsWith("0") && d.length >= 11 && ccOf(d) && !d.startsWith(homeCC())) d = "00" + d; if (d.startsWith("00")) { d = d.slice(2); const c = ccOf(d); pre = "+" + c + " "; d = d.slice(c.length); } return "\u2066" + pre + d.replace(/(\d{4})(?=\d)/g, "$1 ") + "\u2069"; };
   const pad = (n) => String(n).padStart(2, "0");
   const ymd = (t) => { const d = new Date(t); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
   const startOfToday = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); };
@@ -945,16 +945,43 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     ["61", "🇦🇺", "Australia", "أستراليا", "ئوسترالیا"],
     ["7", "🇷🇺", "Russia", "روسيا", "ڕووسیا"],
     ["374", "🇦🇲", "Armenia", "أرمينيا", "ئەرمینیا"],
-    ["995", "🇬🇪", "Georgia", "جورجيا", "گورجستان"]];
+    ["995", "🇬🇪", "Georgia", "جورجيا", "گورجستان"],
+    ["34", "🇪🇸", "Spain", "إسبانيا", "ئیسپانیا"],
+    ["351", "🇵🇹", "Portugal", "البرتغال", "پورتوگال"],
+    ["48", "🇵🇱", "Poland", "بولندا", "پۆڵەندا"],
+    ["380", "🇺🇦", "Ukraine", "أوكرانيا", "ئۆکرانیا"],
+    ["40", "🇷🇴", "Romania", "رومانيا", "ڕۆمانیا"],
+    ["359", "🇧🇬", "Bulgaria", "بلغاريا", "بولگاریا"],
+    ["36", "🇭🇺", "Hungary", "المجر", "هەنگاریا"],
+    ["420", "🇨🇿", "Czechia", "التشيك", "چیک"],
+    ["353", "🇮🇪", "Ireland", "أيرلندا", "ئیرلەندا"],
+    ["357", "🇨🇾", "Cyprus", "قبرص", "قوبرس"],
+    ["92", "🇵🇰", "Pakistan", "باكستان", "پاکستان"],
+    ["91", "🇮🇳", "India", "الهند", "هندستان"],
+    ["93", "🇦🇫", "Afghanistan", "أفغانستان", "ئەفغانستان"],
+    ["994", "🇦🇿", "Azerbaijan", "أذربيجان", "ئازەربایجان"],
+    ["7", "🇰🇿", "Kazakhstan", "كازاخستان", "کازاخستان"],
+    ["212", "🇲🇦", "Morocco", "المغرب", "مەغریب"],
+    ["213", "🇩🇿", "Algeria", "الجزائر", "جەزائیر"],
+    ["216", "🇹🇳", "Tunisia", "تونس", "تونس"],
+    ["218", "🇱🇾", "Libya", "ليبيا", "لیبیا"],
+    ["967", "🇾🇪", "Yemen", "اليمن", "یەمەن"],
+    ["249", "🇸🇩", "Sudan", "السودان", "سودان"],
+    ["970", "🇵🇸", "Palestine", "فلسطين", "فەلەستین"],
+    ["64", "🇳🇿", "New Zealand", "نيوزيلندا", "نیوزیلەندا"],
+    ["86", "🇨🇳", "China", "الصين", "چین"],
+    ["81", "🇯🇵", "Japan", "اليابان", "ژاپۆن"],
+    ["55", "🇧🇷", "Brazil", "البرازيل", "بەڕازیل"]];
   const homeCC = () => digits(state.settings.countryCode) || "964";
   const latinDigits = (s) => String(s || "").replace(/[٠-٩]/g, (c) => "٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g, (c) => "۰۱۲۳۴۵۶۷۸۹".indexOf(c));
   const typedIntl = (raw) => /^\s*(\+|00)/.test(latinDigits(raw));
-  function ccOf(full) { let best = ""; for (const [c] of COUNTRIES) if (full.startsWith(c) && c.length > best.length) best = c; return best; }
+  const ALL_CC = new Set("1 7 20 27 30 31 32 33 34 36 39 40 41 43 44 45 46 47 48 49 51 52 53 54 55 56 57 58 60 61 62 63 64 65 66 81 82 84 86 90 91 92 93 94 95 98 211 212 213 216 218 290 291 297 298 299 420 421 423 850 852 853 855 856 880 886 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 350 351 352 353 354 355 356 357 358 359 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 500 501 502 503 504 505 506 507 508 509 590 591 592 593 594 595 596 597 598 599 670 671 672 673 674 675 676 677 678 679 680 681 682 683 684 685 686 687 688 689 690 691 692 960 961 962 963 964 965 966 967 968 970 971 972 973 974 975 976 977 992 993 994 995 996 997 998".split(" "));
+  function ccOf(full) { for (const n of [3, 2, 1]) { const c = String(full).slice(0, n); if (ALL_CC.has(c)) return c; } return ""; }
   // raw = what staff typed, cc = the country chosen next to it ("" = Other). Returns the member id, or "" when the country is missing.
   function phoneId(raw, cc) {
     let d = digits(latinDigits(raw)); const home = homeCC();
     if (typedIntl(raw)) { if (d.startsWith("00")) d = d.slice(2); d = d.replace(/^0+/, ""); return d.startsWith(home) ? d : d ? "00" + d : ""; }
-    if (cc === undefined || cc === null || cc === home) return d;
+    if (cc === undefined || cc === null || cc === home) { const n = d.replace(/^0+/, ""); return !d.startsWith("0") && n.length >= 11 && !n.startsWith(home) && ccOf(n) ? "00" + n : d; }
     if (!cc) return "";
     let n = d.replace(/^0+/, ""); if (n.startsWith(cc) && n.length > cc.length + 6) n = n.slice(cc.length);
     return n ? "00" + cc + n : "";
@@ -1264,7 +1291,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   function intlNumber(id) {
     const cc = digits(state.settings.countryCode);
-    if (cc) { if (id.startsWith("00")) return id.slice(2); if (id.startsWith(cc) && id.length > 10) return id; if (id.startsWith("0")) return cc + id.slice(1); if (id.length >= 11 && ccOf(id) && ccOf(id) !== cc) return id; return cc + id; }
+    if (cc) { if (id.startsWith("00")) return id.slice(2); if (id.startsWith(cc) && id.length > 10) return id; if (id.startsWith("0")) return cc + id.slice(1); if (id.length >= 11 && ccOf(id)) return id; return cc + id; }
     return id.length >= 11 && !id.startsWith("0") ? id : null;
   }
   function template(kind, lang) { const m = state.settings.messages || {}; return (m[lang] && m[lang][kind]) || (MSG[lang] && MSG[lang][kind]) || MSG.en[kind]; }
