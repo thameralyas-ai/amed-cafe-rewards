@@ -986,15 +986,28 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     let n = d.replace(/^0+/, ""); if (n.startsWith(cc) && n.length > cc.length + 6) n = n.slice(cc.length);
     return n ? "00" + cc + n : "";
   }
+  // Every country, by ISO code → calling code. The list above is shown first (with Badini names); the rest follow by name.
+  const REGIONS = "AF93 AX358 AL355 DZ213 AS1 AD376 AO244 AI1 AG1 AR54 AM374 AW297 AU61 AT43 AZ994 BS1 BH973 BD880 BB1 BY375 BE32 BZ501 BJ229 BM1 BT975 BO591 BA387 BW267 BR55 IO246 VG1 BN673 BG359 BF226 BI257 KH855 CM237 CA1 CV238 BQ599 KY1 CF236 TD235 CL56 CN86 CX61 CC61 CO57 KM269 CG242 CD243 CK682 CR506 CI225 HR385 CU53 CW599 CY357 CZ420 DK45 DJ253 DM1 DO1 EC593 EG20 SV503 GQ240 ER291 EE372 SZ268 ET251 FK500 FO298 FJ679 FI358 FR33 GF594 PF689 GA241 GM220 GE995 DE49 GH233 GI350 GR30 GL299 GD1 GP590 GU1 GT502 GG44 GN224 GW245 GY592 HT509 HN504 HK852 HU36 IS354 IN91 ID62 IR98 IQ964 IE353 IM44 IL972 IT39 JM1 JP81 JE44 JO962 KZ7 KE254 KI686 XK383 KW965 KG996 LA856 LV371 LB961 LS266 LR231 LY218 LI423 LT370 LU352 MO853 MG261 MW265 MY60 MV960 ML223 MT356 MH692 MQ596 MR222 MU230 YT262 MX52 FM691 MD373 MC377 MN976 ME382 MS1 MA212 MZ258 MM95 NA264 NR674 NP977 NL31 NC687 NZ64 NI505 NE227 NG234 NU683 NF672 KP850 MK389 MP1 NO47 OM968 PK92 PW680 PS970 PA507 PG675 PY595 PE51 PH63 PL48 PT351 PR1 QA974 RE262 RO40 RU7 RW250 BL590 SH290 KN1 LC1 MF590 PM508 VC1 WS685 SM378 ST239 SA966 SN221 RS381 SC248 SL232 SG65 SX1 SK421 SI386 SB677 SO252 ZA27 KR82 SS211 ES34 LK94 SD249 SR597 SJ47 SE46 CH41 SY963 TW886 TJ992 TZ255 TH66 TL670 TG228 TK690 TO676 TT1 TN216 TR90 TM993 TC1 TV688 UG256 UA380 AE971 GB44 US1 UY598 UZ998 VI1 VU678 VA39 VE58 VN84 WF681 EH212 YE967 ZM260 ZW263".split(" ").map((x) => [x.slice(0, 2), x.slice(2)]);
+  const CC_OF = Object.fromEntries(REGIONS);
+  for (const [, c] of REGIONS) ALL_CC.add(c);
+  const flagOf = (iso) => String.fromCodePoint(...[...iso].map((ch) => 0x1F1E6 + ch.charCodeAt(0) - 65));
+  const isoOfFlag = (f) => [...f].map((ch) => String.fromCharCode(ch.codePointAt(0) - 0x1F1E6 + 65)).join("");
+  const TOP = COUNTRIES.map((c) => ({ iso: isoOfFlag(c[1]), cc: c[0], en: c[2], ar: c[3], ku: c[4] }));
+  const dnCache = {};
+  function regionName(iso, lang) { try { dnCache[lang] = dnCache[lang] || new Intl.DisplayNames([lang], { type: "region" }); return dnCache[lang].of(iso) || iso; } catch (_) { return iso; } }
+  const isoFor = (cc) => (TOP.find((x) => x.cc === cc) || {}).iso || (REGIONS.find(([, c]) => c === cc) || [])[0] || "";
+  const ccVal = (sel) => CC_OF[sel.value] || "";
   function fillCC(sel) {
-    const cur = sel.value || homeCC(), L = uiLang === "ar" ? 3 : uiLang === "ku" ? 4 : 2; sel.textContent = "";
-    for (const c of COUNTRIES) sel.append(el("option", { value: c[0], text: c[1] + " +" + c[0] + " " + c[L] }));
-    if (!COUNTRIES.some((c) => c[0] === homeCC())) sel.prepend(el("option", { value: homeCC(), text: "+" + homeCC() }));
-    sel.append(el("option", { value: "", text: t("Other (type + and the code)") }));
-    sel.value = cur;
+    const cur = sel.value || isoFor(homeCC()), nl = uiLang === "en" ? "en" : "ar"; sel.textContent = "";   // Badini has no built-in country names: Arabic ones for the rest
+    const opt = (iso, name) => el("option", { value: iso, text: flagOf(iso) + " +" + CC_OF[iso] + " " + name });
+    const g1 = el("optgroup", { label: t("Most used") }), g2 = el("optgroup", { label: t("All countries") });
+    for (const x of TOP) if (CC_OF[x.iso]) g1.append(opt(x.iso, x[uiLang] || x.en));
+    const topSet = new Set(TOP.map((x) => x.iso));
+    REGIONS.filter(([iso]) => !topSet.has(iso)).map(([iso]) => [iso, regionName(iso, nl)]).sort((a, b) => a[1].localeCompare(b[1], nl)).forEach(([iso, n]) => g2.append(opt(iso, n)));
+    sel.append(g1, g2); sel.value = cur; if (!sel.value) sel.value = isoFor(homeCC());
   }
   function watchCC(input, sel) {   // typing +44… picks the country by itself
-    input.addEventListener("input", () => { if (!typedIntl(input.value)) return; let d = digits(latinDigits(input.value)); if (d.startsWith("00")) d = d.slice(2); const c = ccOf(d); if (c) sel.value = c; });
+    input.addEventListener("input", () => { if (!typedIntl(input.value)) return; let d = digits(latinDigits(input.value)); if (d.startsWith("00")) d = d.slice(2); const c = ccOf(d); if (c && CC_OF[sel.value] !== c) sel.value = isoFor(c); });
   }
   function normPhone(raw) {
     let d = digits(raw); if (d.startsWith("00")) d = d.slice(2);
@@ -1153,6 +1166,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       " Extra stamps need approval.": " الأختام الإضافية تحتاج موافقة.",
       " Last {card} stamp {m} min ago: another one now needs approval.": " آخر ختم {card} قبل {m} دقيقة: أي ختم آخر الآن يحتاج موافقة.",
       " (approved by {name})": " (بموافقة {name})",
+      "Most used": "الأكثر استخداماً", "All countries": "كل الدول",
       "Other (type + and the code)": "دولة أخرى (اكتب + والرمز)",
       "Choose the country, or type the number with + and the country code.": "اختر الدولة، أو اكتب الرقم مع + ورمز الدولة.",
       "Country": "الدولة",
@@ -1257,6 +1271,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       " Extra stamps need approval.": " مۆرێن زێدە پێدڤی ب ڕەزامەندیێ نە.",
       " Last {card} stamp {m} min ago: another one now needs approval.": " دوماهیک مۆرا {card} بەری {m} خولەکان بوو: مۆرەکا دی نوکە پێدڤی ب ڕەزامەندیێ یە.",
       " (approved by {name})": " (ب ڕەزامەندیا {name})",
+      "Most used": "یێن زێدەتر بکاردهێن", "All countries": "هەمی وەڵات",
       "Other (type + and the code)": "وەڵاتەکێ دی (+ و کۆدی بنڤیسە)",
       "Choose the country, or type the number with + and the country code.": "وەڵاتی هەلبژێرە، یان ژمارێ دگەل + و کۆدێ وەڵاتی بنڤیسە.",
       "Country": "وەڵات",
@@ -1592,7 +1607,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     }
     if (document.activeElement !== $("editName")) $("editName").value = c.name || "";
     if (!$("editCC").options.length || state.ccLang !== uiLang) { fillCC($("editCC")); state.ccLang = uiLang; }
-    if (!$("editPhone").value && document.activeElement !== $("editCC")) $("editCC").value = homeCC();
+    if (!$("editPhone").value && document.activeElement !== $("editCC")) $("editCC").value = isoFor(homeCC());
     $("editOptIn").checked = c.whatsappOptIn !== false;
     if (!$("manage").open) { renderPick("editProgs", mine.map((q) => q.id)); $("editLang").value = c.lang || "en"; $("editBday").value = c.birthday ? "2000-" + c.birthday : ""; }
   }
@@ -1800,7 +1815,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 
   async function createMember(ev) {
     ev.preventDefault();
-    const name = $("newName").value.trim(), id = phoneId($("newPhone").value, $("newCC").value), err = $("newErr");
+    const name = $("newName").value.trim(), id = phoneId($("newPhone").value, ccVal($("newCC"))), err = $("newErr");
     const fail = (m, f) => { err.textContent = m; err.hidden = false; if (f) $(f).focus(); };
     err.hidden = true;
     if (!name) return fail("Enter the customer's name.", "newName");
@@ -1845,7 +1860,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     finally { $("btnCreate").disabled = false; }
   }
   function openNew(prefill) {
-    $("newForm").hidden = false; $("newPhone").value = prefill || ""; $("newCC").value = homeCC(); fillCC($("newCC")); $("newPhone").dispatchEvent(new Event("input")); $("newName").value = ""; $("newRef").value = "";
+    $("newForm").hidden = false; $("newPhone").value = prefill || ""; $("newCC").value = isoFor(homeCC()); fillCC($("newCC")); $("newPhone").dispatchEvent(new Event("input")); $("newName").value = ""; $("newRef").value = "";
     $("newOptIn").checked = true; $("newErr").hidden = true; $("newLang").value = "ku"; $("newBday").value = ""; renderPick("newProgs", []);
     $("refLabel").hidden = !(state.settings.referral && state.settings.referral.enabled);
     $("newName").focus();
@@ -2344,18 +2359,18 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   }
   const findDupe = (raw, exceptId, cc) => { const d = phoneId(raw, cc); if (d.replace(/^00/, "").length < 6) return null; return [...state.customers.values()].find((x) => x.id !== exceptId && normPhone(x.id) === normPhone(d)) || null; };
   watchCC($("newPhone"), $("newCC")); watchCC($("editPhone"), $("editCC"));
-  const newDupe = () => { const d = findDupe($("newPhone").value, null, $("newCC").value); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; };
-  const editDupe = () => { const d = findDupe($("editPhone").value, state.selected, $("editCC").value); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; };
+  const newDupe = () => { const d = findDupe($("newPhone").value, null, ccVal($("newCC"))); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; };
+  const editDupe = () => { const d = findDupe($("editPhone").value, state.selected, ccVal($("editCC"))); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; };
   $("newCC").addEventListener("change", newDupe); $("editCC").addEventListener("change", editDupe);
-  $("newPhone").addEventListener("input", () => { const d = findDupe($("newPhone").value, null, $("newCC").value); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; });
-  $("editPhone").addEventListener("input", () => { const d = findDupe($("editPhone").value, state.selected, $("editCC").value); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; });
+  $("newPhone").addEventListener("input", () => { const d = findDupe($("newPhone").value, null, ccVal($("newCC"))); if (d) showDupe(d, "newDupe"); else $("newDupe").hidden = true; });
+  $("editPhone").addEventListener("input", () => { const d = findDupe($("editPhone").value, state.selected, ccVal($("editCC"))); if (d) showDupe(d, "editDupe"); else $("editDupe").hidden = true; });
   $("btnChangePhone").addEventListener("click", async () => {
     const c = state.customers.get(state.selected); if (!c || !can("editMember") || !state.db) return;
-    const nid = phoneId($("editPhone").value, $("editCC").value);
+    const nid = phoneId($("editPhone").value, ccVal($("editCC")));
     if (!nid && digits($("editPhone").value).length >= 6) { toast(t("Choose the country, or type the number with + and the country code."), 5000); return; }
     if (nid.replace(/^00/, "").length < 6) { toast("Enter a phone number with at least 6 digits."); return; }
     if (nid === c.id) return;
-    const dupe = findDupe($("editPhone").value, c.id, $("editCC").value); if (dupe) { showDupe(dupe, "editDupe"); return; }
+    const dupe = findDupe($("editPhone").value, c.id, ccVal($("editCC"))); if (dupe) { showDupe(dupe, "editDupe"); return; }
     if (navigator.onLine === false || state.queue.length) { toast("Changing a number needs internet. Try again when you're online."); return; }
     const { id, ...data } = c;
     try {
