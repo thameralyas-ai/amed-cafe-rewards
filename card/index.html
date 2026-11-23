@@ -1025,6 +1025,15 @@ footer p { margin: 0; }
     }
     catch (_) { fail("noCrypto"); }
   });
+  // Open the card by itself as soon as the phone number and the 4-digit PIN are both filled in (the button still works too).
+  let autoTried = "";
+  function autoOpen() {
+    const d = norm($("phone").value), pin = norm("1" + $("pin").value).slice(1);
+    if (d.length < 6 || pin.length !== 4 || !loaded || autoTried === d + "|" + pin) return;
+    autoTried = d + "|" + pin; $("pin").blur(); const f = $("checkForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", { cancelable: true }));
+  }
+  $("pin").addEventListener("input", autoOpen);
+  $("phone").addEventListener("change", autoOpen);
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => setLang(b.dataset.lang));
   $("phone").addEventListener("change", () => { const wa = DATA && DATA.contact && DATA.contact.wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + $("phone").value); });
   // Add to home screen: Android shows an install button; iPhone shows a short tip. Works on the website, not inside claude.ai.
