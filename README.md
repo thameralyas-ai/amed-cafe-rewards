@@ -57,3 +57,7 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 ## Cafe info from the loyalty database (branch `live-meta`, waiting for the Firebase switch)
 
 The homepage's "Amed rewards" and "Offers & events" read the cafe info (programs, levels, expiryDays, offers, events, contact) from the Firestore document `public/meta` (project `amed-cafe`) over Firestore's plain REST API, without the Firebase library, so the homepage stays light. If that fails, it falls back to `data.json`. Keep the fields of `public/meta` the same shape as `data.json`, and keep public reads of `public/meta` allowed.
+
+## Card page: country picker for foreign phone numbers
+
+Next to the phone box on `card/` there is a small flag button (🇮🇶 +964 by default). Iraqi numbers work exactly as before (the card key uses the national number only). A customer with a foreign number picks the country and types the number the local way; the card key then uses country code + national number (leading zeros removed), the same way the staff page saves foreign members ("amed-cafe:" + cc + national). Typing +49… or 0049… picks the country automatically. The country lists (COUNTRIES with Badini names, REGIONS with all 243 calling codes) are copied from `staff/index.html`; keep them in step.
