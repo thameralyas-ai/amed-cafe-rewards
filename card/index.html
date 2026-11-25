@@ -102,6 +102,13 @@ body.rtl .hero .tag { letter-spacing: 0; }
 body.rtl .check input { text-align: right; }
 .check input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
 .check .row { display: flex; gap: 8px; }
+/* Country picker for foreign phone numbers: a small flag + code button (a native list opens on tap); Iraq by default. */
+.check .phonerow { display: flex; gap: 8px; direction: ltr; }
+.check .phonerow input { flex: 1; min-width: 0; }
+.ccpick { position: relative; flex: none; display: flex; align-items: center; gap: 4px; border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 0 10px; min-height: 52px; font-family: var(--f-mono); font-size: 1rem; white-space: nowrap; }
+.ccpick::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg) translateY(-2px); margin-left: 4px; }
+.ccpick:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.ccpick select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
 .check .row input { flex: 1; }
 .check button { border: 0; background: var(--accent); color: var(--accent-ink); border-radius: 12px; padding: 0 18px; font-weight: 700; min-height: 52px; cursor: pointer; }
 .check button:hover { filter: brightness(1.08); }
@@ -316,7 +323,7 @@ footer p { margin: 0; }
   <form class="check" id="checkForm" novalidate>
     <strong class="ttl" data-t="checkTitle"></strong>
     <label for="phone" data-t="phone"></label>
-    <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0750 123 4567">
+    <div class="phonerow"><span class="ccpick"><span id="ccShow" aria-hidden="true"></span><select id="cc" aria-label="Country"></select></span><input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0750 123 4567"></div>
     <label for="pin" data-t="pin"></label>
     <div class="row">
       <input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="••••">
@@ -464,6 +471,10 @@ footer p { margin: 0; }
       updated: "Karten zuletzt aktualisiert am {date} um {time} Uhr. Ein Stempel aus den letzten Stunden wird eventuell noch nicht angezeigt.",
     },
   };
+  Object.assign(T.en, { ccLabel: "Country", ccTop: "Most used", ccAll: "All countries" });
+  Object.assign(T.ar, { ccLabel: "الدولة", ccTop: "الأكثر استخداماً", ccAll: "كل الدول" });
+  Object.assign(T.ku, { ccLabel: "وەلات", ccTop: "یێن زێدەتر دهێنە بکارئینان", ccAll: "هەمی وەلات" });
+  Object.assign(T.de, { ccLabel: "Land", ccTop: "Häufig", ccAll: "Alle Länder" });
   Object.assign(T.en, {
     iconTip: "Tip: to get your new {level} icon, remove Amed Cafe from your home screen and add it again.",
     toNextOr: "{n} more visits or {s} more stamps to {level}", levelRowOr: "after {n} visits or {s} stamps",
@@ -662,6 +673,7 @@ footer p { margin: 0; }
     for (const b of document.querySelectorAll(".langs button")) b.setAttribute("aria-pressed", b.dataset.lang === lang);
     for (const n of document.querySelectorAll("[data-t]")) n.textContent = tr(n.dataset.t);
     try { localStorage.setItem("amed-lang", lang); } catch (_) {}
+    fillCC();
     renderStatic();
     if (lastEntry) showCards(lastEntry, false);
     else if (!$("result").hidden) showNotFound();
@@ -709,7 +721,7 @@ footer p { margin: 0; }
     }
     $("rulesSec").hidden = !rl.children.length;
     const wa = DATA && DATA.contact && DATA.contact.wa;
-    $("forgot").hidden = !wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + ($("phone").value || ""));
+    $("forgot").hidden = !wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + phoneForMsg());
     $("joinBtn").hidden = !(wa && DATA.contact.join); if (wa) $("joinBtn").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("joinMsg"));
     if (DATA && DATA.updated) { const d = new Date(DATA.updated); $("foot").textContent = tr("updated", { date: fmtDate(DATA.updated, { day: "numeric", month: "short" }), time: d.toLocaleTimeString(lang === "ku" ? "en-GB" : LOC[lang], { hour: "2-digit", minute: "2-digit" }) }); }
   }
@@ -720,6 +732,104 @@ footer p { margin: 0; }
     const cc = (DATA && DATA.countryCode) || "964";
     if (cc && d.startsWith(cc) && d.length > 10) d = d.slice(cc.length);
     return d.replace(/^0+/, "");
+  }
+  // ---- Country picker: a customer with a foreign number picks the country, then types the number the local way.
+  // Iraq (the cafe's country) works exactly as before: the card key uses the national number only.
+  // Any other country: the key uses country code + national number (leading zeros removed), as the staff page saves it.
+  const COUNTRIES = [
+    ["964", "🇮🇶", "Iraq", "العراق", "عێراق"],
+    ["90", "🇹🇷", "Turkey", "تركيا", "تورکیا"],
+    ["98", "🇮🇷", "Iran", "إيران", "ئیران"],
+    ["963", "🇸🇾", "Syria", "سوريا", "سووریا"],
+    ["962", "🇯🇴", "Jordan", "الأردن", "ئوردن"],
+    ["961", "🇱🇧", "Lebanon", "لبنان", "لوبنان"],
+    ["966", "🇸🇦", "Saudi Arabia", "السعودية", "سعوودیە"],
+    ["971", "🇦🇪", "UAE", "الإمارات", "ئیمارات"],
+    ["965", "🇰🇼", "Kuwait", "الكويت", "کوەیت"],
+    ["974", "🇶🇦", "Qatar", "قطر", "قەتەر"],
+    ["973", "🇧🇭", "Bahrain", "البحرين", "بەحرەین"],
+    ["968", "🇴🇲", "Oman", "عُمان", "عومان"],
+    ["20", "🇪🇬", "Egypt", "مصر", "میسر"],
+    ["49", "🇩🇪", "Germany", "ألمانيا", "ئەلمانیا"],
+    ["44", "🇬🇧", "United Kingdom", "بريطانيا", "بەریتانیا"],
+    ["46", "🇸🇪", "Sweden", "السويد", "سوید"],
+    ["31", "🇳🇱", "Netherlands", "هولندا", "هۆلەندا"],
+    ["47", "🇳🇴", "Norway", "النرويج", "نەرویج"],
+    ["45", "🇩🇰", "Denmark", "الدنمارك", "دانیمارک"],
+    ["358", "🇫🇮", "Finland", "فنلندا", "فینلەندا"],
+    ["43", "🇦🇹", "Austria", "النمسا", "نەمسا"],
+    ["41", "🇨🇭", "Switzerland", "سويسرا", "سویسرا"],
+    ["32", "🇧🇪", "Belgium", "بلجيكا", "بەلجیکا"],
+    ["33", "🇫🇷", "France", "فرنسا", "فەرەنسا"],
+    ["39", "🇮🇹", "Italy", "إيطاليا", "ئیتالیا"],
+    ["30", "🇬🇷", "Greece", "اليونان", "یۆنان"],
+    ["1", "🇺🇸", "USA / Canada", "أمريكا / كندا", "ئەمریکا / کەنەدا"],
+    ["61", "🇦🇺", "Australia", "أستراليا", "ئوسترالیا"],
+    ["7", "🇷🇺", "Russia", "روسيا", "ڕووسیا"],
+    ["374", "🇦🇲", "Armenia", "أرمينيا", "ئەرمینیا"],
+    ["995", "🇬🇪", "Georgia", "جورجيا", "گورجستان"],
+    ["34", "🇪🇸", "Spain", "إسبانيا", "ئیسپانیا"],
+    ["351", "🇵🇹", "Portugal", "البرتغال", "پورتوگال"],
+    ["48", "🇵🇱", "Poland", "بولندا", "پۆڵەندا"],
+    ["380", "🇺🇦", "Ukraine", "أوكرانيا", "ئۆکرانیا"],
+    ["40", "🇷🇴", "Romania", "رومانيا", "ڕۆمانیا"],
+    ["359", "🇧🇬", "Bulgaria", "بلغاريا", "بولگاریا"],
+    ["36", "🇭🇺", "Hungary", "المجر", "هەنگاریا"],
+    ["420", "🇨🇿", "Czechia", "التشيك", "چیک"],
+    ["353", "🇮🇪", "Ireland", "أيرلندا", "ئیرلەندا"],
+    ["357", "🇨🇾", "Cyprus", "قبرص", "قوبرس"],
+    ["92", "🇵🇰", "Pakistan", "باكستان", "پاکستان"],
+    ["91", "🇮🇳", "India", "الهند", "هندستان"],
+    ["93", "🇦🇫", "Afghanistan", "أفغانستان", "ئەفغانستان"],
+    ["994", "🇦🇿", "Azerbaijan", "أذربيجان", "ئازەربایجان"],
+    ["7", "🇰🇿", "Kazakhstan", "كازاخستان", "کازاخستان"],
+    ["212", "🇲🇦", "Morocco", "المغرب", "مەغریب"],
+    ["213", "🇩🇿", "Algeria", "الجزائر", "جەزائیر"],
+    ["216", "🇹🇳", "Tunisia", "تونس", "تونس"],
+    ["218", "🇱🇾", "Libya", "ليبيا", "لیبیا"],
+    ["967", "🇾🇪", "Yemen", "اليمن", "یەمەن"],
+    ["249", "🇸🇩", "Sudan", "السودان", "سودان"],
+    ["970", "🇵🇸", "Palestine", "فلسطين", "فەلەستین"],
+    ["64", "🇳🇿", "New Zealand", "نيوزيلندا", "نیوزیلەندا"],
+    ["86", "🇨🇳", "China", "الصين", "چین"],
+    ["81", "🇯🇵", "Japan", "اليابان", "ژاپۆن"],
+    ["55", "🇧🇷", "Brazil", "البرازيل", "بەڕازیل"]];
+  const REGIONS = "AF93 AX358 AL355 DZ213 AS1 AD376 AO244 AI1 AG1 AR54 AM374 AW297 AU61 AT43 AZ994 BS1 BH973 BD880 BB1 BY375 BE32 BZ501 BJ229 BM1 BT975 BO591 BA387 BW267 BR55 IO246 VG1 BN673 BG359 BF226 BI257 KH855 CM237 CA1 CV238 BQ599 KY1 CF236 TD235 CL56 CN86 CX61 CC61 CO57 KM269 CG242 CD243 CK682 CR506 CI225 HR385 CU53 CW599 CY357 CZ420 DK45 DJ253 DM1 DO1 EC593 EG20 SV503 GQ240 ER291 EE372 SZ268 ET251 FK500 FO298 FJ679 FI358 FR33 GF594 PF689 GA241 GM220 GE995 DE49 GH233 GI350 GR30 GL299 GD1 GP590 GU1 GT502 GG44 GN224 GW245 GY592 HT509 HN504 HK852 HU36 IS354 IN91 ID62 IR98 IQ964 IE353 IM44 IL972 IT39 JM1 JP81 JE44 JO962 KZ7 KE254 KI686 XK383 KW965 KG996 LA856 LV371 LB961 LS266 LR231 LY218 LI423 LT370 LU352 MO853 MG261 MW265 MY60 MV960 ML223 MT356 MH692 MQ596 MR222 MU230 YT262 MX52 FM691 MD373 MC377 MN976 ME382 MS1 MA212 MZ258 MM95 NA264 NR674 NP977 NL31 NC687 NZ64 NI505 NE227 NG234 NU683 NF672 KP850 MK389 MP1 NO47 OM968 PK92 PW680 PS970 PA507 PG675 PY595 PE51 PH63 PL48 PT351 PR1 QA974 RE262 RO40 RU7 RW250 BL590 SH290 KN1 LC1 MF590 PM508 VC1 WS685 SM378 ST239 SA966 SN221 RS381 SC248 SL232 SG65 SX1 SK421 SI386 SB677 SO252 ZA27 KR82 SS211 ES34 LK94 SD249 SR597 SJ47 SE46 CH41 SY963 TW886 TJ992 TZ255 TH66 TL670 TG228 TK690 TO676 TT1 TN216 TR90 TM993 TC1 TV688 UG256 UA380 AE971 GB44 US1 UY598 UZ998 VI1 VU678 VA39 VE58 VN84 WF681 EH212 YE967 ZM260 ZW263".split(" ").map((x) => [x.slice(0, 2), x.slice(2)]);
+  const CC_OF = Object.fromEntries(REGIONS);
+  const flagOf = (iso) => String.fromCodePoint(...[...iso].map((ch) => 0x1F1E6 + ch.charCodeAt(0) - 65));
+  const isoOfFlag = (f) => [...f].map((ch) => String.fromCharCode(ch.codePointAt(0) - 0x1F1E6 + 65)).join("");
+  const TOP = COUNTRIES.map((c) => ({ iso: isoOfFlag(c[1]), cc: c[0], en: c[2], ar: c[3], ku: c[4] }));
+  const homeCC = () => (DATA && DATA.countryCode) || "964";
+  const isoFor = (cc) => (TOP.find((x) => x.cc === cc) || {}).iso || (REGIONS.find(([, c]) => c === cc) || [])[0] || "";
+  const dnCache = {};
+  const regionName = (iso, l) => { try { dnCache[l] = dnCache[l] || new Intl.DisplayNames([l], { type: "region" }); return dnCache[l].of(iso) || iso; } catch (_) { return iso; } };
+  const selCC = () => CC_OF[$("cc").value] || homeCC();
+  function showCC() { const iso = $("cc").value || isoFor(homeCC()); $("ccShow").textContent = flagOf(iso) + " +" + (CC_OF[iso] || homeCC()); }
+  function fillCC() {
+    const sel = $("cc"), cur = sel.value || isoFor(homeCC()), nl = lang === "de" ? "de" : lang === "en" ? "en" : "ar"; sel.textContent = "";
+    sel.setAttribute("aria-label", tr("ccLabel"));
+    const opt = (iso, name) => { const o = document.createElement("option"); o.value = iso; o.textContent = flagOf(iso) + " +" + CC_OF[iso] + "  " + name; return o; };
+    const g1 = document.createElement("optgroup"), g2 = document.createElement("optgroup"); g1.label = tr("ccTop"); g2.label = tr("ccAll");
+    for (const x of TOP) if (CC_OF[x.iso]) g1.append(opt(x.iso, lang === "de" ? regionName(x.iso, "de") : (x[lang] || x.en)));
+    const topSet = new Set(TOP.map((x) => x.iso));
+    REGIONS.filter(([iso]) => !topSet.has(iso)).map(([iso]) => [iso, regionName(iso, nl)]).sort((a, b) => a[1].localeCompare(b[1], nl)).forEach(([iso, n]) => g2.append(opt(iso, n)));
+    sel.append(g1, g2); sel.value = cur; if (!sel.value) sel.value = isoFor(homeCC()); showCC();
+  }
+  // The number used for the card key: typed with +/00 = international as before; otherwise the picked country decides.
+  function phoneKey(raw) {
+    const intl = /^\s*(\+|00|٠٠|۰۰)/.test(String(raw || "")), cc = selCC();
+    if (intl || cc === homeCC()) return norm(raw);
+    const n = norm(raw);
+    if (n.startsWith(cc) && n.length > cc.length + 6) return n;   // already includes the country code
+    return n ? cc + n : "";
+  }
+  function phoneForMsg() { const v = $("phone").value || "", cc = selCC(); return !v || cc === homeCC() || /^\s*(\+|00)/.test(v) ? v : "+" + cc + " " + v; }
+  // Typing +49… or 0049… picks the country by itself (longest matching calling code).
+  const ALL_CC = [...new Set(REGIONS.map(([, c]) => c))].sort((a, b) => b.length - a.length);
+  function watchCC() {
+    let d = String($("phone").value || "").replace(/[٠-٩]/g, (c) => "٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g, (c) => "۰۱۲۳۴۵۶۷۸۹".indexOf(c));
+    if (!/^\s*(\+|00)/.test(d)) return; d = d.replace(/\D/g, ""); if (d.startsWith("00")) d = d.slice(2);
+    const c = ALL_CC.find((x) => d.startsWith(x)); if (c && CC_OF[$("cc").value] !== c) { $("cc").value = isoFor(c); showCC(); }
   }
   async function hash(d, pin) {
     const enc = new TextEncoder();
@@ -1030,7 +1140,7 @@ footer p { margin: 0; }
     e.preventDefault();
     const err = $("err"), fail = (k) => { err.textContent = tr(k); err.hidden = false; };
     err.hidden = true;
-    const d = norm($("phone").value), pin = norm("1" + $("pin").value).slice(1);
+    const d = phoneKey($("phone").value), pin = norm("1" + $("pin").value).slice(1);
     if (d.length < 6) return fail("needPhone");
     if (pin.length !== 4) return fail("needPin");
     if (!loaded) return fail("loading");
@@ -1043,14 +1153,16 @@ footer p { margin: 0; }
   // Open the card by itself as soon as the phone number and the 4-digit PIN are both filled in (the button still works too).
   let autoTried = "";
   function autoOpen() {
-    const d = norm($("phone").value), pin = norm("1" + $("pin").value).slice(1);
+    const d = phoneKey($("phone").value), pin = norm("1" + $("pin").value).slice(1);
     if (d.length < 6 || pin.length !== 4 || !loaded || autoTried === d + "|" + pin) return;
     autoTried = d + "|" + pin; $("pin").blur(); const f = $("checkForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", { cancelable: true }));
   }
   $("pin").addEventListener("input", autoOpen);
+  $("phone").addEventListener("input", watchCC);
+  $("cc").addEventListener("change", () => { showCC(); autoTried = ""; autoOpen(); });
   $("phone").addEventListener("change", autoOpen);
   for (const b of document.querySelectorAll(".langs button")) b.addEventListener("click", () => setLang(b.dataset.lang));
-  $("phone").addEventListener("change", () => { const wa = DATA && DATA.contact && DATA.contact.wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + $("phone").value); });
+  $("phone").addEventListener("change", () => { const wa = DATA && DATA.contact && DATA.contact.wa; if (wa) $("forgot").href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(tr("forgotMsg") + phoneForMsg()); });
   // Add to home screen: Android shows an install button; iPhone shows a short tip. Works on the website, not inside claude.ai.
   let deferredPrompt = null;
   window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; $("installBox").hidden = false; $("installBtn").hidden = false; });
