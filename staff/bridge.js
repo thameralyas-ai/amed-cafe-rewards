@@ -129,6 +129,8 @@
     if (c.cardKey && c.cardKey !== key) FB.deleteDoc(FB.doc(fs, "cards/" + c.cardKey)).catch(() => {});
     if (!key) { if (c.cardKey) FB.updateDoc(FB.doc(fs, "customers/" + id), { cardKey: FB.deleteField() }).catch(() => {}); return; }
     await settle(FB.setDoc(FB.doc(fs, "cards/" + key), cardEntry(c)));
+    // Bring the member's Google Wallet card up to date too (does nothing if they never added it).
+    try { fetch("https://amed-wallet.amedcaferest.workers.dev/sync", { method: "POST", keepalive: true, headers: { "content-type": "application/json" }, body: JSON.stringify({ k: key }) }).catch(() => {}); } catch (_) {}
     if (c.cardKey !== key) FB.updateDoc(FB.doc(fs, "customers/" + id), { cardKey: key }).catch(() => {});
   }
   async function unpublish(id, old) {

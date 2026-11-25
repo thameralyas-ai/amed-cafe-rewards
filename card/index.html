@@ -230,6 +230,11 @@ body.rtl .lc-h { font-weight: 800; font-size: 2.3rem; }
 .lc-stats b { font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: 1.5rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
 .lc-stats span { font-size: .78rem; color: var(--lc-muted); }
 .lc-next { margin: 0; font-size: .86rem; color: var(--lc-soft); }
+.wallet { margin: 14px 0 4px; text-align: center; }
+.wallet-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; background: #000; color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; }
+.wallet-btn:active { transform: scale(.98); }
+.wallet-ico { width: 22px; height: 16px; border-radius: 3px; background: linear-gradient(#4285F4 0 25%, #34A853 25% 50%, #FBBC04 50% 75%, #EA4335 75%); }
+.wallet-sub { margin: 8px auto 0; max-width: 320px; font-size: 13px; opacity: .75; }
 .lc-qr { display: flex; align-items: center; gap: 14px; border: 1px solid var(--lc-border); border-radius: 18px; padding: 12px 14px; background: var(--lc-panel); }
 .lc-qrimg { background: #fff; border-radius: 10px; padding: 4px; flex: none; }
 .lc-qrimg img, .lc-qrimg canvas { width: 76px !important; height: 76px !important; display: block; }
@@ -436,7 +441,7 @@ footer p { margin: 0; }
       lvlHead: "بووم {level}!", lvlTitle: "تو بوویە {level}!", visitsN: "{n} سەرەدان", twMember: "ئەندام", twSilver: "زیڤین", twGold: "زێڕین", twPlatinum: "پلاتینی",
       toNextOr: "{n} سەرەدانێن دی یان {s} مۆرێن دی بۆ {level}", levelRowOr: "پشتی {n} سەرەدانان یان {s} مۆران",
       iconTip: "شیرەت: بۆ وەرگرتنا ئایکۆنا {level} یا نوو، Amed Cafe ژ شاشا سەرەکی لابە و دووبارە زێدە بکە.",
-      welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن",
+      welcomeName: "بخێر بێیەڤە، {name}", welcomeNoName: "بخێر بێیەڤە", welcomeSub: "ئەڤە کارتا تە یا دلسۆزیێ یە ل Amed Cafe.", signOut: "دەرکەفتن", walletAdd: "زێدە بکە بۆ Google Wallet", walletSub: "دەمێ تو نێزیکی کافێی دبی، کارتا تە دێ ل سەر مۆبایلا تە دیار بیت.",
       forgot: "ژمارا نهێنی ژبیرا تە چوو؟", forgotMsg: "سلاڤ ئامەد کافێ، ژمارا نهێنی یا کارتا دلسۆزیێ ژبیرا من چوو. ژمارا مۆبایلا من: ", joinBtn: "ب رێکا واتسئاپێ ببە ئەندام", joinMsg: "سلاڤ ئامەد کافێ! من دڤێت ببمە ئەندامێ کارتا دلسۆزیێ. ناڤێ من: ",
       install: "زێدە بکە بۆ سەر شاشا سەرەکی", iosTip: "ل سەر ئایفۆنێ: ل سەر «Share» بدە، پاشان «Add to Home Screen».",
       shareBtn: "ل ئینستاگرامێ پارڤە بکە", shareReady: "{reward} یا من ل ئامەد کافێ ئامادەیە!", shareProgress: "{s} ژ {n} مۆران ل ئامەد کافێ", shareSub: "{n} بکڕە، یا {nth} بێ بەرامبەرە", shareSaved: "وێنە هاتە پاشەکەفتکرن. ل ئینستاگرامێ بەلاڤ بکە و مە تاگ بکە!",
@@ -464,7 +469,7 @@ footer p { margin: 0; }
     toNextOr: "{n} more visits or {s} more stamps to {level}", levelRowOr: "after {n} visits or {s} stamps",
     lvlHead: "I'm now a {level}!", lvlTitle: "You're now a {level}!", visitsN: "{n} visits", twMember: "Member", twSilver: "Silver", twGold: "Gold", twPlatinum: "Platinum",
     storyHead: "My {reward} is ready!", storyAt: "at Amed Cafe", storyTitle: "Your {reward} is ready!", storyAsk: "Share the good news on your Instagram story and tag us.", storyShare: "Share to Instagram story", storyLater: "Not now", storySave: "Press and hold the picture, save it to your photos, then add it to your Instagram story.",
-    welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out",
+    welcomeName: "Welcome back, {name}", welcomeNoName: "Welcome back", welcomeSub: "Here is your Amed Cafe loyalty card.", signOut: "Sign out", walletAdd: "Add to Google Wallet", walletSub: "Your card pops up on your phone when you're near the cafe.",
     hi: "Hi {name},", sipsToGo: "{n} sips to go", sipToGo: "{n} sip to go", puffsToGo: "{n} puffs to go", puffToGo: "{n} puff to go", moreToGo: "{n} more to go", toGoTpl: "{n} more to go", until: "until your {reward}",
     nmSilver: "Silver", nmGold: "Gold", nmPlatinum: "Platinum",
     lvMember: "Member", lvSilver: "Silver member", lvGold: "Gold member", lvPlatinum: "Platinum member", lvGeneric: "{level} member",
@@ -479,7 +484,7 @@ footer p { margin: 0; }
     toNextOr: "Noch {n} Besuche oder {s} Stempel bis {level}", levelRowOr: "nach {n} Besuchen oder {s} Stempeln",
     lvlHead: "Ich bin jetzt {level}!", lvlTitle: "Sie sind jetzt {level}!", visitsN: "{n} Besuche", twMember: "Mitglied", twSilver: "Silber", twGold: "Gold", twPlatinum: "Platin",
     storyHead: "Meine Prämie ist bereit: {reward}!", storyAt: "im Amed Cafe", storyTitle: "Ihre Prämie ist bereit: {reward}!", storyAsk: "Teilen Sie die gute Nachricht in Ihrer Instagram-Story und markieren Sie uns.", storyShare: "In der Instagram-Story teilen", storyLater: "Nicht jetzt", storySave: "Halten Sie das Bild gedrückt, speichern Sie es in Ihren Fotos und fügen Sie es dann Ihrer Instagram-Story hinzu.",
-    welcomeName: "Willkommen zurück, {name}", welcomeNoName: "Willkommen zurück", welcomeSub: "Hier ist Ihre Amed-Cafe-Treuekarte.", signOut: "Abmelden",
+    welcomeName: "Willkommen zurück, {name}", welcomeNoName: "Willkommen zurück", welcomeSub: "Hier ist Ihre Amed-Cafe-Treuekarte.", signOut: "Abmelden", walletAdd: "Zu Google Wallet hinzufügen", walletSub: "Ihre Karte erscheint auf dem Handy, wenn Sie in der Nähe des Cafés sind.",
     hi: "Hallo {name},", moreToGo: "Noch {n}", toGoTpl: "Noch {n}", until: "bis zu Ihrer Prämie: {reward}",
     nmSilver: "Silber", nmGold: "Gold", nmPlatinum: "Platin",
     lvMember: "Mitglied", lvSilver: "Silber-Mitglied", lvGold: "Gold-Mitglied", lvPlatinum: "Platin-Mitglied", lvGeneric: "{level}-Mitglied",
@@ -495,7 +500,7 @@ footer p { margin: 0; }
     toNextOr: "باقي {n} زيارة أو {s} ختم للوصول إلى {level}", levelRowOr: "بعد {n} زيارة أو {s} ختم",
     lvlHead: "أصبحت {level}!", lvlTitle: "أصبحت الآن {level}!", visitsN: "{n} زيارة", twMember: "عضو", twSilver: "فضي", twGold: "ذهبي", twPlatinum: "بلاتيني",
     storyHead: "حصلت على {reward}!", storyAt: "في Amed Cafe", storyTitle: "لقد حصلت على {reward}!", storyAsk: "شارك الخبر على ستوري إنستغرام وأشِر إلينا.", storyShare: "شارك على ستوري إنستغرام", storyLater: "ليس الآن", storySave: "اضغط مطولاً على الصورة واحفظها في الصور، ثم أضفها إلى ستوري إنستغرام.",
-    welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج",
+    welcomeName: "أهلاً بعودتك يا {name}", welcomeNoName: "أهلاً بعودتك", welcomeSub: "هذه بطاقة الولاء الخاصة بك في Amed Cafe.", signOut: "تسجيل الخروج", walletAdd: "أضف إلى Google Wallet", walletSub: "تظهر بطاقتك على هاتفك عندما تكون بالقرب من المقهى.",
     hi: "مرحباً {name}،", toGoTpl: "باقي {n}", until: "على {reward}",
     nmSilver: "المستوى الفضي", nmGold: "المستوى الذهبي", nmPlatinum: "المستوى البلاتيني",
     lvMember: "عضو", lvSilver: "عضو فضي", lvGold: "عضو ذهبي", lvPlatinum: "عضو بلاتيني", lvGeneric: "عضو {level}",
@@ -521,6 +526,7 @@ footer p { margin: 0; }
   }
 
   let lang = "ku", DATA = null, loaded = false, lastEntry = null;
+  const WALLET = "https://amed-wallet.amedcaferest.workers.dev";
   const tr = (k, vars = {}) => String(T[lang][k] || T.en[k] || "").replace(/\{(\w+)\}/g, (m, v) => (v in vars ? vars[v] : m));
   const ordinal = (n) => lang === "de" ? n + "." : lang === "en" ? n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th") : lang === "ar" ? (ORD.ar[n] || String(n)) : n + "ەمین";
   const pname = (p) => (lang === "de" && DE_PROG[p.id] && DE_PROG[p.id].name) || (lang !== "en" && p["name_" + lang]) || p.name;
@@ -807,6 +813,15 @@ footer p { margin: 0; }
       try { new QRCode(q, { text: qrLink, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
+    // Google Wallet (Android): the card then shows up on the phone near the cafe, and its stamps stay up to date.
+    let wkey = null; try { wkey = localStorage.getItem("amed-session"); } catch (_) {}
+    if (wkey && /android/i.test(navigator.userAgent)) {
+      const wl = ["ku", "ar", "en"].includes(lang) ? lang : "en";
+      r.append(el("div", { class: "wallet" },
+        el("a", { class: "wallet-btn", href: WALLET + "/save?k=" + encodeURIComponent(wkey) + "&lang=" + wl, rel: "noopener" },
+          el("span", { class: "wallet-ico", "aria-hidden": "true" }), el("span", { dir: "auto", text: tr("walletAdd") })),
+        el("p", { class: "wallet-sub", text: tr("walletSub") })));
+    }
     if (!storyShown) { storyShown = true; setTimeout(async () => { await maybeLevelStory(entry); storyShown = false; maybeStory(entry); }, 700); }
     r.append(el("button", { type: "button", class: "signout", text: tr("signOut"), onclick: signOut }));
     if (scroll) window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
