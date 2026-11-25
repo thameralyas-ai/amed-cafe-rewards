@@ -1033,7 +1033,18 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   fetch("menu.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) { MENU = m; renderNew(); renderNav(); renderEvents(); } }).catch(() => {});
   fetch("instagram.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.posts)) { POSTS = d.posts.filter((x) => x && x.img && x.url); renderInsta(); renderNav(); } }).catch(() => {});
   fetch("reviews.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.reviews)) { REVIEWS = d.reviews.filter((x) => x && x.text && x.rating); RATING = d.rating > 0 && d.count > 0 ? { rating: +d.rating, count: +d.count } : null; renderReviews(); renderNav(); } }).catch(() => {});
-  fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } }).catch(() => {});
+  // Cafe info (reward programs, levels, offers, events): from the loyalty database (Firestore document public/meta,
+  // the same one the card page reads), fetched over Firestore's plain web API so the homepage doesn't need the
+  // large Firebase library. If that fails, the last published data.json is used instead.
+  const META_URL = "https://firestore.googleapis.com/v1/projects/amed-cafe/databases/(default)/documents/public/meta?key=AIzaSyBL1jUUtB8uQ26jTj3aoBjOJrRWHJuErVI";
+  const fsVal = (v) => !v ? null : "stringValue" in v ? v.stringValue : "integerValue" in v ? Number(v.integerValue) : "doubleValue" in v ? v.doubleValue
+    : "booleanValue" in v ? v.booleanValue : "timestampValue" in v ? v.timestampValue : "arrayValue" in v ? (v.arrayValue.values || []).map(fsVal)
+    : "mapValue" in v ? fsMap(v.mapValue.fields) : null;
+  const fsMap = (f) => Object.fromEntries(Object.entries(f || {}).map(([k, v]) => [k, fsVal(v)]));
+  const useData = (d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } };
+  fetch(META_URL, { cache: "no-store" }).then((r) => r.ok ? r.json() : Promise.reject(r.status))
+    .then((doc) => { if (!doc || !doc.fields) throw 0; useData(fsMap(doc.fields)); })
+    .catch(() => fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then(useData).catch(() => {}));
 })();
 </script>
 </body>

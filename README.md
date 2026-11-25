@@ -53,3 +53,7 @@ Served by GitHub Pages at **https://amedcaferest.com** (branch `main`, `CNAME`).
 - `robots.txt`: lets search engines read the site, skips staff-only things (staff-guide.html, data.json, tools/) and points to the sitemap.
 - `sitemap.xml`: the list of pages (homepage, menu, card) and main photos for Google. Update `<lastmod>` after big changes; add new pages here.
 - Google Search Console: verification meta tag `google-site-verification` is in the homepage <head> (keep it, or Search Console loses access). Sitemap to submit: sitemap.xml.
+
+## Cafe info from the loyalty database (branch `live-meta`, waiting for the Firebase switch)
+
+The homepage's "Amed rewards" and "Offers & events" read the cafe info (programs, levels, expiryDays, offers, events, contact) from the Firestore document `public/meta` (project `amed-cafe`) over Firestore's plain REST API, without the Firebase library, so the homepage stays light. If that fails, it falls back to `data.json`. Keep the fields of `public/meta` the same shape as `data.json`, and keep public reads of `public/meta` allowed.
