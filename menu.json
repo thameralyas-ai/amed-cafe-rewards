@@ -1263,6 +1263,28 @@
    }
   },
   {
+   "id": "student",
+   "img": "media/offers/student.png",
+   "title": {
+    "en": "Student discount",
+    "ar": "خصم الطلاب",
+    "ku": "داشکاندنا قوتابیان",
+    "de": "Studentenrabatt"
+   },
+   "when": {
+    "en": "Every day, all day",
+    "ar": "كل يوم، طوال اليوم",
+    "ku": "هەمی رۆژ، هەمی دەمی",
+    "de": "Täglich, den ganzen Tag"
+   },
+   "text": {
+    "en": "Show your student ID at the counter and get 15% off",
+    "ar": "أظهر هوية الطالب عند الكاونتر واحصل على خصم 15%",
+    "ku": "ناسناما خۆ یا قوتابیێ ل کاونتەری نیشان بدە و 15% داشکاندن وەربگرە",
+    "de": "Zeigen Sie Ihren Studentenausweis an der Theke und erhalten Sie 15 % Rabatt"
+   }
+  },
+  {
    "id": "match",
    "img": "media/offers/match.png",
    "title": {
