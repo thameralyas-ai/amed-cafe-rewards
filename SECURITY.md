@@ -10,7 +10,7 @@ Everything served by GitHub Pages is public, including JavaScript. **Access cont
 | `public/meta` | programs, levels, offers, events, cafe WhatsApp | read | read | write (fixed shape) |
 | `cards/<32-hex key>` | first name, member code, counts | **get one exact key** (no list) | list, write (bounds-checked) | write, larger corrections |
 | `gifts/<16-char code>` | gift card | get one exact code | create, redeem/void once | delete |
-| `reports/amed-<32 hex>` | nightly summary (written by Admin SDK) | get one exact id | — | — |
+| `reports/<secret id>` | nightly summary (written by the reports@ reader account) | get one exact id | — | write |
 | `customers/<phone>` | name, phone (doc id), PIN, history | — | read/write | read/write |
 | `settings/*` | loyalty settings | — | read | write |
 | `invites/*` | staff join codes, shift-PIN hashes | — | list | write |

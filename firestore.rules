@@ -14,7 +14,7 @@ rules_version = '2';
 //     so cards can't be downloaded in bulk or enumerated.
 //   * Member codes (6 characters) and referral codes are lookup labels, never credentials: no rule grants
 //     anything because a code is known.
-//   * Admin SDK / service accounts (e.g. the nightly backup job) bypass these rules by design.
+//   * The nightly backup/summary job signs in as the read-only reports@amedcaferest.com account (isReader).
 //
 // Test before publishing: see tests/firestore.rules.test.mjs (Firestore emulator) and SECURITY.md.
 // =====================================================================================================
@@ -50,6 +50,12 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/invites/$(code))
         && get(/databases/$(database)/documents/invites/$(code)).data.get('revoked', false) != true;
     }
+    // Read-only account used by the nightly backup and summary job (GitHub Actions). Kept from the
+    // rules that were live before this hardening.
+    function isReader() {
+      return signedIn() && request.auth.token.email == 'reports@amedcaferest.com'
+        && request.auth.token.firebase.sign_in_provider == 'password';
+    }
     function isStaff() {
       return isOwner()
         || (hasStaffDoc() && staffDoc().data.get('active', true) != false)
@@ -72,7 +78,8 @@ service cloud.firestore {
     // contact). Read by everyone. Written only by the owner's staff tool (bridge.js publishMeta), and only
     // in this exact shape: it can never carry customer cards or a foreign staff link.
     match /public/{docId} {
-      allow get, list: if true;
+      allow get: if true;
+      allow list: if false;
       allow create, update: if docId == 'meta' && isOwner() && validMeta(request.resource.data);
       allow delete: if false;
     }
@@ -130,38 +137,43 @@ service cloud.firestore {
     }
 
     // Gift cards: gifts/<16-char Crockford code>. The friend's gift page GETs one exact code (public);
-    // only staff list, create (always "active") and change status (active → redeemed / void, once).
+    // nobody may list them publicly. Staff create them (always "active") and redeem them once; only the
+    // owner can cancel (void). Never deleted.
     match /gifts/{code} {
       allow get: if code.matches('^[0-9A-HJKMNP-TV-Z]{16}$');
-      allow list: if isStaff();
-      allow create: if code.matches('^[0-9A-HJKMNP-TV-Z]{16}$') && isStaff() && validGift(request.resource.data);
-      allow update: if isStaff() && resource.data.status == 'active'
-        && (
-          (request.resource.data.status == 'redeemed'
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'redeemedAt', 'redeemedBy', 'redeemedByName'])
-            && request.resource.data.redeemedAt == request.time)
-          || (request.resource.data.status == 'void'
-            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'voidAt', 'voidBy'])
-            && request.resource.data.voidAt == request.time)
-        );
-      allow delete: if isOwner();
+      allow list: if isStaff() || isReader();
+      allow create: if isStaff() && code.matches('^[0-9A-HJKMNP-TV-Z]{16}$') && validGift(request.resource.data);
+      allow update: if resource.data.status == 'active' && (
+        (isStaff() && request.resource.data.status == 'redeemed'
+          && request.resource.data.redeemedAt == request.time
+          && request.resource.data.redeemedBy is string && request.resource.data.redeemedByName is string
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'redeemedAt', 'redeemedBy', 'redeemedByName']))
+        || (isOwner() && request.resource.data.status == 'void'
+          && request.resource.data.voidAt == request.time && request.resource.data.voidBy is string
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'voidAt', 'voidBy'])));
+      allow delete: if false;
     }
     function validGift(d) {
       return d.status == 'active' && d.schema == 1 && d.createdAt == request.time
         && d.keys().hasOnly(['items', 'occasion', 'occasionText', 'from', 'to', 'message', 'lang', 'createdBy',
                              'createdByName', 'status', 'schema', 'createdAt'])
-        && d.items is list && d.items.size() > 0 && d.items.size() <= 30
-        && optStr(d, 'occasion', 20) && optStr(d, 'occasionText', 40)
-        && d.from is string && d.from.size() > 0 && d.from.size() <= 40
-        && optStr(d, 'to', 40) && optStr(d, 'message', 140) && optStr(d, 'lang', 4)
-        && optStr(d, 'createdBy', 128) && optStr(d, 'createdByName', 80);
+        && d.items is list && d.items.size() >= 1 && d.items.size() <= 20
+        && d.occasion in ['birthday', 'eid', 'invite', 'other']
+        && d.from is string && d.from.size() <= 40
+        && d.get('to', '') is string && d.get('to', '').size() <= 40
+        && d.get('message', '') is string && d.get('message', '').size() <= 140
+        && d.get('occasionText', '') is string && d.get('occasionText', '').size() <= 40
+        && (d.occasion == 'other' || d.get('occasionText', '') == '')
+        && d.lang in ['ku', 'ar', 'en', 'de']
+        && d.createdBy is string && d.createdByName is string;
     }
 
-    // Nightly summary written by the backup job (Admin SDK). The phone summary task GETs one exact,
-    // unguessable id; listing and client writes are refused.
+    // Nightly summary, left by the nightly job (reader account) under a secret id and read by the owner's
+    // phone summary task. Never listable.
     match /reports/{id} {
-      allow get: if id.matches('^amed-[0-9a-f]{32}$');
-      allow list, write: if false;
+      allow get: if true;
+      allow list: if false;
+      allow write: if isReader() || isOwner();
     }
 
     // =================================================================================================
@@ -178,7 +190,7 @@ service cloud.firestore {
 
     // Members: the document id is the member's phone number, and it holds the PIN — staff only.
     match /customers/{id} {
-      allow read: if isStaff();
+      allow read: if isStaff() || isReader();
       allow create: if isStaff() && id.matches('^[0-9]{5,20}$') && validCustomer(request.resource.data);
       allow update: if isStaff() && validCustomer(request.resource.data)
                     && (isOwner() || customerDeltaOk(resource.data, request.resource.data));
@@ -202,14 +214,14 @@ service cloud.firestore {
 
     // Day-by-day activity log (stamps, undo, rewards) for reports and daily caps.
     match /activity/{id} {
-      allow read: if isStaff();
+      allow read: if isStaff() || isReader();
       allow create, update: if isStaff() && request.resource.data.keys().size() <= 50;
       allow delete: if isOwner();
     }
 
     // Loyalty settings (programs, levels, offers...). Staff read; only the owner changes them.
     match /settings/{id} {
-      allow read: if isStaff();
+      allow read: if isStaff() || isReader();
       allow write: if isOwner();
     }
 
@@ -217,12 +229,12 @@ service cloud.firestore {
     // it); only staff may list them; only the owner creates or changes them.
     match /invites/{code} {
       allow get: if signedIn();
-      allow list: if isStaff();
+      allow list: if isStaff() || isReader();
       allow write: if isOwner();
     }
 
-    // Legacy: a staff member's own claim of a join code. Only for themselves, only an active code,
-    // and they can't later swap it for a different code.
+    // Legacy: a staff member's own claim of a join code. Only for themselves and only an active code
+    // (joining again with a new code after the old one was switched off still works).
     match /staffclaims/{claimUid} {
       allow read: if isStaff() || (signedIn() && uid() == claimUid);
       allow create: if signedIn() && uid() == claimUid
@@ -231,10 +243,11 @@ service cloud.firestore {
         && inviteActive(request.resource.data.code)
         && optStr(request.resource.data, 'name', 80);
       allow update: if signedIn() && uid() == claimUid
-        && request.resource.data.code == resource.data.code
+        && request.resource.data.keys().hasOnly(['uid', 'code', 'name', 't'])
         && request.resource.data.uid == claimUid
-        && request.resource.data.keys().hasOnly(['uid', 'code', 'name', 't']);
-      allow delete: if isOwner() || (signedIn() && uid() == claimUid);
+        && inviteActive(request.resource.data.code)
+        && optStr(request.resource.data, 'name', 80);
+      allow delete: if isOwner();
     }
 
     // Owner check used by the staff tool (bridge.js ownerCheck): readable only by the owner.

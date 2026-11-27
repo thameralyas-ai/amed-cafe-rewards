@@ -39,6 +39,8 @@ const owner = () => env.authenticatedContext("ownerUid", { email: "amedcaferest@
 const staff = () => env.authenticatedContext("staff1", { email: "rawa@example.com", email_verified: true }).firestore();
 const legacy = () => env.authenticatedContext("legacy1", { email: "ali@example.com", email_verified: true }).firestore();
 const stranger = () => env.authenticatedContext("evil", { email: "evil@example.com", email_verified: true }).firestore();
+const reader = () => env.authenticatedContext("readerUid", { email: "reports@amedcaferest.com", email_verified: true, firebase: { sign_in_provider: "password" } }).firestore();
+const fakeReader = () => env.authenticatedContext("x", { email: "reports@amedcaferest.com", email_verified: true, firebase: { sign_in_provider: "google.com" } }).firestore();
 const fakeOwner = () => env.authenticatedContext("evil2", { email: "amedcaferest@gmail.com", email_verified: false }).firestore();
 
 // ---- customers (no sign-in) ----
@@ -54,6 +56,21 @@ test("gift page can get one gift", () => assertSucceeds(getDoc(doc(anon(), "gift
 test("gifts can't be listed anonymously", () => assertFails(getDocs(collection(anon(), "gifts"))));
 test("nightly summary report can be fetched by id", () => assertSucceeds(getDoc(doc(anon(), "reports/amed-13653d65c4d1ffb3da62d21cf7d6dc16"))));
 test("reports can't be listed", () => assertFails(getDocs(collection(anon(), "reports"))));
+test("nightly job (reader) reads members, activity, settings, invites, gifts and writes the report", async () => {
+  const r = reader();
+  await assertSucceeds(getDocs(collection(r, "customers")));
+  await assertSucceeds(getDocs(collection(r, "activity")));
+  await assertSucceeds(getDoc(doc(r, "settings/card")));
+  await assertSucceeds(getDocs(collection(r, "invites")));
+  await assertSucceeds(getDocs(collection(r, "gifts")));
+  await assertSucceeds(setDoc(doc(r, "reports/amed-13653d65c4d1ffb3da62d21cf7d6dc16"), { text: "new", day: "2026-11-27", t: 1 }));
+});
+test("reader can't write members or cards; reader e-mail via Google isn't the reader", async () => {
+  await assertFails(updateDoc(doc(reader(), "customers/07501112222"), { visits: 4 }));
+  await assertFails(setDoc(doc(reader(), "cards/" + KEY), card()));
+  await assertFails(getDocs(collection(fakeReader(), "customers")));
+  await assertFails(setDoc(doc(anon(), "reports/amed-x"), { text: "spam" }));
+});
 test("customers (phones + PINs) are never readable without staff", async () => {
   await assertFails(getDoc(doc(anon(), "customers/07501112222")));
   await assertFails(getDocs(collection(stranger(), "customers")));
@@ -130,6 +147,14 @@ test("staff create, then redeem a gift once", async () => {
   await assertSucceeds(setDoc(doc(staff(), "gifts/" + code), { items: [{ name: "Latte", qty: 1 }], occasion: "birthday", occasionText: "", from: "A", to: "B", message: "", lang: "en", createdBy: "x", createdByName: "x", status: "active", schema: 1, createdAt: serverTimestamp() }));
   await assertSucceeds(updateDoc(doc(staff(), "gifts/" + code), { status: "redeemed", redeemedAt: serverTimestamp(), redeemedBy: "x", redeemedByName: "x" }));
   await assertFails(updateDoc(doc(staff(), "gifts/" + code), { status: "active" }));
+});
+test("only the owner can cancel a gift", async () => {
+  await assertFails(updateDoc(doc(staff(), "gifts/" + GIFT), { status: "void", voidAt: serverTimestamp(), voidBy: "x" }));
+  await assertSucceeds(updateDoc(doc(owner(), "gifts/" + GIFT), { status: "void", voidAt: serverTimestamp(), voidBy: "x" }));
+});
+test("staff can re-join with a new active code", async () => {
+  await env.withSecurityRulesDisabled((c) => setDoc(doc(c.firestore(), "invites/AMED-NEWCODE1"), { name: "Ali", revoked: false }));
+  await assertSucceeds(setDoc(doc(legacy(), "staffclaims/legacy1"), { uid: "legacy1", code: "AMED-NEWCODE1", name: "Ali", t: 2 }));
 });
 test("strangers can't create or redeem gifts", async () => {
   await assertFails(updateDoc(doc(stranger(), "gifts/" + GIFT), { status: "redeemed", redeemedAt: serverTimestamp(), redeemedBy: "x", redeemedByName: "x" }));
