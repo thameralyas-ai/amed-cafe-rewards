@@ -1,0 +1,251 @@
+rules_version = '2';
+
+// =====================================================================================================
+// Amed Cafe — Firestore Security Rules (project: amed-cafe)
+//
+// Principles
+//   * Default deny: anything not matched below is refused (see the catch-all at the end).
+//   * The browser is not trusted. Staff permissions shown in the staff tool (stamp, undo, reports...) are
+//     UX; these rules are the real boundary. Staff = a Firebase-Auth user (Google sign-in) who is the
+//     owner, has a /staff/{uid} document (added in the Firebase Console / Admin SDK), or — legacy, see
+//     legacyClaim() — has claimed a valid, active staff join code.
+//   * Customers never sign in. A customer's card is cards/<key>, key = PBKDF2-SHA256(PIN, "amed-cafe:" +
+//     phone, 100 000 rounds, 128 bits). Anyone may GET one exact key; nobody but staff may LIST cards,
+//     so cards can't be downloaded in bulk or enumerated.
+//   * Member codes (6 characters) and referral codes are lookup labels, never credentials: no rule grants
+//     anything because a code is known.
+//   * Admin SDK / service accounts (e.g. the nightly backup job) bypass these rules by design.
+//
+// Test before publishing: see tests/firestore.rules.test.mjs (Firestore emulator) and SECURITY.md.
+// =====================================================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- identity helpers ----------
+    function signedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function db(path) { return /databases/$(database)/documents/$(path); }
+
+    // The cafe's own Google account (the shared counter tablet signs in with it).
+    function ownerEmail() {
+      return signedIn()
+        && request.auth.token.email == 'amedcaferest@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+    function staffDoc() { return get(/databases/$(database)/documents/staff/$(uid())); }
+    function hasStaffDoc() { return signedIn() && exists(/databases/$(database)/documents/staff/$(uid())); }
+    function isOwner() {
+      return ownerEmail() || (hasStaffDoc() && staffDoc().data.get('role', '') == 'owner');
+    }
+    // LEGACY staff onboarding (kept so current staff phones keep working): the user created
+    // staffclaims/{uid} with a join code, and that code's invite exists and is not switched off.
+    // Once every staff member has a /staff/{uid} document, delete "|| legacyClaim()" in isStaff().
+    function legacyClaim() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/staffclaims/$(uid()))
+        && inviteActive(get(/databases/$(database)/documents/staffclaims/$(uid())).data.get('code', ''));
+    }
+    function inviteActive(code) {
+      return code is string && code.matches('^AMED-[A-Z0-9]{4,12}$')
+        && exists(/databases/$(database)/documents/invites/$(code))
+        && get(/databases/$(database)/documents/invites/$(code)).data.get('revoked', false) != true;
+    }
+    function isStaff() {
+      return isOwner()
+        || (hasStaffDoc() && staffDoc().data.get('active', true) != false)
+        || legacyClaim();
+    }
+
+    // ---------- value helpers ----------
+    function optInt(d, k, lo, hi) { return !(k in d) || d[k] == null || (d[k] is int && d[k] >= lo && d[k] <= hi); }
+    function optStr(d, k, maxLen) { return !(k in d) || d[k] == null || (d[k] is string && d[k].size() <= maxLen); }
+    function optMap(d, k) { return !(k in d) || d[k] == null || d[k] is map; }
+    function optList(d, k, maxLen) { return !(k in d) || d[k] == null || (d[k] is list && d[k].size() <= maxLen); }
+    function optCode(d, k) { return !(k in d) || d[k] == null || (d[k] is string && d[k].matches('^[A-Z0-9]{6}$')); }
+    function nowishMs(v) { return v is int && v > 0 && v <= request.time.toMillis() + 86400000; }
+
+    // =================================================================================================
+    // PUBLIC
+    // =================================================================================================
+
+    // Non-sensitive cafe info for the homepage and the card page (programs, levels, offers, events,
+    // contact). Read by everyone. Written only by the owner's staff tool (bridge.js publishMeta), and only
+    // in this exact shape: it can never carry customer cards or a foreign staff link.
+    match /public/{docId} {
+      allow get, list: if true;
+      allow create, update: if docId == 'meta' && isOwner() && validMeta(request.resource.data);
+      allow delete: if false;
+    }
+    function validMeta(d) {
+      return d.keys().hasOnly(['updated', 'cafe', 'countryCode', 'staffLink', 'expiryDays', 'programs',
+                               'showPerks', 'levels', 'rules', 'offers', 'events', 'contact'])
+        && optInt(d, 'updated', 0, 9999999999999)
+        && optStr(d, 'cafe', 80)
+        && optStr(d, 'countryCode', 4)
+        && (!('staffLink' in d) || d.staffLink == 'https://amedcaferest.com/staff/')
+        && optInt(d, 'expiryDays', 0, 3650)
+        && optList(d, 'programs', 12) && optList(d, 'levels', 12)
+        && optList(d, 'offers', 50) && optList(d, 'events', 12)
+        && optMap(d, 'rules') && optMap(d, 'contact');
+    }
+
+    // Customer cards: cards/<32 hex chars>. GET of one exact key is public (that key is the customer's
+    // "password"); LIST is staff only. Writes are staff only and schema-checked.
+    match /cards/{cardHash} {
+      allow get: if cardHash.matches('^[0-9a-f]{32}$');
+      allow list: if isStaff();
+      allow create: if cardHash.matches('^[0-9a-f]{32}$') && isStaff() && validCard(request.resource.data);
+      allow update: if cardHash.matches('^[0-9a-f]{32}$') && isStaff() && validCard(request.resource.data)
+                    && (isOwner() || cardDeltaOk(resource.data, request.resource.data));
+      allow delete: if isStaff();
+    }
+    function validCard(d) {
+      return d.keys().hasOnly(['fn', 'code', 'v', 'yv', 'lv', 'p', 'u', 'ev'])
+        && optStr(d, 'fn', 24)
+        && optCode(d, 'code')
+        && optInt(d, 'v', 0, 100000)
+        && optMap(d, 'yv')
+        && optInt(d, 'lv', 0, 9999999999999)
+        && ('p' in d) && d.p is map && d.p.size() <= 12
+        && progOk(d.p, 'drinks') && progOk(d.p, 'shisha')
+        && optInt(d, 'u', 0, 9999999999999)
+        && optMap(d, 'ev');
+    }
+    // [stamps, rewards ready, rewards collected, total stamps, next expiry (ms)] — non-negative integers.
+    function progOk(p, id) {
+      return !(id in p) || (p[id] is list && p[id].size() == 5
+        && p[id][0] is int && p[id][0] >= 0 && p[id][0] <= 1000
+        && p[id][1] is int && p[id][1] >= 0 && p[id][1] <= 1000
+        && p[id][2] is int && p[id][2] >= 0 && p[id][2] <= 100000
+        && p[id][3] is int && p[id][3] >= 0 && p[id][3] <= 1000000
+        && p[id][4] is int && p[id][4] >= 0);
+    }
+    // Non-owner staff can't inflate a card in one write: at most +25 visits, +100 total stamps per program.
+    function cardDeltaOk(o, n) {
+      return n.get('v', 0) <= o.get('v', 0) + 25
+        && progDeltaOk(o.p, n.p, 'drinks') && progDeltaOk(o.p, n.p, 'shisha');
+    }
+    function progDeltaOk(op, np, id) {
+      return !(id in np) || !(id in op) || np[id][3] <= op[id][3] + 100;
+    }
+
+    // Gift cards: gifts/<16-char Crockford code>. The friend's gift page GETs one exact code (public);
+    // only staff list, create (always "active") and change status (active → redeemed / void, once).
+    match /gifts/{code} {
+      allow get: if code.matches('^[0-9A-HJKMNP-TV-Z]{16}$');
+      allow list: if isStaff();
+      allow create: if code.matches('^[0-9A-HJKMNP-TV-Z]{16}$') && isStaff() && validGift(request.resource.data);
+      allow update: if isStaff() && resource.data.status == 'active'
+        && (
+          (request.resource.data.status == 'redeemed'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'redeemedAt', 'redeemedBy', 'redeemedByName'])
+            && request.resource.data.redeemedAt == request.time)
+          || (request.resource.data.status == 'void'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'voidAt', 'voidBy'])
+            && request.resource.data.voidAt == request.time)
+        );
+      allow delete: if isOwner();
+    }
+    function validGift(d) {
+      return d.status == 'active' && d.schema == 1 && d.createdAt == request.time
+        && d.keys().hasOnly(['items', 'occasion', 'occasionText', 'from', 'to', 'message', 'lang', 'createdBy',
+                             'createdByName', 'status', 'schema', 'createdAt'])
+        && d.items is list && d.items.size() > 0 && d.items.size() <= 30
+        && optStr(d, 'occasion', 20) && optStr(d, 'occasionText', 40)
+        && d.from is string && d.from.size() > 0 && d.from.size() <= 40
+        && optStr(d, 'to', 40) && optStr(d, 'message', 140) && optStr(d, 'lang', 4)
+        && optStr(d, 'createdBy', 128) && optStr(d, 'createdByName', 80);
+    }
+
+    // Nightly summary written by the backup job (Admin SDK). The phone summary task GETs one exact,
+    // unguessable id; listing and client writes are refused.
+    match /reports/{id} {
+      allow get: if id.matches('^amed-[0-9a-f]{32}$');
+      allow list, write: if false;
+    }
+
+    // =================================================================================================
+    // STAFF ONLY
+    // =================================================================================================
+
+    // Staff allowlist, managed ONLY in the Firebase Console / Admin SDK (never by a browser).
+    // Document id = the staff member's Firebase Auth uid. Fields: name (string), active (bool),
+    // role ('staff' | 'owner').
+    match /staff/{staffUid} {
+      allow read: if signedIn() && uid() == staffUid;
+      allow write: if false;
+    }
+
+    // Members: the document id is the member's phone number, and it holds the PIN — staff only.
+    match /customers/{id} {
+      allow read: if isStaff();
+      allow create: if isStaff() && id.matches('^[0-9]{5,20}$') && validCustomer(request.resource.data);
+      allow update: if isStaff() && validCustomer(request.resource.data)
+                    && (isOwner() || customerDeltaOk(resource.data, request.resource.data));
+      allow delete: if isStaff();
+    }
+    function validCustomer(d) {
+      return optStr(d, 'name', 80)
+        && (!('pin' in d) || d.pin == null || d.pin == ''
+            || (d.pin is string && d.pin.matches('^[0-9]{4}$'))
+            || (d.pin is int && d.pin >= 0 && d.pin <= 9999))
+        && optCode(d, 'code')
+        && optInt(d, 'visits', 0, 100000)
+        && optMap(d, 'cards') && optMap(d, 'yearVisits')
+        && optList(d, 'log', 2000)
+        && (!('cardKey' in d) || d.cardKey == null || (d.cardKey is string && d.cardKey.matches('^[0-9a-f]{32}$')));
+    }
+    function customerDeltaOk(o, n) {
+      return n.get('visits', 0) == null || o.get('visits', 0) == null
+        || n.get('visits', 0) <= o.get('visits', 0) + 25;
+    }
+
+    // Day-by-day activity log (stamps, undo, rewards) for reports and daily caps.
+    match /activity/{id} {
+      allow read: if isStaff();
+      allow create, update: if isStaff() && request.resource.data.keys().size() <= 50;
+      allow delete: if isOwner();
+    }
+
+    // Loyalty settings (programs, levels, offers...). Staff read; only the owner changes them.
+    match /settings/{id} {
+      allow read: if isStaff();
+      allow write: if isOwner();
+    }
+
+    // Staff join codes + shift PINs (pinHash). Any signed-in user may GET one exact code (to join with
+    // it); only staff may list them; only the owner creates or changes them.
+    match /invites/{code} {
+      allow get: if signedIn();
+      allow list: if isStaff();
+      allow write: if isOwner();
+    }
+
+    // Legacy: a staff member's own claim of a join code. Only for themselves, only an active code,
+    // and they can't later swap it for a different code.
+    match /staffclaims/{claimUid} {
+      allow read: if isStaff() || (signedIn() && uid() == claimUid);
+      allow create: if signedIn() && uid() == claimUid
+        && request.resource.data.keys().hasOnly(['uid', 'code', 'name', 't'])
+        && request.resource.data.uid == claimUid
+        && inviteActive(request.resource.data.code)
+        && optStr(request.resource.data, 'name', 80);
+      allow update: if signedIn() && uid() == claimUid
+        && request.resource.data.code == resource.data.code
+        && request.resource.data.uid == claimUid
+        && request.resource.data.keys().hasOnly(['uid', 'code', 'name', 't']);
+      allow delete: if isOwner() || (signedIn() && uid() == claimUid);
+    }
+
+    // Owner check used by the staff tool (bridge.js ownerCheck): readable only by the owner.
+    match /private/{id} {
+      allow read: if isOwner();
+      allow write: if false;
+    }
+
+    // ---------- default deny ----------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

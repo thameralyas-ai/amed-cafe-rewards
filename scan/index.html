@@ -52,7 +52,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" async></script>
 <script>
 (() => {
-  const STAFF_ORIGIN = "https://claude.ai", LIVE_HOST = "https://ntfy.sh";
+  // The staff tool runs on this same website, so scans are only ever sent to (and answers only accepted from)
+  // this origin. The old claude.ai origin, the "*" wildcard and the public ntfy.sh relay were removed: they could
+  // hand member codes to any page that opened the scanner, or to anyone watching the relay topic.
+  const STAFF_ORIGIN = location.origin, LIVE_HOST = "https://ntfy.sh";
   const T = {
     en: { linkOk: "✓ Connected to the staff tool", linkNo: "✗ Not connected", noAnswer: "The staff tool isn't answering. Keep the staff tool open in its own tab (refresh it once), then come back here.", k_stamped: "Stamp added ✓", k_won: "Reward earned! 🎁", k_opened: "Card opened in the staff tool", k_ready: "A free reward is waiting — give it first. Not stamped.", k_dup: "Already stamped a moment ago. Not stamped again.", k_notenrolled: "Not on this card. Not stamped.", k_unknown: "No member has this code.", k_notmember: "Not an Amed Cafe member card.", k_notstamped: "Not stamped — check the staff tool (opening hours or daily limit).", title: "Card scanner", point: "Point the camera at the QR code on the customer's phone.", allow: "Allow the camera so the scanner can read the code.", denied: "The camera is blocked. In the browser, tap the lock icon next to the address (or open Settings → Site settings → Camera), allow the camera for amedcaferest.com, then reload.", notMember: "This QR code is not an Amed Cafe member card.", found: "Card found: {code}", stamped: "Done ✓ — ready for the next customer", noLink: "Not connected to the staff tool. Close this tab, go to the staff tool tab and tap Scan there.", backHint: "Go back to the staff tool tab — the card is open there.", openCard: "Open card", sw: "Switch camera", close: "Close", noCam: "No camera found on this device." },
     ar: { linkOk: "✓ متصل بأداة الموظفين", linkNo: "✗ غير متصل", noAnswer: "أداة الموظفين لا تستجيب. أبقِها مفتوحة في تبويبها (حدّثها مرة واحدة)، ثم عد إلى هنا.", k_stamped: "تمت إضافة الختم ✓", k_won: "ربح مكافأة! 🎁", k_opened: "فُتحت البطاقة في أداة الموظفين", k_ready: "لديه مكافأة مجانية جاهزة — قدّمها أولاً. لم يُضف ختم.", k_dup: "تم الختم قبل لحظات. لم يُضف ختم آخر.", k_notenrolled: "غير مسجّل في هذه البطاقة. لم يُضف ختم.", k_unknown: "لا يوجد عضو بهذا الرمز.", k_notmember: "ليست بطاقة عضوية لمقهى أميد.", k_notstamped: "لم يُضف ختم — راجع أداة الموظفين (ساعات العمل أو الحد اليومي).", title: "ماسح البطاقات", point: "وجّه الكاميرا نحو رمز QR على هاتف الزبون.", allow: "اسمح باستخدام الكاميرا ليقرأ الماسح الرمز.", denied: "الكاميرا محظورة. في المتصفح اضغط على رمز القفل بجانب العنوان (أو الإعدادات ← إعدادات المواقع ← الكاميرا)، واسمح بالكاميرا لموقع amedcaferest.com، ثم أعد التحميل.", notMember: "هذا الرمز ليس بطاقة عضوية لمقهى أميد.", found: "تم العثور على البطاقة: {code}", stamped: "تم ✓ — جاهز للزبون التالي", noLink: "غير متصل بأداة الموظفين. أغلق هذا التبويب، واذهب إلى تبويب أداة الموظفين واضغط «مسح» من هناك.", backHint: "ارجع إلى تبويب أداة الموظفين — البطاقة مفتوحة هناك.", openCard: "افتح البطاقة", sw: "تبديل الكاميرا", close: "إغلاق", noCam: "لا توجد كاميرا في هذا الجهاز." },
@@ -103,7 +106,7 @@
   }
   // Link to the staff tool. Inside Claude the staff tool can't keep a tab link, so scans travel through ntfy.sh on a
   // private topic made from a random counter key (k) that only this tablet knows. Only codes and counts are sent.
-  const K = /^[0-9a-f]{24}$/.test(qs.get("k") || "") ? qs.get("k") : "";
+  const K = "";   // relay retired (see STAFF_ORIGIN); the ?k= parameter is ignored
   const waits = new Map(); let relayEs = null, relayOk = false, pongAt = 0;
   function relayListen() {
     if (!K || relayEs || !window.EventSource) return;
@@ -124,11 +127,11 @@
     const op = window.opener && !window.opener.closed ? window.opener : null;
     const answer = new Promise((res) => {
       const done1 = (d) => { window.removeEventListener("message", on); waits.delete(rid); clearTimeout(to); res(d); };
-      const on = (e) => { const d = e.data; if (!op || e.source !== op || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; done1(d); };
+      const on = (e) => { const d = e.data; if (!op || e.source !== op || e.origin !== STAFF_ORIGIN || !d || d.type !== "amed-scan-result" || d.rid !== rid) return; done1(d); };
       window.addEventListener("message", on); waits.set(rid, done1);
       const to = setTimeout(() => done1(null), ms);
     });
-    if (op) { try { op.postMessage(req, STAFF_ORIGIN); } catch (_) {} try { op.postMessage(req, "*"); } catch (_) {} }
+    if (op) { try { op.postMessage(req, STAFF_ORIGIN); } catch (_) {} }
     if (K) { try { await relaySend(req); } catch (_) {} }
     return answer;
   }
