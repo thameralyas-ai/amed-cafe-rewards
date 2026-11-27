@@ -58,11 +58,11 @@ C=[
   (("With mineral water","مع مياه معدنية","دگەل ئاڤا سروشتی"),1500),
   (("With sparkling water","مع مياه غازية","دگەل ئاڤا گازی"),2000),
   (("With milk","مع الحليب","دگەل شیری"),2500)],
-  {"new":True,"banner":"media/new/asary-bottles-real.jpg",
+  {"new":True,"banner":"media/new/asary-bottles-real.webp",
    "desc":{"en":"Natural fruit syrup: 60% fruit, 75% less fructose sugar. Choose your flavour:",
            "ar":"شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. اختر نكهتك:",
            "ku":"شەربەتا مێوێن سروشتی: 60% مێوە، و 75% شەکرا فرەکتۆزێ کێمتر. تاما خۆ هەلبژێرە:"},
-   "flavours":[{"name":dict(zip(("en","ar","ku"),n)),"img":"media/new/flavours/"+f+".jpg"} for f,n in [
+   "flavours":[{"name":dict(zip(("en","ar","ku"),n)),"img":"media/new/flavours/"+f+".webp"} for f,n in [
      ("peach",("Peach","خوخ","خۆخ")),
      ("lemon-lime",("Lemon & lime","ليمون و لايم","لیمون و لایم")),
      ("cherry",("Cherry","كرز","گێلاس")),
@@ -106,7 +106,7 @@ C=[
   (("Red Bull","ريد بول","رێد بوڵ"),2500,[("Regular","عادي","نورمال",2500),("Mexican","مكسيكي","مەکسیکی",3000)])]),
  # Shisha flavours 6,000 (Thamir, 11 Nov 2026: shisha + water + tea = 6,750).
  # Shisha photo: Amed's own photo from Instagram, cropped to the shisha only (no customer). smoke = where the puffs start (% of width, % of height).
- ("shisha",("Shisha","أركيلة","نێرگەلە"),"media/drinks/shisha-photo.jpg",[
+ ("shisha",("Shisha","أركيلة","نێرگەلە"),"media/drinks/shisha-photo.webp",[
   (("Gum & mint","علك ونعناع","علک و نەعناع"),6000),
   (("Lemon & mint","ليمون ونعناع","لەیمون و نەعناع"),6000),
   (("Double apple","تفاحتين","دوو سێڤ"),6000),
@@ -156,31 +156,33 @@ GALLERY=[
 # price/was in IQD (optional); link: "card" = button to the loyalty card page.
 T3=lambda en,ar,ku:{"en":en,"ar":ar,"ku":ku}
 OFFERS=[
- {"id":"shisha-combo","img":"media/offers/combo.png","price":5000,"was":6750,
+ {"id":"shisha-combo","img":"media/offers/combo.webp","price":5000,"was":6750,
   "title":T3("Shisha combo","عرض الأركيلة","پێشکێشیا نێرگەلێ"),
   "when":T3("9:00 AM – 5:00 PM","9:00 صباحاً – 5:00 مساءً","9:00 سپێدێ – 5:00 ئێڤارێ"),
   "text":T3("A shisha + 1 bottle of water + 1 tea","أركيلة + قنينة ماء + شاي","نێرگەلەک + بوتلەکا ئاڤێ + چایەک")},
- {"id":"dice","img":"media/offers/dice.png",
+ {"id":"dice","img":"media/offers/dice.webp",
   "title":T3("Roll the dice","ارمِ النرد","زارێ بهاڤێژە"),
   "text":T3("Roll a double six and get 50% off your bill","احصل على دبل ستة واحصل على خصم 50% على فاتورتك","دوو شەشان بینە و 50% ژ حسابا خۆ کێم بکە")},
- {"id":"card","img":"media/offers/card.png","link":"card",
+ {"id":"card","img":"media/offers/card.webp","link":"card",
   "title":T3("Loyalty card","بطاقة الولاء","کارتا ئامەد"),
   "text":T3("Get our loyalty card: your 8th shisha is free","احصل على بطاقة الولاء: الأركيلة الثامنة مجاناً","کارتا مە وەرگرە: نێرگەلا 8ەمین بێ بەرامبەرە")},
- {"id":"student","img":"media/offers/student.png",
+ {"id":"student","img":"media/offers/student.webp",
   "title":T3("Student discount","خصم الطلاب","داشکاندنا قوتابیان"),
   "when":T3("Every day, all day","كل يوم، طوال اليوم","هەمی رۆژ، هەمی دەمی"),
   "text":T3("Show your student ID at the counter and get 15% off","أظهر هوية الطالب عند الكاونتر واحصل على خصم 15%","ناسناما خۆ یا قوتابیێ ل کاونتەری نیشان بدە و 15% داشکاندن وەربگرە")},
- {"id":"gift","img":"media/offers/gift.png","link":"gift",
+ {"id":"gift","img":"media/offers/gift.webp","link":"gift",
   "title":T3("Send a gift","أرسل هدية","دیاریەکێ بهنێرە"),
   "text":T3("Gift any drink or shisha to a friend: pay at the counter and we send it on WhatsApp","أهدِ أي مشروب أو أركيلة لصديق: ادفع عند الكاونتر ونرسلها على واتساب","هەر ڤەخوارنەک یان نێرگەلەک بکە دیاری بۆ هەڤالەکی: ل کاونتەری پارەیێ بدە و ئەم ب واتسئەپێ دهنێرین")},
- {"id":"match","img":"media/offers/match.png",
+ {"id":"match","img":"media/offers/match.webp",
   "title":T3("Predict the match","توقّع النتيجة","ئەنجامێ پێشبینی بکە"),
   "text":T3("Predict the exact result of any match before it starts, and your bill is 100% on us","توقّع النتيجة الصحيحة لأي مباراة قبل بدايتها، وفاتورتك علينا 100%","ئەنجامێ دروست یێ هەر یاریەکێ بەری دەستپێکرنا وێ پێشبینی بکە، و حسابا تە 100% ل سەر مەیە")},
 ]
 out["offers"]=OFFERS
-out["gallery"]=[{"img":"media/drinks/"+f+".jpg","name":dict(zip(L,n)),"cat":c} for f,n,c in GALLERY]
+out["gallery"]=[{"img":"media/drinks/"+f+".webp","name":dict(zip(L,n)),"cat":c} for f,n,c in GALLERY]
 json.dump(out,open(sys.argv[1],"w"),ensure_ascii=False,indent=1)
 print(len(out["categories"]),"categories",sum(len(c["items"]) for c in out["categories"]),"items")
 # German (Thamir asked for German): add "de" from tools/menu-de.json
 import os, subprocess
 subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "add_de.py"), sys.argv[1]])
+# Google-readable menu (structured data) inside menu/index.html
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "menu_jsonld.py"), sys.argv[1]])

@@ -608,7 +608,7 @@
     "de": "Asary Fruchtgetränke"
    },
    "new": true,
-   "banner": "media/new/asary-bottles-real.jpg",
+   "banner": "media/new/asary-bottles-real.webp",
    "desc": {
     "en": "Natural fruit syrup: 60% fruit, 75% less fructose sugar. Choose your flavour:",
     "ar": "شراب فواكه طبيعي: 60% فاكهة، وسكر فركتوز أقل بنسبة 75%. اختر نكهتك:",
@@ -623,7 +623,7 @@
       "ku": "خۆخ",
       "de": "Pfirsich"
      },
-     "img": "media/new/flavours/peach.jpg"
+     "img": "media/new/flavours/peach.webp"
     },
     {
      "name": {
@@ -632,7 +632,7 @@
       "ku": "لیمون و لایم",
       "de": "Zitrone & Limette"
      },
-     "img": "media/new/flavours/lemon-lime.jpg"
+     "img": "media/new/flavours/lemon-lime.webp"
     },
     {
      "name": {
@@ -641,7 +641,7 @@
       "ku": "گێلاس",
       "de": "Kirsche"
      },
-     "img": "media/new/flavours/cherry.jpg"
+     "img": "media/new/flavours/cherry.webp"
     },
     {
      "name": {
@@ -650,7 +650,7 @@
       "ku": "کشمشا رەش",
       "de": "Schwarze Johannisbeere"
      },
-     "img": "media/new/flavours/blackcurrant.jpg"
+     "img": "media/new/flavours/blackcurrant.webp"
     },
     {
      "name": {
@@ -659,7 +659,7 @@
       "ku": "کۆلا",
       "de": "Cola"
      },
-     "img": "media/new/flavours/cola.jpg"
+     "img": "media/new/flavours/cola.webp"
     },
     {
      "name": {
@@ -668,7 +668,7 @@
       "ku": "تری",
       "de": "Traube"
      },
-     "img": "media/new/flavours/grape.jpg"
+     "img": "media/new/flavours/grape.webp"
     },
     {
      "name": {
@@ -677,7 +677,7 @@
       "ku": "گۆڵ بەیبوون و نعناع",
       "de": "Holunderblüte & Minze"
      },
-     "img": "media/new/flavours/elderflower-mint.jpg"
+     "img": "media/new/flavours/elderflower-mint.webp"
     },
     {
      "name": {
@@ -686,7 +686,7 @@
       "ku": "مانگۆ",
       "de": "Mango"
      },
-     "img": "media/new/flavours/mango.jpg"
+     "img": "media/new/flavours/mango.webp"
     },
     {
      "name": {
@@ -695,7 +695,7 @@
       "ku": "تووا سۆر",
       "de": "Himbeere"
      },
-     "img": "media/new/flavours/raspberry.jpg"
+     "img": "media/new/flavours/raspberry.webp"
     }
    ],
    "items": [
@@ -1123,7 +1123,7 @@
     "ku": "نێرگەلە",
     "de": "Shisha"
    },
-   "photo": "media/drinks/shisha-photo.jpg",
+   "photo": "media/drinks/shisha-photo.webp",
    "smoke": [
     66,
     13
@@ -1207,7 +1207,7 @@
  "offers": [
   {
    "id": "shisha-combo",
-   "img": "media/offers/combo.png",
+   "img": "media/offers/combo.webp",
    "price": 5000,
    "was": 6750,
    "title": {
@@ -1231,7 +1231,7 @@
   },
   {
    "id": "dice",
-   "img": "media/offers/dice.png",
+   "img": "media/offers/dice.webp",
    "title": {
     "en": "Roll the dice",
     "ar": "ارمِ النرد",
@@ -1247,7 +1247,7 @@
   },
   {
    "id": "card",
-   "img": "media/offers/card.png",
+   "img": "media/offers/card.webp",
    "link": "card",
    "title": {
     "en": "Loyalty card",
@@ -1264,7 +1264,7 @@
   },
   {
    "id": "student",
-   "img": "media/offers/student.png",
+   "img": "media/offers/student.webp",
    "title": {
     "en": "Student discount",
     "ar": "خصم الطلاب",
@@ -1286,7 +1286,7 @@
   },
   {
    "id": "gift",
-   "img": "media/offers/gift.png",
+   "img": "media/offers/gift.webp",
    "link": "gift",
    "title": {
     "en": "Send a gift",
@@ -1303,7 +1303,7 @@
   },
   {
    "id": "match",
-   "img": "media/offers/match.png",
+   "img": "media/offers/match.webp",
    "title": {
     "en": "Predict the match",
     "ar": "توقّع النتيجة",
@@ -1320,7 +1320,7 @@
  ],
  "gallery": [
   {
-   "img": "media/drinks/pistachio-coffee.jpg",
+   "img": "media/drinks/pistachio-coffee.webp",
    "name": {
     "en": "Pistachio coffee",
     "ar": "قهوة الفستق",
@@ -1330,7 +1330,7 @@
    "cat": "coffee"
   },
   {
-   "img": "media/drinks/latte-art.jpg",
+   "img": "media/drinks/latte-art.webp",
    "name": {
     "en": "Latte",
     "ar": "لاتيه",
@@ -1340,7 +1340,7 @@
    "cat": "latte"
   },
   {
-   "img": "media/drinks/blueberry-mojito.jpg",
+   "img": "media/drinks/blueberry-mojito.webp",
    "name": {
     "en": "Blueberry mojito",
     "ar": "موهيتو بلوبيري",
@@ -1350,7 +1350,7 @@
    "cat": "mojito"
   },
   {
-   "img": "media/drinks/iced-coffee.jpg",
+   "img": "media/drinks/iced-coffee.webp",
    "name": {
     "en": "Iced coffee",
     "ar": "قهوة مثلجة",
@@ -1360,7 +1360,7 @@
    "cat": "iced-coffee"
   },
   {
-   "img": "media/drinks/amed-cocktail.jpg",
+   "img": "media/drinks/amed-cocktail.webp",
    "name": {
     "en": "Amed cocktail",
     "ar": "كوكتيل Amed",
@@ -1370,7 +1370,7 @@
    "cat": "cocktail"
   },
   {
-   "img": "media/drinks/cappuccino.jpg",
+   "img": "media/drinks/cappuccino.webp",
    "name": {
     "en": "Cappuccino",
     "ar": "كابتشينو",
@@ -1380,7 +1380,7 @@
    "cat": "hot"
   },
   {
-   "img": "media/drinks/mojito.jpg",
+   "img": "media/drinks/mojito.webp",
    "name": {
     "en": "Mojito",
     "ar": "موهيتو",
@@ -1390,7 +1390,7 @@
    "cat": "mojito"
   },
   {
-   "img": "media/drinks/turkish-coffee.jpg",
+   "img": "media/drinks/turkish-coffee.webp",
    "name": {
     "en": "Turkish coffee",
     "ar": "قهوة تركية",
@@ -1400,7 +1400,7 @@
    "cat": "coffee"
   },
   {
-   "img": "media/drinks/coffee-layered.jpg",
+   "img": "media/drinks/coffee-layered.webp",
    "name": {
     "en": "Latte",
     "ar": "لاتيه",
@@ -1410,7 +1410,7 @@
    "cat": "latte"
   },
   {
-   "img": "media/drinks/kurdish-coffee.jpg",
+   "img": "media/drinks/kurdish-coffee.webp",
    "name": {
     "en": "Kurdish coffee",
     "ar": "قهوة بطم",
@@ -1420,7 +1420,7 @@
    "cat": "coffee"
   },
   {
-   "img": "media/drinks/americano.jpg",
+   "img": "media/drinks/americano.webp",
    "name": {
     "en": "Iced Americano",
     "ar": "امريكانو مثلج",
@@ -1430,7 +1430,7 @@
    "cat": "iced-coffee"
   },
   {
-   "img": "media/drinks/cocktail-pink.jpg",
+   "img": "media/drinks/cocktail-pink.webp",
    "name": {
     "en": "Cocktails",
     "ar": "كوكتيل",
@@ -1440,7 +1440,7 @@
    "cat": "cocktail"
   },
   {
-   "img": "media/drinks/espresso.jpg",
+   "img": "media/drinks/espresso.webp",
    "name": {
     "en": "Espresso",
     "ar": "اسبريسو",
@@ -1450,7 +1450,7 @@
    "cat": "coffee"
   },
   {
-   "img": "media/drinks/latte.jpg",
+   "img": "media/drinks/latte.webp",
    "name": {
     "en": "Classic latte",
     "ar": "لاتيه كلاسيك",
@@ -1460,7 +1460,7 @@
    "cat": "latte"
   },
   {
-   "img": "media/drinks/black-coffee.jpg",
+   "img": "media/drinks/black-coffee.webp",
    "name": {
     "en": "Coffee",
     "ar": "قهوة",

@@ -71,6 +71,14 @@ The public page a gift's friend opens from WhatsApp: `https://amedcaferest.com/g
 
 A small Cloudflare Web Analytics script (no cookies) is at the end of the homepage, `menu/`, `card/` and `gift/`, so Thamir can see visitors, page views, where they come from and phone vs computer in Cloudflare → Web Analytics → amedcaferest.com. It is not on the staff, scanner or print pages. Token: 5df4e2c18da94b7fa39ead575e9661c3 (public by design). Pages work normally if the script is blocked.
 
+## Speed: light images, no page jumping
+
+- **Images are WebP.** Every photo the pages show has a `.webp` copy next to the original (longest side at most 1080 px, 1280 px for the Asary flyers; quality 80, 82 for cut-outs). The pages, `menu.json` (via `tools/build_menu.py`) and `instagram.json` point to the `.webp` files. The originals stay in the repo; `media/og.jpg` and `media/og-gift.jpg` stay JPG because WhatsApp and Facebook previews need them. A new photo: save it as `.webp` too (for example `python3 -c "from PIL import Image; Image.open('x.jpg').save('x.webp', quality=80)"`).
+- **No page jumping (layout shift).** The pages fill their texts with JavaScript. Until that is done, the body has no `filled` class: the homepage hero and the card page stay invisible for that moment, and the menu holds space for its bars and list. The script adds `filled` at the end of the first render (homepage and card after `setLang(start)`, menu after `menu.json` loads). If a script ever fails, the content shows anyway after 8 seconds. Do not name a CSS class `ready` on the card page: it is the "your reward is ready" badge.
+- **Menu language before the first paint.** A small script at the top of `menu/index.html` picks English or German layout before anything is drawn, using the same rule as the main script.
+- **Menu for Google.** `tools/menu_jsonld.py` (run by `tools/build_menu.py`) writes the drinks and prices as structured data (schema.org Menu) into `menu/index.html` between the `menu-jsonld` markers. Menu and card pages have a canonical link.
+- Measured with Lighthouse (mobile, simulated slow phone) on a local copy, before → after: homepage performance 48–53 → 72, layout shift 0.34 → 0.05; menu 51–59 → 76, layout shift 1.01 → about 0.02 in a slow-phone test; card layout shift 0.59 → 0.01; page weight halved on the homepage and menu.
+
 ## Security
 
 See `SECURITY.md` for the threat model, `firestore.rules` (the real access control, tested by `tests/firestore.rules.test.mjs`), session storage, App Check and the verification checklist. `js/guard.js` (right-click / DevTools deterrent on `/card/` and `/staff/`) is a UX deterrent only, not a security control.

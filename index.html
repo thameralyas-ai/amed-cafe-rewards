@@ -40,7 +40,7 @@
   "alternateName": ["Amed cafe&rest", "ئامەد کافێ", "امد كافي"],
   "slogan": "your comfort space",
   "url": "https://amedcaferest.com/",
-  "image": ["https://amedcaferest.com/media/og.jpg", "https://amedcaferest.com/media/space/inside.jpg", "https://amedcaferest.com/media/space/evening.jpg"],
+  "image": ["https://amedcaferest.com/media/og.jpg", "https://amedcaferest.com/media/space/inside.webp", "https://amedcaferest.com/media/space/evening.webp"],
   "logo": "https://amedcaferest.com/card/icon-512.png",
   "telephone": "+9647502620262",
   "hasMenu": "https://amedcaferest.com/menu/",
@@ -81,7 +81,7 @@ a { color: inherit; }
 /* Header */
 header { position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
 header .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-.logo { display: block; width: 96px; height: 44px; background: url(logo-gold.png) center/contain no-repeat; }
+.logo { display: block; width: 96px; height: 44px; background: url(logo-gold.webp) center/contain no-repeat; }
 .langs { display: flex; gap: 6px; }
 .langs button { border: 0; background: none; padding: 4px; border-radius: 6px; opacity: .5; cursor: pointer; }
 .langs button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 1.5px var(--gold); }
@@ -90,6 +90,11 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 /* Hero */
 /* Hero light: still gradients only. The moving spotlight beam and the Light Rays canvas were removed
    because one of them drew a stray dotted line on iPhone. */
+/* Reserve the hero's final height until the page script has filled it, so nothing jumps (layout shift). */
+@media (max-width: 899px) { body:not(.filled) .hero { min-height: 800px; } }
+/* Until the texts are filled in, keep the empty frame invisible (shown anyway after 8 s if a script fails). */
+body:not(.filled) .hero .hg, body:not(.filled) main { visibility: hidden; animation: amedShow 0s 8s forwards; }
+@keyframes amedShow { to { visibility: visible; } }
 .hero { position: relative; padding: 100px 0 0; text-align: center; overflow: hidden; --glow-x: 50%;
   background: radial-gradient(38% 34% at var(--glow-x) 0%, #E3B27D2E, transparent 100%), radial-gradient(120% 60% at 50% 0%, #2A1B13, var(--bg)); }
 /* Spotlight Stage (Thamir chose animated sample 2) */
@@ -462,7 +467,7 @@ footer small { display: block; margin-top: 14px; font-size: 12px; opacity: .7; }
 footer { background: #120c09; color: var(--muted); border-top: 0; margin-top: 50px; position: relative; overflow: hidden; isolation: isolate;
   padding-top: 80px; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 footer a { color: var(--muted) !important; }
-footer .logo { background-image: url(logo-gold.png); }
+footer .logo { background-image: url(logo-gold.webp); }
 footer > :not(.fx) { position: relative; z-index: 1; }
 .fx { position: absolute; inset: 0; z-index: 0; }
 .fx video { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -508,9 +513,9 @@ footer > :not(.fx) { position: relative; z-index: 1; }
     </div>
     <div class="art">
       <div class="stage" id="stage"><div class="ring"><svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true"><path class="halo" pathLength="100" d="M1,32 A149,31 0 1,1 299,32 A149,31 0 1,1 1,32"/><path class="core" pathLength="100" d="M1,32 A149,31 0 1,1 299,32 A149,31 0 1,1 1,32"/></svg></div>
-        <img src="shisha-gold.png" alt="Amed Cafe shisha" width="204" height="408">
-        <img src="shisha-copper.png" alt="" width="228" height="472">
-        <img src="shisha-silver.png" alt="" width="236" height="471">
+        <img src="shisha-gold.webp" alt="Amed Cafe shisha" width="204" height="408">
+        <img src="shisha-copper.webp" alt="" width="228" height="472">
+        <img src="shisha-silver.webp" alt="" width="236" height="471">
       </div>
       <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       <div class="sname" id="sname"></div>
@@ -701,7 +706,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   document.addEventListener("touchstart", () => {}, { passive: true }); // lets iPhone show the menu-item tap effect (:active)
   // Shisha photo gets rising smoke (see .smoke in the CSS).
-  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" }), ph = /\.jpe?g$/i.test(src);
+  const shot = (c, src) => { const img = el("img", { src, alt: "", loading: "lazy" }), ph = /\.(jpe?g|webp)$/i.test(src); // a real photo (not a cut-out)
     const sm = el("span", ph && c.smoke ? { class: "smoke", "aria-hidden": "true", style: `left:${c.smoke[0]}%;top:${c.smoke[1]}%` } : { class: "smoke", "aria-hidden": "true" }, el("i"), el("i"), el("i"), el("i"));
     return el("div", { class: "shot" + (ph ? " ph" : "") }, c.id === "shisha" ? el("span", { class: "smoke-wrap" }, img, sm) : img); };
   // "From our bar" gallery: tapping a photo opens its menu section.
@@ -740,7 +745,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   const flavours = (c, pre = "") => c.flavours ? el("div", { class: "flv" }, ...c.flavours.map((f) => el("div", {}, el("img", { src: pre + f.img, alt: "", loading: "lazy" }), pick(f.name)))) : null;
 
   // "Our new products": one feature card per menu category marked new, linking to it in the menu.
-  const FLYERS = { asary: ["media/new/asary-flyer-1.jpg", "media/new/asary-flyer-2.jpg"] };
+  const FLYERS = { asary: ["media/new/asary-flyer-1.webp", "media/new/asary-flyer-2.webp"] };
   function renderNew() {
     const box = $("newp"); box.textContent = "";
     const cats = MENU ? MENU.categories.filter((c) => c.new) : [];
@@ -849,13 +854,13 @@ footer > :not(.fx) { position: relative; z-index: 1; }
 
   // "The space": a Circular Carousel of the cafe's own photos and video stills (built once; text follows the language).
   const GALLERY = [
-    { src: "media/space/inside.jpg", alt: "gInside" },
-    { src: "media/space/sign.jpg", alt: "gSign" },
-    { src: "media/space/shisha.jpg", alt: "gShisha" },
-    { src: "media/space/space-poster.jpg", video: "media/space/space.mp4", poster: "media/space/space-poster.jpg", alt: "gVideo" },
-    { src: "media/space/evening.jpg", alt: "gEvening" },
-    { src: "media/space/bar.jpg", alt: "gBar" },
-    { src: "media/space/drink.jpg", alt: "gDrink" },
+    { src: "media/space/inside.webp", alt: "gInside" },
+    { src: "media/space/sign.webp", alt: "gSign" },
+    { src: "media/space/shisha.webp", alt: "gShisha" },
+    { src: "media/space/space-poster.webp", video: "media/space/space.mp4", poster: "media/space/space-poster.webp", alt: "gVideo" },
+    { src: "media/space/evening.webp", alt: "gEvening" },
+    { src: "media/space/bar.webp", alt: "gBar" },
+    { src: "media/space/drink.webp", alt: "gDrink" },
   ];
   let galBuilt = false;
   function renderGallery() {
@@ -1063,7 +1068,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   $("yr").textContent = new Date().getFullYear();
   const FOOT = "beans";
   if ("IntersectionObserver" in window) {
-    const v = $("fxv"); v.muted = true; v.poster = "media/footer/" + FOOT + ".jpg";
+    const v = $("fxv"); v.muted = true; v.poster = "media/footer/" + FOOT + ".webp";
     new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { if (!v.src) v.src = "media/footer/" + FOOT + ".mp4"; v.play().catch(() => {}); } else v.pause(); }), { rootMargin: "200px" }).observe(v.parentNode.parentNode);
   }
 
@@ -1071,6 +1076,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   if (!T[start]) { try { start = localStorage.getItem("amed-lang") || ""; } catch (_) { start = ""; } }
   if (!T[start]) { const nl = (navigator.language || "").toLowerCase(); start = nl.startsWith("ar") ? "ar" : nl.startsWith("en") ? "en" : nl.startsWith("de") ? "de" : "ku"; }
   setLang(start);
+  document.body.classList.add("filled");
   window.addEventListener("hashchange", () => { const h = location.hash.replace("#", ""); if (T[h]) setLang(h); });
   setInterval(renderStatus, 60000);
   startStage();
