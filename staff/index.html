@@ -2765,7 +2765,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
      gifts/<code> is public to read by its long random code; the link is GIFT_LINK + "#" + code. */
   const GIFT_LINK = "https://amedcaferest.com/gift/";
   const OCCASIONS = [["birthday", "🎂", "Birthday"], ["eid", "✨", "Eid"], ["invite", "☕", "Invitation"], ["other", "✏️", "Other"]];
-  const giftCodeFrom = (s) => { s = String(s || "").trim(); const m = s.match(/\/gift\/?#([0-9a-z]{16})\b/i) || s.match(/^([0-9a-z]{16})$/i); const c = m ? m[1].toUpperCase() : ""; return c && window.AmedGifts && AmedGifts.valid(c) ? c : null; };
+  // A gift link, or the code typed by hand (the gift page shows it as 4-4-4-4; O/I/L typed by mistake count as 0/1/1).
+  const giftCodeFrom = (s) => { s = String(s || "").trim(); const m = s.match(/\/gift\/?#([0-9a-z]{16})\b/i) || s.replace(/[\s-]/g, "").match(/^([0-9a-z]{16})$/i); const c = m ? m[1].toUpperCase().replace(/O/g, "0").replace(/[IL]/g, "1") : ""; return c && window.AmedGifts && AmedGifts.valid(c) ? c : null; };
   const gL = (m) => (m && (m[uiLang] || m.en)) || "";
   const giftWho = () => ({ id: state.shift ? state.shift.id : state.uid || "staff", name: (state.role && state.role.name) || state.myName || "" });
   const giftBoss = () => !!(state.shift && state.shift.id === OWNER_ID);
