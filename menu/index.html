@@ -182,16 +182,16 @@ footer a { color: var(--gold2); text-decoration: none; }
 (() => {
   const T = {
     en: { title: "Menu", open: "Open now · until 1:00 AM", closed: "Closed · opens at 9:00 AM", iqd: "IQD", note: "Prices in IQD",
-      newT: "New", offT: "Offers", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
+      newT: "New", offT: "Offers", giftEx: "See an example", popular: "Best seller", barT: "From our bar", newSee: "Tap to see in the menu", promoT: "Buy 7, the 8th is free", promoP: "Drinks and shisha cards — give your phone number at the counter.", myCard: "My loyalty card", review: "Review us ★",
       hours: "Every day · 9:00 AM – 1:00 AM", err: "The menu could not load. Please check your connection and try again." },
     ar: { title: "القائمة", open: "مفتوح الآن · حتى 1:00 ليلاً", closed: "مغلق · نفتح الساعة 9:00 صباحاً", iqd: "د.ع", note: "الأسعار بالدينار العراقي",
-      newT: "جديد", offT: "العروض", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
+      newT: "جديد", offT: "العروض", giftEx: "شاهد مثالاً", popular: "الأكثر طلباً", barT: "من مشروباتنا", newSee: "اضغط لعرضه في القائمة", promoT: "اشترِ 7 واحصل على الثامن مجاناً", promoP: "بطاقات للمشروبات والأركيلة — أعطِ رقم هاتفك عند الكاونتر.", myCard: "بطاقة الولاء الخاصة بي", review: "قيّمنا ★",
       hours: "كل يوم · 9:00 صباحاً – 1:00 ليلاً", err: "تعذّر تحميل القائمة. تحقّق من الاتصال وحاول مجدداً." },
     ku: { title: "مێنیو", open: "نوکە ڤەکریە · هەتا 1:00 شەڤێ", closed: "گرتیە · دەمژمێر 9:00 سپێدێ ڤەدبیت", iqd: "د.ع", note: "بها ب دینارێن عێراقی",
-      newT: "نوو", offT: "پێشکێشی", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
+      newT: "نوو", offT: "پێشکێشی", giftEx: "نموونەیەکێ ببینە", popular: "پتر دهێتە داخوازکرن", barT: "ژ ڤەخوارنێن مە", newSee: "بکە بۆ دیتنێ د مێنیوێ دا", promoT: "7 بکڕە، یا 8ەمین بێ بەرامبەرە", promoP: "کارتێن ڤەخوارن و نێرگەلێ — ژمارا مۆبایلا خۆ ل کاونتەری بدە.", myCard: "کارتا من", review: "هەلسەنگاندن ★",
       hours: "هەمی رۆژ · 9:00 سپێدێ – 1:00 شەڤێ", err: "مێنیو بار نەبوو. هێڤیە پەیوەندیا خۆ پشکنە و دووبارە هەول بدە." },
     de: { title: "Getränkekarte", open: "Jetzt geöffnet · bis 1:00 Uhr", closed: "Geschlossen · öffnet um 9:00 Uhr", iqd: "IQD", note: "Preise in IQD",
-      newT: "Neu", offT: "Angebote", popular: "Bestseller", barT: "Von unserer Bar", newSee: "Tippen, um es in der Karte zu sehen", promoT: "Kaufen Sie 7, das 8. ist gratis", promoP: "Karten für Getränke und Shisha – nennen Sie an der Theke Ihre Telefonnummer.", myCard: "Meine Treuekarte", review: "Bewerten Sie uns ★",
+      newT: "Neu", offT: "Angebote", giftEx: "Beispiel ansehen", popular: "Bestseller", barT: "Von unserer Bar", newSee: "Tippen, um es in der Karte zu sehen", promoT: "Kaufen Sie 7, das 8. ist gratis", promoP: "Karten für Getränke und Shisha – nennen Sie an der Theke Ihre Telefonnummer.", myCard: "Meine Treuekarte", review: "Bewerten Sie uns ★",
       hours: "Täglich · 9:00 – 1:00 Uhr", err: "Die Karte konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut." },
   };
   const $ = (id) => document.getElementById(id);
@@ -232,7 +232,7 @@ footer a { color: var(--gold2); text-decoration: none; }
       list.append(el("section", { id: "c-offers" }, el("div", { class: "mc ofc" }, el("h2", { text: tr("offT") }),
         el("div", { class: "ofs s1" }, ...MENU.offers.map((o, i) => el("div", { class: "of" }, o.img ? el("img", { class: "oi", src: "../" + o.img, alt: "", loading: "lazy" }) : null, el("span", { class: "on", text: String(i + 1) }),
           el("div", { class: "ob" }, o.when ? el("small", { text: pick(o.when) }) : null, el("b", { text: pick(o.title) }), el("p", { text: pick(o.text) }),
-            o.link === "card" ? el("a", { class: "ol", href: "../card/", text: tr("myCard") + " ›" }) : null),
+            o.link === "card" ? el("a", { class: "ol", href: "../card/", text: tr("myCard") + " ›" }) : o.link === "gift" ? el("a", { class: "ol", href: "../gift/#demo", text: tr("giftEx") + " ›" }) : null),
           o.price ? el("span", { class: "op" }, num(o.price), el("small", { text: tr("iqd") }), o.was ? el("s", { text: num(o.was) }) : null) : null))))));
     }
     for (const c of MENU.categories) {

@@ -1285,6 +1285,23 @@
    }
   },
   {
+   "id": "gift",
+   "img": "media/offers/gift.png",
+   "link": "gift",
+   "title": {
+    "en": "Send a gift",
+    "ar": "أرسل هدية",
+    "ku": "دیاریەکێ بهنێرە",
+    "de": "Ein Geschenk senden"
+   },
+   "text": {
+    "en": "Gift any drink or shisha to a friend: pay at the counter and we send it on WhatsApp",
+    "ar": "أهدِ أي مشروب أو أركيلة لصديق: ادفع عند الكاونتر ونرسلها على واتساب",
+    "ku": "هەر ڤەخوارنەک یان نێرگەلەک بکە دیاری بۆ هەڤالەکی: ل کاونتەری پارەیێ بدە و ئەم ب واتسئەپێ دهنێرین",
+    "de": "Verschenken Sie ein Getränk oder eine Shisha: an der Theke bezahlen, wir senden es per WhatsApp"
+   }
+  },
+  {
    "id": "match",
    "img": "media/offers/match.png",
    "title": {

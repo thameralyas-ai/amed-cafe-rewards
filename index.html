@@ -317,6 +317,30 @@ header .langs { margin-inline-end: 54px; }
 @media (prefers-reduced-motion: reduce) { .navp li { transform: none; } }
 
 /* Google reviews (cards from reviews.json) + the Google Maps window in "Find us" */
+/* Gift cards section: a gold gift box (links to the demo gift) beside 3 numbered steps */
+.gf { display: grid; gap: 28px; align-items: center; max-width: 900px; margin: 0 auto; }
+@media (min-width: 800px) { .gf { grid-template-columns: 260px 1fr; gap: 48px; } }
+.gfbox { display: grid; justify-items: center; gap: 12px; text-decoration: none; color: var(--muted); font-size: 14px; padding-top: 24px; }
+.gb { position: relative; width: 170px; height: 150px; display: block; animation: gfwig 3s 1.5s infinite; }
+@keyframes gfwig { 0%, 82%, 100% { transform: rotate(0); } 86% { transform: rotate(-3deg); } 90% { transform: rotate(3deg); } 94% { transform: rotate(-2deg); } }
+.gb i { position: absolute; display: block; }
+.gb .b { inset: 36px 10px 0; background: linear-gradient(160deg, var(--gold2), #9a6b3f); border-radius: 8px; }
+.gb .lid { left: 0; right: 0; top: 8px; height: 38px; background: linear-gradient(160deg, #f0c995, var(--gold2)); border-radius: 8px; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+.gb .rib { top: 8px; bottom: 0; left: 50%; width: 20px; margin-left: -10px; background: #7a1c24; }
+.gb .bow { top: -22px; left: 50%; width: 74px; height: 36px; margin-left: -37px; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+.gb .bow::before, .gb .bow::after { content: ""; position: absolute; top: 6px; width: 34px; height: 26px; border: 7px solid #7a1c24; border-radius: 50% 50% 10% 50%; }
+.gb .bow::before { left: 0; transform: rotate(-20deg); } .gb .bow::after { right: 0; transform: rotate(20deg) scaleX(-1); }
+.gfbox:hover .lid, .gfbox:hover .bow, .gfbox:focus-visible .lid, .gfbox:focus-visible .bow { transform: translateY(-14px) rotate(-6deg); }
+.gftxt { display: grid; gap: 16px; min-width: 0; }
+.gftxt > p { margin: 0; color: var(--muted); }
+.gfsteps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.gfsteps li { display: flex; gap: 14px; align-items: center; }
+.gfsteps b { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--gold); color: var(--gold2); font-family: var(--serif); font-size: 18px; font-weight: 500; }
+.gfocc { margin: 0; color: var(--gold2); font-size: 14px; letter-spacing: .04em; }
+.gfex { justify-self: start; padding: 12px 24px; }
+@media (max-width: 799px) { .gfex { justify-self: stretch; } }
+@media (prefers-reduced-motion: reduce) { .gb { animation: none; } }
+
 /* Reviews: "Gliding wall" (Thamir chose B): two rows of review cards drift slowly in opposite directions */
 .rsum { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; margin: -14px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
 .rsum .rnum { font-family: var(--serif); font-size: 42px; line-height: 1; color: var(--gold2); font-weight: 500; }
@@ -525,6 +549,18 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   </div>
 
   <!-- Latest Instagram posts (instagram.json). Hidden until there are posts. -->
+  <!-- Gift cards: how to send a drink or shisha as a gift (bought at the counter, sent on WhatsApp, opens on gift/). -->
+  <section id="gifts">
+    <div class="head"><span class="kicker" data-t="gfK"></span><h2 data-t="gfT"></h2><i class="orn"></i></div>
+    <div class="gf">
+      <a class="gfbox" href="gift/#demo" id="gfBox"><span class="gb" aria-hidden="true"><i class="b"></i><i class="rib"></i><i class="lid"></i><i class="bow"></i></span><small data-t="gfTap"></small></a>
+      <div class="gftxt"><p data-t="gfP"></p>
+        <ol class="gfsteps"><li><b>1</b><span data-t="gf1"></span></li><li><b>2</b><span data-t="gf2"></span></li><li><b>3</b><span data-t="gf3"></span></li></ol>
+        <p class="gfocc" data-t="gfOcc"></p>
+        <a class="btn sec gfex" href="gift/#demo" data-t="gfEx"></a></div>
+    </div>
+  </section>
+
   <section id="insta" hidden>
     <div class="head"><span class="kicker" data-t="igK"></span><h2 data-t="igT"></h2><i class="orn"></i></div>
     <div class="igrid" id="igList"></div>
@@ -588,7 +624,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "Gallery", galT: "The space", gInside: "Inside Amed Cafe", gShisha: "Shisha at Amed Cafe", gEvening: "Amed Cafe in the evening", gVideo: "Video of Amed Cafe", gSign: "The Amed Cafe sign", gBar: "Our bar", gDrink: "A drink served at Amed Cafe", gHintTouch: "Tap a photo to see it in colour, tap it again to open it", gHintMouse: "Point at a photo to see it in colour, click it to bring it forward", close: "Close",
       visK: "Visit", visT: "Find us", hours: "Hours", everyDayHours: "Every day · 9:00 AM – 1:00 AM", location: "Location", openMaps: "Open in Google Maps",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "Open in Snapchat", phone: "Phone", review: "Review us", reviewLink: "Write a Google review ★", soon: "Coming soon",
-      tagline: "your comfort space", revK: "Google reviews", revT: "What our guests say", revP: "See our rating and read every review on Google.", revRead: "Read our reviews", rCount: "{n} reviews on Google", rAria: "Rated {r} out of 5 on Google",
+      tagline: "your comfort space", revK: "Google reviews", revT: "What our guests say", revP: "See our rating and read every review on Google.", revRead: "Read our reviews", gfK: "Gift cards", gfT: "Gift a drink or a shisha", gfP: "Treat someone you love, with nothing to print. Each gift is used once at the counter.", gf1: "Choose any drink or shisha at the counter and pay", gf2: "We send your friend a gift link on WhatsApp, with your message", gf3: "Your friend shows the QR code at the counter and enjoys it", gfOcc: "Birthday · Eid · Invitation · Any occasion", gfEx: "See an example", gfTap: "Tap the box", rCount: "{n} reviews on Google", rAria: "Rated {r} out of 5 on Google",
       igK: "Instagram", igT: "Latest from Instagram", igStories: "Watch our stories", igFollow: "Follow @amed.caferest", igOpen: "Open this post on Instagram", igReel: "Reel",
     },
     ar: {
@@ -603,7 +639,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "المعرض", galT: "المكان", gInside: "داخل Amed Cafe", gShisha: "أركيلة في Amed Cafe", gEvening: "Amed Cafe في المساء", gVideo: "فيديو Amed Cafe", gSign: "لافتة Amed Cafe", gBar: "البار", gDrink: "مشروب يُقدَّم في Amed Cafe", gHintTouch: "اضغط على صورة لتظهر بالألوان، واضغط مرة أخرى لفتحها", gHintMouse: "مرّر الماوس فوق صورة لتظهر بالألوان، وانقر لتقديمها", close: "إغلاق",
       visK: "زورونا", visT: "موقعنا", hours: "أوقات العمل", everyDayHours: "كل يوم · 9:00 صباحاً – 1:00 ليلاً", location: "الموقع", openMaps: "افتح في خرائط Google",
       whatsapp: "واتساب", instagram: "إنستغرام", tiktok: "تيك توك", snapchat: "سناب شات", openSnap: "افتح في سناب شات", phone: "الهاتف", review: "قيّمنا", reviewLink: "اكتب تقييماً على Google ★", soon: "قريباً",
-      tagline: "مكان راحتك", revK: "تقييمات Google", revT: "ماذا يقول ضيوفنا", revP: "شاهد تقييمنا واقرأ كل المراجعات على Google.", revRead: "اقرأ تقييماتنا", rCount: "{n} تقييمات على Google", rAria: "التقييم {r} من 5 على Google",
+      tagline: "مكان راحتك", revK: "تقييمات Google", revT: "ماذا يقول ضيوفنا", revP: "شاهد تقييمنا واقرأ كل المراجعات على Google.", revRead: "اقرأ تقييماتنا", gfK: "بطاقات الهدايا", gfT: "أهدِ مشروباً أو أركيلة", gfP: "فاجئ من تحب، بدون أي طباعة. كل هدية تُستخدم مرة واحدة عند الكاونتر.", gf1: "اختر أي مشروب أو أركيلة عند الكاونتر وادفع", gf2: "نرسل لصديقك رابط الهدية على واتساب مع رسالتك", gf3: "يُظهر صديقك رمز QR عند الكاونتر ويستمتع بها", gfOcc: "عيد ميلاد · العيد · دعوة · أي مناسبة", gfEx: "شاهد مثالاً", gfTap: "اضغط على الصندوق", rCount: "{n} تقييمات على Google", rAria: "التقييم {r} من 5 على Google",
       igK: "إنستغرام", igT: "أحدث منشوراتنا على إنستغرام", igStories: "شاهد قصصنا", igFollow: "تابعنا \u2066@amed.caferest\u2069", igOpen: "افتح هذا المنشور على إنستغرام", igReel: "ريلز",
     },
     ku: {
@@ -618,7 +654,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "وێنە", galT: "جهێ مە", gInside: "ناڤا Amed Cafe", gShisha: "نێرگەلە ل Amed Cafe", gEvening: "Amed Cafe ل ئێڤاری", gVideo: "ڤیدیۆیا Amed Cafe", gSign: "تابلۆیا Amed Cafe", gBar: "بارێ مە", gDrink: "ڤەخوارنەک ل Amed Cafe", gHintTouch: "ل سەر وێنەیەکێ کلیک بکە دا رەنگ دیار ببیت، جارەکا دی کلیک بکە دا ڤەبیت", gHintMouse: "ماوسێ ببە سەر وێنەیەکێ دا ب رەنگ دیار ببیت، کلیک بکە دا بهێتە پێشیێ", close: "گرتن",
       visK: "سەرەدان", visT: "سەرەدانا مە بکە", hours: "دەمژمێرێن کاری", everyDayHours: "هەمی رۆژ · 9:00 سپێدێ – 1:00 شەڤێ", location: "جه", openMaps: "ل Google Maps ڤەکە",
       whatsapp: "واتسئاپ", instagram: "ئینستاگرام", tiktok: "تیکتۆک", snapchat: "سناپچات", openSnap: "ل سناپچات ڤەکە", phone: "تەلەفۆن", review: "هەلسەنگاندن", reviewLink: "ل Google بنڤیسە ★", soon: "ب زوویی",
-      tagline: "جهێ ئارامیا تە", revK: "هەلسەنگاندنێن Google", revT: "میڤانێن مە چ دبێژن", revP: "هەلسەنگاندنا مە ببینە و هەمی بۆچوونان ل Google بخوینە.", revRead: "هەلسەنگاندنێن مە بخوینە", rCount: "{n} هەلسەنگاندن ل Google", rAria: "هەلسەنگاندن {r} ژ 5 ل Google",
+      tagline: "جهێ ئارامیا تە", revK: "هەلسەنگاندنێن Google", revT: "میڤانێن مە چ دبێژن", revP: "هەلسەنگاندنا مە ببینە و هەمی بۆچوونان ل Google بخوینە.", revRead: "هەلسەنگاندنێن مە بخوینە", gfK: "کارتێن دیاریان", gfT: "ڤەخوارنەکێ یان نێرگەلەکێ بکە دیاری", gfP: "کەسێ تو حەژێ دکەی شاد بکە، بێ چاپکرن. هەر دیاریەک ئێک جار ل کاونتەری دهێتە بکارئینان.", gf1: "هەر ڤەخوارنەک یان نێرگەلەک ل کاونتەری هەلبژێرە و پارەیێ بدە", gf2: "ئەم لینکێ دیاریێ ب واتسئەپێ بۆ هەڤالێ تە دهنێرین، دگەل نامەیا تە", gf3: "هەڤالێ تە QR کۆدی ل کاونتەری نیشان ددەت و کەیفا خۆ پێ دئینیت", gfOcc: "رۆژبوون · جەژن · داخوازی · هەر بۆنەیەک", gfEx: "نموونەیەکێ ببینە", gfTap: "ل سەر سندوقێ بکە", rCount: "{n} هەلسەنگاندن ل Google", rAria: "هەلسەنگاندن {r} ژ 5 ل Google",
       igK: "ئینستاگرام", igT: "نووترین ل ئینستاگرامێ", igStories: "ستۆرییێن مە ببینە", igFollow: "دویڤ مە بکەڤە \u2066@amed.caferest\u2069", igOpen: "ڤێ پۆستێ ل ئینستاگرامێ ڤەکە", igReel: "ڕیل",
     },
     de: {
@@ -633,7 +669,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       galK: "Galerie", galT: "Unser Café", gInside: "Im Amed Cafe", gShisha: "Shisha im Amed Cafe", gEvening: "Das Amed Cafe am Abend", gVideo: "Video vom Amed Cafe", gSign: "Das Schild des Amed Cafe", gBar: "Unsere Bar", gDrink: "Ein Getränk im Amed Cafe", gHintTouch: "Tippen Sie auf ein Foto, um es in Farbe zu sehen, und erneut, um es zu öffnen", gHintMouse: "Zeigen Sie auf ein Foto, um es in Farbe zu sehen, und klicken Sie darauf, um es nach vorne zu holen", close: "Schließen",
       visK: "Besuch", visT: "So finden Sie uns", hours: "Öffnungszeiten", everyDayHours: "Täglich · 9:00 – 1:00 Uhr", location: "Adresse", openMaps: "In Google Maps öffnen",
       whatsapp: "WhatsApp", instagram: "Instagram", tiktok: "TikTok", snapchat: "Snapchat", openSnap: "In Snapchat öffnen", phone: "Telefon", review: "Bewerten Sie uns", reviewLink: "Google-Bewertung schreiben ★", soon: "Demnächst",
-      tagline: "Ihr Ort zum Wohlfühlen", revK: "Google-Bewertungen", revT: "Was unsere Gäste sagen", revP: "Sehen Sie unsere Bewertung und lesen Sie alle Rezensionen auf Google.", revRead: "Unsere Bewertungen lesen", rCount: "{n} Bewertungen auf Google", rAria: "Bewertet mit {r} von 5 auf Google",
+      tagline: "Ihr Ort zum Wohlfühlen", revK: "Google-Bewertungen", revT: "Was unsere Gäste sagen", revP: "Sehen Sie unsere Bewertung und lesen Sie alle Rezensionen auf Google.", revRead: "Unsere Bewertungen lesen", gfK: "Geschenkkarten", gfT: "Verschenken Sie ein Getränk oder eine Shisha", gfP: "Machen Sie jemandem eine Freude, ganz ohne Druck. Jedes Geschenk wird einmal an der Theke eingelöst.", gf1: "Wählen Sie an der Theke ein Getränk oder eine Shisha und bezahlen Sie", gf2: "Wir senden Ihrem Gast einen Geschenk-Link per WhatsApp, mit Ihrer Nachricht", gf3: "Ihr Gast zeigt den QR-Code an der Theke und genießt es", gfOcc: "Geburtstag · Eid · Einladung · Jeder Anlass", gfEx: "Beispiel ansehen", gfTap: "Tippen Sie auf die Box", rCount: "{n} Bewertungen auf Google", rAria: "Bewertet mit {r} von 5 auf Google",
       igK: "Instagram", igT: "Neues auf Instagram", igStories: "Unsere Stories ansehen", igFollow: "Folgen Sie @amed.caferest", igOpen: "Diesen Beitrag auf Instagram öffnen", igReel: "Reel",
     },
   };
@@ -720,6 +756,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
       { id: "rewards", t: tr("rewK") },
       { id: "events", t: tr("evT") },
       { id: "gallery", t: tr("galT") },
+      { id: "gifts", t: tr("gfK") },
       POSTS.length ? { id: "insta", t: tr("igK") } : null,
       REVIEWS.length || RATING ? { id: "reviews", t: tr("revK") } : null,
       { id: "visit", t: tr("visT") },
@@ -781,7 +818,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
         o.when ? el("small", { text: pick(o.when) }) : null,
         el("h3", { text: pick(o.title) }),
         el("p", {}, pick(o.text), o.price ? el("span", { class: "evp" }, " · " + num(o.price) + " " + tr("iqd") + " ", o.was ? el("s", { text: num(o.was) }) : null) : null),
-        o.link === "card" ? el("a", { class: "evl", href: "card/", text: tr("myCard") + " ›" }) : null));
+        o.link === "card" ? el("a", { class: "evl", href: "card/", text: tr("myCard") + " ›" }) : o.link === "gift" ? el("a", { class: "evl", href: "gift/#demo", text: tr("gfEx") + " ›" }) : null));
     }
     for (const ev of (DATA && DATA.events) || []) {
       const d = new Date(ev.date + "T12:00:00");
