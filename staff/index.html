@@ -2766,7 +2766,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   const GIFT_LINK = "https://amedcaferest.com/gift/";
   const OCCASIONS = [["birthday", "🎂", "Birthday"], ["eid", "✨", "Eid"], ["invite", "☕", "Invitation"], ["other", "✏️", "Other"]];
   // A gift link, or the code typed by hand (the gift page shows it as 4-4-4-4; O/I/L typed by mistake count as 0/1/1).
-  const giftCodeFrom = (s) => { s = String(s || "").trim(); const m = s.match(/\/gift\/?#([0-9a-z]{16})\b/i) || s.replace(/[\s-]/g, "").match(/^([0-9a-z]{16})$/i); const c = m ? m[1].toUpperCase().replace(/O/g, "0").replace(/[IL]/g, "1") : ""; return c && window.AmedGifts && AmedGifts.valid(c) ? c : null; };
+  const giftCodeFrom = (s) => { s = String(s || "").trim(); const m = s.replace(/-/g, "").match(/\/gift\/?#([0-9a-z]{16})\b/i) || s.replace(/[\s-]/g, "").match(/^([0-9a-z]{16})$/i); const c = m ? m[1].toUpperCase().replace(/O/g, "0").replace(/[IL]/g, "1") : ""; return c && window.AmedGifts && AmedGifts.valid(c) ? c : null; };
   const gL = (m) => (m && (m[uiLang] || m.en)) || "";
   const giftWho = () => ({ id: state.shift ? state.shift.id : state.uid || "staff", name: (state.role && state.role.name) || state.myName || "" });
   const giftBoss = () => !!(state.shift && state.shift.id === OWNER_ID);
@@ -2853,7 +2853,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       return;
     }
     if (g.mode === "made") {
-      const link = GIFT_LINK + "#" + g.code, d = g.d;
+      const link = GIFT_LINK + "#" + g.code.match(/.{4}/g).join("-"), d = g.d;   // grouped 4-4-4-4: easier to read, the gift page ignores the dashes
       box.append(el("h2", { text: "✅ " + t("Gift card ready") }), el("p", { class: "lead", text: t("Show this QR to the buyer, or send them the link. Whoever has it can use the gift once.") }));
       const qr = el("div", { class: "gfqr" }); box.append(qr);
       try { new QRCode(qr, { text: link, width: 220, height: 220, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { qr.hidden = true; }
@@ -2864,7 +2864,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       box.append(el("label", { class: "f" }, t("Send to"), el("span", { class: "phonerow" }, cc, phone)));
       const wa = el("button", { type: "button", class: "btn primary", text: t("Send on WhatsApp"), onclick: () => {
         const id = phoneId(phone.value, ccVal(cc)), n = id ? intlNumber(id) : "";
-        window.open("https://wa.me/" + (n || "") + "?text=" + encodeURIComponent(msgText), "_blank", "noopener");
+        // api.whatsapp.com/send: the wa.me short link's redirect can break emoji (🎁 arrived as "�").
+        window.open("https://api.whatsapp.com/send?" + (n ? "phone=" + n + "&" : "") + "text=" + encodeURIComponent(msgText), "_blank", "noopener");
       } });
       const copy = el("button", { type: "button", class: "btn", text: t("Copy link"), onclick: async () => { try { await navigator.clipboard.writeText(link); toast(t("Link copied.")); } catch (_) { toast(link, 8000); } } });
       box.append(el("div", { class: "row" }, wa, copy, el("button", { type: "button", class: "btn", text: t("Done"), onclick: giftClose })));
@@ -2895,13 +2896,16 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     }
     row.append(close); box.append(row);
   }
+  // The WhatsApp text for a gift link, in the gift's language (*text* is bold in WhatsApp; the phone number is kept left-to-right).
   function giftShareText(d, link) {
-    const L = { ku: ["دیاریەک ژ {from} بۆ تە ل Amed Cafe 🎁", "دیاریا خۆ ڤێرێ ببینە و ل کاونتەری نیشان بدە:"],
-      ar: ["هدية لك من {from} في Amed Cafe 🎁", "شاهد هديتك هنا وأظهرها عند الكاونتر:"],
-      en: ["A gift for you from {from} at Amed Cafe 🎁", "See your gift here and show it at the counter:"],
-      de: ["Ein Geschenk für dich von {from} im Amed Cafe 🎁", "Sieh dir dein Geschenk hier an und zeig es an der Theke:"] }[d.lang] || null;
-    const l = L || ["A gift for you from {from} at Amed Cafe 🎁", "See your gift here and show it at the counter:"];
-    return l[0].replace("{from}", d.from) + "\n" + l[1] + "\n" + link;
+    const tel = "\u2066" + "0750 262 0262" + "\u2069", from = String(d.from || "").replace(/[*_~]/g, "");
+    const L = {
+      en: ["🎁 *{from}* sent you a gift from *Amed Cafe*!", "Open your gift: {link}", "Show the QR code at the counter to enjoy it.", "📍 Amed Cafe & Rest · Sharya, Duhok · {tel}"],
+      ar: ["🎁 *{from}* أرسل لك هدية من *Amed Cafe*!", "افتح هديتك: {link}", "أظهر رمز QR عند الكاونتر لتستمتع بها.", "📍 Amed Cafe & Rest · شاريا، دهوك · {tel}"],
+      ku: ["🎁 *{from}* دیاریەک ژ *ئامەد کافێ* بۆ تە هنارت!", "دیاریا خۆ ڤەکە: {link}", "QR کۆدی ل کاونتەری نیشان بدە دا کەیفا خۆ پێ بینی.", "📍 Amed Cafe & Rest · شاریا، دهۆک · {tel}"],
+      de: ["🎁 *{from}* hat Ihnen ein Geschenk von *Amed Cafe* geschickt!", "Öffnen Sie Ihr Geschenk: {link}", "Zeigen Sie den QR-Code an der Theke, um es zu genießen.", "📍 Amed Cafe & Rest · Sharya, Duhok · {tel}"],
+    }, l = L[d.lang] || L.en, f = (x) => x.replace("{from}", from).replace("{link}", link).replace("{tel}", tel);
+    return f(l[0]) + "\n\n" + f(l[1]) + "\n\n" + f(l[2]) + "\n" + f(l[3]);
   }
   async function createGift() {
     const g = gift; if (!g || g.busy) return; g.err = "";
