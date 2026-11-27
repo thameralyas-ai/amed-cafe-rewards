@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>A gift from Amed Cafe</title>
+<meta name="description" content="Someone sent you a gift from Amed Cafe, Sharya, Duhok.">
+<meta property="og:title" content="🎁 A gift from Amed Cafe">
+<meta property="og:description" content="Open it to see your gift, then show the QR code at the counter.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://amedcaferest.com/media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../card/icon-192.png">
+<meta name="theme-color" content="#1C120D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Noto+Naskh+Arabic:wght@500;600&family=Noto+Sans+Arabic:wght@300;400;500&display=swap">
+<style>
+/* Gift page (Thamir chose design A, "Gift box"). Amed espresso & gold; each occasion swaps the ground and accent.
+   Opened from the WhatsApp link https://amedcaferest.com/gift/#<16-char code>; the gift is read from Firestore gifts/{code}. */
+:root {
+  --bg: #120c09; --ink: #F3E9DC; --muted: #C4B09C; --line: #3F2D23;
+  --ground: #1C120D; --ground2: #35231A; --accent: #E3B27D;
+  --serif: "Cormorant Garamond", "Noto Naskh Arabic", Georgia, serif;
+  --sans: Jost, "Noto Sans Arabic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body.rtl { font-family: "Noto Sans Arabic", var(--sans); }
+.page { position: relative; min-height: 100vh; min-height: 100dvh; max-width: 520px; margin: 0 auto; overflow: hidden;
+  background: radial-gradient(120% 60% at 50% 0%, var(--ground2), var(--ground) 72%);
+  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 8px) max(16px, env(safe-area-inset-left, 0px)); }
+canvas.fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+.bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 0; gap: 10px; }
+.bar img { width: 104px; height: auto; display: block; }
+.langs { display: flex; gap: 4px; direction: ltr; }
+.langs button { font: inherit; font-size: 12px; color: var(--muted); background: rgba(0,0,0,.25); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; cursor: pointer; }
+.langs button[aria-pressed="true"] { color: #1C120D; background: var(--accent); border-color: var(--accent); }
+button:focus-visible, a:focus-visible, [role=button]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.lead { text-align: center; padding: 18px 8px 0; }
+.lead small { display: block; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); }
+.rtl .lead small { letter-spacing: 0; font-size: 14px; }
+.lead h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(34px, 9vw, 44px); line-height: 1.1; margin: 8px 0 6px; text-wrap: balance; }
+.rtl .lead h1 { font-size: clamp(28px, 8vw, 36px); line-height: 1.45; }
+.lead p { margin: 0; color: var(--muted); }
+.motif { display: flex; justify-content: center; margin-top: 14px; color: var(--accent); }
+.motif svg { width: 62px; height: 62px; }
+
+.gcard { margin: 20px 2px 0; padding: 22px 20px; border-radius: 20px; background: rgba(0,0,0,.22); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); display: grid; gap: 16px; }
+.msg { font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35; text-align: center; margin: 0; overflow-wrap: anywhere; }
+.rtl .msg { font-style: normal; font-size: 19px; line-height: 1.8; }
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.items li { display: flex; gap: 12px; align-items: baseline; border-bottom: 1px solid color-mix(in srgb, var(--accent) 18%, transparent); padding-bottom: 8px; }
+.items li:last-child { border-bottom: 0; padding-bottom: 0; }
+.items .q { font-family: var(--serif); font-size: 22px; color: var(--accent); min-width: 34px; font-variant-numeric: tabular-nums; direction: ltr; }
+.items .n { font-size: 16px; }
+.items .o { color: var(--muted); font-size: 14px; }
+.qrbox { display: grid; justify-items: center; gap: 8px; position: relative; }
+.qr { background: #fff; padding: 10px; border-radius: 14px; width: 188px; height: 188px; display: grid; place-items: center; }
+.qr svg, .qr img { width: 100%; height: 100%; display: block; }
+.qrbox small { color: var(--muted); font-size: 13px; text-align: center; }
+.code { font-family: ui-monospace, Menlo, monospace; letter-spacing: .12em; font-size: 12px; color: var(--muted); direction: ltr; }
+.done .qr { filter: grayscale(1) opacity(.22); }
+.stamp { position: absolute; top: 64px; left: 50%; transform: translateX(-50%) rotate(-10deg); border: 3px solid var(--accent); color: var(--accent); border-radius: 12px; padding: 6px 16px; font-family: var(--serif); font-size: 26px; font-weight: 600; background: rgba(0,0,0,.6); white-space: nowrap; }
+.foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; padding: 20px 2px 22px; color: var(--muted); font-size: 13px; }
+.foot a { color: var(--accent); text-decoration: none; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 99px; padding: 8px 14px; }
+
+/* The gift box: tap it, the lid lifts, confetti, the gift card rises */
+.box-wrap { display: grid; justify-items: center; gap: 16px; padding: 40px 0 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.box { position: relative; width: 190px; height: 158px; margin-top: 30px; animation: wiggle 2.6s 1s infinite; }
+@keyframes wiggle { 0%, 80%, 100% { transform: rotate(0); } 84% { transform: rotate(-3deg); } 88% { transform: rotate(3deg); } 92% { transform: rotate(-2deg); } }
+.box .b { position: absolute; inset: 32px 10px 0; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #000)); border-radius: 8px; }
+.box .lid { position: absolute; left: 0; right: 0; top: 4px; height: 40px; background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 88%, #fff), var(--accent)); border-radius: 8px; transition: transform .8s cubic-bezier(.3,1.4,.5,1), opacity .8s; }
+.box .rib { position: absolute; top: 4px; bottom: 0; left: 50%; width: 22px; margin-left: -11px; background: #7a1c24; }
+.box .bow { position: absolute; top: -26px; left: 50%; width: 80px; height: 40px; margin-left: -40px; transition: transform .8s cubic-bezier(.3,1.4,.5,1), opacity .8s; }
+.box .bow::before, .box .bow::after { content: ""; position: absolute; top: 6px; width: 38px; height: 30px; border: 8px solid #7a1c24; border-radius: 50% 50% 10% 50%; }
+.box .bow::before { left: 0; transform: rotate(-20deg); } .box .bow::after { right: 0; transform: rotate(20deg) scaleX(-1); }
+.box-wrap.open .box { animation: none; }
+.box-wrap.open .lid, .box-wrap.open .bow { transform: translateY(-150px) rotate(-14deg); opacity: 0; }
+.box-wrap.open { animation: sink .6s .5s forwards; }
+@keyframes sink { to { opacity: 0; height: 0; padding: 0; } }
+.tap { color: var(--muted); font-size: 15px; animation: pulse 1.8s infinite; text-align: center; }
+@keyframes pulse { 50% { opacity: .45; } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s .55s, transform .8s .55s cubic-bezier(.2,.8,.2,1); }
+.reveal.on { opacity: 1; transform: none; }
+.reveal.now { transition: none; }
+
+.note { margin: 60px 8px; padding: 26px 20px; text-align: center; border: 1px solid var(--line); border-radius: 20px; background: rgba(0,0,0,.25); display: grid; gap: 12px; justify-items: center; }
+.note h1 { font-family: var(--serif); font-weight: 500; font-size: 30px; margin: 0; }
+.note p { margin: 0; color: var(--muted); }
+.note button { font: inherit; color: #1C120D; background: var(--accent); border: 0; border-radius: 99px; padding: 10px 20px; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .reveal { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="page" id="page">
+  <div class="bar"><img src="../logo-gold.png" alt="Amed Cafe"><div class="langs" id="langs"></div></div>
+  <main id="main"></main>
+</div>
+<script src="../vendor/qrcode-generator.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const API_KEY = "";   // the same public web key as card/index.html
+  const GIFT_URL = (code) => "https://firestore.googleapis.com/v1/projects/amed-cafe/databases/(default)/documents/gifts/" + code + "?key=" + API_KEY;
+  const CODE_RE = /^[0-9A-HJKMNP-TV-Z]{16}$/;
+  const MAPS = "https://maps.app.goo.gl/QWJCvuRBjmKmjnWs7";
+  const RTL = { ar: 1, ku: 1 };
+  const OCC = {   // Eid stays neutral and festive (Thamir: customers of all religions)
+    birthday: { ground: "#2B1714", ground2: "#4A2620", accent: "#E9AE8C" },
+    eid:      { ground: "#141A2E", ground2: "#26304F", accent: "#E8C27A" },
+    invite:   { ground: "#1C120D", ground2: "#35231A", accent: "#E3B27D" },
+    other:    { ground: "#1A1512", ground2: "#2E2620", accent: "#D9C2A0" },
+  };
+  const T = {
+    en: { sent: "{from} sent you a gift", hi: "For {to}", title: { birthday: "Happy Birthday!", eid: "Happy Eid!", invite: "You're invited!", other: "A gift for you" },
+      your: "Your gift", show: "Show this QR code at the counter", once: "One use only", open: "Tap to open your gift", used: "Enjoyed ✓",
+      usedMsg: "This gift has been used. We hope you enjoyed it!", voidT: "Cancelled", voidMsg: "This gift was cancelled. Please ask the person who sent it.",
+      hours: "Every day · 9 AM – 1 AM", map: "Find us", loading: "Opening your gift…", nfT: "Gift not found", nf: "This gift link isn't valid. Please check the link or ask the person who sent it.",
+      errT: "Couldn't load your gift", err: "Please check your internet connection and try again.", retry: "Try again", from: "Amed Cafe" },
+    ar: { sent: "{from} أرسل لك هدية", hi: "إلى {to}", title: { birthday: "عيد ميلاد سعيد!", eid: "عيد سعيد!", invite: "أنت مدعو!", other: "هدية لك" },
+      your: "هديتك", show: "أظهر رمز QR هذا عند الكاونتر", once: "تُستخدم مرة واحدة فقط", open: "اضغط لفتح هديتك", used: "تم الاستمتاع ✓",
+      usedMsg: "تم استخدام هذه الهدية. نتمنى أنها أعجبتك!", voidT: "ملغاة", voidMsg: "تم إلغاء هذه الهدية. يرجى سؤال الشخص الذي أرسلها.",
+      hours: "كل يوم · 9 صباحاً – 1 ليلاً", map: "موقعنا", loading: "جارٍ فتح هديتك…", nfT: "الهدية غير موجودة", nf: "رابط الهدية غير صالح. يرجى التحقق من الرابط أو سؤال الشخص الذي أرسله.",
+      errT: "تعذّر تحميل هديتك", err: "يرجى التحقق من اتصال الإنترنت والمحاولة مجدداً.", retry: "حاول مجدداً", from: "Amed Cafe" },
+    ku: { sent: "{from} دیاریەک بۆ تە هنارت", hi: "بۆ {to}", title: { birthday: "رۆژبوونا تە پیرۆز بیت!", eid: "جەژنا تە پیرۆز بیت!", invite: "تو مێڤانێ مەیی!", other: "دیاریەک بۆ تە" },
+      your: "دیاریا تە", show: "ڤی QR کۆدی ل کاونتەری نیشان بدە", once: "تنێ ئێک جار", open: "بکە دا دیاریا خۆ ڤەکەی", used: "هاتە بکارئینان ✓",
+      usedMsg: "ئەڤ دیاریە هاتیە بکارئینان. هیڤیە تە حەژێ کربیت!", voidT: "هاتە هەلوەشاندن", voidMsg: "ئەڤ دیاریە هاتیە هەلوەشاندن. هیڤیە پسیارا وی کەسی بکە یێ هنارتی.",
+      hours: "هەمی رۆژ · 9:00 سپێدێ – 1:00 شەڤێ", map: "جهێ مە", loading: "دیاریا تە ڤەدبیت…", nfT: "دیاری نەهاتە دیتن", nf: "ئەڤ لینکە نە دروستە. هیڤیە لینکی بپشکنە یان پسیارا وی کەسی بکە یێ هنارتی.",
+      errT: "دیاری بار نەبوو", err: "هیڤیە پەیوەندیا ئینتەرنێتێ بپشکنە و دووبارە هەول بدە.", retry: "دووبارە هەول بدە", from: "Amed Cafe" },
+    de: { sent: "{from} hat Ihnen ein Geschenk geschickt", hi: "Für {to}", title: { birthday: "Alles Gute zum Geburtstag!", eid: "Frohes Eid-Fest!", invite: "Sie sind eingeladen!", other: "Ein Geschenk für Sie" },
+      your: "Ihr Geschenk", show: "Zeigen Sie diesen QR-Code an der Theke", once: "Nur einmal einlösbar", open: "Tippen Sie, um Ihr Geschenk zu öffnen", used: "Eingelöst ✓",
+      usedMsg: "Dieses Geschenk wurde eingelöst. Wir hoffen, es hat Ihnen geschmeckt!", voidT: "Storniert", voidMsg: "Dieses Geschenk wurde storniert. Bitte fragen Sie die Person, die es geschickt hat.",
+      hours: "Täglich · 9:00 – 1:00 Uhr", map: "So finden Sie uns", loading: "Ihr Geschenk wird geöffnet…", nfT: "Geschenk nicht gefunden", nf: "Dieser Geschenk-Link ist ungültig. Bitte prüfen Sie den Link oder fragen Sie die Person, die ihn geschickt hat.",
+      errT: "Geschenk konnte nicht geladen werden", err: "Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.", retry: "Erneut versuchen", from: "Amed Cafe" },
+  };
+  const LANGS = [["ku", "بادینی"], ["ar", "عربي"], ["en", "EN"], ["de", "DE"]];
+  const MOTIF = {
+    birthday: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 50h40v8H12zM16 38h32v12H16z"/><path d="M24 38v-8M32 38v-8M40 38v-8"/><path d="M24 26c-2-3 0-6 0-6s2 3 0 6zM32 26c-2-3 0-6 0-6s2 3 0 6zM40 26c-2-3 0-6 0-6s2 3 0 6z" fill="currentColor"/></svg>',
+    eid: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M32 30v-14M32 30l10-10M32 30l14 0M32 30l10 10M32 30v14M32 30l-10 10M32 30h-14M32 30l-10-10"/><circle cx="32" cy="30" r="3" fill="currentColor"/><path d="M50 50l2 4 4 1-4 1-2 4-2-4-4-1 4-1zM12 46l1.5 3 3 1-3 1-1.5 3-1.5-3-3-1 3-1z" fill="currentColor" stroke="none"/></svg>',
+    invite: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 30h30v8a14 14 0 0 1-14 14h-2A14 14 0 0 1 14 38z"/><path d="M44 33h4a6 6 0 0 1 0 12h-6"/><path d="M10 56h40"/><path d="M24 24c-3-4 3-6 0-10M32 24c-3-4 3-6 0-10"/></svg>',
+    other: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="12" y="26" width="40" height="28" rx="2"/><path d="M10 18h44v8H10zM32 18v36"/><path d="M32 18c-4-8-14-8-12-2 1 3 8 2 12 2zM32 18c4-8 14-8 12-2-1 3-8 2-12 2z"/></svg>',
+  };
+  // Example gift shown at #demo (for previews only; never stored)
+  const DEMO = { status: "active", occasion: "birthday", occasionText: "", from: "Ahmed", to: "Sara", lang: "en",
+    message: "Happy birthday Sara! The first round is on me.",
+    items: [{ qty: 1, name: { en: "Royal mix", ar: "خلطة رويال", ku: "تێکەلا رۆیال", de: "Royal-Mix" } }, { qty: 2, name: { en: "Spanish latte", ar: "لاتيه إسباني", ku: "لاتێ ئیسپانی", de: "Spanish Latte" } }] };
+
+  let lang = "ku", GIFT = null, CODE = "", state = "loading", opened = false;
+  const tr = (k) => T[lang][k];
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const pick = (m) => !m ? "" : typeof m === "string" ? m : (m[lang] || m.en || m.ar || m.ku || Object.values(m)[0] || "");
+  const fill = (s) => s.replace("{from}", GIFT && GIFT.from || "").replace("{to}", GIFT && GIFT.to || "");
+  // Firestore REST values → plain JS
+  const fsVal = (v) => !v ? null : "stringValue" in v ? v.stringValue : "integerValue" in v ? Number(v.integerValue) : "doubleValue" in v ? v.doubleValue
+    : "booleanValue" in v ? v.booleanValue : "timestampValue" in v ? v.timestampValue : "arrayValue" in v ? (v.arrayValue.values || []).map(fsVal)
+    : "mapValue" in v ? fsMap(v.mapValue.fields) : null;
+  const fsMap = (f) => Object.fromEntries(Object.entries(f || {}).map(([k, v]) => [k, fsVal(v)]));
+  const seenKey = () => "amed-gift-opened-" + CODE;
+  const wasOpened = () => { try { return localStorage.getItem(seenKey()) === "1"; } catch (_) { return false; } };
+
+  function theme() {
+    const o = OCC[(GIFT && GIFT.occasion) || "invite"] || OCC.invite, r = document.documentElement.style;
+    r.setProperty("--ground", o.ground); r.setProperty("--ground2", o.ground2); r.setProperty("--accent", o.accent);
+    document.querySelector('meta[name="theme-color"]').content = o.ground;
+  }
+  function setLang(l) {
+    lang = T[l] ? l : "en";
+    document.documentElement.lang = lang === "ku" ? "ckb" : lang; document.documentElement.dir = RTL[lang] ? "rtl" : "ltr";
+    document.body.classList.toggle("rtl", !!RTL[lang]);
+    const box = $("langs"); box.textContent = "";
+    for (const [k, n] of LANGS) { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.lang = k === "ku" ? "ckb" : k; b.setAttribute("aria-pressed", String(k === lang));
+      b.onclick = () => { try { localStorage.setItem("amed-lang", k); } catch (_) {} setLang(k); }; box.append(b); }
+    render();
+  }
+  function qrSvg() {
+    try { const q = qrcode(0, "M"); q.addData("https://amedcaferest.com/gift/#" + CODE); q.make(); return q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
+    catch (_) { return ""; }
+  }
+  function titleText() { const g = GIFT; return g.occasion === "other" ? (g.occasionText || tr("title").other) : (tr("title")[g.occasion] || tr("title").other); }
+  function giftHTML() {
+    const g = GIFT, done = g.status === "redeemed" || g.status === "void";
+    const items = (g.items || []).map((i) => `<li><span class="q">${Number(i.qty) || 1}×</span><span><span class="n">${esc(pick(i.name))}</span>${i.option ? ` <span class="o">· ${esc(pick(i.option))}</span>` : ""}</span></li>`).join("");
+    const qr = done ? `<div class="stamp">${esc(g.status === "void" ? tr("voidT") : tr("used"))}</div><small>${esc(g.status === "void" ? tr("voidMsg") : tr("usedMsg"))}</small>`
+      : `<small>${esc(tr("show"))}<br>${esc(tr("once"))}</small><span class="code">${CODE.replace(/(.{4})(?=.)/g, "$1 ")}</span>`;
+    return `<div class="lead"><small>${esc(fill(tr("sent")))}</small><h1>${esc(titleText())}</h1>${g.to ? `<p>${esc(fill(tr("hi")))}</p>` : ""}</div>
+      <div class="motif">${MOTIF[g.occasion] || MOTIF.other}</div>
+      <div class="gcard">${g.message ? `<p class="msg" dir="auto">“${esc(g.message)}”</p>` : ""}
+        <ul class="items" aria-label="${esc(tr("your"))}">${items}</ul>
+        <div class="qrbox${done ? " done" : ""}"><div class="qr" role="img" aria-label="QR">${qrSvg()}</div>${qr}</div></div>
+      <div class="foot"><span>${esc(tr("hours"))}</span><a href="${MAPS}" target="_blank" rel="noopener">${esc(tr("map"))} ›</a></div>`;
+  }
+  function render() {
+    const m = $("main");
+    if (state === "loading") { m.innerHTML = `<div class="box-wrap" aria-busy="true"><div class="box"><div class="b"></div><div class="rib"></div><div class="lid"></div><div class="bow"></div></div><span class="tap">${esc(tr("loading"))}</span></div>`; return; }
+    if (state === "notfound" || state === "error") {
+      m.innerHTML = `<div class="note"><h1>${esc(tr(state === "notfound" ? "nfT" : "errT"))}</h1><p>${esc(tr(state === "notfound" ? "nf" : "err"))}</p>${state === "error" ? `<button type="button" id="retry">${esc(tr("retry"))}</button>` : ""}<div class="foot"><a href="${MAPS}" target="_blank" rel="noopener">${esc(tr("map"))} ›</a></div></div>`;
+      if ($("retry")) $("retry").onclick = load; return;
+    }
+    const direct = opened || GIFT.status !== "active";
+    m.innerHTML = (direct ? "" : `<div class="box-wrap" id="boxW" role="button" tabindex="0" aria-label="${esc(tr("open"))}"><div class="box"><div class="b"></div><div class="rib"></div><div class="lid"></div><div class="bow"></div></div><span class="tap">${esc(tr("open"))}</span></div>`)
+      + `<div class="reveal${direct ? " on now" : ""}" id="rev">${giftHTML()}</div>`;
+    if (!direct) {
+      const open = () => { const w = $("boxW"); if (!w || w.classList.contains("open")) return; opened = true; try { localStorage.setItem(seenKey(), "1"); } catch (_) {}
+        w.classList.add("open"); $("rev").classList.add("on"); setTimeout(confetti, 250); };
+      $("boxW").onclick = open; $("boxW").onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } };
+    }
+  }
+  function confetti() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const c = document.createElement("canvas"); c.className = "fx"; document.body.append(c);
+    const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio || 1, 2); c.width = W * dpr; c.height = H * dpr;
+    const x = c.getContext("2d"); x.scale(dpr, dpr);
+    const acc = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#E3B27D";
+    const cols = [acc, "#F3E9DC", "#D4A373", "#b23a44"];
+    const P = Array.from({ length: 120 }, () => ({ x: W / 2, y: H * .3, vx: (Math.random() - .5) * 10, vy: -Math.random() * 12 - 3, s: 4 + Math.random() * 5, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[(Math.random() * cols.length) | 0] }));
+    let f = 0;
+    (function tick() { x.clearRect(0, 0, W, H); for (const p of P) { p.x += p.vx; p.y += p.vy; p.vy += .28; p.vx *= .99; p.a += p.va; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); }
+      if (++f < 160) requestAnimationFrame(tick); else c.remove(); })();
+  }
+  function savedLang() { try { const l = localStorage.getItem("amed-lang"); return T[l] ? l : ""; } catch (_) { return ""; } }
+  function load() {
+    CODE = decodeURIComponent(location.hash.replace(/^#/, "")).trim().toUpperCase().replace(/[\s-]/g, "");
+    state = "loading"; GIFT = null; opened = false; render();
+    if (CODE === "DEMO") { GIFT = DEMO; CODE = "DEMO0000DEMO0000"; state = "ok"; theme(); setLang(savedLang() || DEMO.lang); return; }
+    if (!CODE_RE.test(CODE)) { state = "notfound"; render(); return; }
+    opened = wasOpened();
+    fetch(GIFT_URL(CODE), { cache: "no-store" }).then((r) => {
+      if (r.status === 404 || r.status === 403) { state = "notfound"; render(); return null; }
+      if (!r.ok) throw r.status; return r.json();
+    }).then((doc) => {
+      if (!doc) return; if (!doc.fields) { state = "notfound"; render(); return; }
+      GIFT = fsMap(doc.fields); state = "ok"; theme(); setLang(savedLang() || GIFT.lang || lang);
+    }).catch(() => { state = "error"; render(); });
+  }
+  const nav = (navigator.language || "").slice(0, 2);
+  setLang(savedLang() || (T[nav] ? nav : "ku"));
+  window.addEventListener("hashchange", load);
+  load();
+})();
+</script>
+</body>
+</html>
