@@ -138,6 +138,39 @@ a.btn:not(.wa) { color: var(--ink); }
 
 /* staff sign-in (name + PIN) */
 #approveDlg { z-index: 26; }
+#giftDlg { z-index: 25; }
+#giftDlg .modal { max-width: 620px; display: grid; gap: 10px; }
+#giftDlg h3 { margin: 8px 0 0; font-size: 1rem; }
+#giftDlg .gfcats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+#giftDlg .gfcats button, #giftDlg .gfocc button { flex: 0 0 auto; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+#giftDlg .gfcats button[aria-pressed="true"], #giftDlg .gfocc button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink, #fff); }
+#giftDlg .gfitems { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+#giftDlg .gfitem { display: grid; gap: 2px; min-height: 58px; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; text-align: start; cursor: pointer; }
+#giftDlg .gfitem small { color: var(--muted); }
+#giftDlg .gfitem.open { border-color: var(--accent); }
+#giftDlg .gfopts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+#giftDlg .gfcart { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+#giftDlg .gfcart li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 6px 10px; border-radius: 10px; background: var(--bg); }
+#giftDlg .gfcart li.empty1 { display: block; color: var(--muted); }
+#giftDlg .gfcart li.tot { background: transparent; border-top: 1px solid var(--line); border-radius: 0; font-weight: 700; }
+#giftDlg .gfcart .qty { display: flex; align-items: center; gap: 8px; }
+#giftDlg .gfcart .qty button { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 1.2rem; font-weight: 700; cursor: pointer; }
+#giftDlg .gfcart .n { text-align: end; font-variant-numeric: tabular-nums; }
+#giftDlg .gfocc { display: flex; flex-wrap: wrap; gap: 6px; }
+#giftDlg .gfocc span { margin-inline-end: 6px; }
+#giftDlg .gfpaid { font-weight: 700; }
+#giftDlg .gfqr { justify-self: center; padding: 12px; background: #fff; border-radius: 14px; }
+#giftDlg .gfqr img, #giftDlg .gfqr canvas { display: block; }
+#giftDlg .gfsum, #giftDlg .gflink { margin: 0; text-align: center; }
+#giftDlg .gflink { color: var(--muted); font-size: .85rem; word-break: break-all; }
+#giftDlg .gfocc1 { margin: 0; font-size: 1.3rem; font-weight: 700; }
+#giftDlg .gffrom, #giftDlg .gfwhen, #giftDlg .gfmsg { margin: 0; }
+#giftDlg .gfwhen { color: var(--muted); font-size: .9rem; }
+#giftDlg .gfmsg { font-style: italic; }
+#giftDlg .gfstate { margin: 0; padding: 12px 14px; border-radius: 12px; font-weight: 700; font-size: 1.05rem; }
+#giftDlg .gfstate.bad { background: var(--warn-soft); color: var(--danger); border: 1px solid var(--danger); }
+#giftDlg .gfstate.ok { background: var(--accent-soft); color: var(--good); }
+#giftDlg .gfbig { min-height: 56px; font-size: 1.1rem; }
 #approveDlg .modal { max-width: 460px; display: grid; gap: 12px; text-align: center; }
 #approveDlg .apwhy { margin: 0; font-weight: 700; color: var(--danger); }
 #approveDlg .apgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
@@ -169,7 +202,7 @@ a.btn:not(.wa) { color: var(--ink); }
 body:not(.shift-boss) #fbAcct { display: none !important; }
 .searchRow { display: flex; gap: 8px; flex-wrap: wrap; }
 .searchRow input { flex: 1 1 100%; min-width: 0; }
-.searchRow .btn { flex: 1 1 0; }
+.searchRow .btn { flex: 1 1 0; white-space: nowrap; }
 .searchRow .scanbtn svg { width: 20px; height: 20px; flex: none; }
 .scanbox { max-width: 520px; display: grid; gap: 12px; }
 .scanview { position: relative; background: #000; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; }
@@ -434,6 +467,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
           <input id="q" type="search" placeholder="Phone, name or member code" autocomplete="off" aria-label="Search members">
           <button class="btn scanbtn" id="btnScan" type="button" aria-label="Scan QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M8 8h3v3H8zM13 13h3v3h-3zM13 8h3M8 16h3"/></svg><span>Scan</span></button>
           <button class="btn primary" id="btnNew" type="button">New member</button>
+          <button class="btn" id="btnGift" type="button" hidden>🎁 Gift card</button>
         </div>
         <p class="hint">Type the phone number or scan the customer's QR code, then press Enter.</p>
 
@@ -618,6 +652,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       <div class="chartbox"><h4>Top customers</h4><p class="sub">Most stamps in this period.</p><div class="tblwrap"><table class="tbl" id="topTbl"></table></div></div>
       <div class="chartbox"><h4>Staff activity</h4><p class="sub">Who gave stamps and rewards.</p><div class="tblwrap"><table class="tbl" id="staffTbl"></table></div></div>
     </div>
+    <div class="chartbox"><h4>Gift cards</h4><p class="sub" id="giftSub"></p><div class="tblwrap"><table class="tbl" id="giftTbl"></table></div></div>
     <div class="chartbox"><h4>Unusual activity</h4><p class="sub">Stamps outside opening hours, many undos, several rewards for one customer in a day, or one customer stamped many separate times by the same staff member.</p><div class="tblwrap"><table class="tbl" id="oddTbl"></table></div></div>
     <div class="chartbox"><h4>Low ratings</h4><p class="sub">Ratings of 1 or 2 in this period. Call these customers yourself.</p><div class="tblwrap"><table class="tbl" id="lowTbl"></table></div></div>
     <div class="chartbox"><h4>Customers who stopped coming</h4><p class="sub" id="lapsedSub"></p><div class="tblwrap"><table class="tbl" id="lapsedTbl"></table></div></div>
@@ -767,6 +802,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     <input id="scanFile" type="file" accept="image/*" capture="environment" hidden>
   </div>
 </div>
+<div class="overlay" id="giftDlg" hidden><div class="modal form" role="dialog" aria-modal="true" aria-labelledby="gfTitle"></div></div>
 <div class="overlay" id="approveDlg" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="apTitle"></div></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -846,8 +882,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   };
   const KINDS = ["welcome", "ready", "expiring", "away", "feedback", "review", "birthday", "event", "staffInvite"];
   const KIND_FIELD = { welcome: "sMsgWelcome", ready: "sMsgReady", expiring: "sMsgExpiring", away: "sMsgAway", feedback: "sMsgFeedback", review: "sMsgReview", birthday: "sMsgBirthday", event: "sMsgEvent", staffInvite: "sMsgStaff" };
-  const PERMS = [["stamp", "Add stamps"], ["reward", "Give rewards & gifts"], ["undo", "Undo"], ["addMember", "Add new members"], ["editMember", "Edit members & PINs"], ["deleteMember", "Remove members"], ["message", "Messages, ratings & follow-ups"], ["reports", "See reports"], ["export", "Export & backup"], ["approve", "Approve extra stamps (over the daily limit or too soon)"]];
-  const PRESETS = { barista: ["stamp", "reward", "addMember", "message"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export", "approve"] };
+  const PERMS = [["stamp", "Add stamps"], ["reward", "Give rewards & gifts"], ["undo", "Undo"], ["addMember", "Add new members"], ["editMember", "Edit members & PINs"], ["deleteMember", "Remove members"], ["message", "Messages, ratings & follow-ups"], ["reports", "See reports"], ["export", "Export & backup"], ["approve", "Approve extra stamps (over the daily limit or too soon)"], ["giftcards", "Sell gift cards"]];
+  const PRESETS = { barista: ["stamp", "reward", "addMember", "message", "giftcards"], manager: ["stamp", "reward", "undo", "addMember", "editMember", "message", "reports", "export", "approve", "giftcards"] };
 
   const state = {
     db: null, user: null, uid: null, myName: "", base: new Map(), customers: new Map(), settings: structuredClone(DEFAULTS),
@@ -1277,6 +1313,63 @@ body.counter .card-head h2 { font-size: 2.4rem; }
       "Country": "وەڵات",
     },
   };
+  // Gift cards
+  Object.assign(UI.ar, {
+    "🎁 Gift card": "🎁 بطاقة هدية", "Sell gift cards": "بيع بطاقات الهدايا", "Gift card": "بطاقة هدية", "New gift card": "بطاقة هدية جديدة",
+    "Make the gift only after the customer has paid. It can be used once, with no expiry date.": "اصنع الهدية فقط بعد أن يدفع الزبون. تُستخدم مرة واحدة، بدون تاريخ انتهاء.",
+    "1. What is the gift?": "1. ما هي الهدية؟", "Loading the menu…": "جارٍ تحميل القائمة…", "Menu": "القائمة", "choose…": "اختر…",
+    "Tap items above to add them to the gift.": "اضغط على الأصناف في الأعلى لإضافتها إلى الهدية.", "One less": "واحد أقل", "One more": "واحد أكثر", "Total to pay": "المبلغ المطلوب",
+    "2. Occasion": "2. المناسبة", "Occasion": "المناسبة", "Eid": "العيد", "Invitation": "دعوة", "Other": "أخرى",
+    "What is it for? (short)": "ما المناسبة؟ (باختصار)", "e.g. Graduation": "مثلاً: تخرّج", "3. From and to": "3. من وإلى",
+    "From (the buyer's name)": "من (اسم المشتري)", "To (optional)": "إلى (اختياري)", "Short message (optional)": "رسالة قصيرة (اختياري)",
+    "Language of the gift page": "لغة صفحة الهدية", "The customer has paid {total}.": "دفع الزبون {total}.", "The customer has paid.": "دفع الزبون.",
+    "Saving…": "جارٍ الحفظ…", "Make the gift card": "اصنع بطاقة الهدية", "Gift card ready": "بطاقة الهدية جاهزة",
+    "Show this QR to the buyer, or send them the link. Whoever has it can use the gift once.": "أظهر رمز QR هذا للمشتري أو أرسل له الرابط. من يملكه يستطيع استخدام الهدية مرة واحدة.",
+    "Buyer's WhatsApp number (optional)": "رقم واتساب المشتري (اختياري)", "Send to": "أرسل إلى", "Send on WhatsApp": "أرسل عبر واتساب",
+    "Copy link": "انسخ الرابط", "Link copied.": "تم نسخ الرابط.", "Done": "تم", "Checking the gift…": "جارٍ التحقق من الهدية…", "Try again": "حاول مرة أخرى",
+    "No gift card has this code.": "لا توجد بطاقة هدية بهذا الرمز.", "From {from}": "من {from}", "Sold {when} by {name}": "بيعت {when} بواسطة {name}",
+    "Already used {when} (by {name}). Don't give it again.": "استُخدمت مسبقاً {when} (بواسطة {name}). لا تعطها مرة أخرى.",
+    "This gift card was cancelled {when}. Don't give it.": "أُلغيت بطاقة الهدية هذه {when}. لا تعطها.",
+    "Done. Give the customer the items above.": "تم. أعطِ الزبون الأصناف أعلاه.", "Use the gift now": "استخدم الهدية الآن",
+    "Yes, cancel it": "نعم، ألغِها", "Cancel this gift (refund)": "ألغِ هذه الهدية (استرجاع المبلغ)",
+    "Add at least one item.": "أضف صنفاً واحداً على الأقل.", "Write the buyer's name (From).": "اكتب اسم المشتري (من).", "Write what the gift is for.": "اكتب مناسبة الهدية.",
+    "Tick that the customer has paid. Gifts are made only after payment.": "ضع علامة أن الزبون دفع. الهدايا تُصنع فقط بعد الدفع.",
+    "No connection. Gift cards need the internet — check the Wi-Fi and try again.": "لا يوجد اتصال. بطاقات الهدايا تحتاج إلى الإنترنت — تحقق من الواي فاي وحاول مرة أخرى.",
+    "The database refused this. Ask the owner to check the gift card rules in Firebase.": "رفضت قاعدة البيانات هذا. اطلب من المالك التحقق من قواعد بطاقات الهدايا في Firebase.",
+    "That didn't work. Try again.": "لم ينجح ذلك. حاول مرة أخرى.", "The menu couldn't load. Check the connection and try again.": "تعذّر تحميل القائمة. تحقق من الاتصال وحاول مرة أخرى.",
+    "Gift card: check it on the tablet.": "بطاقة هدية: تحقق منها على التابلت.", "German (Deutsch)": "الألمانية (Deutsch)",
+    "Gift cards": "بطاقات الهدايا", "{n} sold ({amt}) · {u} used · {v} cancelled in this period.": "{n} مباعة ({amt}) · {u} مستخدمة · {v} ملغاة في هذه الفترة.",
+    "Items": "الأصناف", "Paid": "المدفوع", "No gift cards in this period.": "لا توجد بطاقات هدايا في هذه الفترة.",
+    "Gift card sold": "بيعت بطاقة هدية", "Gift card used": "استُخدمت بطاقة هدية", "Gift card cancelled": "أُلغيت بطاقة هدية",
+  });
+  Object.assign(UI.ku, {
+    "🎁 Gift card": "🎁 کارتا دیاریێ", "Sell gift cards": "فرۆتنا کارتێن دیاریێ", "Gift card": "کارتا دیاریێ", "New gift card": "کارتا دیاریێ یا نوو",
+    "Make the gift only after the customer has paid. It can be used once, with no expiry date.": "دیاریێ تنێ پشتی کڕیار پارە ددەت چێبکە. ئێک جار دهێتە بکارئینان، بێ دەمێ ب دووماهی هاتنێ.",
+    "1. What is the gift?": "1. دیاری چییە؟", "Loading the menu…": "مێنیو بار دبیت…", "Menu": "مێنیو", "choose…": "هەلبژێرە…",
+    "Tap items above to add them to the gift.": "تشتێن ل سەری بکەلە دا بۆ دیاریێ زێدە ببن.", "One less": "ئێکێ کێمتر", "One more": "ئێکێ پتر", "Total to pay": "کۆمێ پارەی",
+    "2. Occasion": "2. بۆنە", "Occasion": "بۆنە", "Eid": "جەژن", "Invitation": "ڤەخواندن", "Other": "یێ دی",
+    "What is it for? (short)": "بۆ چ بۆنەیە؟ (کورت)", "e.g. Graduation": "بۆ نموونە: دەرچوون", "3. From and to": "3. ژ کێ و بۆ کێ",
+    "From (the buyer's name)": "ژ (ناڤێ کڕیاری)", "To (optional)": "بۆ (ئەگەر بڤێت)", "Short message (optional)": "نامەیەکا کورت (ئەگەر بڤێت)",
+    "Language of the gift page": "زمانێ پەڕێ دیاریێ", "The customer has paid {total}.": "کڕیاری {total} دایە.", "The customer has paid.": "کڕیاری پارە دایە.",
+    "Saving…": "پاشەکەفت دبیت…", "Make the gift card": "کارتا دیاریێ چێبکە", "Gift card ready": "کارتا دیاریێ ئامادەیە",
+    "Show this QR to the buyer, or send them the link. Whoever has it can use the gift once.": "ڤی QR ی نیشا کڕیاری بدە، یان لینکی بۆ بهنێرە. هەر کەسێ هەبیت دشێت ئێک جار دیاریێ بکاربینیت.",
+    "Buyer's WhatsApp number (optional)": "ژمارا واتسئەپا کڕیاری (ئەگەر بڤێت)", "Send to": "بهنێرە بۆ", "Send on WhatsApp": "ب واتسئەپێ بهنێرە",
+    "Copy link": "لینکی کۆپی بکە", "Link copied.": "لینک هاتە کۆپیکرن.", "Done": "تمام", "Checking the gift…": "دیاری دهێتە پشکنین…", "Try again": "دووبارە هەول بدە",
+    "No gift card has this code.": "چ کارتێن دیاریێ ب ڤی کۆدی نینن.", "From {from}": "ژ {from}", "Sold {when} by {name}": "{when} ژلایێ {name} ڤە هاتە فرۆتن",
+    "Already used {when} (by {name}). Don't give it again.": "بەری نوکە {when} هاتیە بکارئینان (ژلایێ {name} ڤە). جارەکا دی نەدە.",
+    "This gift card was cancelled {when}. Don't give it.": "ئەڤ کارتا دیاریێ {when} هاتیە هەلوەشاندن. نەدە.",
+    "Done. Give the customer the items above.": "تمام. تشتێن ل سەری بدە کڕیاری.", "Use the gift now": "نوکە دیاریێ بکاربینە",
+    "Yes, cancel it": "بەلێ، هەلبوەشینە", "Cancel this gift (refund)": "ڤێ دیاریێ هەلبوەشینە (پارە ڤەگەڕاندن)",
+    "Add at least one item.": "کێمتر نە ئێک تشت زێدە بکە.", "Write the buyer's name (From).": "ناڤێ کڕیاری بنڤیسە (ژ).", "Write what the gift is for.": "بنڤیسە دیاری بۆ چ بۆنەیە.",
+    "Tick that the customer has paid. Gifts are made only after payment.": "نیشان بکە کو کڕیاری پارە دایە. دیاری تنێ پشتی پارەدانێ چێدبن.",
+    "No connection. Gift cards need the internet — check the Wi-Fi and try again.": "پەیوەندی نینە. کارتێن دیاریێ پێدڤی ب ئینتەرنێتێ نە — وایفایێ بپشکنە و دووبارە هەول بدە.",
+    "The database refused this. Ask the owner to check the gift card rules in Firebase.": "داتابەیسێ ئەڤە ڕەد کر. ژ خودانی بخوازە یاسایێن کارتێن دیاریێ ل Firebase بپشکنیت.",
+    "That didn't work. Try again.": "سەرنەکەفت. دووبارە هەول بدە.", "The menu couldn't load. Check the connection and try again.": "مێنیو بار نەبوو. پەیوەندیێ بپشکنە و دووبارە هەول بدە.",
+    "Gift card: check it on the tablet.": "کارتا دیاریێ: ل سەر تابلێتێ بپشکنە.", "German (Deutsch)": "ئەلمانی (Deutsch)",
+    "Gift cards": "کارتێن دیاریێ", "{n} sold ({amt}) · {u} used · {v} cancelled in this period.": "{n} هاتنە فرۆتن ({amt}) · {u} هاتنە بکارئینان · {v} هاتنە هەلوەشاندن د ڤێ ماوەیێ دا.",
+    "Items": "تشت", "Paid": "پارە دای", "No gift cards in this period.": "د ڤێ ماوەیێ دا چ کارتێن دیاریێ نینن.",
+    "Gift card sold": "کارتا دیاریێ هاتە فرۆتن", "Gift card used": "کارتا دیاریێ هاتە بکارئینان", "Gift card cancelled": "کارتا دیاریێ هاتە هەلوەشاندن",
+  });
   let uiLang = "en";
   try { uiLang = localStorage.getItem("amed-ui-lang") || "en"; } catch (_) {}
   if (!UI[uiLang] && uiLang !== "en") uiLang = "en";
@@ -1402,6 +1495,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     $("btnSettings").hidden = state.roleReady && !boss;
     $("btnReports").hidden = !can("reports");
     $("btnNew").hidden = !can("addMember");
+    $("btnGift").hidden = !can("giftcards");
     for (const id of ["btnExportMembers", "btnExportActivity", "btnBackup"]) $(id).hidden = !can("export");
     if (joining) return;
     const m = state.tab === "members";
@@ -1897,6 +1991,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   $("q").addEventListener("input", (e) => { state.query = e.target.value; renderList(); });
   $("q").addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
+    const gc = giftCodeFrom(state.query); if (gc) { $("q").value = ""; state.query = ""; renderList(); openGift(gc); return; }
     const m = sortedMatches();
     if (m.length === 1) { select(m[0].id); $("q").value = ""; state.query = ""; }
     else if (!m.length && digits(state.query).length >= 6 && !codeFrom(state.query)) openNew(state.query.trim());
@@ -2196,6 +2291,13 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     ot.append(el("tr", {}, el("th", { text: "When" }), el("th", { text: "Staff" }), el("th", { text: "Customer" }), el("th", { text: "What happened" })));
     if (!odd.length) ot.append(el("tr", {}, el("td", { colspan: "4", text: "Nothing unusual in this period." })));
     for (const [ts, st, cid, what] of odd.slice(0, 50)) { const cu = state.customers.get(cid) || [...state.customers.values()].find((x) => (x.previousPhones || []).includes(cid)); ot.append(el("tr", {}, el("td", { text: fmtWhen(ts) }), el("td", { text: st }), el("td", { text: cu ? cu.name : cid ? fmtPhone(cid) : "" }), el("td", { text: what }))); }
+    const gev = allEv.filter((e) => e.k === "giftcard").sort((a, b) => b.t - a.t), gt = $("giftTbl"); gt.textContent = "";
+    const gSold = gev.filter((e) => e.a === "sold"), gUsed = gev.filter((e) => e.a === "redeemed").length, gVoid = gev.filter((e) => e.a === "void").length;
+    $("giftSub").textContent = t("{n} sold ({amt}) · {u} used · {v} cancelled in this period.", { n: gSold.length, amt: money(gSold.reduce((a, e) => a + (e.amt || 0), 0)), u: gUsed, v: gVoid });
+    gt.append(el("tr", {}, el("th", { text: "When" }), el("th", { text: "Staff" }), el("th", { text: "What happened" }), el("th", { text: "Items" }), el("th", { class: "n", text: "Paid" })));
+    if (!gev.length) gt.append(el("tr", {}, el("td", { colspan: "5", text: "No gift cards in this period." })));
+    const GA = { sold: "Gift card sold", redeemed: "Gift card used", void: "Gift card cancelled" };
+    for (const e of gev.slice(0, 50)) gt.append(el("tr", {}, el("td", { text: fmtWhen(e.t) }), el("td", { text: e.staff }), el("td", { text: t(GA[e.a] || e.a) + " · " + String(e.g || "").slice(0, 4) + "…" }), el("td", { text: e.what || "" }), el("td", { class: "n", text: e.a === "sold" ? money(e.amt || 0) : "" })));
     const low = fbs.filter((f) => f.r <= 2).sort((a, b) => b.t - a.t), lt2 = $("lowTbl"); lt2.textContent = "";
     lt2.append(el("tr", {}, el("th", { text: "Customer" }), el("th", { text: "Phone" }), el("th", { class: "n", text: "Rating" }), el("th", { text: "Note" }), el("th", { text: "When" })));
     if (!low.length) lt2.append(el("tr", {}, el("td", { colspan: "5", text: "No low ratings in this period." })));
@@ -2659,11 +2761,205 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     const key = hx(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode("amed-cafe:" + d), iterations: 100000 }, k, 128));
     return "amed-" + hx(await crypto.subtle.digest("SHA-256", enc.encode("amed-live:" + key))).slice(0, 32);
   }
+  /* ---------- gift cards: sold at the counter (after payment), used once when scanned ----------
+     gifts/<code> is public to read by its long random code; the link is GIFT_LINK + "#" + code. */
+  const GIFT_LINK = "https://amedcaferest.com/gift/";
+  const OCCASIONS = [["birthday", "🎂", "Birthday"], ["eid", "✨", "Eid"], ["invite", "☕", "Invitation"], ["other", "✏️", "Other"]];
+  const giftCodeFrom = (s) => { s = String(s || "").trim(); const m = s.match(/\/gift\/?#([0-9a-z]{16})\b/i) || s.match(/^([0-9a-z]{16})$/i); const c = m ? m[1].toUpperCase() : ""; return c && window.AmedGifts && AmedGifts.valid(c) ? c : null; };
+  const gL = (m) => (m && (m[uiLang] || m.en)) || "";
+  const giftWho = () => ({ id: state.shift ? state.shift.id : state.uid || "staff", name: (state.role && state.role.name) || state.myName || "" });
+  const giftBoss = () => !!(state.shift && state.shift.id === OWNER_ID);
+  const giftItemsText = (items, lang) => (items || []).map((i) => i.qty + "× " + ((i.name && (i.name[lang] || i.name.en)) || "") + (i.option ? " (" + (i.option[lang] || i.option.en || "") + ")" : "")).join(", ");
+  const giftErrText = (e) => { const c = e && e.code; return c === "offline" || c === "timeout" || c === "unavailable" ? t("No connection. Gift cards need the internet — check the Wi-Fi and try again.") : c === "invalid_argument" ? t("The database refused this. Ask the owner to check the gift card rules in Firebase.") : t("That didn't work. Try again."); };
+  let menuP = null;
+  const loadMenu = () => (menuP = menuP || fetch("../menu.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error("menu"); return r.json(); }).catch((e) => { menuP = null; throw e; }));
+  let gift = null;   // what the gift box shows right now
+  function giftClose() { $("giftDlg").hidden = true; gift = null; }
+  function openNewGift() {
+    if (!can("giftcards")) return;
+    gift = { mode: "new", cat: null, cart: [], occasion: "birthday", occText: "", from: "", to: "", msg: "", lang: uiLang, paid: false, err: "", busy: false, menu: null };
+    $("giftDlg").hidden = false; renderGift();
+    loadMenu().then((m) => { if (gift && gift.mode === "new") { gift.menu = m; gift.cat = (m.categories[0] || {}).id; renderGift(); } })
+      .catch(() => { if (gift && gift.mode === "new") { gift.err = t("The menu couldn't load. Check the connection and try again."); renderGift(); } });
+  }
+  async function openGift(code) {
+    gift = { mode: "view", code, d: null, loading: true, err: "", busy: false, confirmVoid: false };
+    $("giftDlg").hidden = false; renderGift();
+    try { gift.d = await AmedGifts.get(code); } catch (e) { if (gift && gift.code === code) gift.err = giftErrText(e); }
+    if (gift && gift.code === code) { gift.loading = false; renderGift(); }
+  }
+  const cartTotal = () => gift.cart.reduce((a, i) => a + i.price * i.qty, 0);
+  function cartAdd(cat, item, opt) {
+    const key = cat.id + "|" + item.name.en + "|" + (opt ? opt.name.en : "");
+    const have = gift.cart.find((i) => i.key === key);
+    if (have) have.qty += 1;
+    else { if (gift.cart.length >= 20) return; gift.cart.push({ key, cat: cat.id, name: item.name, option: opt ? opt.name : null, price: Number((opt || item).price) || 0, qty: 1 }); }
+    gift.pickOpt = null; renderGift();
+  }
+  function giftField(label, input) { return el("label", { class: "f" }, t(label), input); }
+  function renderGift() {
+    const g = gift, box = $("giftDlg").querySelector(".modal"); if (!g) return; box.textContent = "";
+    const close = el("button", { type: "button", class: "btn", text: t("Close"), onclick: giftClose });
+    if (g.mode === "new") {
+      box.append(el("h2", { id: "gfTitle", text: "🎁 " + t("New gift card") }), el("p", { class: "lead", text: t("Make the gift only after the customer has paid. It can be used once, with no expiry date.") }));
+      // 1. items
+      box.append(el("h3", { text: t("1. What is the gift?") }));
+      if (!g.menu) box.append(el("p", { class: g.err ? "err" : "lead", text: g.err || t("Loading the menu…") }));
+      else {
+        const cats = el("div", { class: "gfcats", role: "group", "aria-label": t("Menu") });
+        for (const c of g.menu.categories) cats.append(el("button", { type: "button", "aria-pressed": String(c.id === g.cat), text: gL(c.name), onclick: () => { g.cat = c.id; g.pickOpt = null; renderGift(); } }));
+        const cat = g.menu.categories.find((c) => c.id === g.cat) || g.menu.categories[0], items = el("div", { class: "gfitems" });
+        for (const it of (cat ? cat.items : [])) {
+          const open = g.pickOpt === it.name.en;
+          const b = el("button", { type: "button", class: "gfitem" + (open ? " open" : ""), onclick: () => { if (it.options && it.options.length) { g.pickOpt = open ? null : it.name.en; renderGift(); } else cartAdd(cat, it, null); } },
+            el("b", { text: gL(it.name) }), el("small", { text: it.options && it.options.length ? t("choose…") : money(it.price) }));
+          items.append(b);
+          if (open) { const ob = el("div", { class: "gfopts" }); for (const o of it.options) ob.append(el("button", { type: "button", class: "btn", text: gL(o.name) + " · " + money(o.price), onclick: () => cartAdd(cat, it, o) })); items.append(ob); }
+        }
+        box.append(cats, items);
+      }
+      const cart = el("ul", { class: "gfcart" });
+      if (!g.cart.length) cart.append(el("li", { class: "empty1", text: t("Tap items above to add them to the gift.") }));
+      for (const i of g.cart) cart.append(el("li", {},
+        el("span", { text: gL(i.name) + (i.option ? " (" + gL(i.option) + ")" : "") }),
+        el("span", { class: "qty" },
+          el("button", { type: "button", "aria-label": t("One less"), text: "−", onclick: () => { i.qty -= 1; if (i.qty < 1) g.cart.splice(g.cart.indexOf(i), 1); renderGift(); } }),
+          el("b", { text: String(i.qty) }),
+          el("button", { type: "button", "aria-label": t("One more"), text: "+", onclick: () => { if (i.qty < 50) i.qty += 1; renderGift(); } })),
+        el("span", { class: "n", text: money(i.price * i.qty) })));
+      if (g.cart.length) cart.append(el("li", { class: "tot" }, el("span", { text: t("Total to pay") }), el("span"), el("b", { class: "n", text: money(cartTotal()) })));
+      box.append(cart);
+      // 2. occasion
+      box.append(el("h3", { text: t("2. Occasion") }));
+      const occ = el("div", { class: "gfocc", role: "group", "aria-label": t("Occasion") });
+      for (const [id, ic, lab] of OCCASIONS) occ.append(el("button", { type: "button", "aria-pressed": String(g.occasion === id), onclick: () => { g.occasion = id; renderGift(); } }, el("span", { "aria-hidden": "true", text: ic }), t(lab)));
+      box.append(occ);
+      const bind = (inp, k) => { inp.value = g[k]; inp.addEventListener("input", () => (g[k] = inp.value)); return inp; };
+      if (g.occasion === "other") box.append(giftField("What is it for? (short)", bind(el("input", { type: "text", maxlength: "40", autocomplete: "off", placeholder: t("e.g. Graduation") }), "occText")));
+      // 3. names + note
+      box.append(el("h3", { text: t("3. From and to") }),
+        giftField("From (the buyer's name)", bind(el("input", { type: "text", maxlength: "40", autocomplete: "off", id: "gfFrom" }), "from")),
+        giftField("To (optional)", bind(el("input", { type: "text", maxlength: "40", autocomplete: "off" }), "to")),
+        giftField("Short message (optional)", bind(el("textarea", { maxlength: "140", rows: "2" }), "msg")));
+      const lang = el("select", {}); for (const [v, n] of [["ku", "Kurdish Badini (بادینی)"], ["ar", "Arabic (العربية)"], ["en", "English"], ["de", "German (Deutsch)"]]) lang.append(el("option", { value: v, text: n }));
+      lang.value = g.lang; lang.addEventListener("change", () => (g.lang = lang.value));
+      box.append(giftField("Language of the gift page", lang));
+      const paid = el("input", { type: "checkbox" }); paid.checked = g.paid; paid.addEventListener("change", () => { g.paid = paid.checked; renderGift(); });
+      box.append(el("label", { class: "check gfpaid" }, paid, el("span", { text: g.cart.length ? t("The customer has paid {total}.", { total: money(cartTotal()) }) : t("The customer has paid.") })));
+      if (g.err && g.menu) box.append(el("p", { class: "err", role: "alert", text: g.err }));
+      const make = el("button", { type: "button", class: "btn primary", text: g.busy ? t("Saving…") : t("Make the gift card"), onclick: createGift });
+      make.disabled = g.busy; box.append(el("div", { class: "row" }, make, close));
+      return;
+    }
+    if (g.mode === "made") {
+      const link = GIFT_LINK + "#" + g.code, d = g.d;
+      box.append(el("h2", { text: "✅ " + t("Gift card ready") }), el("p", { class: "lead", text: t("Show this QR to the buyer, or send them the link. Whoever has it can use the gift once.") }));
+      const qr = el("div", { class: "gfqr" }); box.append(qr);
+      try { new QRCode(qr, { text: link, width: 220, height: 220, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { qr.hidden = true; }
+      box.append(el("p", { class: "gfsum", text: giftItemsText(d.items, uiLang) }), el("p", { class: "gflink", dir: "ltr", text: link }));
+      const msgText = giftShareText(d, link);
+      const phone = el("input", { type: "tel", inputmode: "tel", autocomplete: "off", placeholder: t("Buyer's WhatsApp number (optional)") }), cc = el("select", { "aria-label": t("Country") });
+      fillCC(cc); cc.value = isoFor(homeCC()); watchCC(phone, cc);
+      box.append(el("label", { class: "f" }, t("Send to"), el("span", { class: "phonerow" }, cc, phone)));
+      const wa = el("button", { type: "button", class: "btn primary", text: t("Send on WhatsApp"), onclick: () => {
+        const id = phoneId(phone.value, ccVal(cc)), n = id ? intlNumber(id) : "";
+        window.open("https://wa.me/" + (n || "") + "?text=" + encodeURIComponent(msgText), "_blank", "noopener");
+      } });
+      const copy = el("button", { type: "button", class: "btn", text: t("Copy link"), onclick: async () => { try { await navigator.clipboard.writeText(link); toast(t("Link copied.")); } catch (_) { toast(link, 8000); } } });
+      box.append(el("div", { class: "row" }, wa, copy, el("button", { type: "button", class: "btn", text: t("Done"), onclick: giftClose })));
+      return;
+    }
+    // view: a scanned or typed gift
+    box.append(el("h2", { id: "gfTitle", text: "🎁 " + t("Gift card") }));
+    if (g.loading) { box.append(el("p", { class: "lead", text: t("Checking the gift…") }), el("div", { class: "row" }, close)); return; }
+    if (g.err) { box.append(el("p", { class: "err", role: "alert", text: g.err }), el("div", { class: "row" }, el("button", { type: "button", class: "btn primary", text: t("Try again"), onclick: () => openGift(g.code) }), close)); return; }
+    const d = g.d;
+    if (!d) { box.append(el("p", { class: "gfstate bad", text: t("No gift card has this code.") }), el("div", { class: "row" }, close)); return; }
+    const oc = OCCASIONS.find((o) => o[0] === d.occasion) || OCCASIONS[3];
+    box.append(el("p", { class: "gfocc1", text: oc[1] + " " + (d.occasion === "other" && d.occasionText ? d.occasionText : t(oc[2])) }));
+    box.append(el("p", { class: "gffrom", text: t("From {from}", { from: d.from || "—" }) + (d.to ? " → " + d.to : "") }));
+    if (d.message) box.append(el("p", { class: "gfmsg", text: "“" + d.message + "”" }));
+    const ul = el("ul", { class: "gfcart" }); for (const i of d.items || []) ul.append(el("li", {}, el("span", { text: gL(i.name) + (i.option ? " (" + gL(i.option) + ")" : "") }), el("span"), el("b", { class: "n", text: "× " + i.qty })));
+    box.append(ul, el("p", { class: "gfwhen", text: t("Sold {when} by {name}", { when: fmtWhen(d.createdAt), name: d.createdByName || "—" }) }));
+    if (g.used) box.append(el("p", { class: "gfstate ok", role: "status", text: "✅ " + t("Done. Give the customer the items above.") }));
+    else if (d.status === "redeemed") box.append(el("p", { class: "gfstate bad", role: "alert", text: "⛔ " + t("Already used {when} (by {name}). Don't give it again.", { when: fmtWhen(d.redeemedAt), name: d.redeemedByName || "—" }) }));
+    else if (d.status === "void") box.append(el("p", { class: "gfstate bad", role: "alert", text: "⛔ " + t("This gift card was cancelled {when}. Don't give it.", { when: fmtWhen(d.voidAt) }) }));
+    if (g.msg) box.append(el("p", { class: "err", role: "alert", text: g.msg }));
+    const row = el("div", { class: "row" });
+    if (d.status === "active" && !g.used && state.role) {
+      const r = el("button", { type: "button", class: "btn primary gfbig", text: g.busy ? t("Saving…") : t("Use the gift now"), onclick: redeemGift }); r.disabled = g.busy; row.append(r);
+    }
+    if (d.status === "active" && !g.used && giftBoss()) {
+      row.append(el("button", { type: "button", class: "btn danger", text: g.confirmVoid ? t("Yes, cancel it") : t("Cancel this gift (refund)"), onclick: () => { if (!g.confirmVoid) { g.confirmVoid = true; renderGift(); } else voidGift(); } }));
+    }
+    row.append(close); box.append(row);
+  }
+  function giftShareText(d, link) {
+    const L = { ku: ["دیاریەک ژ {from} بۆ تە ل Amed Cafe 🎁", "دیاریا خۆ ڤێرێ ببینە و ل کاونتەری نیشان بدە:"],
+      ar: ["هدية لك من {from} في Amed Cafe 🎁", "شاهد هديتك هنا وأظهرها عند الكاونتر:"],
+      en: ["A gift for you from {from} at Amed Cafe 🎁", "See your gift here and show it at the counter:"],
+      de: ["Ein Geschenk für dich von {from} im Amed Cafe 🎁", "Sieh dir dein Geschenk hier an und zeig es an der Theke:"] }[d.lang] || null;
+    const l = L || ["A gift for you from {from} at Amed Cafe 🎁", "See your gift here and show it at the counter:"];
+    return l[0].replace("{from}", d.from) + "\n" + l[1] + "\n" + link;
+  }
+  async function createGift() {
+    const g = gift; if (!g || g.busy) return; g.err = "";
+    const from = g.from.trim().slice(0, 40), to = g.to.trim().slice(0, 40), msg = g.msg.trim().slice(0, 140), occText = g.occasion === "other" ? g.occText.trim().slice(0, 40) : "";
+    if (!g.cart.length) g.err = t("Add at least one item.");
+    else if (!from) g.err = t("Write the buyer's name (From).");
+    else if (g.occasion === "other" && !occText) g.err = t("Write what the gift is for.");
+    else if (!g.paid) g.err = t("Tick that the customer has paid. Gifts are made only after payment.");
+    if (g.err) { renderGift(); return; }
+    // Keep the same code when trying again: if a slow connection saved the first try after all, no second gift is made.
+    const who = giftWho(), code = g.code || (g.code = AmedGifts.newCode()), total = cartTotal();
+    const items = g.cart.map((i) => { const o = { cat: i.cat, name: i.name, qty: i.qty }; if (i.option) o.option = i.option; return o; });
+    const data = { items, occasion: g.occasion, occasionText: occText, from, to, message: msg, lang: g.lang, createdBy: who.id, createdByName: who.name };
+    g.busy = true; renderGift();
+    let saved = data;
+    try { await AmedGifts.create(code, data); }
+    catch (e) {
+      let was = null; try { was = await AmedGifts.get(code); } catch (_) {}
+      if (!was) { g.busy = false; g.err = giftErrText(e); renderGift(); return; }
+      saved = was;   // the earlier try did save: show that gift, not a new one
+    }
+    logActivity([{ k: "giftcard", a: "sold", t: Date.now(), g: code, what: giftItemsText(saved.items, "en"), amt: total, occ: saved.occasion }]);
+    gift = { mode: "made", code, d: saved }; renderGift();
+  }
+  async function redeemGift() {
+    const g = gift; if (!g || g.busy || !g.d || !state.role) return;
+    const who = giftWho(); g.busy = true; g.msg = ""; renderGift();
+    try { await AmedGifts.redeem(g.code, who.id, who.name); }
+    catch (e) {
+      g.busy = false;
+      // Refused: most likely someone used it a moment ago. Show what the database says now.
+      try { const now = await AmedGifts.get(g.code); if (now && now.status !== "active") { g.d = now; renderGift(); return; } } catch (_) {}
+      g.msg = giftErrText(e); renderGift(); return;
+    }
+    g.busy = false; g.used = true; g.d = { ...g.d, status: "redeemed", redeemedAt: Date.now(), redeemedByName: who.name };
+    logActivity([{ k: "giftcard", a: "redeemed", t: Date.now(), g: g.code, what: giftItemsText(g.d.items, "en") }]);
+    try { if (navigator.vibrate) navigator.vibrate([60, 40, 60]); } catch (_) {}
+    renderGift();
+  }
+  async function voidGift() {
+    const g = gift; if (!g || g.busy || !giftBoss()) return;
+    g.busy = true; g.msg = ""; renderGift();
+    try { await AmedGifts.void(g.code, giftWho().name || OWNER_ID); }
+    catch (e) { g.busy = false; g.confirmVoid = false; try { const now = await AmedGifts.get(g.code); if (now && now.status !== "active") { g.d = now; renderGift(); return; } } catch (_) {} g.msg = giftErrText(e); renderGift(); return; }
+    logActivity([{ k: "giftcard", a: "void", t: Date.now(), g: g.code, what: giftItemsText(g.d.items, "en") }]);
+    g.busy = false; g.d = { ...g.d, status: "void", voidAt: Date.now() }; renderGift();
+  }
+  $("btnGift").addEventListener("click", openNewGift);
+  $("giftDlg").addEventListener("click", (e) => { if (e.target === $("giftDlg") && gift && !gift.busy && gift.mode !== "new") giftClose(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && gift && !gift.busy) giftClose(); });
+
   function scanFound(text, reply) {
     if (!$("approveDlg").hidden) return true;   // finish the approval first
+    if (!$("giftDlg").hidden) return true;      // finish with the gift card first
     let who = "";
     const counterMode = !!scan.stream && !$("scanDlg").hidden;
     const done = (o) => { const out = Object.assign({ name: who, note: lastToastText }, o || {}); if (counterMode) counterResult(out); if (reply) { try { reply(out); } catch (_) {} reply = null; } };
+    const gcode = giftCodeFrom(text);
+    if (gcode) { closeScan(); openGift(gcode); if (reply) { try { reply({ kind: "gift", name: "🎁", note: t("Gift card: check it on the tablet.") }); } catch (_) {} } return true; }
     const code = codeFrom(text || "");
     const say = (m) => { if ($("scanDlg").hidden) toast(m, 5000); else scanMsg(m, true); };
     if (!code) { say(t("This QR code is not an Amed Cafe member card.")); done({ kind: "notmember" }); return false; }

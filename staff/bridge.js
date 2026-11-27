@@ -77,6 +77,30 @@
     };
   }
   const db = { doc: docRef, collection: (c) => query(c, []) };
+
+  /* ---------- gift cards (gifts/<code>): straight to the server, never queued offline, so a gift is
+     only "made" or "used" once the database has really saved it ---------- */
+  const GIFT_ABC = "0123456789ABCDEFGHJKMNPQRSTVWXYZ", GIFT_RE = /^[0-9A-HJKMNP-TV-Z]{16}$/;
+  const giftErr = (code) => Object.assign(new Error(code), { code });
+  // Checks the connection BEFORE starting the write: once started, Firestore would keep it and send it later.
+  const live = (start) => navigator.onLine === false ? Promise.reject(giftErr("offline"))
+    : Promise.race([start(), new Promise((_, no) => setTimeout(() => no(giftErr("timeout")), 15000))]).catch((e) => { throw e && (e.code === "offline" || e.code === "timeout") ? e : wrapErr(e); });
+  const millis = (v) => (v && typeof v.toMillis === "function" ? v.toMillis() : v || 0);
+  const giftRef = (code) => { if (!GIFT_RE.test(code)) throw giftErr("bad_code"); return FB.doc(fs, "gifts/" + code); };
+  window.AmedGifts = {
+    valid: (code) => GIFT_RE.test(code),
+    newCode: () => [...crypto.getRandomValues(new Uint8Array(16))].map((x) => GIFT_ABC[x & 31]).join(""),
+    async get(code) {
+      const s = await live(() => FB.getDoc(giftRef(code)));
+      if (s.metadata.fromCache) throw giftErr("offline");
+      if (!s.exists()) return null;
+      const d = s.data(); for (const k of ["createdAt", "redeemedAt", "voidAt"]) if (d[k]) d[k] = millis(d[k]);
+      return d;
+    },
+    create: (code, data) => live(() => FB.setDoc(giftRef(code), { ...data, status: "active", schema: 1, createdAt: FB.serverTimestamp() })),
+    redeem: (code, by, byName) => live(() => FB.updateDoc(giftRef(code), { status: "redeemed", redeemedAt: FB.serverTimestamp(), redeemedBy: by, redeemedByName: byName })),
+    void: (code, by) => live(() => FB.updateDoc(giftRef(code), { status: "void", voidAt: FB.serverTimestamp(), voidBy: by })),
+  };
   async function readLocal(path) {
     const r = FB.doc(fs, path);
     try { const s = await FB.getDocFromCache(r); if (s.exists()) return s.data(); } catch (_) {}
