@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ku" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Amed Cafe Print</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="../vendor/qrcode-generator.js"></script>
+<style>
+:root {
+  --cream: #F3EADF; --paper: #FBF6EF; --ink: #2B1A12; --brown: #6F4E37; --soft: #EADBC8; --muted: #7A6556;
+  --ui-bg: #EDE6DC; --ui-panel: #FFFFFF; --ui-ink: #2B1A12; --ui-line: #D9CCBC;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ui-bg: #1C120D; --ui-panel: #2A1D16; --ui-ink: #F3E9DC; --ui-line: #4A372B; } }
+:root[data-theme="dark"] { --ui-bg: #1C120D; --ui-panel: #2A1D16; --ui-ink: #F3E9DC; --ui-line: #4A372B; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--ui-bg); color: var(--ui-ink); font-family: "Figtree", system-ui, sans-serif; }
+.ar, .ku { font-family: "Noto Sans Arabic", "Figtree", sans-serif; }
+
+/* ---------- controls (screen only) ---------- */
+.controls { max-width: 880px; margin: 0 auto; padding: 20px 16px 8px; }
+.controls h1 { font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: 30px; margin: 0 0 4px; }
+.controls p { margin: 0 0 14px; opacity: .8; line-height: 1.5; }
+.row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; background: var(--ui-panel); border: 1px solid var(--ui-line); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; }
+.row label { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; }
+.row input[type=number] { width: 84px; font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--ui-line); background: transparent; color: inherit; }
+.row input[type=checkbox] { width: 20px; height: 20px; accent-color: #6F4E37; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 999px; padding: 12px 22px; background: #6F4E37; color: #fff; cursor: pointer; min-height: 44px; }
+.hint { font-size: 14px; opacity: .75; }
+
+/* ---------- sheets ---------- */
+.sheets { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 16px 16px 48px; }
+.sheet { width: 210mm; height: 297mm; background: #fff; color: var(--ink); position: relative; overflow: hidden; box-shadow: 0 6px 30px rgba(0,0,0,.18); flex: none; }
+.scaler { width: 100%; overflow-x: auto; display: flex; justify-content: center; }
+@media screen and (max-width: 860px) { .sheet { zoom: .42; } }
+.tag { font: 600 12px "Figtree", sans-serif; opacity: .6; margin: 0 0 -14px; }
+
+/* table cards: four A6 cards on one A4 sheet, with light cut lines */
+.grid4 { display: grid; grid-template-columns: 105mm 105mm; grid-template-rows: 148.5mm 148.5mm; width: 210mm; height: 297mm; }
+.grid4::before, .grid4::after { content: ""; position: absolute; background: repeating-linear-gradient(90deg, #cbbba8 0 2mm, transparent 2mm 4mm); }
+.grid4::before { left: 0; right: 0; top: 148.5mm; height: .2mm; }
+.grid4::after { top: 0; bottom: 0; left: 105mm; width: .2mm; background: repeating-linear-gradient(180deg, #cbbba8 0 2mm, transparent 2mm 4mm); }
+.tc { position: relative; background: var(--cream); margin: 4mm; border-radius: 5mm; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 7mm 6mm 5mm; text-align: center; }
+.sun { position: absolute; fill: var(--brown); opacity: .07; pointer-events: none; }
+.tc .sun { width: 120mm; height: 120mm; right: -42mm; bottom: -40mm; }
+.tc .logo { width: 44mm; height: auto; display: block; }
+.tc .title { margin-top: 4mm; display: flex; gap: 2.5mm; align-items: baseline; justify-content: center; flex-wrap: wrap; }
+.tc .title .ku, .tc .title .ar { font-size: 15pt; font-weight: 800; }
+.tc .title .en { font-family: "Gloock", Georgia, serif; font-size: 17pt; }
+.tc .dot { color: var(--brown); font-weight: 800; }
+.qrbox { background: #fff; border-radius: 4mm; padding: 3mm; box-shadow: 0 0 0 .5mm var(--soft); }
+.qrbox svg { display: block; width: 100%; height: 100%; }
+.tc .qrbox { width: 52mm; height: 52mm; margin-top: 3.5mm; }
+.tc .scan { margin-top: 3mm; font-size: 9pt; line-height: 1.35; }
+.tc .scan .ku, .tc .scan .ar { font-weight: 700; }
+.tc .reward { margin-top: auto; width: 100%; border-top: .3mm dashed #c9b6a0; padding-top: 2.5mm; font-size: 7.6pt; line-height: 1.4; color: var(--muted); }
+.tc .reward b { color: var(--brown); }
+.tc .num { position: absolute; top: 5mm; left: 5mm; min-width: 11mm; height: 11mm; padding: 0 2mm; border-radius: 6mm; background: var(--brown); color: #fff; font: 700 13pt "Figtree", sans-serif; display: flex; align-items: center; justify-content: center; }
+
+/* posters (A4) */
+.poster { width: 210mm; height: 297mm; background: var(--cream); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16mm 16mm 12mm; }
+.poster .sun { width: 300mm; height: 300mm; left: 50%; top: 52%; transform: translate(-50%, -50%); opacity: .06; }
+.poster .logo { width: 82mm; height: auto; position: relative; }
+.poster .kicker { margin-top: 9mm; font: 700 11pt "Figtree", sans-serif; letter-spacing: .25em; text-transform: uppercase; color: var(--brown); position: relative; }
+.poster h2 { margin: 4mm 0 0; position: relative; line-height: 1.15; }
+.poster h2 .ku { display: block; font-size: 33pt; white-space: nowrap; font-weight: 800; }
+.poster h2 .ar { display: block; font-size: 26pt; font-weight: 700; margin-top: 2mm; }
+.poster h2 .en { display: block; font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: 27pt; margin-top: 2mm; }
+.stamps { display: flex; gap: 3.2mm; margin-top: 9mm; position: relative; direction: ltr; }
+.stamps span { width: 14mm; height: 14mm; border-radius: 50%; border: .6mm solid var(--brown); display: flex; align-items: center; justify-content: center; font: 700 12pt "Figtree", sans-serif; color: var(--brown); }
+.stamps span.free { width: auto; padding: 0 4mm; border-radius: 7mm; background: var(--brown); color: #fff; font-size: 10pt; letter-spacing: .08em; }
+.poster .lines { margin-top: 8mm; display: grid; gap: 2.5mm; position: relative; font-size: 12.5pt; line-height: 1.45; max-width: 160mm; }
+.poster .lines .ku, .poster .lines .ar { font-weight: 600; }
+.poster .bottom { margin-top: 16mm; display: flex; gap: 10mm; align-items: center; justify-content: center; position: relative; width: 100%; }
+.poster .qrbox { width: 60mm; height: 60mm; flex: none; }
+.poster .qrtext { text-align: center; font-size: 11pt; line-height: 1.5; max-width: 85mm; }
+.poster .qrtext b { display: block; font-size: 15pt; }
+.poster .url { font: 600 11pt "Figtree", sans-serif; color: var(--brown); margin-top: 2mm; direction: ltr; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 20mm; width: 100%; position: relative; }
+.two .col { background: rgba(255,255,255,.55); border-radius: 6mm; padding: 7mm 5mm 6mm; display: flex; flex-direction: column; align-items: center; gap: 3mm; }
+.two .qrbox { width: 62mm; height: 62mm; }
+.two .lbl { font-size: 12pt; line-height: 1.4; }
+.two .lbl .ku, .two .lbl .ar { display: block; font-weight: 700; }
+.two .lbl .en { display: block; font-family: "Gloock", Georgia, serif; font-size: 15pt; }
+.stars { color: #C98A2B; letter-spacing: .15em; font-size: 15pt; }
+.foot { margin-top: auto; font: 600 10pt "Figtree", sans-serif; color: var(--muted); position: relative; }
+
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: #fff; }
+  .controls, .tag { display: none !important; }
+  .sheets { padding: 0; gap: 0; display: block; }
+  .scaler { display: block; overflow: visible; }
+  .sheet { box-shadow: none; zoom: 1 !important; page-break-after: always; break-after: page; }
+  .sheet.off { display: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+.sheet.off { display: none; }
+</style>
+</head>
+<body>
+<div class="controls">
+  <h1>Amed Cafe · Print</h1>
+  <p>Table cards with the menu QR, and posters for the counter and the window. Choose what to print, then press <b>Print</b>. In the print window, choose <b>Save as PDF</b> or your printer, paper <b>A4</b>, margins <b>None</b>, and turn on <b>Background graphics</b>.</p>
+  <div class="row">
+    <label>Tables <input id="tables" type="number" min="1" max="60" value="12"></label>
+    <label><input id="numbers" type="checkbox" checked> Show the table number</label>
+    <span class="hint">4 cards per A4 sheet (A6 size, for table stands). Cut along the dashed lines.</span>
+  </div>
+  <div class="row">
+    <label><input id="pTables" type="checkbox" checked> Table cards</label>
+    <label><input id="pRewards" type="checkbox" checked> Rewards poster</label>
+    <label><input id="pMenu" type="checkbox" checked> Menu + Google review poster</label>
+    <button class="btn" type="button" onclick="window.print()">Print</button>
+  </div>
+</div>
+<div class="sheets" id="sheets"></div>
+
+<template id="tplCard">
+  <div class="tc">
+    <svg class="sun" viewBox="0 0 300 300" aria-hidden="true"><polygon class="sunp"/><circle cx="150" cy="150" r="70"/></svg>
+    <div class="num"></div>
+    <img class="logo" src="../logo.png" alt="Amed Cafe">
+    <div class="title"><span class="ku" dir="rtl">مێنیو</span><span class="dot">·</span><span class="ar" dir="rtl">القائمة</span><span class="dot">·</span><span class="en">Menu</span></div>
+    <div class="qrbox"></div>
+    <div class="scan">
+      <div class="ku" dir="rtl">کۆدی سکان بکە دا مێنیویێ ببینی</div>
+      <div class="ar" dir="rtl">امسح الرمز لعرض القائمة</div>
+      <div>Scan the code to see the menu</div>
+    </div>
+    <div class="reward">
+      <div class="ku" dir="rtl"><b>7 بکڕە، یا 8ەمین بێ بەرامبەرە</b> · ل کاونتەری ببە ئەندام</div>
+      <div class="ar" dir="rtl"><b>اشترِ 7 واحصل على الثامن مجاناً</b> · انضم عند الكاونتر</div>
+      <div><b>Buy 7, the 8th is on us</b> · Join at the counter</div>
+    </div>
+  </div>
+</template>
+
+<template id="tplRewards">
+  <div class="poster">
+    <svg class="sun" viewBox="0 0 300 300" aria-hidden="true"><polygon class="sunp"/><circle cx="150" cy="150" r="70"/></svg>
+    <img class="logo" src="../logo.png" alt="Amed Cafe">
+    <div class="kicker">Amed Rewards</div>
+    <h2>
+      <span class="ku" dir="rtl">7 بکڕە، یا 8ەمین بێ بەرامبەرە</span>
+      <span class="ar" dir="rtl">اشترِ 7 واحصل على الثامن مجاناً</span>
+      <span class="en">Buy 7, the 8th is on us</span>
+    </h2>
+    <div class="stamps"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span class="free">FREE</span></div>
+    <div class="lines">
+      <div class="ku" dir="rtl">کارتێن جودا بۆ ڤەخوارن و نێرگەلێ. ژمارا مۆبایلا خۆ بدە ستافێ مە. ئەندامبوون بێ بەرامبەرە و چەند چرکەیان دڤێت.</div>
+      <div class="ar" dir="rtl">بطاقتان منفصلتان للمشروبات والأركيلة. أعطِ فريقنا رقم هاتفك. الانضمام مجاني ويستغرق ثوانٍ.</div>
+      <div>Separate cards for drinks and shisha. Give our staff your phone number. Joining is free and takes a few seconds.</div>
+    </div>
+    <div class="bottom">
+      <div class="qrbox" data-url="https://amedcaferest.com/card/"></div>
+      <div class="qrtext">
+        <b class="ku" dir="rtl">کارتا خۆ ببینە</b>
+        <b class="ar" dir="rtl">شاهد بطاقتك</b>
+        <b>See your card</b>
+        <div class="url">amedcaferest.com/card</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tplMenu">
+  <div class="poster">
+    <svg class="sun" viewBox="0 0 300 300" aria-hidden="true"><polygon class="sunp"/><circle cx="150" cy="150" r="70"/></svg>
+    <img class="logo" src="../logo.png" alt="Amed Cafe">
+    <div class="kicker">Sharya · Duhok</div>
+    <h2>
+      <span class="ku" dir="rtl">بخێر بێن بۆ ئامەد کافێ</span>
+      <span class="ar" dir="rtl">أهلاً بكم في آمد كافيه</span>
+      <span class="en">Welcome to Amed Cafe</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <div class="qrbox" data-url="https://amedcaferest.com/menu/"></div>
+        <div class="lbl"><span class="ku" dir="rtl">مێنیو</span><span class="ar" dir="rtl">القائمة</span><span class="en">Menu</span></div>
+        <div class="url">amedcaferest.com/menu</div>
+      </div>
+      <div class="col">
+        <div class="qrbox" data-url="https://g.page/r/Cfh40Ersi0aREAE/review"></div>
+        <div class="lbl"><span class="ku" dir="rtl">ل Google بنڤیسە</span><span class="ar" dir="rtl">اكتب تقييماً على Google</span><span class="en">Review us on Google</span></div>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+      </div>
+    </div>
+    <div class="foot">amedcaferest.com</div>
+  </div>
+</template>
+
+<script>
+(() => {
+  const SUN = "150,10 164,59 191,16 190,67 229,34 213,83 259,63 230,104 280,99 240,130 290,140 242,157 286,181 236,184 271,220 222,207 245,253 202,226 211,276 177,238 171,288 150,242 129,288 123,238 89,276 98,226 55,253 78,207 29,220 64,184 14,181 58,157 10,140 60,130 20,99 70,104 41,63 87,83 71,34 110,67 109,16 136,59";
+  const $ = (id) => document.getElementById(id);
+  const qrSVG = (text) => {
+    const q = qrcode(0, "M"); q.addData(text); q.make();
+    const n = q.getModuleCount(); let d = "";
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) d += `M${c},${r}h1v1h-1z`;
+    return `<svg viewBox="-1 -1 ${n + 2} ${n + 2}" shape-rendering="crispEdges" role="img" aria-label="QR code"><path d="${d}" fill="#2B1A12"/></svg>`;
+  };
+  const fill = (root) => {
+    root.querySelectorAll(".sunp").forEach((p) => p.setAttribute("points", SUN));
+    root.querySelectorAll(".qrbox[data-url]").forEach((b) => { b.innerHTML = qrSVG(b.dataset.url); });
+    return root;
+  };
+  const sheet = (cls, tag) => {
+    const w = document.createElement("div"); w.className = "scaler";
+    const s = document.createElement("div"); s.className = "sheet " + cls;
+    if (tag) { const t = document.createElement("p"); t.className = "tag"; t.textContent = tag; $("sheets").append(t); }
+    w.append(s); $("sheets").append(w); return s;
+  };
+  // Remember the choices on this device.
+  const KEY = "amed-print";
+  try { const s = JSON.parse(localStorage.getItem(KEY) || "{}"); for (const [k, v] of Object.entries(s)) { const e = $(k); if (!e) continue; if (e.type === "checkbox") e.checked = !!v; else e.value = v; } } catch (_) {}
+  function render() {
+    $("sheets").textContent = "";
+    const n = Math.max(1, Math.min(60, parseInt($("tables").value, 10) || 1)), show = $("numbers").checked;
+    try { localStorage.setItem(KEY, JSON.stringify({ tables: n, numbers: show, pTables: $("pTables").checked, pRewards: $("pRewards").checked, pMenu: $("pMenu").checked })); } catch (_) {}
+    if ($("pTables").checked) {
+      for (let i = 0; i < n; i += 4) {
+        const s = sheet("cards", `Table cards ${i + 1}–${Math.min(n, i + 4)}`), g = document.createElement("div"); g.className = "grid4"; s.append(g);
+        for (let t = i + 1; t <= Math.min(n, i + 4); t++) {
+          const c = $("tplCard").content.firstElementChild.cloneNode(true);
+          c.querySelector(".qrbox").dataset.url = "https://amedcaferest.com/menu/?t=" + t;
+          const num = c.querySelector(".num"); if (show) num.textContent = t; else num.remove();
+          g.append(fill(c));
+        }
+      }
+    }
+    if ($("pRewards").checked) sheet("p1", "Rewards poster (A4, or A3 at 141%)").append(fill($("tplRewards").content.firstElementChild.cloneNode(true)));
+    if ($("pMenu").checked) sheet("p2", "Menu + Google review poster (A4, or A3 at 141%)").append(fill($("tplMenu").content.firstElementChild.cloneNode(true)));
+  }
+  for (const id of ["tables", "numbers", "pTables", "pRewards", "pMenu"]) $(id).addEventListener("input", render);
+  render();
+})();
+</script>
+</body>
+</html>
