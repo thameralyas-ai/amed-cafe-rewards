@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Amed Cafe loyalty rewards: check your drink and shisha stamps.">
 <meta property="og:title" content="Amed Cafe Rewards">
 <meta property="og:description" content="Buy 7, and the 8th is on us. Check your loyalty card.">
@@ -379,6 +380,8 @@ footer p { margin: 0; }
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- Inspection deterrent (UX only, not a security control: see js/guard.js and SECURITY.md) -->
+<script src="../js/guard.js"></script>
 <script src="../vendor/amed-firebase.js"></script>
 <script>
 (() => {
@@ -393,7 +396,7 @@ footer p { margin: 0; }
       tag: "Loyalty rewards", heroA: "Buy {n}, and the ", heroB: "{nth} is on us.", heroSub: "Get a stamp every time you order {list}. Check your card below to see how close you are to your next free one.", or: " or ",
       checkTitle: "Check your card", phone: "Phone number", pin: "PIN", show: "Show my card",
       pinHelp: "Your 4-digit PIN is in the WhatsApp welcome message we sent you. Forgot it? Ask at the counter.",
-      needPhone: "Enter your full phone number.", needPin: "Enter your 4-digit PIN.", loading: "The cards are still loading. Try again in a moment.", noLoad: "The cards couldn't load. Check your internet connection and reload the page.", noCrypto: "This browser can't check cards. Try opening the link in Chrome or Safari.",
+      needPhone: "Enter your full phone number.", needPin: "Enter your 4-digit PIN.", tooMany: "Too many tries. Please wait {s} seconds and try again.", loading: "The cards are still loading. Try again in a moment.", noLoad: "The cards couldn't load. Check your internet connection and reload the page.", noCrypto: "This browser can't check cards. Try opening the link in Chrome or Safari.",
       hello: "Here's your card", visits: "Visits", thisYear: "This year", lastVisit: "Last visit", never: "Not yet", today: "Today", yesterday: "Yesterday", daysAgo: "{n} days ago",
       levelIs: "{level} member", toNext: "{n} more visits to {level}", perk: "Your perk: {perk}",
       rule: "Buy {n}, the {nth} is on us", more: "{n} more", toGo: " to go until your {reward} · {s} of {n} stamps", ready1: "Your {reward} is ready! Say your number at the counter to collect it.", readyN: "You have {k} rewards waiting: {reward}. Say your number at the counter.", useBy: " Use it by {date}.",
@@ -410,7 +413,7 @@ footer p { margin: 0; }
       tag: "مكافآت الولاء", heroA: "اشترِ {n}، و", heroB: "ال{nth} علينا.", heroSub: "احصل على ختم مع كل طلب {list}. تحقّق من بطاقتك أدناه لترى كم بقي على مكافأتك المجانية القادمة.", or: " أو ",
       checkTitle: "تحقّق من بطاقتك", phone: "رقم الهاتف", pin: "الرمز السري", show: "اعرض بطاقتي",
       pinHelp: "رمزك السري المكوّن من 4 أرقام موجود في رسالة الترحيب على واتساب. نسيته؟ اسأل عند الكاونتر.",
-      needPhone: "أدخل رقم هاتفك كاملاً.", needPin: "أدخل الرمز السري المكوّن من 4 أرقام.", loading: "البطاقات قيد التحميل. حاول بعد لحظة.", noLoad: "تعذّر تحميل البطاقات. تحقّق من اتصالك بالإنترنت وأعد تحميل الصفحة.", noCrypto: "هذا المتصفح لا يدعم التحقق. جرّب فتح الرابط في Chrome أو Safari.",
+      needPhone: "أدخل رقم هاتفك كاملاً.", needPin: "أدخل الرمز السري المكوّن من 4 أرقام.", tooMany: "محاولات كثيرة. انتظر {s} ثانية ثم حاول مرة أخرى.", loading: "البطاقات قيد التحميل. حاول بعد لحظة.", noLoad: "تعذّر تحميل البطاقات. تحقّق من اتصالك بالإنترنت وأعد تحميل الصفحة.", noCrypto: "هذا المتصفح لا يدعم التحقق. جرّب فتح الرابط في Chrome أو Safari.",
       hello: "هذه بطاقتك", visits: "الزيارات", thisYear: "هذا العام", lastVisit: "آخر زيارة", never: "لا يوجد بعد", today: "اليوم", yesterday: "أمس", daysAgo: "قبل {n} أيام",
       levelIs: "عضو {level}", toNext: "باقي {n} زيارات للوصول إلى {level}", perk: "ميزتك: {perk}",
       rule: "اشترِ {n} واحصل على ال{nth} مجاناً", more: "باقي {n}", toGo: " على {reward} · {s} من {n} أختام", ready1: "{reward} جاهز لك! أعطِ رقمك عند الكاونتر لاستلامه.", readyN: "لديك {k} مكافآت بانتظارك: {reward}. أعطِ رقمك عند الكاونتر.", useBy: " استخدمه قبل {date}.",
@@ -427,7 +430,7 @@ footer p { margin: 0; }
       tag: "خەلاتێن دلسۆزیێ", heroA: "{n} بکڕە، ", heroB: "یا {nth} ل سەر مەیە.", heroSub: "ل گەل هەر داخوازەکا {list} مۆرەکێ وەربگرە. ل خوارێ کارتا خۆ ببینە دا بزانی چەند ماینە بۆ یا بێ بەرامبەر یا دویڤدا.", or: " یان ",
       checkTitle: "کارتا خۆ ببینە", phone: "ژمارا مۆبایلێ", pin: "ژمارا نهێنی", show: "کارتا من نیشان بدە",
       pinHelp: "ژمارا تە یا نهێنی (4 ژمارە) د نامەیا خێرهاتنێ دا یە ل سەر واتسئاپێ. ژبیرا تە چوو؟ ل کاونتەری پسیار بکە.",
-      needPhone: "ژمارا مۆبایلا خۆ ب تەمامی بنڤیسە.", needPin: "ژمارا نهێنی یا 4 ژمارە بنڤیسە.", loading: "کارت د هێنە بارکرن. پشتی کێمەکێ دووبارە هەول بدە.", noLoad: "کارت بار نەبوون. ئینتەرنێتا خۆ بپشکنە و پەڕێ نوو بکە.", noCrypto: "ئەڤ وێبگەڕە نەشێت کارتێ بپشکنیت. د Chrome یان Safari دا ڤەکە.",
+      needPhone: "ژمارا مۆبایلا خۆ ب تەمامی بنڤیسە.", needPin: "ژمارا نهێنی یا 4 ژمارە بنڤیسە.", tooMany: "گەلەک جاران هاتە تاقیکرن. {s} چرکەیان چاڤەڕێ بکە و دووبارە هەول بدە.", loading: "کارت د هێنە بارکرن. پشتی کێمەکێ دووبارە هەول بدە.", noLoad: "کارت بار نەبوون. ئینتەرنێتا خۆ بپشکنە و پەڕێ نوو بکە.", noCrypto: "ئەڤ وێبگەڕە نەشێت کارتێ بپشکنیت. د Chrome یان Safari دا ڤەکە.",
       hello: "ئەڤە کارتا تەیە", visits: "سەرەدان", thisYear: "ئەڤ سالە", lastVisit: "دووماهیک سەرەدان", never: "هێشتا نە", today: "ئەڤرۆ", yesterday: "دوهی", daysAgo: "{n} رۆژ بەری نوکە",
       levelIs: "ئەندامێ {level}", toNext: "{n} سەرەدانێن دی بۆ {level}", perk: "تایبەتمەندیا تە: {perk}",
       rule: "{n} بکڕە، یا {nth} بێ بەرامبەرە", more: "{n} ماینە", toGo: " بۆ {reward} · {s} ژ {n} مۆران", ready1: "{reward} یا تە ئامادەیە! ژمارا خۆ ل کاونتەری بێژە دا وەرگری.", readyN: "{k} خەلات ل هیڤیا تە نە: {reward}. ژمارا خۆ ل کاونتەری بێژە.", useBy: " بەری {date} بکاربینە.",
@@ -457,7 +460,7 @@ footer p { margin: 0; }
       tag: "Treueprämien", heroA: "Kaufen Sie {n}, und das ", heroB: "{nth} geht auf uns.", heroSub: "Bei jeder Bestellung ({list}) erhalten Sie einen Stempel. Prüfen Sie unten Ihre Karte, um zu sehen, wie nah Sie Ihrer nächsten Gratis-Prämie sind.", or: " oder ",
       checkTitle: "Ihre Karte prüfen", phone: "Telefonnummer", pin: "PIN", show: "Meine Karte anzeigen",
       pinHelp: "Ihre 4-stellige PIN steht in der WhatsApp-Willkommensnachricht, die wir Ihnen geschickt haben. Vergessen? Fragen Sie an der Theke.",
-      needPhone: "Bitte geben Sie Ihre vollständige Telefonnummer ein.", needPin: "Bitte geben Sie Ihre 4-stellige PIN ein.", loading: "Die Karten werden noch geladen. Bitte versuchen Sie es gleich noch einmal.", noLoad: "Die Karten konnten nicht geladen werden. Prüfen Sie Ihre Internetverbindung und laden Sie die Seite neu.", noCrypto: "Dieser Browser kann keine Karten prüfen. Öffnen Sie den Link bitte in Chrome oder Safari.",
+      needPhone: "Bitte geben Sie Ihre vollständige Telefonnummer ein.", needPin: "Bitte geben Sie Ihre 4-stellige PIN ein.", tooMany: "Zu viele Versuche. Bitte warten Sie {s} Sekunden und versuchen Sie es erneut.", loading: "Die Karten werden noch geladen. Bitte versuchen Sie es gleich noch einmal.", noLoad: "Die Karten konnten nicht geladen werden. Prüfen Sie Ihre Internetverbindung und laden Sie die Seite neu.", noCrypto: "Dieser Browser kann keine Karten prüfen. Öffnen Sie den Link bitte in Chrome oder Safari.",
       hello: "Hier ist Ihre Karte", visits: "Besuche", thisYear: "Dieses Jahr", lastVisit: "Letzter Besuch", never: "Noch keiner", today: "Heute", yesterday: "Gestern", daysAgo: "vor {n} Tagen",
       levelIs: "{level}-Mitglied", toNext: "Noch {n} Besuche bis {level}", perk: "Ihr Vorteil: {perk}",
       rule: "Kaufen Sie {n}, das {nth} geht auf uns", more: "Noch {n}", toGo: " bis zu Ihrer Prämie ({reward}) · {s} von {n} Stempeln", ready1: "Ihre Prämie ist bereit: {reward}! Nennen Sie an der Theke Ihre Nummer, um sie abzuholen.", readyN: "Es warten {k} Prämien auf Sie: {reward}. Nennen Sie an der Theke Ihre Nummer.", useBy: " Einzulösen bis {date}.",
@@ -574,6 +577,37 @@ footer p { margin: 0; }
   // cards/<key> holds only the first name, member code and counts; the key comes from the phone number + PIN.
   const FB_CFG = { apiKey: "AIzaSyBL1jUUtB8uQ26jTj3aoBjOJrRWHJuErVI", authDomain: "amed-cafe.firebaseapp.com", projectId: "amed-cafe", appId: "1:1005235134584:web:f977d4b29ad2ddcc234d8d" };
   const EMU = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && /[?&]emu\b/.test(location.search);
+  // The card page takes no identifiers from the address. ?id=, ?code=, ?ref=, ?k= or any other query, and any hash
+  // other than a language code, are ignored and removed, so a link can never open, pre-fill or switch someone's card.
+  // (Member and referral codes are not credentials: only phone number + PIN open a card.)
+  (function scrubURL() {
+    const keepQ = EMU ? location.search : "", h = /^#(ku|ar|en|de)$/.test(location.hash) ? location.hash : "";
+    if (location.search !== keepQ || location.hash !== h) { try { history.replaceState(null, "", location.pathname + keepQ + h); } catch (_) {} }
+  })();
+  // The QR on the card always points at the real staff tool; it is never taken from downloaded data.
+  const STAFF_LINK = "https://amedcaferest.com/staff/";
+
+  /* ---------- session: only the card key (a one-way PBKDF2 hash of phone + PIN) and two timestamps ----------
+     Never the phone number, the PIN or the name. The session ends after 90 days without opening the card,
+     on Sign out, or as soon as the card no longer exists (PIN changed / member removed). */
+  const SESSION = "amed-session", SESSION_IDLE = 90 * 864e5, KEY_RE = /^[0-9a-f]{32}$/;
+  function clearSession() { try { localStorage.removeItem(SESSION); localStorage.removeItem("amed-live-at"); } catch (_) {} }
+  function readSession() {
+    let raw = ""; try { raw = localStorage.getItem(SESSION) || ""; } catch (_) { return null; }
+    if (!raw) return null;
+    const now = Date.now(); let s = null;
+    if (KEY_RE.test(raw)) s = { k: raw, t: now, s: now };   // older phones kept a bare key: accepted once, then upgraded
+    else { try { s = JSON.parse(raw); } catch (_) { s = null; } }
+    const seen = Number(s && s.s);
+    if (!s || !KEY_RE.test(String(s.k)) || !(seen > 0) || seen > now + 864e5 || now - seen > SESSION_IDLE) { clearSession(); return null; }
+    return s;
+  }
+  function writeSession(k) {
+    if (!KEY_RE.test(String(k || ""))) return;
+    const now = Date.now(), old = readSession();
+    try { localStorage.setItem(SESSION, JSON.stringify({ v: 1, k, t: old && old.k === k ? old.t : now, s: now })); } catch (_) {}
+  }
+
   let FBX = null;
   function fbx() {
     if (FBX !== null) return FBX;
@@ -581,21 +615,35 @@ footer p { margin: 0; }
     catch (_) { FBX = false; }
     return FBX;
   }
+  // Public cafe info (programs, levels, offers, events) comes only from Firestore public/meta. There is no static
+  // data.json any more (it exposed every member's card). Offline, the last public info this phone saw is used;
+  // it never contains customer data.
+  const META_CACHE = "amed-meta-cache";
   async function loadData() {
     const x = fbx();
-    if (x) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "public/meta")); if (s.exists()) return Object.assign({ cards: {}, live: true }, s.data()); } catch (_) {} }
-    const r = await fetch("../data.json", { cache: "no-store" }); if (!r.ok) throw 0; return r.json();   // fallback: last published copy
+    if (x) {
+      try {
+        const s = await x.F.getDoc(x.F.doc(x.fs, "public/meta"));
+        if (s.exists()) { const d = s.data(); delete d.cards; try { localStorage.setItem(META_CACHE, JSON.stringify(d)); } catch (_) {} return Object.assign({ live: true }, d); }
+      } catch (_) {}
+    }
+    try { const c = JSON.parse(localStorage.getItem(META_CACHE) || "null"); if (c && Array.isArray(c.programs)) { delete c.cards; return c; } } catch (_) {}
+    throw new Error("no data");
   }
+  // One card, by its exact key only (the database refuses listing). Returns null if there is no such card;
+  // throws if the database can't be reached, so a network problem never signs the member out.
   async function getCard(key) {
-    const x = fbx();
-    // Always ask the live database first; use the published copy only if this card is not in the database.
-    if (x) { try { const s = await x.F.getDoc(x.F.doc(x.fs, "cards/" + key)); if (s.exists()) { live.db = true; return s.data(); } } catch (_) {} }
-    return (DATA && DATA.cards && DATA.cards[key]) || null;
+    if (!KEY_RE.test(String(key || ""))) return null;
+    const x = fbx(); if (!x) throw new Error("no database");
+    const s = await x.F.getDoc(x.F.doc(x.fs, "cards/" + key));
+    if (!s.exists()) return null;
+    live.db = true; return s.data();
   }
   const live = { unsub: null, key: null, lastAt: 0, audio: null, timer: 0, db: false };
-  try { live.lastAt = Number(localStorage.getItem("amed-live-at")) || 0; } catch (_) {}
+  // amed-live-at = time of the last stamp celebrated on this phone (so it isn't shown twice). Only a sane past time is trusted.
+  try { const t = Number(localStorage.getItem("amed-live-at")); live.lastAt = Number.isFinite(t) && t > 0 && t <= Date.now() + 60e3 ? t : 0; } catch (_) {}
   function liveStart(key) {
-    const x = fbx(); if (!key || !x || !DATA) return;
+    const x = fbx(); if (!KEY_RE.test(String(key || "")) || !x || !DATA) return;
     if (live.key === key && live.unsub) return;
     liveStop(); live.key = key;
     live.unsub = x.F.onSnapshot(x.F.doc(x.fs, "cards/" + key), (s) => { if (s.exists() && live.key === key) liveCard(s.data()); }, () => {});
@@ -917,18 +965,18 @@ footer p { margin: 0; }
     else if (lvPerk(L.cur)) card.append(el("p", { class: "lc-next", text: tr("perk", { perk: lvPerk(L.cur) }) }));
     if (entry.code) {
       const q = el("div", { class: "lc-qrimg" });
-      const qrLink = ((DATA && DATA.staffLink) || "") + "#m-" + entry.code + "." + p.id;
+      const qrLink = STAFF_LINK + "#m-" + entry.code + "." + p.id;
       const openBig = () => openBigQR(qrLink, entry.code, pname(p));
       card.append(el("div", { class: "lc-qr", role: "button", tabindex: "0", "aria-label": tr("qrZoom"), onclick: openBig, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBig(); } } }, q, el("div", { class: "lc-qrtxt" }, el("span", { class: "lc-code", dir: "ltr", text: entry.code }), el("span", { text: tr("qrText") }), el("span", { class: "lc-zoom", text: tr("qrZoom") }), el("small", { text: tr("rule", { n: T0, nth: ordinal(T0 + 1) }) }))));
       try { new QRCode(q, { text: qrLink, width: 76, height: 76, colorDark: "#1C231E", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); } catch (_) { q.remove(); }
     }
     r.append(card);
     // Google Wallet (Android): the card then shows up on the phone near the cafe, and its stamps stay up to date.
-    let wkey = null; try { wkey = localStorage.getItem("amed-session"); } catch (_) {}
+    const sess = readSession(), wkey = sess && sess.k;
     if (wkey && /android/i.test(navigator.userAgent)) {
       const wl = ["ku", "ar", "en"].includes(lang) ? lang : "en";
       r.append(el("div", { class: "wallet" },
-        el("a", { class: "wallet-btn", href: WALLET + "/save?k=" + encodeURIComponent(wkey) + "&lang=" + wl, rel: "noopener" },
+        el("a", { class: "wallet-btn", href: WALLET + "/save?k=" + encodeURIComponent(wkey) + "&lang=" + wl, rel: "noopener noreferrer", referrerpolicy: "no-referrer" },
           el("span", { class: "wallet-ico", "aria-hidden": "true" }), el("span", { dir: "auto", text: tr("walletAdd") })),
         el("p", { class: "wallet-sub", text: tr("walletSub") })));
     }
@@ -1082,7 +1130,7 @@ footer p { margin: 0; }
   // Signed in: hide the sign-in parts; the phone remembers the card (not the PIN) until Sign out.
   function setSignedIn(on) { for (const id of ["heroBox", "checkForm", "howSec", "cardsSec"]) $(id).hidden = on; }
   function signOut() {
-    try { localStorage.removeItem("amed-session"); } catch (_) {}
+    clearSession();
     liveStop(); live.key = null; closeCele();
     lastEntry = null; activeProg = null; storyShown = false; $("result").hidden = true; $("result").textContent = "";
     $("phone").value = ""; $("pin").value = ""; setSignedIn(false); clearPageTheme(); window.scrollTo({ top: 0 });
@@ -1136,25 +1184,37 @@ footer p { margin: 0; }
     r.append(el("div", { class: "notfound" }, el("h2", { text: tr("nfTitle") }), el("p", { text: tr("nfText") })));
   }
 
+  // Strict check before anything is hashed: after normalising (Arabic/Persian digits → 0-9, "+"/"00" and the
+  // home country code removed, leading zeros dropped) the key number must be 7–15 digits only (E.164 maximum).
+  const validPhone = (d) => /^\d{7,15}$/.test(String(d || ""));
+  // Slows down PIN guessing from this browser: after 5 misses in a row, wait 30 s, doubling up to 15 minutes.
+  // This is only a deterrent (an attacker can skip the page); the real protection is that the database
+  // refuses listing, so cards can only be fetched one exact key at a time (enable App Check too).
+  const LOCK = "amed-lookup-lock";
+  const lockState = () => { try { const v = JSON.parse(localStorage.getItem(LOCK) || "null"); if (v && Number.isFinite(v.n) && Number.isFinite(v.u)) return v; } catch (_) {} return { n: 0, u: 0 }; };
+  const lockSave = (v) => { try { if (v.n) localStorage.setItem(LOCK, JSON.stringify(v)); else localStorage.removeItem(LOCK); } catch (_) {} };
+  function lockMiss() { const v = lockState(); v.n++; if (v.n >= 5) v.u = Date.now() + Math.min(15 * 60e3, 30e3 * 2 ** (v.n - 5)); lockSave(v); }
   $("checkForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const err = $("err"), fail = (k) => { err.textContent = tr(k); err.hidden = false; };
     err.hidden = true;
     const d = phoneKey($("phone").value), pin = norm("1" + $("pin").value).slice(1);
-    if (d.length < 6) return fail("needPhone");
-    if (pin.length !== 4) return fail("needPin");
+    if (!validPhone(d)) return fail("needPhone");
+    if (!/^\d{4}$/.test(pin)) return fail("needPin");
     if (!loaded) return fail("loading");
-    try {
-      const key = await hash(d, pin), entry = await getCard(key);
-      if (entry) { try { localStorage.setItem("amed-session", key); } catch (_) {} $("pin").value = ""; showCards(entry); liveStart(key); } else showNotFound();
-    }
-    catch (_) { fail("noCrypto"); }
+    const lk = lockState(); if (lk.u > Date.now()) { err.textContent = tr("tooMany", { s: Math.ceil((lk.u - Date.now()) / 1000) }); err.hidden = false; return; }
+    let key;
+    try { key = await hash(d, pin); } catch (_) { return fail("noCrypto"); }
+    let entry;
+    try { entry = await getCard(key); } catch (_) { return fail("noLoad"); }
+    if (entry) { lockSave({ n: 0, u: 0 }); writeSession(key); $("pin").value = ""; showCards(entry); liveStart(key); }
+    else { lockMiss(); showNotFound(); }
   });
   // Open the card by itself as soon as the phone number and the 4-digit PIN are both filled in (the button still works too).
   let autoTried = "";
   function autoOpen() {
     const d = phoneKey($("phone").value), pin = norm("1" + $("pin").value).slice(1);
-    if (d.length < 6 || pin.length !== 4 || !loaded || autoTried === d + "|" + pin) return;
+    if (!validPhone(d) || !/^\d{4}$/.test(pin) || !loaded || autoTried === d + "|" + pin) return;
     autoTried = d + "|" + pin; $("pin").blur(); const f = $("checkForm"); if (f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event("submit", { cancelable: true }));
   }
   $("pin").addEventListener("input", autoOpen);
@@ -1180,9 +1240,12 @@ footer p { margin: 0; }
   loadData()
     .then(async (d) => {
       DATA = d; loaded = true; renderStatic();
-      let key = null; try { key = localStorage.getItem("amed-session"); } catch (_) {}
-      const entry = key ? await getCard(key) : null;
-      if (entry) { showCards(entry, false); liveStart(key); }
+      const sess = readSession(), key = sess && sess.k;
+      if (!key) return;
+      let entry;
+      try { entry = await getCard(key); } catch (_) { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; return; }
+      if (entry) { writeSession(key); showCards(entry, false); liveStart(key); }
+      else clearSession();   // the card is gone (PIN changed or member removed): forget it on this phone
     })
     .catch(() => { const err = $("err"); err.textContent = tr("noLoad"); err.hidden = false; });
 })();

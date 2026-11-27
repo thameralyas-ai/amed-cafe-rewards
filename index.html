@@ -7,7 +7,15 @@
 <script>
   // Members who signed in to their loyalty card go straight to it (old links, printed QR codes and
   // old Home Screen icons all land here). Add ?home to the address to see the website instead.
-  try { if (localStorage.getItem("amed-session") && !/[?&]home\b/.test(location.search)) location.replace("card/" + location.hash); } catch (_) {}
+  // Only a well-formed, unexpired session counts (see card/index.html → readSession); the URL hash is passed on
+  // only when it is a language code, so no other URL data reaches the card page.
+  try {
+    const raw = localStorage.getItem("amed-session") || "";
+    let ok = /^[0-9a-f]{32}$/.test(raw);
+    if (!ok) { const s = JSON.parse(raw || "null"); ok = !!(s && /^[0-9a-f]{32}$/.test(s.k) && Number(s.s) > 0 && Date.now() - Number(s.s) < 90 * 864e5); }
+    const h = /^#(ku|ar|en|de)$/.test(location.hash) ? location.hash : "";
+    if (ok && !/[?&]home\b/.test(location.search)) location.replace("card/" + h);
+  } catch (_) {}
 </script>
 <title>Amed Cafe · Coffee &amp; Shisha in Sharya, Duhok · كافي وشيشة في شاريا</title>
 <meta name="description" content="Amed Cafe in Sharya, Duhok: coffee, hot and cold drinks and premium shisha. Open every day 9 AM – 1 AM. your comfort space · قهوة وأركيلة في شاريا، دهوك">
@@ -600,7 +608,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
 (() => {
   // ---- Cafe details: fill these in when Thamir sends them. Empty = shown as "coming soon". ----
   const CONTACT = {
-    whatsapp: "9647502620262",   // international digits, e.g. "9647501234567" (falls back to the staff tool's cafe WhatsApp in data.json)
+    whatsapp: "9647502620262",   // international digits, e.g. "9647501234567" (falls back to the staff tool's cafe WhatsApp in public/meta)
     instagram: "amed.caferest",  // handle without @
     tiktok: "amedcaferest",      // handle without @
     snapchat: "https://www.snapchat.com/place/amed-caferest/788297e9-37d0-48a7-bfea-ca6504ef569e",  // Snapchat place page
@@ -676,7 +684,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   const ORD_AR = { 6: "سادس", 7: "سابع", 8: "ثامن", 9: "تاسع", 10: "عاشر", 11: "حادي عشر" };
   const LOC = { en: "en-GB", ar: "ar-IQ-u-nu-latn", de: "de-DE" };
   const RTL = { ar: 1, ku: 1 }; // right-to-left languages
-  // German names for the loyalty programs (data.json has English, Arabic and Badini only)
+  // German names for the loyalty programs (public/meta has English, Arabic and Badini only)
   const DE_PROG = { drinks: { name: "Getränke", reward: "Gratis-Getränk" }, shisha: { name: "Shisha", reward: "Gratis-Shisha" } };
   const KU_M = ["کانوونا دووێ", "شوبات", "ئادار", "نیسان", "گولان", "حزیران", "تیرمەه", "ئاب", "ئەیلوول", "تشرینا ئێکێ", "تشرینا دووێ", "کانوونا ئێکێ"];
   const KU_D = ["یەکشەمبی", "دووشەمبی", "سێشەمبی", "چارشەمبی", "پێنجشەمبی", "ئەینی", "شەمبی"];
@@ -1072,7 +1080,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   fetch("reviews.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then((d) => { if (d && Array.isArray(d.reviews)) { REVIEWS = d.reviews.filter((x) => x && x.text && x.rating); RATING = d.rating > 0 && d.count > 0 ? { rating: +d.rating, count: +d.count } : null; renderReviews(); renderNav(); } }).catch(() => {});
   // Cafe info (reward programs, levels, offers, events): from the loyalty database (Firestore document public/meta,
   // the same one the card page reads), fetched over Firestore's plain web API so the homepage doesn't need the
-  // large Firebase library. If that fails, the last published data.json is used instead.
+  // large Firebase library. If that fails, these sections simply stay hidden.
   const META_URL = "https://firestore.googleapis.com/v1/projects/amed-cafe/databases/(default)/documents/public/meta?key=AIzaSyBL1jUUtB8uQ26jTj3aoBjOJrRWHJuErVI";
   const fsVal = (v) => !v ? null : "stringValue" in v ? v.stringValue : "integerValue" in v ? Number(v.integerValue) : "doubleValue" in v ? v.doubleValue
     : "booleanValue" in v ? v.booleanValue : "timestampValue" in v ? v.timestampValue : "arrayValue" in v ? (v.arrayValue.values || []).map(fsVal)
@@ -1081,7 +1089,7 @@ footer > :not(.fx) { position: relative; z-index: 1; }
   const useData = (d) => { if (d) { DATA = d; renderRewards(); renderEvents(); renderInfo(); } };
   fetch(META_URL, { cache: "no-store" }).then((r) => r.ok ? r.json() : Promise.reject(r.status))
     .then((doc) => { if (!doc || !doc.fields) throw 0; useData(fsMap(doc.fields)); })
-    .catch(() => fetch("data.json", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then(useData).catch(() => {}));
+    .catch(() => {});   // no static fallback: data.json was removed (it exposed customer records)
 })();
 </script>
 <!-- Cloudflare Web Analytics (visitor statistics, no cookies) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5df4e2c18da94b7fa39ead575e9661c3"}'></script><!-- End Cloudflare Web Analytics -->

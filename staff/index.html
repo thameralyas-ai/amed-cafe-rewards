@@ -806,6 +806,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
 <div class="overlay" id="approveDlg" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="apTitle"></div></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
+<!-- Inspection deterrent (UX only, not a security control: see js/guard.js and SECURITY.md) -->
+<script src="../js/guard.js"></script>
 <script src="../vendor/amed-firebase.js"></script>
 <script src="bridge.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -2636,7 +2638,9 @@ body.counter .card-head h2 { font-size: 2.4rem; }
     $("invSave").textContent = "Add staff member"; $("invCancel").hidden = true;
     const o = state.invites.get(OWNER_ID); $("ownName").value = (o && o.name) || "Owner"; $("ownPin").value = ""; $("ownErr").hidden = true;
   }
-  const staffCode = () => "AMED-" + [...crypto.getRandomValues(new Uint32Array(4))].map((x) => CODE_ABC[x % CODE_ABC.length]).join("");
+  // Staff join codes: 8 random characters (31^8 ≈ 8.5e11 combinations) so they can't be guessed by trying codes.
+  // Codes made earlier with 4 characters keep working; replace them (switch off + add again) when convenient.
+  const staffCode = () => "AMED-" + [...crypto.getRandomValues(new Uint32Array(8))].map((x) => CODE_ABC[x % CODE_ABC.length]).join("");
   function staffMessage(inv) {
     const lang = inv.lang || "ku", t = template("staffInvite", lang);
     const vars = { name: (inv.name || "").split(" ")[0], cafe: state.settings.cafe || "Amed Cafe", staffLink: state.settings.staffLink || "", code: inv.id };
@@ -3053,7 +3057,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   let scanKey = ""; try { scanKey = localStorage.getItem("amed-scan-key") || ""; } catch (_) {}
   if (!/^[0-9a-f]{24}$/.test(scanKey)) { try { scanKey = [...crypto.getRandomValues(new Uint8Array(12))].map((b) => b.toString(16).padStart(2, "0")).join(""); localStorage.setItem("amed-scan-key", scanKey); } catch (_) {} }
   const relay = { es: null, state: "off", seen: new Set() };
-  function relayPost(obj) { try { fetch(RELAY + "/", { method: "POST", body: JSON.stringify({ topic: "amed-scanres-" + scanKey, message: JSON.stringify(obj) }) }).catch(() => {}); } catch (_) {} }
+  function relayPost() {}   // retired: scan results are never sent through the public ntfy.sh relay
   function relayStart() {
     return;   // not needed on the website: the camera runs inside this page
     try { relay.es = new EventSource(RELAY + "/amed-scan-" + scanKey + "/sse"); } catch (_) { relay.state = "blocked"; return; }
