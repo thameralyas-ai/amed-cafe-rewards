@@ -1200,7 +1200,7 @@ footer p { margin: 0; }
     err.hidden = true;
     const d = phoneKey($("phone").value), pin = norm("1" + $("pin").value).slice(1);
     if (!validPhone(d)) return fail("needPhone");
-    // 6 digits since Dec 2026; members who haven't received their new PIN yet still use their old 4-digit one.
+    // 6 digits since Nov 2026; members who haven't received their new PIN yet still use their old 4-digit one.
     if (!/^(\d{4}|\d{6})$/.test(pin)) return fail("needPin");
     if (!loaded) return fail("loading");
     const lk = lockState(); if (lk.u > Date.now()) { err.textContent = tr("tooMany", { s: Math.ceil((lk.u - Date.now()) / 1000) }); err.hidden = false; return; }
