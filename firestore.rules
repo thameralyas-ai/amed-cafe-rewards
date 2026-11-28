@@ -199,7 +199,7 @@ service cloud.firestore {
     function validCustomer(d) {
       return optStr(d, 'name', 80)
         && (!('pin' in d) || d.pin == null || d.pin == ''
-            || (d.pin is string && d.pin.matches('^[0-9]{4}$'))
+            || (d.pin is string && d.pin.matches('^([0-9]{4}|[0-9]{6})$'))
             || (d.pin is int && d.pin >= 0 && d.pin <= 9999))
         && optCode(d, 'code')
         && optInt(d, 'visits', 0, 100000)

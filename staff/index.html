@@ -948,7 +948,8 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   const ordinal = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
   const el = (tag, props = {}, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(props)) { if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
   const randomCode = () => { const a = crypto.getRandomValues(new Uint32Array(6)); return [...a].map((x) => CODE_ABC[x % CODE_ABC.length]).join(""); };
-  const newPin = () => String(crypto.getRandomValues(new Uint32Array(1))[0] % 10000).padStart(4, "0");
+  // Customer PINs: 6 random digits (1,000,000 possibilities). Old 4-digit PINs keep working until replaced.
+  const newPin = () => { const a = new Uint32Array(1); do crypto.getRandomValues(a); while (a[0] >= 4294000000); return String(a[0] % 1000000).padStart(6, "0"); };
   /* ---------- phone numbers from any country ----------
      Numbers from the cafe's own country are saved as typed (as before). A number from another country is saved as
      00 + country code + number (e.g. 0049 151 2345678), so WhatsApp links and the customer's card work for it. */
@@ -2756,7 +2757,7 @@ body.counter .card-head h2 { font-size: 2.4rem; }
   function showScanDlg() { $("scanDlg").hidden = false; translateDOM($("scanDlg")); }
   // The customer's phone listens on a private topic made from its card key (same key as the public card page).
   async function liveTopicFor(c) {
-    const pin = String(c.pin || "").replace(/\D/g, ""); if (pin.length !== 4 || !(window.crypto && crypto.subtle)) return null;
+    const pin = String(c.pin || "").replace(/\D/g, ""); if (!/^(\d{4}|\d{6})$/.test(pin) || !(window.crypto && crypto.subtle)) return null;
     let d = String(c.id || "").replace(/\D/g, ""); if (d.startsWith("00")) d = d.slice(2);
     const cc = String(state.settings.countryCode || "964").replace(/\D/g, ""); if (cc && d.startsWith(cc) && d.length > 10) d = d.slice(cc.length);
     d = d.replace(/^0+/, "");

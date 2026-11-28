@@ -104,7 +104,15 @@ test("negative / non-integer stamps are refused", async () => {
   await assertFails(setDoc(doc(staff(), "cards/" + KEY), card({ v: -3 })));
   await assertFails(setDoc(doc(staff(), "cards/" + KEY), card({ admin: true })));
 });
-test("bad PIN shapes are refused on members", () => assertFails(updateDoc(doc(staff(), "customers/07501112222"), { pin: "12" })));
+test("bad PIN shapes are refused on members", async () => {
+  await assertFails(updateDoc(doc(staff(), "customers/07501112222"), { pin: "12" }));
+  await assertFails(updateDoc(doc(staff(), "customers/07501112222"), { pin: "12345" }));
+  await assertFails(updateDoc(doc(staff(), "customers/07501112222"), { pin: "abcdef" }));
+});
+test("6-digit PINs are accepted (and old 4-digit ones still are)", async () => {
+  await assertSucceeds(updateDoc(doc(staff(), "customers/07501112222"), { pin: "048213" }));
+  await assertSucceeds(updateDoc(doc(staff(), "customers/07501112222"), { pin: "1234" }));
+});
 test("owner can correct larger numbers", () => assertSucceeds(updateDoc(doc(owner(), "customers/07501112222"), { visits: 400 })));
 test("staff can't change settings; owner can", async () => {
   await assertFails(setDoc(doc(staff(), "settings/card"), { programs: [] }));

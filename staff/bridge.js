@@ -121,7 +121,7 @@
   }
   const keyCache = new Map();
   async function cardKey(id, pin) {
-    pin = String(pin || "").replace(/\D/g, ""); if (pin.length !== 4) return null;
+    pin = String(pin || "").replace(/\D/g, ""); if (!/^(\d{4}|\d{6})$/.test(pin)) return null;   // 6 digits; old 4-digit PINs still work
     const ck = id + "|" + pin + "|" + ((settings && settings.countryCode) || ""); if (keyCache.has(ck)) return keyCache.get(ck);
     const enc = new TextEncoder(), k = await crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveBits"]);
     const key = hex(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode("amed-cafe:" + normPhone(id)), iterations: 100000 }, k, 128));
