@@ -25,11 +25,11 @@ Everything served by GitHub Pages is public, including JavaScript. **Access cont
 
 `key = PBKDF2-HMAC-SHA256(password = PIN, salt = "amed-cafe:" + normalised phone, 100 000 iterations, 128 bits)`, computed in the browser with Web Crypto (`crypto.subtle`), identically in `card/index.html` (`hash`) and `staff/bridge.js` (`cardKey`).
 
-* Normalisation: Arabic/Persian digits → 0–9, non-digits removed, `00`/`+` removed, home country code 964 removed (when the number is longer than 10 digits), leading zeros removed; foreign numbers keep their country code. The card page accepts only 7–15 digits and a 4-digit PIN before hashing.
+* Normalisation: Arabic/Persian digits → 0–9, non-digits removed, `00`/`+` removed, home country code 964 removed (when the number is longer than 10 digits), leading zeros removed; foreign numbers keep their country code. The card page accepts only 7–15 digits and a 6-digit PIN (or an old 4-digit one) before hashing.
 * The salt is per customer (their phone number). There is **no client-side pepper**: any value shipped to the browser is public, so it would add no secrecy.
-* **Limit (be aware):** a phone number plus a 4-digit PIN has only 10 000 combinations per person. Someone who knows a member's phone number can try every PIN against Firestore (10 000 single-document reads), and Firestore rules cannot rate-limit reads. The only harm is reading that member's first name, member code and stamp counts. Nobody can write a card without staff access. To reduce this further:
+* **Limit (be aware):** customer PINs are 6 digits since Nov 2026 (1,000,000 combinations per person); members who have not been given a new PIN yet still have a 4-digit one (10,000). Someone who knows a member's phone number can try PINs against Firestore one read at a time, and Firestore rules cannot rate-limit reads. The only harm is reading that member's first name, member code and stamp counts; nobody can write a card without staff access. To reduce this further:
   1. enable and **enforce Firebase App Check** (below), which blocks scripted access from outside the real site;
-  2. long term: move the lookup behind a Cloud Function with per-IP/per-phone rate limiting, or move to 6-digit PINs (this changes every card key, so plan a re-publish with `window.__amedPublishAll()` on the owner tablet).
+  2. give every member a 6-digit PIN (staff tool → member → "Edit or remove member" → "Make a new PIN"); long term, move the lookup behind a Cloud Function with per-IP/per-phone rate limiting.
 * `card/index.html` also slows guessing in the browser (after 5 misses: 30 s, doubling up to 15 min). That is a deterrent only.
 
 ## Browser storage
